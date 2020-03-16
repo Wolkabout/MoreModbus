@@ -108,7 +108,8 @@ using json = basic_json<>;
 // #include <nlohmann/detail/macro_scope.hpp>
 
 // This file contains all internal macro definitions
-// You MUST include macro_unscope.hpp at the end of json.hpp to undef all of them
+// You MUST include macro_unscope.hpp at the end of json.hpp to undef all of
+// them
 
 // exclude unsupported compilers
 #if !defined(JSON_SKIP_UNSUPPORTED_COMPILER_CHECK)
@@ -346,8 +347,9 @@ namespace detail
         using iterator_category = typename It::iterator_category;
     };
 
-    // This is required as some compilers implement std::iterator_traits in a way that
-    // doesn't work with SFINAE. See https://github.com/nlohmann/json/issues/1341.
+    // This is required as some compilers implement std::iterator_traits in a way
+    // that doesn't work with SFINAE. See
+    // https://github.com/nlohmann/json/issues/1341.
     template <typename T, typename = void> struct iterator_traits
     {
     };
@@ -445,8 +447,8 @@ namespace detail
     // The only exceptions are in the 'aliases for detected' section
     // (i.e. those of the form: decltype(T::member_function(std::declval<T>())))
     //
-    // In this case, T has to be properly CV-qualified to constraint the function arguments
-    // (e.g. to_json(BasicJsonType&, const T&))
+    // In this case, T has to be properly CV-qualified to constraint the function
+    // arguments (e.g. to_json(BasicJsonType&, const T&))
 
     template <typename> struct is_basic_json : std::false_type
     {
@@ -512,7 +514,8 @@ namespace detail
     };
 
     // This trait checks if BasicJsonType::json_serializer<T>::to_json exists
-    // Do not evaluate the trait when T is a basic_json type, to avoid template instantiation infinite recursion.
+    // Do not evaluate the trait when T is a basic_json type, to avoid template
+    // instantiation infinite recursion.
     template <typename BasicJsonType, typename T, typename = void> struct has_to_json : std::false_type
     {
     };
@@ -687,9 +690,10 @@ namespace detail
     {
         static constexpr bool value =
           // This is needed because json_reverse_iterator has a ::iterator type,
-          // furthermore, std::back_insert_iterator (and other iterators) have a base class `iterator`...
-          // Therefore it is detected as a ConstructibleArrayType.
-          // The real fix would be to have an Iterable concept.
+          // furthermore, std::back_insert_iterator (and other iterators) have a
+          // base class `iterator`... Therefore it is detected as a
+          // ConstructibleArrayType. The real fix would be to have an Iterable
+          // concept.
           not is_iterator_traits<iterator_traits<ConstructibleArrayType>>::value and
 
           (std::is_same<typename ConstructibleArrayType::value_type,
@@ -849,31 +853,44 @@ namespace detail
 
     name / id                      | example message | description
     ------------------------------ | --------------- | -------------------------
-    json.exception.parse_error.101 | parse error at 2: unexpected end of input; expected string literal | This error
-    indicates a syntax error while deserializing a JSON text. The error message describes that an unexpected token
-    (character) was encountered, and the member @a byte indicates the error position. json.exception.parse_error.102 |
-    parse error at 14: missing or wrong low surrogate | JSON uses the `\uxxxx` format to describe Unicode characters.
-    Code points above above 0xFFFF are split into two `\uxxxx` entries ("surrogate pairs"). This error indicates that
-    the surrogate pair is incomplete or contains an invalid code point. json.exception.parse_error.103 | parse error:
-    code points above 0x10FFFF are invalid | Unicode supports code points up to 0x10FFFF. Code points above 0x10FFFF are
-    invalid. json.exception.parse_error.104 | parse error: JSON patch must be an array of objects | [RFC
-    6902](https://tools.ietf.org/html/rfc6902) requires a JSON Patch document to be a JSON document that represents an
-    array of objects. json.exception.parse_error.105 | parse error: operation must have string member 'op' | An
-    operation of a JSON Patch document must contain exactly one "op" member, whose value indicates the operation to
-    perform. Its value must be one of "add", "remove", "replace", "move", "copy", or "test"; other values are errors.
-    json.exception.parse_error.106 | parse error: array index '01' must not begin with '0' | An array index in a JSON
-    Pointer ([RFC 6901](https://tools.ietf.org/html/rfc6901)) may be `0` or any number without a leading `0`.
-    json.exception.parse_error.107 | parse error: JSON pointer must be empty or begin with '/' - was: 'foo' | A JSON
-    Pointer must be a Unicode string containing a sequence of zero or more reference tokens, each prefixed by a `/`
-    character. json.exception.parse_error.108 | parse error: escape character '~' must be followed with '0' or '1' | In
-    a JSON Pointer, only `~0` and `~1` are valid escape sequences. json.exception.parse_error.109 | parse error: array
-    index 'one' is not a number | A JSON Pointer array index must be a number. json.exception.parse_error.110 | parse
-    error at 1: cannot read 2 bytes from vector | When parsing CBOR or MessagePack, the byte vector ends before the
-    complete value has been read. json.exception.parse_error.112 | parse error at 1: error reading CBOR; last byte: 0xF8
-    | Not all types of CBOR or MessagePack are supported. This exception occurs if an unsupported byte was read.
-    json.exception.parse_error.113 | parse error at 2: expected a CBOR string; last byte: 0x98 | While parsing a map
-    key, a value that is not a string has been read. json.exception.parse_error.114 | parse error: Unsupported BSON
-    record type 0x0F | The parsing of the corresponding BSON record type is not implemented (yet).
+    json.exception.parse_error.101 | parse error at 2: unexpected end of input;
+    expected string literal | This error indicates a syntax error while
+    deserializing a JSON text. The error message describes that an unexpected token
+    (character) was encountered, and the member @a byte indicates the error
+    position. json.exception.parse_error.102 | parse error at 14: missing or wrong
+    low surrogate | JSON uses the `\uxxxx` format to describe Unicode characters.
+    Code points above above 0xFFFF are split into two `\uxxxx` entries ("surrogate
+    pairs"). This error indicates that the surrogate pair is incomplete or contains
+    an invalid code point. json.exception.parse_error.103 | parse error: code points
+    above 0x10FFFF are invalid | Unicode supports code points up to 0x10FFFF. Code
+    points above 0x10FFFF are invalid. json.exception.parse_error.104 | parse error:
+    JSON patch must be an array of objects | [RFC
+    6902](https://tools.ietf.org/html/rfc6902) requires a JSON Patch document to be
+    a JSON document that represents an array of objects.
+    json.exception.parse_error.105 | parse error: operation must have string member
+    'op' | An operation of a JSON Patch document must contain exactly one "op"
+    member, whose value indicates the operation to perform. Its value must be one of
+    "add", "remove", "replace", "move", "copy", or "test"; other values are errors.
+    json.exception.parse_error.106 | parse error: array index '01' must not begin
+    with '0' | An array index in a JSON Pointer ([RFC
+    6901](https://tools.ietf.org/html/rfc6901)) may be `0` or any number without a
+    leading `0`. json.exception.parse_error.107 | parse error: JSON pointer must be
+    empty or begin with '/' - was: 'foo' | A JSON Pointer must be a Unicode string
+    containing a sequence of zero or more reference tokens, each prefixed by a `/`
+    character. json.exception.parse_error.108 | parse error: escape character '~'
+    must be followed with '0' or '1' | In a JSON Pointer, only `~0` and `~1` are
+    valid escape sequences. json.exception.parse_error.109 | parse error: array
+    index 'one' is not a number | A JSON Pointer array index must be a number.
+    json.exception.parse_error.110 | parse error at 1: cannot read 2 bytes from
+    vector | When parsing CBOR or MessagePack, the byte vector ends before the
+    complete value has been read. json.exception.parse_error.112 | parse error at 1:
+    error reading CBOR; last byte: 0xF8 | Not all types of CBOR or MessagePack are
+    supported. This exception occurs if an unsupported byte was read.
+    json.exception.parse_error.113 | parse error at 2: expected a CBOR string; last
+    byte: 0x98 | While parsing a map key, a value that is not a string has been
+    read. json.exception.parse_error.114 | parse error: Unsupported BSON record type
+    0x0F | The parsing of the corresponding BSON record type is not implemented
+    (yet).
 
     @note For an input with n bytes, 1 is the index of the first character and n+1
           is the index of the terminating null byte or the end of file. This also
@@ -947,38 +964,52 @@ namespace detail
     Exceptions have ids 2xx.
 
     name / id                           | example message | description
-    ----------------------------------- | --------------- | -------------------------
-    json.exception.invalid_iterator.201 | iterators are not compatible | The iterators passed to constructor @ref
-    basic_json(InputIT first, InputIT last) are not compatible, meaning they do not belong to the same container.
-    Therefore, the range (@a first, @a last) is invalid. json.exception.invalid_iterator.202 | iterator does not fit
-    current value | In an erase or insert function, the passed iterator @a pos does not belong to the JSON value for
-    which the function was called. It hence does not define a valid position for the deletion/insertion.
-    json.exception.invalid_iterator.203 | iterators do not fit current value | Either iterator passed to function @ref
-    erase(IteratorType first, IteratorType last) does not belong to the JSON value from which values shall be erased. It
-    hence does not define a valid range to delete values from. json.exception.invalid_iterator.204 | iterators out of
-    range | When an iterator range for a primitive type (number, boolean, or string) is passed to a constructor or an
-    erase function, this range has to be exactly (@ref begin(), @ref end()), because this is the only way the single
-    stored value is expressed. All other ranges are invalid. json.exception.invalid_iterator.205 | iterator out of range
-    | When an iterator for a primitive type (number, boolean, or string) is passed to an erase function, the iterator
-    has to be the @ref begin() iterator, because it is the only way to address the stored value. All other iterators are
-    invalid. json.exception.invalid_iterator.206 | cannot construct with iterators from null | The iterators passed to
-    constructor @ref basic_json(InputIT first, InputIT last) belong to a JSON null value and hence to not define a valid
-    range. json.exception.invalid_iterator.207 | cannot use key() for non-object iterators | The key() member function
-    can only be used on iterators belonging to a JSON object, because other types do not have a concept of a key.
-    json.exception.invalid_iterator.208 | cannot use operator[] for object iterators | The operator[] to specify a
-    concrete offset cannot be used on iterators belonging to a JSON object, because JSON objects are unordered.
-    json.exception.invalid_iterator.209 | cannot use offsets with object iterators | The offset operators (+, -, +=, -=)
-    cannot be used on iterators belonging to a JSON object, because JSON objects are unordered.
-    json.exception.invalid_iterator.210 | iterators do not fit | The iterator range passed to the insert function are
-    not compatible, meaning they do not belong to the same container. Therefore, the range (@a first, @a last) is
-    invalid. json.exception.invalid_iterator.211 | passed iterators may not belong to container | The iterator range
-    passed to the insert function must not be a subrange of the container to insert to.
-    json.exception.invalid_iterator.212 | cannot compare iterators of different containers | When two iterators are
-    compared, they must belong to the same container. json.exception.invalid_iterator.213 | cannot compare order of
-    object iterators | The order of object iterators cannot be compared, because JSON objects are unordered.
-    json.exception.invalid_iterator.214 | cannot get value | Cannot get value for iterator: Either the iterator belongs
-    to a null value or it is an iterator to a primitive type (number, boolean, or string), but the iterator is different
-    to @ref begin().
+    ----------------------------------- | --------------- |
+    ------------------------- json.exception.invalid_iterator.201 | iterators are
+    not compatible | The iterators passed to constructor @ref basic_json(InputIT
+    first, InputIT last) are not compatible, meaning they do not belong to the same
+    container. Therefore, the range (@a first, @a last) is invalid.
+    json.exception.invalid_iterator.202 | iterator does not fit current value | In
+    an erase or insert function, the passed iterator @a pos does not belong to the
+    JSON value for which the function was called. It hence does not define a valid
+    position for the deletion/insertion. json.exception.invalid_iterator.203 |
+    iterators do not fit current value | Either iterator passed to function @ref
+    erase(IteratorType first, IteratorType last) does not belong to the JSON value
+    from which values shall be erased. It hence does not define a valid range to
+    delete values from. json.exception.invalid_iterator.204 | iterators out of range
+    | When an iterator range for a primitive type (number, boolean, or string) is
+    passed to a constructor or an erase function, this range has to be exactly (@ref
+    begin(), @ref end()), because this is the only way the single stored value is
+    expressed. All other ranges are invalid. json.exception.invalid_iterator.205 |
+    iterator out of range | When an iterator for a primitive type (number, boolean,
+    or string) is passed to an erase function, the iterator has to be the @ref
+    begin() iterator, because it is the only way to address the stored value. All
+    other iterators are invalid. json.exception.invalid_iterator.206 | cannot
+    construct with iterators from null | The iterators passed to constructor @ref
+    basic_json(InputIT first, InputIT last) belong to a JSON null value and hence to
+    not define a valid range. json.exception.invalid_iterator.207 | cannot use key()
+    for non-object iterators | The key() member function can only be used on
+    iterators belonging to a JSON object, because other types do not have a concept
+    of a key. json.exception.invalid_iterator.208 | cannot use operator[] for object
+    iterators | The operator[] to specify a concrete offset cannot be used on
+    iterators belonging to a JSON object, because JSON objects are unordered.
+    json.exception.invalid_iterator.209 | cannot use offsets with object iterators |
+    The offset operators (+, -, +=, -=) cannot be used on iterators belonging to a
+    JSON object, because JSON objects are unordered.
+    json.exception.invalid_iterator.210 | iterators do not fit | The iterator range
+    passed to the insert function are not compatible, meaning they do not belong to
+    the same container. Therefore, the range (@a first, @a last) is invalid.
+    json.exception.invalid_iterator.211 | passed iterators may not belong to
+    container | The iterator range passed to the insert function must not be a
+    subrange of the container to insert to. json.exception.invalid_iterator.212 |
+    cannot compare iterators of different containers | When two iterators are
+    compared, they must belong to the same container.
+    json.exception.invalid_iterator.213 | cannot compare order of object iterators |
+    The order of object iterators cannot be compared, because JSON objects are
+    unordered. json.exception.invalid_iterator.214 | cannot get value | Cannot get
+    value for iterator: Either the iterator belongs to a null value or it is an
+    iterator to a primitive type (number, boolean, or string), but the iterator is
+    different to @ref begin().
 
     @liveexample{The following code shows how an `invalid_iterator` exception can be
     caught.,invalid_iterator}
@@ -1015,36 +1046,50 @@ namespace detail
 
     name / id                     | example message | description
     ----------------------------- | --------------- | -------------------------
-    json.exception.type_error.301 | cannot create object from initializer list | To create an object from an initializer
-    list, the initializer list must consist only of a list of pairs whose first element is a string. When this
-    constraint is violated, an array is created instead. json.exception.type_error.302 | type must be object, but is
-    array | During implicit or explicit value conversion, the JSON type must be compatible to the target type. For
-    instance, a JSON string can only be converted into string types, but not into numbers or boolean types.
-    json.exception.type_error.303 | incompatible ReferenceType for get_ref, actual type is object | To retrieve a
-    reference to a value stored in a @ref basic_json object with @ref get_ref, the type of the reference must match the
-    value type. For instance, for a JSON array, the @a ReferenceType must be @ref array_t&.
-    json.exception.type_error.304 | cannot use at() with string | The @ref at() member functions can only be executed
-    for certain JSON types. json.exception.type_error.305 | cannot use operator[] with string | The @ref operator[]
-    member functions can only be executed for certain JSON types. json.exception.type_error.306 | cannot use value()
-    with string | The @ref value() member functions can only be executed for certain JSON types.
-    json.exception.type_error.307 | cannot use erase() with string | The @ref erase() member functions can only be
-    executed for certain JSON types. json.exception.type_error.308 | cannot use push_back() with string | The @ref
-    push_back() and @ref operator+= member functions can only be executed for certain JSON types.
-    json.exception.type_error.309 | cannot use insert() with | The @ref insert() member functions can only be executed
-    for certain JSON types. json.exception.type_error.310 | cannot use swap() with number | The @ref swap() member
-    functions can only be executed for certain JSON types. json.exception.type_error.311 | cannot use emplace_back()
-    with string | The @ref emplace_back() member function can only be executed for certain JSON types.
-    json.exception.type_error.312 | cannot use update() with string | The @ref update() member functions can only be
-    executed for certain JSON types. json.exception.type_error.313 | invalid value to unflatten | The @ref unflatten
-    function converts an object whose keys are JSON Pointers back into an arbitrary nested JSON value. The JSON Pointers
-    must not overlap, because then the resulting value would not be well defined. json.exception.type_error.314 | only
-    objects can be unflattened | The @ref unflatten function only works for an object whose keys are JSON Pointers.
-    json.exception.type_error.315 | values in object must be primitive | The @ref unflatten function only works for an
-    object whose keys are JSON Pointers and whose values are primitive. json.exception.type_error.316 | invalid UTF-8
-    byte at index 10: 0x7E | The @ref dump function only works with UTF-8 encoded strings; that is, if you assign a
-    `std::string` to a JSON value, make sure it is UTF-8 encoded. | json.exception.type_error.317 | JSON value cannot be
-    serialized to requested format | The dynamic type of the object cannot be represented in the requested serialization
-    format (e.g. a raw `true` or `null` JSON object cannot be serialized to BSON) |
+    json.exception.type_error.301 | cannot create object from initializer list | To
+    create an object from an initializer list, the initializer list must consist
+    only of a list of pairs whose first element is a string. When this constraint is
+    violated, an array is created instead. json.exception.type_error.302 | type must
+    be object, but is array | During implicit or explicit value conversion, the JSON
+    type must be compatible to the target type. For instance, a JSON string can only
+    be converted into string types, but not into numbers or boolean types.
+    json.exception.type_error.303 | incompatible ReferenceType for get_ref, actual
+    type is object | To retrieve a reference to a value stored in a @ref basic_json
+    object with @ref get_ref, the type of the reference must match the value type.
+    For instance, for a JSON array, the @a ReferenceType must be @ref array_t&.
+    json.exception.type_error.304 | cannot use at() with string | The @ref at()
+    member functions can only be executed for certain JSON types.
+    json.exception.type_error.305 | cannot use operator[] with string | The @ref
+    operator[] member functions can only be executed for certain JSON types.
+    json.exception.type_error.306 | cannot use value() with string | The @ref
+    value() member functions can only be executed for certain JSON types.
+    json.exception.type_error.307 | cannot use erase() with string | The @ref
+    erase() member functions can only be executed for certain JSON types.
+    json.exception.type_error.308 | cannot use push_back() with string | The @ref
+    push_back() and @ref operator+= member functions can only be executed for
+    certain JSON types. json.exception.type_error.309 | cannot use insert() with |
+    The @ref insert() member functions can only be executed for certain JSON types.
+    json.exception.type_error.310 | cannot use swap() with number | The @ref swap()
+    member functions can only be executed for certain JSON types.
+    json.exception.type_error.311 | cannot use emplace_back() with string | The @ref
+    emplace_back() member function can only be executed for certain JSON types.
+    json.exception.type_error.312 | cannot use update() with string | The @ref
+    update() member functions can only be executed for certain JSON types.
+    json.exception.type_error.313 | invalid value to unflatten | The @ref unflatten
+    function converts an object whose keys are JSON Pointers back into an arbitrary
+    nested JSON value. The JSON Pointers must not overlap, because then the
+    resulting value would not be well defined. json.exception.type_error.314 | only
+    objects can be unflattened | The @ref unflatten function only works for an
+    object whose keys are JSON Pointers. json.exception.type_error.315 | values in
+    object must be primitive | The @ref unflatten function only works for an object
+    whose keys are JSON Pointers and whose values are primitive.
+    json.exception.type_error.316 | invalid UTF-8 byte at index 10: 0x7E | The @ref
+    dump function only works with UTF-8 encoded strings; that is, if you assign a
+    `std::string` to a JSON value, make sure it is UTF-8 encoded. |
+    json.exception.type_error.317 | JSON value cannot be serialized to requested
+    format | The dynamic type of the object cannot be represented in the requested
+    serialization format (e.g. a raw `true` or `null` JSON object cannot be
+    serialized to BSON) |
 
     @liveexample{The following code shows how a `type_error` exception can be
     caught.,type_error}
@@ -1081,20 +1126,26 @@ namespace detail
 
     name / id                       | example message | description
     ------------------------------- | --------------- | -------------------------
-    json.exception.out_of_range.401 | array index 3 is out of range | The provided array index @a i is larger than @a
-    size-1. json.exception.out_of_range.402 | array index '-' (3) is out of range | The special array index `-` in a
-    JSON Pointer never describes a valid element of the array, but the index past the end. That is, it can only be used
-    to add elements at this position, but not to read it. json.exception.out_of_range.403 | key 'foo' not found | The
-    provided key was not found in the JSON object. json.exception.out_of_range.404 | unresolved reference token 'foo' |
-    A reference token in a JSON Pointer could not be resolved. json.exception.out_of_range.405 | JSON pointer has no
-    parent | The JSON Patch operations 'remove' and 'add' can not be applied to the root element of the JSON value.
-    json.exception.out_of_range.406 | number overflow parsing '10E1000' | A parsed number could not be stored as without
-    changing it to NaN or INF. json.exception.out_of_range.407 | number overflow serializing '9223372036854775808' |
-    UBJSON and BSON only support integer numbers up to 9223372036854775807. | json.exception.out_of_range.408 |
-    excessive array size: 8658170730974374167 | The size (following `#`) of an UBJSON array or object exceeds the
-    maximal capacity. | json.exception.out_of_range.409 | BSON key cannot contain code point U+0000 (at byte 2) | Key
-    identifiers to be serialized to BSON cannot contain code point U+0000, since the key is stored as zero-terminated
-    c-string |
+    json.exception.out_of_range.401 | array index 3 is out of range | The provided
+    array index @a i is larger than @a size-1. json.exception.out_of_range.402 |
+    array index '-' (3) is out of range | The special array index `-` in a JSON
+    Pointer never describes a valid element of the array, but the index past the
+    end. That is, it can only be used to add elements at this position, but not to
+    read it. json.exception.out_of_range.403 | key 'foo' not found | The provided
+    key was not found in the JSON object. json.exception.out_of_range.404 |
+    unresolved reference token 'foo' | A reference token in a JSON Pointer could not
+    be resolved. json.exception.out_of_range.405 | JSON pointer has no parent | The
+    JSON Patch operations 'remove' and 'add' can not be applied to the root element
+    of the JSON value. json.exception.out_of_range.406 | number overflow parsing
+    '10E1000' | A parsed number could not be stored as without changing it to NaN or
+    INF. json.exception.out_of_range.407 | number overflow serializing
+    '9223372036854775808' | UBJSON and BSON only support integer numbers up to
+    9223372036854775807. | json.exception.out_of_range.408 | excessive array size:
+    8658170730974374167 | The size (following `#`) of an UBJSON array or object
+    exceeds the maximal capacity. | json.exception.out_of_range.409 | BSON key
+    cannot contain code point U+0000 (at byte 2) | Key identifiers to be serialized
+    to BSON cannot contain code point U+0000, since the key is stored as
+    zero-terminated c-string |
 
     @liveexample{The following code shows how an `out_of_range` exception can be
     caught.,out_of_range}
@@ -1131,8 +1182,9 @@ namespace detail
 
     name / id                      | example message | description
     ------------------------------ | --------------- | -------------------------
-    json.exception.other_error.501 | unsuccessful: {"op":"test","path":"/baz", "value":"bar"} | A JSON Patch operation
-    'test' failed. The unsuccessful operation is also printed.
+    json.exception.other_error.501 | unsuccessful: {"op":"test","path":"/baz",
+    "value":"bar"} | A JSON Patch operation 'test' failed. The unsuccessful
+    operation is also printed.
 
     @sa @ref exception for the base class of the library exceptions
     @sa @ref parse_error for exceptions indicating a parse error
@@ -2118,8 +2170,8 @@ namespace detail
     using input_adapter_t = std::shared_ptr<input_adapter_protocol>;
 
     /*!
-    Input adapter for stdio file access. This adapter read only 1 byte and do not use any
-     buffer. This adapter is a very low level adapter.
+    Input adapter for stdio file access. This adapter read only 1 byte and do not
+    use any buffer. This adapter is a very low level adapter.
     */
     class file_input_adapter : public input_adapter_protocol
     {
@@ -2522,9 +2574,12 @@ namespace detail
             literal_false,    ///< the `false` literal
             literal_null,    ///< the `null` literal
             value_string,    ///< a string -- use get_string() for actual value
-            value_unsigned,    ///< an unsigned integer -- use get_number_unsigned() for actual value
-            value_integer,    ///< a signed integer -- use get_number_integer() for actual value
-            value_float,    ///< an floating point number -- use get_number_float() for actual value
+            value_unsigned,    ///< an unsigned integer -- use get_number_unsigned() for
+                               ///< actual value
+            value_integer,    ///< a signed integer -- use get_number_integer() for actual
+                              ///< value
+            value_float,    ///< an floating point number -- use get_number_float() for
+                            ///< actual value
             begin_array,    ///< the character for array begin `[`
             begin_object,    ///< the character for object begin `{`
             end_array,    ///< the character for array end `]`
@@ -2533,7 +2588,8 @@ namespace detail
             value_separator,    ///< the value separator `,`
             parse_error,    ///< indicating a parse error
             end_of_input,    ///< indicating the end of the input buffer
-            literal_or_value    ///< a literal or the begin of a value (only for diagnostics)
+            literal_or_value    ///< a literal or the begin of a value (only for
+                                ///< diagnostics)
         };
 
         /// return name of values of type token_type (only used for errors)
@@ -2815,15 +2871,15 @@ namespace detail
                                 }
                                 else
                                 {
-                                    error_message =
-                                      "invalid string: surrogate U+DC00..U+DFFF must be followed by U+DC00..U+DFFF";
+                                    error_message = "invalid string: surrogate U+DC00..U+DFFF must "
+                                                    "be followed by U+DC00..U+DFFF";
                                     return token_type::parse_error;
                                 }
                             }
                             else
                             {
-                                error_message =
-                                  "invalid string: surrogate U+DC00..U+DFFF must be followed by U+DC00..U+DFFF";
+                                error_message = "invalid string: surrogate U+DC00..U+DFFF must "
+                                                "be followed by U+DC00..U+DFFF";
                                 return token_type::parse_error;
                             }
                         }
@@ -2831,7 +2887,8 @@ namespace detail
                         {
                             if (JSON_UNLIKELY(0xDC00 <= codepoint1 and codepoint1 <= 0xDFFF))
                             {
-                                error_message = "invalid string: surrogate U+DC00..U+DFFF must follow U+D800..U+DBFF";
+                                error_message = "invalid string: surrogate U+DC00..U+DFFF must "
+                                                "follow U+D800..U+DBFF";
                                 return token_type::parse_error;
                             }
                         }
@@ -2882,193 +2939,225 @@ namespace detail
                 // invalid control characters
                 case 0x00:
                 {
-                    error_message = "invalid string: control character U+0000 (NUL) must be escaped to \\u0000";
+                    error_message = "invalid string: control character U+0000 (NUL) must "
+                                    "be escaped to \\u0000";
                     return token_type::parse_error;
                 }
 
                 case 0x01:
                 {
-                    error_message = "invalid string: control character U+0001 (SOH) must be escaped to \\u0001";
+                    error_message = "invalid string: control character U+0001 (SOH) must "
+                                    "be escaped to \\u0001";
                     return token_type::parse_error;
                 }
 
                 case 0x02:
                 {
-                    error_message = "invalid string: control character U+0002 (STX) must be escaped to \\u0002";
+                    error_message = "invalid string: control character U+0002 (STX) must "
+                                    "be escaped to \\u0002";
                     return token_type::parse_error;
                 }
 
                 case 0x03:
                 {
-                    error_message = "invalid string: control character U+0003 (ETX) must be escaped to \\u0003";
+                    error_message = "invalid string: control character U+0003 (ETX) must "
+                                    "be escaped to \\u0003";
                     return token_type::parse_error;
                 }
 
                 case 0x04:
                 {
-                    error_message = "invalid string: control character U+0004 (EOT) must be escaped to \\u0004";
+                    error_message = "invalid string: control character U+0004 (EOT) must "
+                                    "be escaped to \\u0004";
                     return token_type::parse_error;
                 }
 
                 case 0x05:
                 {
-                    error_message = "invalid string: control character U+0005 (ENQ) must be escaped to \\u0005";
+                    error_message = "invalid string: control character U+0005 (ENQ) must "
+                                    "be escaped to \\u0005";
                     return token_type::parse_error;
                 }
 
                 case 0x06:
                 {
-                    error_message = "invalid string: control character U+0006 (ACK) must be escaped to \\u0006";
+                    error_message = "invalid string: control character U+0006 (ACK) must "
+                                    "be escaped to \\u0006";
                     return token_type::parse_error;
                 }
 
                 case 0x07:
                 {
-                    error_message = "invalid string: control character U+0007 (BEL) must be escaped to \\u0007";
+                    error_message = "invalid string: control character U+0007 (BEL) must "
+                                    "be escaped to \\u0007";
                     return token_type::parse_error;
                 }
 
                 case 0x08:
                 {
-                    error_message = "invalid string: control character U+0008 (BS) must be escaped to \\u0008 or \\b";
+                    error_message = "invalid string: control character U+0008 (BS) must be "
+                                    "escaped to \\u0008 or \\b";
                     return token_type::parse_error;
                 }
 
                 case 0x09:
                 {
-                    error_message = "invalid string: control character U+0009 (HT) must be escaped to \\u0009 or \\t";
+                    error_message = "invalid string: control character U+0009 (HT) must be "
+                                    "escaped to \\u0009 or \\t";
                     return token_type::parse_error;
                 }
 
                 case 0x0A:
                 {
-                    error_message = "invalid string: control character U+000A (LF) must be escaped to \\u000A or \\n";
+                    error_message = "invalid string: control character U+000A (LF) must be "
+                                    "escaped to \\u000A or \\n";
                     return token_type::parse_error;
                 }
 
                 case 0x0B:
                 {
-                    error_message = "invalid string: control character U+000B (VT) must be escaped to \\u000B";
+                    error_message = "invalid string: control character U+000B (VT) must be "
+                                    "escaped to \\u000B";
                     return token_type::parse_error;
                 }
 
                 case 0x0C:
                 {
-                    error_message = "invalid string: control character U+000C (FF) must be escaped to \\u000C or \\f";
+                    error_message = "invalid string: control character U+000C (FF) must be "
+                                    "escaped to \\u000C or \\f";
                     return token_type::parse_error;
                 }
 
                 case 0x0D:
                 {
-                    error_message = "invalid string: control character U+000D (CR) must be escaped to \\u000D or \\r";
+                    error_message = "invalid string: control character U+000D (CR) must be "
+                                    "escaped to \\u000D or \\r";
                     return token_type::parse_error;
                 }
 
                 case 0x0E:
                 {
-                    error_message = "invalid string: control character U+000E (SO) must be escaped to \\u000E";
+                    error_message = "invalid string: control character U+000E (SO) must be "
+                                    "escaped to \\u000E";
                     return token_type::parse_error;
                 }
 
                 case 0x0F:
                 {
-                    error_message = "invalid string: control character U+000F (SI) must be escaped to \\u000F";
+                    error_message = "invalid string: control character U+000F (SI) must be "
+                                    "escaped to \\u000F";
                     return token_type::parse_error;
                 }
 
                 case 0x10:
                 {
-                    error_message = "invalid string: control character U+0010 (DLE) must be escaped to \\u0010";
+                    error_message = "invalid string: control character U+0010 (DLE) must "
+                                    "be escaped to \\u0010";
                     return token_type::parse_error;
                 }
 
                 case 0x11:
                 {
-                    error_message = "invalid string: control character U+0011 (DC1) must be escaped to \\u0011";
+                    error_message = "invalid string: control character U+0011 (DC1) must "
+                                    "be escaped to \\u0011";
                     return token_type::parse_error;
                 }
 
                 case 0x12:
                 {
-                    error_message = "invalid string: control character U+0012 (DC2) must be escaped to \\u0012";
+                    error_message = "invalid string: control character U+0012 (DC2) must "
+                                    "be escaped to \\u0012";
                     return token_type::parse_error;
                 }
 
                 case 0x13:
                 {
-                    error_message = "invalid string: control character U+0013 (DC3) must be escaped to \\u0013";
+                    error_message = "invalid string: control character U+0013 (DC3) must "
+                                    "be escaped to \\u0013";
                     return token_type::parse_error;
                 }
 
                 case 0x14:
                 {
-                    error_message = "invalid string: control character U+0014 (DC4) must be escaped to \\u0014";
+                    error_message = "invalid string: control character U+0014 (DC4) must "
+                                    "be escaped to \\u0014";
                     return token_type::parse_error;
                 }
 
                 case 0x15:
                 {
-                    error_message = "invalid string: control character U+0015 (NAK) must be escaped to \\u0015";
+                    error_message = "invalid string: control character U+0015 (NAK) must "
+                                    "be escaped to \\u0015";
                     return token_type::parse_error;
                 }
 
                 case 0x16:
                 {
-                    error_message = "invalid string: control character U+0016 (SYN) must be escaped to \\u0016";
+                    error_message = "invalid string: control character U+0016 (SYN) must "
+                                    "be escaped to \\u0016";
                     return token_type::parse_error;
                 }
 
                 case 0x17:
                 {
-                    error_message = "invalid string: control character U+0017 (ETB) must be escaped to \\u0017";
+                    error_message = "invalid string: control character U+0017 (ETB) must "
+                                    "be escaped to \\u0017";
                     return token_type::parse_error;
                 }
 
                 case 0x18:
                 {
-                    error_message = "invalid string: control character U+0018 (CAN) must be escaped to \\u0018";
+                    error_message = "invalid string: control character U+0018 (CAN) must "
+                                    "be escaped to \\u0018";
                     return token_type::parse_error;
                 }
 
                 case 0x19:
                 {
-                    error_message = "invalid string: control character U+0019 (EM) must be escaped to \\u0019";
+                    error_message = "invalid string: control character U+0019 (EM) must be "
+                                    "escaped to \\u0019";
                     return token_type::parse_error;
                 }
 
                 case 0x1A:
                 {
-                    error_message = "invalid string: control character U+001A (SUB) must be escaped to \\u001A";
+                    error_message = "invalid string: control character U+001A (SUB) must "
+                                    "be escaped to \\u001A";
                     return token_type::parse_error;
                 }
 
                 case 0x1B:
                 {
-                    error_message = "invalid string: control character U+001B (ESC) must be escaped to \\u001B";
+                    error_message = "invalid string: control character U+001B (ESC) must "
+                                    "be escaped to \\u001B";
                     return token_type::parse_error;
                 }
 
                 case 0x1C:
                 {
-                    error_message = "invalid string: control character U+001C (FS) must be escaped to \\u001C";
+                    error_message = "invalid string: control character U+001C (FS) must be "
+                                    "escaped to \\u001C";
                     return token_type::parse_error;
                 }
 
                 case 0x1D:
                 {
-                    error_message = "invalid string: control character U+001D (GS) must be escaped to \\u001D";
+                    error_message = "invalid string: control character U+001D (GS) must be "
+                                    "escaped to \\u001D";
                     return token_type::parse_error;
                 }
 
                 case 0x1E:
                 {
-                    error_message = "invalid string: control character U+001E (RS) must be escaped to \\u001E";
+                    error_message = "invalid string: control character U+001E (RS) must be "
+                                    "escaped to \\u001E";
                     return token_type::parse_error;
                 }
 
                 case 0x1F:
                 {
-                    error_message = "invalid string: control character U+001F (US) must be escaped to \\u001F";
+                    error_message = "invalid string: control character U+001F (US) must be "
+                                    "escaped to \\u001F";
                     return token_type::parse_error;
                 }
 
@@ -3314,17 +3403,19 @@ namespace detail
         accepts the number. State "error" is a trap state to model errors. In the
         table below, "anything" means any character but the ones listed before.
 
-        state    | 0        | 1-9      | e E      | +       | -       | .        | anything
+        state    | 0        | 1-9      | e E      | +       | -       | .        |
+        anything
         ---------|----------|----------|----------|---------|---------|----------|-----------
-        init     | zero     | any1     | [error]  | [error] | minus   | [error]  | [error]
-        minus    | zero     | any1     | [error]  | [error] | [error] | [error]  | [error]
-        zero     | done     | done     | exponent | done    | done    | decimal1 | done
-        any1     | any1     | any1     | exponent | done    | done    | decimal1 | done
-        decimal1 | decimal2 | [error]  | [error]  | [error] | [error] | [error]  | [error]
-        decimal2 | decimal2 | decimal2 | exponent | done    | done    | done     | done
-        exponent | any2     | any2     | [error]  | sign    | sign    | [error]  | [error]
-        sign     | any2     | any2     | [error]  | [error] | [error] | [error]  | [error]
-        any2     | any2     | any2     | done     | done    | done    | done     | done
+        init     | zero     | any1     | [error]  | [error] | minus   | [error]  |
+        [error] minus    | zero     | any1     | [error]  | [error] | [error] |
+        [error]  | [error] zero     | done     | done     | exponent | done    | done
+        | decimal1 | done any1     | any1     | any1     | exponent | done    | done
+        | decimal1 | done decimal1 | decimal2 | [error]  | [error]  | [error] |
+        [error] | [error]  | [error] decimal2 | decimal2 | decimal2 | exponent | done
+        | done    | done     | done exponent | any2     | any2     | [error]  | sign
+        | sign    | [error]  | [error] sign     | any2     | any2     | [error]  |
+        [error] | [error] | [error]  | [error] any2     | any2     | any2     | done
+        | done    | done    | done     | done
 
         The state machine is realized with one label per state (prefixed with
         "scan_number_") and `goto` statements between them. The state machine
@@ -3792,7 +3883,8 @@ namespace detail
         /// return floating-point value
         constexpr number_float_t get_number_float() const noexcept { return value_float; }
 
-        /// return current string value (implicitly resets the token; useful only once)
+        /// return current string value (implicitly resets the token; useful only
+        /// once)
         string_t& get_string() { return token_buffer; }
 
         /////////////////////
@@ -4065,7 +4157,8 @@ namespace detail
         static_assert(is_detected_exact<bool, number_unsigned_function_t, SAX, number_unsigned_t>::value,
                       "Missing/invalid function: bool number_unsigned(number_unsigned_t)");
         static_assert(is_detected_exact<bool, number_float_function_t, SAX, number_float_t, string_t>::value,
-                      "Missing/invalid function: bool number_float(number_float_t, const string_t&)");
+                      "Missing/invalid function: bool number_float(number_float_t, "
+                      "const string_t&)");
         static_assert(is_detected_exact<bool, string_function_t, SAX, string_t>::value,
                       "Missing/invalid function: bool string(string_t&)");
         static_assert(is_detected_exact<bool, start_object_function_t, SAX>::value,
@@ -5336,7 +5429,8 @@ namespace detail
     @brief an iterator value
 
     @note This structure could easily be a union, but MSVC currently does not allow
-    unions members with complex constructors, see https://github.com/nlohmann/json/pull/105.
+    unions members with complex constructors, see
+    https://github.com/nlohmann/json/pull/105.
     */
     template <typename BasicJsonType> struct internal_iterator
     {
@@ -5383,14 +5477,16 @@ namespace detail
     @note An iterator is called *initialized* when a pointer to a JSON value has
           been set (e.g., by a constructor or a copy assignment). If the iterator is
           default-constructed, it is *uninitialized* and most methods are undefined.
-          **The library uses assertions to detect calls on uninitialized iterators.**
+          **The library uses assertions to detect calls on uninitialized
+    iterators.**
     @requirement The class satisfies the following concept requirements:
     -
     [BidirectionalIterator](https://en.cppreference.com/w/cpp/named_req/BidirectionalIterator):
       The iterator that can be moved can be moved in both directions (i.e.
       incremented and decremented).
     @since version 1.0.0, simplified in version 2.0.9, change to bidirectional
-           iterators in version 3.0.0 (see https://github.com/nlohmann/json/issues/593)
+           iterators in version 3.0.0 (see
+    https://github.com/nlohmann/json/issues/593)
     */
     template <typename BasicJsonType> class iter_impl
     {
@@ -5409,11 +5505,13 @@ namespace detail
                       "iter_impl only accepts (const) basic_json");
 
     public:
-        /// The std::iterator class template (used as a base class to provide typedefs) is deprecated in C++17.
-        /// The C++ Standard has never required user-defined iterators to derive from std::iterator.
-        /// A user-defined iterator should provide publicly accessible typedefs named
+        /// The std::iterator class template (used as a base class to provide
+        /// typedefs) is deprecated in C++17. The C++ Standard has never required
+        /// user-defined iterators to derive from std::iterator. A user-defined
+        /// iterator should provide publicly accessible typedefs named
         /// iterator_category, value_type, difference_type, pointer, and reference.
-        /// Note that value_type is required to be non-const, even for constant iterators.
+        /// Note that value_type is required to be non-const, even for constant
+        /// iterators.
         using iterator_category = std::bidirectional_iterator_tag;
 
         /// the type of the values when the iterator is dereferenced
@@ -6366,7 +6464,8 @@ namespace detail
 
         /*!
         @brief Read a BSON document element of the given @a element_type.
-        @param[in] element_type The BSON element type, c.f. http://bsonspec.org/spec.html
+        @param[in] element_type The BSON element type, c.f.
+        http://bsonspec.org/spec.html
         @param[in] element_type_parse_position The position in the input stream,
                    where the `element_type` was read.
         @warning Not all BSON element types are supported yet. An unsupported
@@ -6946,13 +7045,12 @@ namespace detail
                 auto last_token = get_token_string();
                 return sax->parse_error(
                   chars_read, last_token,
-                  parse_error::create(
-                    113, chars_read,
-                    exception_message(
-                      input_format_t::cbor,
-                      "expected length specification (0x60-0x7B) or indefinite string type (0x7F); last byte: 0x" +
-                        last_token,
-                      "string")));
+                  parse_error::create(113, chars_read,
+                                      exception_message(input_format_t::cbor,
+                                                        "expected length specification (0x60-0x7B) or "
+                                                        "indefinite string type (0x7F); last byte: 0x" +
+                                                          last_token,
+                                                        "string")));
             }
             }
         }
@@ -7494,11 +7592,12 @@ namespace detail
                 auto last_token = get_token_string();
                 return sax->parse_error(
                   chars_read, last_token,
-                  parse_error::create(
-                    113, chars_read,
-                    exception_message(
-                      input_format_t::msgpack,
-                      "expected length specification (0xA0-0xBF, 0xD9-0xDB); last byte: 0x" + last_token, "string")));
+                  parse_error::create(113, chars_read,
+                                      exception_message(input_format_t::msgpack,
+                                                        "expected length specification (0xA0-0xBF, "
+                                                        "0xD9-0xDB); last byte: 0x" +
+                                                          last_token,
+                                                        "string")));
             }
             }
         }
@@ -7633,11 +7732,12 @@ namespace detail
                 auto last_token = get_token_string();
                 return sax->parse_error(
                   chars_read, last_token,
-                  parse_error::create(
-                    113, chars_read,
-                    exception_message(input_format_t::ubjson,
-                                      "expected length type specification (U, i, I, l, L); last byte: 0x" + last_token,
-                                      "string")));
+                  parse_error::create(113, chars_read,
+                                      exception_message(input_format_t::ubjson,
+                                                        "expected length type specification (U, i, I, "
+                                                        "l, L); last byte: 0x" +
+                                                          last_token,
+                                                        "string")));
             }
         }
 
@@ -7709,12 +7809,12 @@ namespace detail
                 auto last_token = get_token_string();
                 return sax->parse_error(
                   chars_read, last_token,
-                  parse_error::create(
-                    113, chars_read,
-                    exception_message(
-                      input_format_t::ubjson,
-                      "expected length type specification (U, i, I, l, L) after '#'; last byte: 0x" + last_token,
-                      "size")));
+                  parse_error::create(113, chars_read,
+                                      exception_message(input_format_t::ubjson,
+                                                        "expected length type specification (U, i, I, "
+                                                        "l, L) after '#'; last byte: 0x" +
+                                                          last_token,
+                                                        "size")));
             }
             }
         }
@@ -7844,11 +7944,12 @@ namespace detail
                     auto last_token = get_token_string();
                     return sax->parse_error(
                       chars_read, last_token,
-                      parse_error::create(
-                        113, chars_read,
-                        exception_message(input_format_t::ubjson,
-                                          "byte after 'C' must be in range 0x00..0x7F; last byte: 0x" + last_token,
-                                          "char")));
+                      parse_error::create(113, chars_read,
+                                          exception_message(input_format_t::ubjson,
+                                                            "byte after 'C' must be in range 0x00..0x7F; "
+                                                            "last byte: 0x" +
+                                                              last_token,
+                                                            "char")));
                 }
                 string_t s(1, static_cast<char>(current));
                 return sax->string(s);
@@ -9069,8 +9170,10 @@ namespace detail
         }
 
         /*!
-        @brief Calculates the size necessary to serialize the JSON value @a j with its @a name
-        @return The calculated size for the BSON document entry for @a j with the given @a name.
+        @brief Calculates the size necessary to serialize the JSON value @a j with its
+        @a name
+        @return The calculated size for the BSON document entry for @a j with the
+        given @a name.
         */
         static std::size_t calc_bson_element_size(const string_t& name, const BasicJsonType& j)
         {
@@ -9545,7 +9648,8 @@ namespace detail
     implementation which may be obtained from
     http://florian.loitsch.com/publications (bench.tar.gz).
 
-    The code is distributed under the MIT license, Copyright (c) 2009 Florian Loitsch.
+    The code is distributed under the MIT license, Copyright (c) 2009 Florian
+    Loitsch.
 
     For a detailed description of the algorithm see:
 
@@ -9604,12 +9708,13 @@ namespace detail
                 //
                 // p = u * v
                 //   = (u_lo + 2^32 u_hi) (v_lo + 2^32 v_hi)
-                //   = (u_lo v_lo         ) + 2^32 ((u_lo v_hi         ) + (u_hi v_lo         )) + 2^64 (u_hi v_hi ) =
-                //   (p0                ) + 2^32 ((p1                ) + (p2                )) + 2^64 (p3 ) = (p0_lo +
-                //   2^32 p0_hi) + 2^32 ((p1_lo + 2^32 p1_hi) + (p2_lo + 2^32 p2_hi)) + 2^64 (p3                ) =
-                //   (p0_lo             ) + 2^32 (p0_hi + p1_lo + p2_lo                      ) + 2^64 (p1_hi + p2_hi +
-                //   p3) = (p0_lo             ) + 2^32 (Q                                          ) + 2^64 (H ) =
-                //   (p0_lo             ) + 2^32 (Q_lo + 2^32 Q_hi                           ) + 2^64 (H )
+                //   = (u_lo v_lo         ) + 2^32 ((u_lo v_hi         ) + (u_hi v_lo )) +
+                //   2^64 (u_hi v_hi ) = (p0                ) + 2^32 ((p1                ) +
+                //   (p2                )) + 2^64 (p3 ) = (p0_lo + 2^32 p0_hi) + 2^32
+                //   ((p1_lo + 2^32 p1_hi) + (p2_lo + 2^32 p2_hi)) + 2^64 (p3 ) = (p0_lo ) +
+                //   2^32 (p0_hi + p1_lo + p2_lo                      ) + 2^64 (p1_hi +
+                //   p2_hi + p3) = (p0_lo             ) + 2^32 (Q ) + 2^64 (H ) = (p0_lo ) +
+                //   2^32 (Q_lo + 2^32 Q_hi                           ) + 2^64 (H )
                 //
                 // (Since Q might be larger than 2^32 - 1)
                 //
@@ -9710,8 +9815,8 @@ namespace detail
             // If v is normalized:
             //      value = 1.F * 2^(E - bias) = (2^(p-1) + F) * 2^(E - bias - (p-1))
 
-            static_assert(std::numeric_limits<FloatType>::is_iec559,
-                          "internal error: dtoa_short requires an IEEE-754 floating-point implementation");
+            static_assert(std::numeric_limits<FloatType>::is_iec559, "internal error: dtoa_short requires an IEEE-754 "
+                                                                     "floating-point implementation");
 
             constexpr int kPrecision = std::numeric_limits<FloatType>::digits;    // = p (includes the hidden bit)
             constexpr int kBias = std::numeric_limits<FloatType>::max_exponent - 1 + (kPrecision - 1);
@@ -10048,7 +10153,8 @@ namespace detail
 
             // Generates the digits (and the exponent) of a decimal floating-point
             // number V = buffer * 10^decimal_exponent in the range [M-, M+]. The diyfp's
-            // w, M- and M+ share the same exponent e, which satisfies alpha <= e <= gamma.
+            // w, M- and M+ share the same exponent e, which satisfies alpha <= e <=
+            // gamma.
             //
             //               <--------------------------- delta ---->
             //                                  <---- dist --------->
@@ -10210,10 +10316,12 @@ namespace detail
             for (;;)
             {
                 // Invariant:
-                //      M+ = buffer * 10^-m + 10^-m * (d[-m-1] / 10 + d[-m-2] / 10^2 + ...) * 2^e
-                //         = buffer * 10^-m + 10^-m * (p2                                 ) * 2^e
-                //         = buffer * 10^-m + 10^-m * (1/10 * (10 * p2)                   ) * 2^e
-                //         = buffer * 10^-m + 10^-m * (1/10 * ((10*p2 div 2^-e) * 2^-e + (10*p2 mod 2^-e)) * 2^e
+                //      M+ = buffer * 10^-m + 10^-m * (d[-m-1] / 10 + d[-m-2] / 10^2 + ...)
+                //      * 2^e
+                //         = buffer * 10^-m + 10^-m * (p2                                 )
+                //         * 2^e = buffer * 10^-m + 10^-m * (1/10 * (10 * p2) ) * 2^e =
+                //         buffer * 10^-m + 10^-m * (1/10 * ((10*p2 div 2^-e) * 2^-e +
+                //         (10*p2 mod 2^-e)) * 2^e
                 //
                 assert(p2 <= UINT64_MAX / 10);
                 p2 *= 10;
@@ -10299,7 +10407,8 @@ namespace detail
 
             const diyfp c_minus_k(cached.f, cached.e);    // = c ~= 10^-k
 
-            // The exponent of the products is = v.e + c_minus_k.e + q and is in the range [alpha,gamma]
+            // The exponent of the products is = v.e + c_minus_k.e + q and is in the range
+            // [alpha,gamma]
             const diyfp w = diyfp::mul(v, c_minus_k);
             const diyfp w_minus = diyfp::mul(m_minus, c_minus_k);
             const diyfp w_plus = diyfp::mul(m_plus, c_minus_k);
@@ -10346,22 +10455,25 @@ namespace detail
             assert(std::isfinite(value));
             assert(value > 0);
 
-            // If the neighbors (and boundaries) of 'value' are always computed for double-precision
-            // numbers, all float's can be recovered using strtod (and strtof). However, the resulting
-            // decimal representations are not exactly "short".
+            // If the neighbors (and boundaries) of 'value' are always computed for
+            // double-precision numbers, all float's can be recovered using strtod (and
+            // strtof). However, the resulting decimal representations are not exactly
+            // "short".
             //
-            // The documentation for 'std::to_chars' (https://en.cppreference.com/w/cpp/utility/to_chars)
-            // says "value is converted to a string as if by std::sprintf in the default ("C") locale"
-            // and since sprintf promotes float's to double's, I think this is exactly what 'std::to_chars'
-            // does.
-            // On the other hand, the documentation for 'std::to_chars' requires that "parsing the
-            // representation using the corresponding std::from_chars function recovers value exactly". That
-            // indicates that single precision floating-point numbers should be recovered using
-            // 'std::strtof'.
+            // The documentation for 'std::to_chars'
+            // (https://en.cppreference.com/w/cpp/utility/to_chars) says "value is
+            // converted to a string as if by std::sprintf in the default ("C") locale"
+            // and since sprintf promotes float's to double's, I think this is exactly
+            // what 'std::to_chars' does. On the other hand, the documentation for
+            // 'std::to_chars' requires that "parsing the representation using the
+            // corresponding std::from_chars function recovers value exactly". That
+            // indicates that single precision floating-point numbers should be recovered
+            // using 'std::strtof'.
             //
-            // NB: If the neighbors are computed for single-precision numbers, there is a single float
-            //     (7.0385307e-26f) which can't be recovered using strtod. The resulting double precision
-            //     value is off by 1 ulp.
+            // NB: If the neighbors are computed for single-precision numbers, there is a
+            // single float
+            //     (7.0385307e-26f) which can't be recovered using strtod. The resulting
+            //     double precision value is off by 1 ulp.
 #if 0
     const boundaries w = compute_boundaries(static_cast<double>(value));
 #else
@@ -10498,7 +10610,8 @@ namespace detail
     }    // namespace dtoa_impl
 
     /*!
-    @brief generates a decimal representation of the floating-point number value in [first, last).
+    @brief generates a decimal representation of the floating-point number value in
+    [first, last).
 
     The format of the resulting decimal representation is similar to printf's %g
     format. Returns an iterator pointing past-the-end of the decimal representation.
@@ -12072,12 +12185,15 @@ and `from_json()` (@ref adl_serializer by default)
 
 @requirement The class satisfies the following concept requirements:
 - Basic
- - [DefaultConstructible](https://en.cppreference.com/w/cpp/named_req/DefaultConstructible):
+ -
+[DefaultConstructible](https://en.cppreference.com/w/cpp/named_req/DefaultConstructible):
    JSON values can be default constructed. The result will be a JSON null
    value.
- - [MoveConstructible](https://en.cppreference.com/w/cpp/named_req/MoveConstructible):
+ -
+[MoveConstructible](https://en.cppreference.com/w/cpp/named_req/MoveConstructible):
    A JSON value can be constructed from an rvalue argument.
- - [CopyConstructible](https://en.cppreference.com/w/cpp/named_req/CopyConstructible):
+ -
+[CopyConstructible](https://en.cppreference.com/w/cpp/named_req/CopyConstructible):
    A JSON value can be copy-constructed from an lvalue expression.
  - [MoveAssignable](https://en.cppreference.com/w/cpp/named_req/MoveAssignable):
    A JSON value van be assigned from an rvalue argument.
@@ -12086,28 +12202,34 @@ and `from_json()` (@ref adl_serializer by default)
  - [Destructible](https://en.cppreference.com/w/cpp/named_req/Destructible):
    JSON values can be destructed.
 - Layout
- - [StandardLayoutType](https://en.cppreference.com/w/cpp/named_req/StandardLayoutType):
+ -
+[StandardLayoutType](https://en.cppreference.com/w/cpp/named_req/StandardLayoutType):
    JSON values have
-   [standard layout](https://en.cppreference.com/w/cpp/language/data_members#Standard_layout):
+   [standard
+layout](https://en.cppreference.com/w/cpp/language/data_members#Standard_layout):
    All non-static data members are private and standard layout types, the
    class has no virtual functions or (virtual) base classes.
 - Library-wide
- - [EqualityComparable](https://en.cppreference.com/w/cpp/named_req/EqualityComparable):
+ -
+[EqualityComparable](https://en.cppreference.com/w/cpp/named_req/EqualityComparable):
    JSON values can be compared with `==`, see @ref
    operator==(const_reference,const_reference).
- - [LessThanComparable](https://en.cppreference.com/w/cpp/named_req/LessThanComparable):
+ -
+[LessThanComparable](https://en.cppreference.com/w/cpp/named_req/LessThanComparable):
    JSON values can be compared with `<`, see @ref
    operator<(const_reference,const_reference).
  - [Swappable](https://en.cppreference.com/w/cpp/named_req/Swappable):
    Any JSON lvalue or rvalue of can be swapped with any lvalue or rvalue of
    other compatible types, using unqualified function call @ref swap().
- - [NullablePointer](https://en.cppreference.com/w/cpp/named_req/NullablePointer):
+ -
+[NullablePointer](https://en.cppreference.com/w/cpp/named_req/NullablePointer):
    JSON values can be compared against `std::nullptr_t` objects which are used
    to model the `null` value.
 - Container
  - [Container](https://en.cppreference.com/w/cpp/named_req/Container):
    JSON values can be used like STL containers and provide iterator access.
- - [ReversibleContainer](https://en.cppreference.com/w/cpp/named_req/ReversibleContainer);
+ -
+[ReversibleContainer](https://en.cppreference.com/w/cpp/named_req/ReversibleContainer);
    JSON values can be used like STL containers and provide reverse iterator
    access.
 
@@ -12255,12 +12377,15 @@ public:
     @return JSON object holding version information
     key         | description
     ----------- | ---------------
-    `compiler`  | Information on the used compiler. It is an object with the following keys: `c++` (the used C++
-    standard), `family` (the compiler family; possible values are `clang`, `icc`, `gcc`, `ilecpp`, `msvc`, `pgcpp`,
-    `sunpro`, and `unknown`), and `version` (the compiler version). `copyright` | The copyright line for the library as
-    string. `name`      | The name of the library as string. `platform`  | The used platform as string. Possible values
-    are `win32`, `linux`, `apple`, `unix`, and `unknown`. `url`       | The URL of the project as string. `version`   |
-    The version of the library. It is an object with the following keys: `major`, `minor`, and `patch` as defined by
+    `compiler`  | Information on the used compiler. It is an object with the
+    following keys: `c++` (the used C++ standard), `family` (the compiler family;
+    possible values are `clang`, `icc`, `gcc`, `ilecpp`, `msvc`, `pgcpp`,
+    `sunpro`, and `unknown`), and `version` (the compiler version). `copyright` |
+    The copyright line for the library as string. `name`      | The name of the
+    library as string. `platform`  | The used platform as string. Possible values
+    are `win32`, `linux`, `apple`, `unix`, and `unknown`. `url`       | The URL of
+    the project as string. `version`   | The version of the library. It is an
+    object with the following keys: `major`, `minor`, and `patch` as defined by
     [Semantic Versioning](http://semver.org), and `string` (the version string).
 
     @liveexample{The following code shows an example output of the `meta()`
@@ -12896,8 +13021,8 @@ private:
                 object = nullptr;    // silence warning, see #821
                 if (JSON_UNLIKELY(t == value_t::null))
                 {
-                    JSON_THROW(
-                      other_error::create(500, "961c151d2e87f2686a955a9be24d316f1362bf21 3.5.0"));    // LCOV_EXCL_LINE
+                    JSON_THROW(other_error::create(500, "961c151d2e87f2686a955a9be24d316f1362bf2"
+                                                        "1 3.5.0"));    // LCOV_EXCL_LINE
                 }
                 break;
             }
@@ -12990,7 +13115,8 @@ public:
     - `array_end`: the parser read `]` and finished processing a JSON array
     - `value`: the parser finished reading a JSON value
 
-    @image html callback_events.png "Example when certain parse events are triggered"
+    @image html callback_events.png "Example when certain parse events are
+    triggered"
 
     @sa @ref parser_callback_t for more information and examples
     */
@@ -13012,16 +13138,21 @@ public:
 
     parameter @a event | description | parameter @a depth | parameter @a parsed
     ------------------ | ----------- | ------------------ | -------------------
-    parse_event_t::object_start | the parser read `{` and started to process a JSON object | depth of the parent of the
-    JSON object | a JSON value with type discarded parse_event_t::key | the parser read a key of a value in an object |
-    depth of the currently parsed JSON object | a JSON string containing the key parse_event_t::object_end | the parser
-    read `}` and finished processing a JSON object | depth of the parent of the JSON object | the parsed JSON object
-    parse_event_t::array_start | the parser read `[` and started to process a JSON array | depth of the parent of the
-    JSON array | a JSON value with type discarded parse_event_t::array_end | the parser read `]` and finished processing
-    a JSON array | depth of the parent of the JSON array | the parsed JSON array parse_event_t::value | the parser
-    finished reading a JSON value | depth of the value | the parsed JSON value
+    parse_event_t::object_start | the parser read `{` and started to process a
+    JSON object | depth of the parent of the JSON object | a JSON value with type
+    discarded parse_event_t::key | the parser read a key of a value in an object |
+    depth of the currently parsed JSON object | a JSON string containing the key
+    parse_event_t::object_end | the parser read `}` and finished processing a JSON
+    object | depth of the parent of the JSON object | the parsed JSON object
+    parse_event_t::array_start | the parser read `[` and started to process a JSON
+    array | depth of the parent of the JSON array | a JSON value with type
+    discarded parse_event_t::array_end | the parser read `]` and finished
+    processing a JSON array | depth of the parent of the JSON array | the parsed
+    JSON array parse_event_t::value | the parser finished reading a JSON value |
+    depth of the value | the parsed JSON value
 
-    @image html callback_events.png "Example when certain parse events are triggered"
+    @image html callback_events.png "Example when certain parse events are
+    triggered"
 
     Discarding a value (i.e., returning `false`) has different effects
     depending on the context in which function was called:
@@ -13142,7 +13273,8 @@ public:
     - @a CompatibleType is not derived from `std::istream`,
     - @a CompatibleType is not @ref basic_json (to avoid hijacking copy/move
          constructors),
-    - @a CompatibleType is not a different @ref basic_json type (i.e. with different template arguments)
+    - @a CompatibleType is not a different @ref basic_json type (i.e. with
+    different template arguments)
     - @a CompatibleType is not a @ref basic_json nested type (e.g.,
          @ref json_pointer, @ref iterator, etc ...)
     - @ref @ref json_serializer<U> has a
@@ -14378,8 +14510,10 @@ public:
     @brief get a value (explicit)
 
     Explicit type conversion between the JSON value and a compatible value
-    which is [CopyConstructible](https://en.cppreference.com/w/cpp/named_req/CopyConstructible)
-    and [DefaultConstructible](https://en.cppreference.com/w/cpp/named_req/DefaultConstructible).
+    which is
+    [CopyConstructible](https://en.cppreference.com/w/cpp/named_req/CopyConstructible)
+    and
+    [DefaultConstructible](https://en.cppreference.com/w/cpp/named_req/DefaultConstructible).
     The value is converted by calling the @ref json_serializer<ValueType>
     `from_json()` method.
 
@@ -14425,7 +14559,8 @@ public:
         // there is support for get<const basic_json_t>(), which is why we
         // still need the uncvref
         static_assert(not std::is_reference<ValueTypeCV>::value,
-                      "get() cannot be used with reference types, you might want to use get_ref()");
+                      "get() cannot be used with reference types, you might want "
+                      "to use get_ref()");
         static_assert(std::is_default_constructible<ValueType>::value,
                       "types must be DefaultConstructible when used with get()");
 
@@ -14438,8 +14573,10 @@ public:
     @brief get a value (explicit); special case
 
     Explicit type conversion between the JSON value and a compatible value
-    which is **not** [CopyConstructible](https://en.cppreference.com/w/cpp/named_req/CopyConstructible)
-    and **not** [DefaultConstructible](https://en.cppreference.com/w/cpp/named_req/DefaultConstructible).
+    which is **not**
+    [CopyConstructible](https://en.cppreference.com/w/cpp/named_req/CopyConstructible)
+    and **not**
+    [DefaultConstructible](https://en.cppreference.com/w/cpp/named_req/DefaultConstructible).
     The value is converted by calling the @ref json_serializer<ValueType>
     `from_json()` method.
 
@@ -14473,7 +14610,8 @@ public:
       noexcept(noexcept(JSONSerializer<ValueTypeCV>::from_json(std::declval<const basic_json_t&>())))
     {
         static_assert(not std::is_reference<ValueTypeCV>::value,
-                      "get() cannot be used with reference types, you might want to use get_ref()");
+                      "get() cannot be used with reference types, you might want "
+                      "to use get_ref()");
         return JSONSerializer<ValueTypeCV>::from_json(*this);
     }
 
@@ -14481,8 +14619,8 @@ public:
     @brief get a value (explicit)
 
     Explicit type conversion between the JSON value and a compatible value.
-    The value is filled into the input parameter by calling the @ref json_serializer<ValueType>
-    `from_json()` method.
+    The value is filled into the input parameter by calling the @ref
+    json_serializer<ValueType> `from_json()` method.
 
     The function is equivalent to executing
     @code {.cpp}
@@ -15236,7 +15374,8 @@ public:
 
     /*!
     @brief overload for a default value of type const char*
-    @copydoc basic_json::value(const typename object_t::key_type&, const ValueType&) const
+    @copydoc basic_json::value(const typename object_t::key_type&, const
+    ValueType&) const
     */
     string_t value(const typename object_t::key_type& key, const char* default_value) const
     {
@@ -16068,7 +16207,8 @@ public:
     @return iteration proxy object wrapping @a ref with an interface to use in
             range-based for loops
 
-    @liveexample{The following code shows how the wrapper is used,iterator_wrapper}
+    @liveexample{The following code shows how the wrapper is
+    used,iterator_wrapper}
 
     @exceptionsafety Strong guarantee: if an exception is thrown, there are no
     changes in the JSON value.
@@ -16128,7 +16268,8 @@ public:
     @endcode
 
     The `items()` function also allows to use
-    [structured bindings](https://en.cppreference.com/w/cpp/language/structured_binding)
+    [structured
+    bindings](https://en.cppreference.com/w/cpp/language/structured_binding)
     (C++17):
 
     @code{cpp}
@@ -16765,8 +16906,9 @@ public:
         result.m_it.array_iterator = m_value.array->begin() + insert_pos;
 
         // This could have been written as:
-        // result.m_it.array_iterator = m_value.array->insert(pos.m_it.array_iterator, cnt, val);
-        // but the return value of insert is missing in GCC 4.8, so it is written this way instead.
+        // result.m_it.array_iterator =
+        // m_value.array->insert(pos.m_it.array_iterator, cnt, val); but the return
+        // value of insert is missing in GCC 4.8, so it is written this way instead.
 
         return result;
     }
@@ -17258,11 +17400,13 @@ public:
     @note Floating-point inside JSON values numbers are compared with
     `json::number_float_t::operator==` which is `double::operator==` by
     default. To compare floating-point while respecting an epsilon, an alternative
-    [comparison function](https://github.com/mariokonrad/marnav/blob/master/src/marnav/math/floatingpoint.hpp#L34-#L39)
+    [comparison
+    function](https://github.com/mariokonrad/marnav/blob/master/src/marnav/math/floatingpoint.hpp#L34-#L39)
     could be used, for instance
     @code {.cpp}
-    template<typename T, typename = typename std::enable_if<std::is_floating_point<T>::value, T>::type>
-    inline bool is_same(T a, T b, T epsilon = std::numeric_limits<T>::epsilon()) noexcept
+    template<typename T, typename = typename
+    std::enable_if<std::is_floating_point<T>::value, T>::type> inline bool
+    is_same(T a, T b, T epsilon = std::numeric_limits<T>::epsilon()) noexcept
     {
         return std::abs(a - b) <= epsilon;
     }
@@ -18075,42 +18219,50 @@ public:
     The library uses the following mapping from JSON values types to
     CBOR types according to the CBOR specification (RFC 7049):
 
-    JSON value type | value/range                                | CBOR type                          | first byte
-    --------------- | ------------------------------------------ | ---------------------------------- | ---------------
-    null            | `null`                                     | Null                               | 0xF6
-    boolean         | `true`                                     | True                               | 0xF5
-    boolean         | `false`                                    | False                              | 0xF4
-    number_integer  | -9223372036854775808..-2147483649          | Negative integer (8 bytes follow)  | 0x3B
-    number_integer  | -2147483648..-32769                        | Negative integer (4 bytes follow)  | 0x3A
-    number_integer  | -32768..-129                               | Negative integer (2 bytes follow)  | 0x39
-    number_integer  | -128..-25                                  | Negative integer (1 byte follow)   | 0x38
-    number_integer  | -24..-1                                    | Negative integer                   | 0x20..0x37
-    number_integer  | 0..23                                      | Integer                            | 0x00..0x17
-    number_integer  | 24..255                                    | Unsigned integer (1 byte follow)   | 0x18
-    number_integer  | 256..65535                                 | Unsigned integer (2 bytes follow)  | 0x19
-    number_integer  | 65536..4294967295                          | Unsigned integer (4 bytes follow)  | 0x1A
-    number_integer  | 4294967296..18446744073709551615           | Unsigned integer (8 bytes follow)  | 0x1B
-    number_unsigned | 0..23                                      | Integer                            | 0x00..0x17
-    number_unsigned | 24..255                                    | Unsigned integer (1 byte follow)   | 0x18
-    number_unsigned | 256..65535                                 | Unsigned integer (2 bytes follow)  | 0x19
-    number_unsigned | 65536..4294967295                          | Unsigned integer (4 bytes follow)  | 0x1A
-    number_unsigned | 4294967296..18446744073709551615           | Unsigned integer (8 bytes follow)  | 0x1B
-    number_float    | *any value*                                | Double-Precision Float             | 0xFB
-    string          | *length*: 0..23                            | UTF-8 string                       | 0x60..0x77
-    string          | *length*: 23..255                          | UTF-8 string (1 byte follow)       | 0x78
-    string          | *length*: 256..65535                       | UTF-8 string (2 bytes follow)      | 0x79
-    string          | *length*: 65536..4294967295                | UTF-8 string (4 bytes follow)      | 0x7A
-    string          | *length*: 4294967296..18446744073709551615 | UTF-8 string (8 bytes follow)      | 0x7B
-    array           | *size*: 0..23                              | array                              | 0x80..0x97
-    array           | *size*: 23..255                            | array (1 byte follow)              | 0x98
-    array           | *size*: 256..65535                         | array (2 bytes follow)             | 0x99
-    array           | *size*: 65536..4294967295                  | array (4 bytes follow)             | 0x9A
-    array           | *size*: 4294967296..18446744073709551615   | array (8 bytes follow)             | 0x9B
-    object          | *size*: 0..23                              | map                                | 0xA0..0xB7
-    object          | *size*: 23..255                            | map (1 byte follow)                | 0xB8
-    object          | *size*: 256..65535                         | map (2 bytes follow)               | 0xB9
-    object          | *size*: 65536..4294967295                  | map (4 bytes follow)               | 0xBA
-    object          | *size*: 4294967296..18446744073709551615   | map (8 bytes follow)               | 0xBB
+    JSON value type | value/range                                | CBOR type |
+    first byte
+    --------------- | ------------------------------------------ |
+    ---------------------------------- | --------------- null            | `null`
+    | Null                               | 0xF6 boolean         | `true` | True |
+    0xF5 boolean         | `false`                                    | False |
+    0xF4 number_integer  | -9223372036854775808..-2147483649          | Negative
+    integer (8 bytes follow)  | 0x3B number_integer  | -2147483648..-32769 |
+    Negative integer (4 bytes follow)  | 0x3A number_integer  | -32768..-129 |
+    Negative integer (2 bytes follow)  | 0x39 number_integer  | -128..-25 |
+    Negative integer (1 byte follow)   | 0x38 number_integer  | -24..-1 | Negative
+    integer                   | 0x20..0x37 number_integer  | 0..23 | Integer |
+    0x00..0x17 number_integer  | 24..255                                    |
+    Unsigned integer (1 byte follow)   | 0x18 number_integer  | 256..65535 |
+    Unsigned integer (2 bytes follow)  | 0x19 number_integer  | 65536..4294967295
+    | Unsigned integer (4 bytes follow)  | 0x1A number_integer  |
+    4294967296..18446744073709551615           | Unsigned integer (8 bytes follow)
+    | 0x1B number_unsigned | 0..23                                      | Integer
+    | 0x00..0x17 number_unsigned | 24..255                                    |
+    Unsigned integer (1 byte follow)   | 0x18 number_unsigned | 256..65535 |
+    Unsigned integer (2 bytes follow)  | 0x19 number_unsigned | 65536..4294967295
+    | Unsigned integer (4 bytes follow)  | 0x1A number_unsigned |
+    4294967296..18446744073709551615           | Unsigned integer (8 bytes follow)
+    | 0x1B number_float    | *any value*                                |
+    Double-Precision Float             | 0xFB string          | *length*: 0..23 |
+    UTF-8 string                       | 0x60..0x77 string          |
+    *length*: 23..255                          | UTF-8 string (1 byte follow) |
+    0x78 string          | *length*: 256..65535                       | UTF-8
+    string (2 bytes follow)      | 0x79 string          | *length*:
+    65536..4294967295                | UTF-8 string (4 bytes follow)      | 0x7A
+    string          | *length*: 4294967296..18446744073709551615 | UTF-8 string (8
+    bytes follow)      | 0x7B array           | *size*: 0..23 | array | 0x80..0x97
+    array           | *size*: 23..255                            | array (1 byte
+    follow)              | 0x98 array           | *size*: 256..65535 | array (2
+    bytes follow)             | 0x99 array           | *size*: 65536..4294967295
+    | array (4 bytes follow)             | 0x9A array           | *size*:
+    4294967296..18446744073709551615   | array (8 bytes follow)             | 0x9B
+    object          | *size*: 0..23                              | map |
+    0xA0..0xB7 object          | *size*: 23..255                            | map
+    (1 byte follow)                | 0xB8 object          | *size*: 256..65535 |
+    map (2 bytes follow)               | 0xB9 object          | *size*:
+    65536..4294967295                  | map (4 bytes follow)               | 0xBA
+    object          | *size*: 4294967296..18446744073709551615   | map (8 bytes
+    follow)               | 0xBB
 
     @note The mapping is **complete** in the sense that any JSON value type
           can be converted to a CBOR value.
@@ -18176,36 +18328,37 @@ public:
     The library uses the following mapping from JSON values types to
     MessagePack types according to the MessagePack specification:
 
-    JSON value type | value/range                       | MessagePack type | first byte
-    --------------- | --------------------------------- | ---------------- | ----------
-    null            | `null`                            | nil              | 0xC0
+    JSON value type | value/range                       | MessagePack type | first
+    byte
+    --------------- | --------------------------------- | ---------------- |
+    ---------- null            | `null`                            | nil | 0xC0
     boolean         | `true`                            | true             | 0xC3
     boolean         | `false`                           | false            | 0xC2
     number_integer  | -9223372036854775808..-2147483649 | int64            | 0xD3
     number_integer  | -2147483648..-32769               | int32            | 0xD2
     number_integer  | -32768..-129                      | int16            | 0xD1
     number_integer  | -128..-33                         | int8             | 0xD0
-    number_integer  | -32..-1                           | negative fixint  | 0xE0..0xFF
-    number_integer  | 0..127                            | positive fixint  | 0x00..0x7F
-    number_integer  | 128..255                          | uint 8           | 0xCC
-    number_integer  | 256..65535                        | uint 16          | 0xCD
-    number_integer  | 65536..4294967295                 | uint 32          | 0xCE
-    number_integer  | 4294967296..18446744073709551615  | uint 64          | 0xCF
-    number_unsigned | 0..127                            | positive fixint  | 0x00..0x7F
-    number_unsigned | 128..255                          | uint 8           | 0xCC
-    number_unsigned | 256..65535                        | uint 16          | 0xCD
-    number_unsigned | 65536..4294967295                 | uint 32          | 0xCE
-    number_unsigned | 4294967296..18446744073709551615  | uint 64          | 0xCF
-    number_float    | *any value*                       | float 64         | 0xCB
-    string          | *length*: 0..31                   | fixstr           | 0xA0..0xBF
-    string          | *length*: 32..255                 | str 8            | 0xD9
+    number_integer  | -32..-1                           | negative fixint  |
+    0xE0..0xFF number_integer  | 0..127                            | positive
+    fixint  | 0x00..0x7F number_integer  | 128..255                          |
+    uint 8           | 0xCC number_integer  | 256..65535                        |
+    uint 16          | 0xCD number_integer  | 65536..4294967295                 |
+    uint 32          | 0xCE number_integer  | 4294967296..18446744073709551615  |
+    uint 64          | 0xCF number_unsigned | 0..127                            |
+    positive fixint  | 0x00..0x7F number_unsigned | 128..255 | uint 8           |
+    0xCC number_unsigned | 256..65535                        | uint 16          |
+    0xCD number_unsigned | 65536..4294967295                 | uint 32          |
+    0xCE number_unsigned | 4294967296..18446744073709551615  | uint 64          |
+    0xCF number_float    | *any value*                       | float 64         |
+    0xCB string          | *length*: 0..31                   | fixstr           |
+    0xA0..0xBF string          | *length*: 32..255                 | str 8 | 0xD9
     string          | *length*: 256..65535              | str 16           | 0xDA
     string          | *length*: 65536..4294967295       | str 32           | 0xDB
-    array           | *size*: 0..15                     | fixarray         | 0x90..0x9F
-    array           | *size*: 16..65535                 | array 16         | 0xDC
-    array           | *size*: 65536..4294967295         | array 32         | 0xDD
-    object          | *size*: 0..15                     | fix map          | 0x80..0x8F
-    object          | *size*: 16..65535                 | map 16           | 0xDE
+    array           | *size*: 0..15                     | fixarray         |
+    0x90..0x9F array           | *size*: 16..65535                 | array 16 |
+    0xDC array           | *size*: 65536..4294967295         | array 32         |
+    0xDD object          | *size*: 0..15                     | fix map          |
+    0x80..0x8F object          | *size*: 16..65535                 | map 16 | 0xDE
     object          | *size*: 65536..4294967295         | map 32           | 0xDF
 
     @note The mapping is **complete** in the sense that any JSON value type
@@ -18365,8 +18518,8 @@ public:
     @brief Serializes the given JSON object `j` to BSON and returns a vector
            containing the corresponding BSON-representation.
 
-    BSON (Binary JSON) is a binary format in which zero or more ordered key/value pairs are
-    stored as a single entity (a so-called document).
+    BSON (Binary JSON) is a binary format in which zero or more ordered key/value
+    pairs are stored as a single entity (a so-called document).
 
     The library uses the following mapping from JSON values types to BSON types:
 
@@ -18391,7 +18544,8 @@ public:
     and the keys may not contain U+0000, since they are serialized a
     zero-terminated c-strings.
 
-    @throw out_of_range.407  if `j.is_number_unsigned() && j.get<std::uint64_t>() > 9223372036854775807`
+    @throw out_of_range.407  if `j.is_number_unsigned() && j.get<std::uint64_t>()
+    > 9223372036854775807`
     @throw out_of_range.409  if a key in `j` contains a NULL (U+0000)
     @throw type_error.317    if `!j.is_object()`
 
@@ -19652,8 +19806,8 @@ inline nlohmann::json operator"" _json(const char* s, std::size_t n)
 @brief user-defined string literal for JSON pointer
 
 This operator implements a user-defined string literal for JSON Pointers. It
-can be used by adding `"_json_pointer"` to a string literal and returns a JSON pointer
-object if no parse error occurred.
+can be used by adding `"_json_pointer"` to a string literal and returns a JSON
+pointer object if no parse error occurred.
 
 @param[in] s  a string representation of a JSON Pointer
 @param[in] n  the length of string @a s

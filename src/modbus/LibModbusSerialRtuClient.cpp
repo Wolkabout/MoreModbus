@@ -15,8 +15,7 @@
  */
 
 #include "LibModbusSerialRtuClient.h"
-#include "ModbusClient.h"
-#include "modbus/modbus.h"
+
 #include "../utility/Logger.h"
 
 #include <cerrno>
@@ -30,8 +29,7 @@
 namespace wolkabout
 {
 LibModbusSerialRtuClient::LibModbusSerialRtuClient(std::string serialPort, int baudRate, char dataBits, char stopBits,
-                                                   BitParity bitParity,
-                                                   std::chrono::milliseconds responseTimeout)
+                                                   BitParity bitParity, std::chrono::milliseconds responseTimeout)
 : ModbusClient(std::move(responseTimeout))
 , m_serialPort(std::move(serialPort))
 , m_baudRate(baudRate)

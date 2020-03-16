@@ -15,6 +15,7 @@
  */
 
 #include "Logger.h"
+
 #include <algorithm>
 #include <iostream>
 

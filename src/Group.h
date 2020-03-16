@@ -5,11 +5,8 @@
 #ifndef WOLKABOUT_MODBUS_GROUP_H
 #define WOLKABOUT_MODBUS_GROUP_H
 
-
 class Group
 {
-
 };
 
-
-#endif //WOLKABOUT_MODBUS_GROUP_H
+#endif    // WOLKABOUT_MODBUS_GROUP_H

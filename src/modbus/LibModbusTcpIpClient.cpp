@@ -15,9 +15,9 @@
  */
 
 #include "LibModbusTcpIpClient.h"
-#include "ModbusClient.h"
-#include "modbus/modbus.h"
+
 #include "../utility/Logger.h"
+#include "ModbusClient.h"
 
 #include <cerrno>
 #include <chrono>
@@ -28,7 +28,7 @@
 namespace wolkabout
 {
 LibModbusTcpIpClient::LibModbusTcpIpClient(std::string ipAddress, int port, std::chrono::milliseconds responseTimeout)
-: ModbusClient(std::move(responseTimeout)), m_ipAddress(std::move(ipAddress)), m_port(port)
+: ModbusClient(responseTimeout), m_ipAddress(std::move(ipAddress)), m_port(port)
 {
 }
 

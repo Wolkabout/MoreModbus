@@ -18,7 +18,6 @@
 #define LIBMODBUSSERIALRTUCLIENT_H
 
 #include "ModbusClient.h"
-#include "modbus/modbus.h"
 
 #include <chrono>
 #include <mutex>
@@ -36,8 +35,8 @@ public:
         ODD
     };
 
-    LibModbusSerialRtuClient(std::string serialPort, int baudRate, char dataBits, char stopBits,
-                             BitParity bitParity, std::chrono::milliseconds responseTimeout);
+    LibModbusSerialRtuClient(std::string serialPort, int baudRate, char dataBits, char stopBits, BitParity bitParity,
+                             std::chrono::milliseconds responseTimeout);
 
     virtual ~LibModbusSerialRtuClient();
 

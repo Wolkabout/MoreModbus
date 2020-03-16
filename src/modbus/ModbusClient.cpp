@@ -15,6 +15,7 @@
  */
 
 #include "ModbusClient.h"
+
 #include "../utility/Logger.h"
 
 namespace wolkabout
