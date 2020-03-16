@@ -19,7 +19,7 @@ public:
         COIL = 0,
         INPUT_CONTACT,
         INPUT_REGISTER,
-        HOLDING_REGISTER_ACTUATOR
+        HOLDING_REGISTER
     };
 
     enum class OutputType
@@ -51,8 +51,8 @@ public:
             bool readRestricted = false);
 
     // For mappings where you need to fetch a single bit off of a HR/IR.
-    Mapping(const std::string& reference, RegisterType registerType, int16_t address, int8_t bitIndex,
-            bool readRestricted = false);
+    Mapping(const std::string& reference, RegisterType registerType, int16_t address, OperationType operation,
+            int8_t bitIndex, bool readRestricted = false);
 
     // For mapping where there's more registers (not discrete types).
     Mapping(const std::string& reference, RegisterType registerType, const std::vector<int16_t>& addresses,

@@ -16,7 +16,7 @@ Mapping::Mapping(const std::string& reference, Mapping::RegisterType registerTyp
     switch (m_registerType)
     {
     case RegisterType::INPUT_REGISTER:
-    case RegisterType::HOLDING_REGISTER_ACTUATOR:
+    case RegisterType::HOLDING_REGISTER:
         m_outputType = OutputType::INT16;
         break;
     case RegisterType::COIL:
@@ -38,7 +38,7 @@ Mapping::Mapping(const std::string& reference, Mapping::RegisterType registerTyp
     switch (m_registerType)
     {
     case RegisterType::INPUT_REGISTER:
-    case RegisterType::HOLDING_REGISTER_ACTUATOR:
+    case RegisterType::HOLDING_REGISTER:
         if (m_outputType != OutputType::INT16 && m_outputType != OutputType::UINT16)
         {
             throw std::logic_error("Single address register mapping can\'t"
@@ -56,8 +56,8 @@ Mapping::Mapping(const std::string& reference, Mapping::RegisterType registerTyp
     }
 }
 
-Mapping::Mapping(const std::string& reference, Mapping::RegisterType registerType, int16_t address, int8_t bitIndex,
-                 bool readRestricted)
+Mapping::Mapping(const std::string& reference, Mapping::RegisterType registerType, int16_t address, OperationType type,
+                 int8_t bitIndex, bool readRestricted)
 : m_reference(reference)
 , m_registerType(registerType)
 , m_address(address)
