@@ -17,6 +17,12 @@ Group::Group(const std::shared_ptr<Mapping>& mapping)
 
 void Group::addMapping(std::shared_ptr<Mapping> mapping)
 {
+    // Get status, if first mapping register count is lower.
+    // If it is lower (for 1, and it's register count is 1), add it.
+    // If it is lower (for 2, and it's register count is 2), add it.
+
+    // If the value is higher, check start register and count, see if one/two can be added.
+
     if (mapping->getOperationType() == Mapping::OperationType::TAKE_BIT)
     {
         m_mappings.emplace(std::to_string(mapping->getStartingAddress()) + "." + std::to_string(mapping->getBitIndex()),
