@@ -7,10 +7,12 @@
 
 #include "utility/json.hpp"
 
-namespace wolkabout {
+namespace wolkabout
+{
 using nlohmann::json;
 
-class Mapping {
+class Mapping
+{
 public:
     enum class RegisterType
     {
@@ -41,8 +43,7 @@ public:
     };
 
     // Default case
-    Mapping(const std::string& reference, RegisterType registerType, uint16_t address,
-            bool readRestricted = false);
+    Mapping(const std::string& reference, RegisterType registerType, uint16_t address, bool readRestricted = false);
 
     // Default, with override (allows HR/IR to be both UINT16 and INT16)
     Mapping(const std::string& reference, RegisterType registerType, uint16_t address, OutputType type,
@@ -58,6 +59,7 @@ public:
 
     explicit Mapping(json::object_t json);
     explicit Mapping(const std::string& filePath);
+
 private:
     // General reference data
     std::string m_reference;
@@ -73,6 +75,6 @@ private:
     OperationType m_operationType;
     uint8_t m_bitIndex = -1;
 };
-}
+}    // namespace wolkabout
 
 #endif    // WOLKABOUT_MODBUS_MAPPING_H
