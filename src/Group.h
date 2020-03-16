@@ -5,8 +5,34 @@
 #ifndef WOLKABOUT_MODBUS_GROUP_H
 #define WOLKABOUT_MODBUS_GROUP_H
 
+#include "Mapping.h"
+
+#include <map>
+
+namespace wolkabout
+{
 class Group
 {
+public:
+    explicit Group(std::shared_ptr<Mapping> mapping);
+
+    void addMapping(const Mapping& mapping);
+
+    Mapping::RegisterType getRegisterType() const;
+
+    uint16_t getStartingAddress() const;
+
+    uint16_t getAddressCount() const;
+
+    const std::map<std::string, std::shared_ptr<Mapping>>& getMappings() const;
+
+private:
+    Mapping::RegisterType m_registerType;
+    uint16_t m_startingAddress;
+    uint16_t m_addressCount;
+
+    std::map<std::string, std::shared_ptr<Mapping>> m_mappings;
 };
+}    // namespace wolkabout
 
 #endif    // WOLKABOUT_MODBUS_GROUP_H
