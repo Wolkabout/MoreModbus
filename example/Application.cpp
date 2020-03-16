@@ -12,11 +12,19 @@ int main(int argc, char** argv)
     logger->setLogLevel(wolkabout::LogLevel::DEBUG);
     wolkabout::Logger::setInstance(std::move(logger));
 
-    const auto& mapping = std::make_shared<wolkabout::Mapping>("RM1",
+    const auto& registerMapping = std::make_shared<wolkabout::Mapping>("MP1",
+            wolkabout::Mapping::RegisterType::HOLDING_REGISTER, 0);
+
+    const auto& bitMapping = std::make_shared<wolkabout::Mapping>("RM1",
             wolkabout::Mapping::RegisterType::HOLDING_REGISTER, 0, wolkabout::Mapping::OperationType::TAKE_BIT,
             static_cast<uint8_t>(0));
 
-    const auto& group = std::make_shared<wolkabout::Group>(mapping);
+    const auto& anotherRegisterMapping = std::make_shared<wolkabout::Mapping>("MP2",
+            wolkabout::Mapping::RegisterType::HOLDING_REGISTER, 1);
+
+    const auto& group = std::make_shared<wolkabout::Group>(bitMapping);
+    group->addMapping(anotherRegisterMapping);
+    group->addMapping(registerMapping);
 
     LOG(DEBUG) << "Aloha!";
 

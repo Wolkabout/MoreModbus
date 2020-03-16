@@ -14,9 +14,9 @@ namespace wolkabout
 class Group
 {
 public:
-    explicit Group(std::shared_ptr<Mapping> mapping);
+    explicit Group(const std::shared_ptr<Mapping>& mapping);
 
-    void addMapping(const Mapping& mapping);
+    void addMapping(std::shared_ptr<Mapping> mapping);
 
     Mapping::RegisterType getRegisterType() const;
 

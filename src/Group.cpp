@@ -6,11 +6,16 @@
 
 namespace wolkabout
 {
-Group::Group(std::shared_ptr<Mapping> mapping)
+Group::Group(const std::shared_ptr<Mapping>& mapping)
 : m_registerType(mapping->getRegisterType())
 , m_mappings()
 , m_startingAddress(mapping->getStartingAddress())
 , m_addressCount(mapping->getRegisterCount())
+{
+    addMapping(mapping);
+}
+
+void Group::addMapping(std::shared_ptr<Mapping> mapping)
 {
     if (mapping->getOperationType() == Mapping::OperationType::TAKE_BIT)
     {
@@ -22,8 +27,6 @@ Group::Group(std::shared_ptr<Mapping> mapping)
         m_mappings.emplace(std::to_string(mapping->getStartingAddress()), mapping);
     }
 }
-
-void Group::addMapping(const Mapping& mapping) {}
 
 Mapping::RegisterType Group::getRegisterType() const
 {
