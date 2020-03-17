@@ -3,8 +3,9 @@
 //
 
 #include "RegisterGroup.h"
-
 #include "utility/Logger.h"
+
+#include <algorithm>
 
 namespace wolkabout
 {
@@ -153,7 +154,7 @@ uint16_t RegisterGroup::getAddressCount() const
     for (const auto& pair : m_mappings)
     {
         const auto address = getAddressFromString(pair.first);
-        if (std::find(mappings.begin(), mappings.end(), address) == mappings.end())
+        if (std::find(mappings.begin(), mappings.end(), address) != mappings.end())
         {
             mappings.emplace_back(address);
         }

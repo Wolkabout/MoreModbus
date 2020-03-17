@@ -56,12 +56,7 @@ int main(int argc, char** argv)
     const auto& reader = std::make_shared<wolkabout::ModbusReader>(
       *modbusClient, std::vector<std::shared_ptr<wolkabout::ModbusDevice>>{device}, std::chrono::milliseconds(1000));
 
-    //    reader->start();
-
-    const auto thread = std::thread([] {
-        LOG(DEBUG) << "Aloha!";
-        std::this_thread::sleep_for(std::chrono::milliseconds(300));
-    });
+    reader->start();
 
     return 0;
 }

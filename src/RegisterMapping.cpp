@@ -4,6 +4,8 @@
 
 #include "RegisterMapping.h"
 
+#include <stdexcept>
+
 namespace wolkabout
 {
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,

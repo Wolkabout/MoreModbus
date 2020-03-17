@@ -8,6 +8,7 @@
 #include "RegisterMapping.h"
 
 #include <map>
+#include <memory>
 
 namespace wolkabout
 {

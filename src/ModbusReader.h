@@ -8,6 +8,7 @@
 #include "ModbusDevice.h"
 #include "modbus/ModbusClient.h"
 
+#include <atomic>
 #include <thread>
 
 namespace wolkabout

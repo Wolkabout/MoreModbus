@@ -22,7 +22,7 @@ ModbusReader::ModbusReader(ModbusClient& modbusClient, const std::vector<std::sh
 
 ModbusReader::~ModbusReader()
 {
-    m_modbusClient.disconnect();
+    stop();
 }
 
 bool ModbusReader::isRunning() const
@@ -39,7 +39,7 @@ void ModbusReader::start()
     m_modbusClient.connect();
     for (const auto& device : m_devices)
     {
-        //        m_readerThreads.emplace(device.first, new std::thread(&ModbusReader::run, this));
+        m_readerThreads.emplace(device.first, new std::thread(&ModbusReader::run, this));
     }
     LOG(DEBUG) << "Started ModbusReader.";
 }
