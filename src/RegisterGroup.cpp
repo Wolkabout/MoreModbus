@@ -2,23 +2,28 @@
 // Created by nvuletic on 3/11/20.
 //
 
-#include "WolkaboutRegisterGroup.h"
+#include "RegisterGroup.h"
 
 #include "utility/Logger.h"
 
 namespace wolkabout
 {
-WolkaboutRegisterGroup::WolkaboutRegisterGroup(const std::shared_ptr<WolkaboutRegisterMapping>& mapping)
-: m_registerType(mapping->getRegisterType()), m_mappings()
+RegisterGroup::RegisterGroup(const std::shared_ptr<RegisterMapping>& mapping)
+: m_registerType(mapping->getRegisterType()), m_mappings(), m_slaveAddress(mapping->getSlaveAddress())
 {
     addMapping(mapping);
 }
 
-bool WolkaboutRegisterGroup::addMapping(std::shared_ptr<WolkaboutRegisterMapping> mapping)
+bool RegisterGroup::addMapping(std::shared_ptr<RegisterMapping> mapping)
 {
     if (mapping->getRegisterType() != m_registerType)
     {
         throw std::logic_error("You can\'t add different typed registers in a group.");
+    }
+
+    if (mapping->getSlaveAddress() != m_slaveAddress)
+    {
+        throw std::logic_error("You can\'t add mappings for different slave addresses.");
     }
 
     if (!m_mappings.empty())
@@ -28,7 +33,7 @@ bool WolkaboutRegisterGroup::addMapping(std::shared_ptr<WolkaboutRegisterMapping
         const auto firstMappingAddress = mapping->getStartingAddress();
         const auto mappingAddressCount = mapping->getRegisterCount();
 
-        if (mapping->getOperationType() == WolkaboutRegisterMapping::OperationType::TAKE_BIT)
+        if (mapping->getOperationType() == RegisterMapping::OperationType::TAKE_BIT)
         {
             // If we're just adding bits, we don't need to apply same ruling.
             if (m_mappings.find(std::to_string(mapping->getStartingAddress())) != m_mappings.end())
@@ -101,7 +106,7 @@ bool WolkaboutRegisterGroup::addMapping(std::shared_ptr<WolkaboutRegisterMapping
         }
     }
 
-    if (mapping->getOperationType() == WolkaboutRegisterMapping::OperationType::TAKE_BIT)
+    if (mapping->getOperationType() == RegisterMapping::OperationType::TAKE_BIT)
     {
         const auto key = std::to_string(mapping->getStartingAddress()) + "." + std::to_string(mapping->getBitIndex());
         if (m_mappings.find(key) != m_mappings.end())
@@ -123,17 +128,17 @@ bool WolkaboutRegisterGroup::addMapping(std::shared_ptr<WolkaboutRegisterMapping
     }
 }
 
-WolkaboutRegisterMapping::RegisterType WolkaboutRegisterGroup::getRegisterType() const
+RegisterMapping::RegisterType RegisterGroup::getRegisterType() const
 {
     return m_registerType;
 }
 
-uint16_t WolkaboutRegisterGroup::getStartingAddress() const
+uint16_t RegisterGroup::getStartingAddress() const
 {
     return getAddressFromString(m_mappings.begin()->first);
 }
 
-uint16_t WolkaboutRegisterGroup::getAddressCount() const
+uint16_t RegisterGroup::getAddressCount() const
 {
     std::vector<int16_t> mappings;
     for (const auto& pair : m_mappings)
@@ -147,12 +152,17 @@ uint16_t WolkaboutRegisterGroup::getAddressCount() const
     return mappings.size();
 }
 
-const std::map<std::string, std::shared_ptr<WolkaboutRegisterMapping>>& WolkaboutRegisterGroup::getMappings() const
+int8_t RegisterGroup::getSlaveAddress() const
+{
+    return m_slaveAddress;
+}
+
+const std::map<std::string, std::shared_ptr<RegisterMapping>>& RegisterGroup::getMappings() const
 {
     return m_mappings;
 }
 
-uint16_t WolkaboutRegisterGroup::getAddressFromString(const std::string& string)
+uint16_t RegisterGroup::getAddressFromString(const std::string& string)
 {
     auto firstAddressString = std::string(string);
     auto dotIndex = firstAddressString.find('.');

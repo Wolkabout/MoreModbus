@@ -2,13 +2,12 @@
 // Created by nvuletic on 3/11/20.
 //
 
-#include "WolkaboutRegisterMapping.h"
+#include "RegisterMapping.h"
 
 namespace wolkabout
 {
-WolkaboutRegisterMapping::WolkaboutRegisterMapping(const std::string& reference,
-                                                   WolkaboutRegisterMapping::RegisterType registerType, int16_t address,
-                                                   uint8_t slaveAddress, bool readRestricted)
+RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
+                                 int16_t address, bool readRestricted, uint8_t slaveAddress)
 : m_reference(reference)
 , m_registerType(registerType)
 , m_address(address)
@@ -30,9 +29,8 @@ WolkaboutRegisterMapping::WolkaboutRegisterMapping(const std::string& reference,
     }
 }
 
-WolkaboutRegisterMapping::WolkaboutRegisterMapping(const std::string& reference,
-                                                   WolkaboutRegisterMapping::RegisterType registerType, int16_t address,
-                                                   uint8_t slaveAddress, OutputType type, bool readRestricted)
+RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
+                                 int16_t address, OutputType type, bool readRestricted, uint8_t slaveAddress)
 : m_reference(reference)
 , m_registerType(registerType)
 , m_address(address)
@@ -63,10 +61,9 @@ WolkaboutRegisterMapping::WolkaboutRegisterMapping(const std::string& reference,
     }
 }
 
-WolkaboutRegisterMapping::WolkaboutRegisterMapping(const std::string& reference,
-                                                   WolkaboutRegisterMapping::RegisterType registerType, int16_t address,
-                                                   uint8_t slaveAddress, OperationType type, int8_t bitIndex,
-                                                   bool readRestricted)
+RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
+                                 int16_t address, OperationType type, int8_t bitIndex, bool readRestricted,
+                                 uint8_t slaveAddress)
 : m_reference(reference)
 , m_registerType(registerType)
 , m_address(address)
@@ -82,10 +79,9 @@ WolkaboutRegisterMapping::WolkaboutRegisterMapping(const std::string& reference,
     }
 }
 
-WolkaboutRegisterMapping::WolkaboutRegisterMapping(const std::string& reference,
-                                                   WolkaboutRegisterMapping::RegisterType registerType,
-                                                   const std::vector<int16_t>& addresses, uint8_t slaveAddress,
-                                                   OutputType type, OperationType operation, bool readRestricted)
+RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
+                                 const std::vector<int16_t>& addresses, OutputType type, OperationType operation,
+                                 bool readRestricted, uint8_t slaveAddress)
 : m_reference(reference)
 , m_registerType(registerType)
 , m_addresses(addresses)
@@ -139,37 +135,42 @@ WolkaboutRegisterMapping::WolkaboutRegisterMapping(const std::string& reference,
     }
 }
 
-const std::string& WolkaboutRegisterMapping::getReference() const
+const std::string& RegisterMapping::getReference() const
 {
     return m_reference;
 }
 
-bool WolkaboutRegisterMapping::isReadRestricted() const
+bool RegisterMapping::isReadRestricted() const
 {
     return m_readRestricted;
 }
 
-WolkaboutRegisterMapping::RegisterType WolkaboutRegisterMapping::getRegisterType() const
+RegisterMapping::RegisterType RegisterMapping::getRegisterType() const
 {
     return m_registerType;
 }
 
-int16_t WolkaboutRegisterMapping::getAddress() const
+int16_t RegisterMapping::getAddress() const
 {
     return m_address;
 }
 
-const std::vector<int16_t>& WolkaboutRegisterMapping::getAddresses() const
+const std::vector<int16_t>& RegisterMapping::getAddresses() const
 {
     return m_addresses;
 }
 
-uint8_t WolkaboutRegisterMapping::getSlaveAddress() const
+int8_t RegisterMapping::getSlaveAddress() const
 {
     return m_slaveAddress;
 }
 
-int16_t WolkaboutRegisterMapping::getStartingAddress() const
+void RegisterMapping::setSlaveAddress(int8_t slaveAddress)
+{
+    m_slaveAddress = slaveAddress;
+}
+
+int16_t RegisterMapping::getStartingAddress() const
 {
     if (m_address == -1)
     {
@@ -178,7 +179,7 @@ int16_t WolkaboutRegisterMapping::getStartingAddress() const
     return m_address;
 }
 
-int16_t WolkaboutRegisterMapping::getRegisterCount() const
+int16_t RegisterMapping::getRegisterCount() const
 {
     if (m_address == -1)
     {
@@ -187,17 +188,17 @@ int16_t WolkaboutRegisterMapping::getRegisterCount() const
     return 1;
 }
 
-WolkaboutRegisterMapping::OutputType WolkaboutRegisterMapping::getOutputType() const
+RegisterMapping::OutputType RegisterMapping::getOutputType() const
 {
     return m_outputType;
 }
 
-WolkaboutRegisterMapping::OperationType WolkaboutRegisterMapping::getOperationType() const
+RegisterMapping::OperationType RegisterMapping::getOperationType() const
 {
     return m_operationType;
 }
 
-int8_t WolkaboutRegisterMapping::getBitIndex() const
+int8_t RegisterMapping::getBitIndex() const
 {
     return m_bitIndex;
 }

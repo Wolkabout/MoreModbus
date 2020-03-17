@@ -2,8 +2,8 @@
 // Created by nvuletic on 3/11/20.
 //
 
-#ifndef WOLKABOUT_MODBUS_WOLKABOUTREGISTERMAPPING_H
-#define WOLKABOUT_MODBUS_WOLKABOUTREGISTERMAPPING_H
+#ifndef WOLKABOUT_MODBUS_REGISTERMAPPING_H
+#define WOLKABOUT_MODBUS_REGISTERMAPPING_H
 
 #include <cstdint>
 #include <string>
@@ -13,7 +13,7 @@ namespace wolkabout
 {
 // Mapping is a single unit involving one, part of, or multiple Modbus registers.
 // Their values are being interpreted in one of available OutputValues types.
-class WolkaboutRegisterMapping
+class RegisterMapping
 {
 public:
     // Enumeration used to represent all Modbus register types.
@@ -54,28 +54,26 @@ public:
     // Default case
     // Applies default operation, where COIL/INPUT_CONTACT registers are interpreted as BOOL,
     // and HOLDING_REGISTER/INPUT_REGISTER registers are interpreted as INT16.
-    WolkaboutRegisterMapping(const std::string& reference, RegisterType registerType, int16_t address,
-                             uint8_t slaveAddress, bool readRestricted = false);
+    RegisterMapping(const std::string& reference, RegisterType registerType, int16_t address,
+                    bool readRestricted = false, uint8_t slaveAddress = -1);
 
     // Default case
     // But allows HOLDING_REGISTER/INPUT_REGISTER to be INT16 or UINT16 with given argument.
-    WolkaboutRegisterMapping(const std::string& reference, RegisterType registerType, int16_t address,
-                             uint8_t slaveAddress, OutputType type, bool readRestricted = false);
+    RegisterMapping(const std::string& reference, RegisterType registerType, int16_t address, OutputType type,
+                    bool readRestricted = false, uint8_t slaveAddress = -1);
 
     // Bit fetch case
     // Choose a HOLDING_REGISTER/INPUT_REGISTER, and take a bit off of it, and return as BOOL.
-    WolkaboutRegisterMapping(const std::string& reference, RegisterType registerType, int16_t address,
-                             uint8_t slaveAddress, OperationType operation, int8_t bitIndex,
-                             bool readRestricted = false);
+    RegisterMapping(const std::string& reference, RegisterType registerType, int16_t address, OperationType operation,
+                    int8_t bitIndex, bool readRestricted = false, uint8_t slaveAddress = -1);
 
     // For mapping where there's more registers (not discrete types).
     // Can be used in case where you need to merge 2 registers into 32 bit types (such as UINT32, INT32, FLOAT)
     // with MERGE_BIG_ENDIAN, MERGE_LITTLE_ENDIAN or MERGE_FLOAT.
     // Can be also used to merge strings, take `n` amount of registers, interpreting each REGISTER
     // as two ASCII characters, two UNICODE characters or one UTF-16 character.
-    WolkaboutRegisterMapping(const std::string& reference, RegisterType registerType,
-                             const std::vector<int16_t>& addresses, uint8_t slaveAddress, OutputType type,
-                             OperationType operation, bool readRestricted = false);
+    RegisterMapping(const std::string& reference, RegisterType registerType, const std::vector<int16_t>& addresses,
+                    OutputType type, OperationType operation, bool readRestricted = false, uint8_t slaveAddress = -1);
 
     const std::string& getReference() const;
 
@@ -87,9 +85,11 @@ public:
 
     const std::vector<int16_t>& getAddresses() const;
 
-    uint8_t getSlaveAddress() const;
+    int8_t getSlaveAddress() const;
 
     int16_t getStartingAddress() const;
+
+    void setSlaveAddress(int8_t slaveAddress);
 
     int16_t getRegisterCount() const;
 
@@ -108,7 +108,7 @@ private:
     RegisterType m_registerType;
     int16_t m_address = -1;
     std::vector<int16_t> m_addresses;
-    uint8_t m_slaveAddress = -1;
+    int8_t m_slaveAddress = -1;
 
     // Wolkabout output data
     OutputType m_outputType;
@@ -117,4 +117,4 @@ private:
 };
 }    // namespace wolkabout
 
-#endif    // WOLKABOUT_MODBUS_WOLKABOUTREGISTERMAPPING_H
+#endif    // WOLKABOUT_MODBUS_REGISTERMAPPING_H
