@@ -3,14 +3,16 @@
 //
 
 #include "../src/ModbusDevice.h"
+#include "../src/ModbusReader.h"
 #include "../src/RegisterGroup.h"
+#include "../src/modbus/LibModbusTcpIpClient.h"
 #include "../src/utility/ConsoleLogger.h"
 
 int main(int argc, char** argv)
 {
     // Setup logger
     auto logger = std::unique_ptr<wolkabout::ConsoleLogger>(new wolkabout::ConsoleLogger());
-    logger->setLogLevel(wolkabout::LogLevel::DEBUG);
+    logger->setLogLevel(wolkabout::LogLevel::TRACE);
     wolkabout::Logger::setInstance(std::move(logger));
 
     const auto& registerMapping = std::make_shared<wolkabout::RegisterMapping>(
@@ -47,6 +49,19 @@ int main(int argc, char** argv)
 
     const auto& device = std::make_shared<wolkabout::ModbusDevice>("Test Device 1", 1);
     device->addGroup(group);
+
+    const auto& modbusClient =
+      std::make_shared<wolkabout::LibModbusTcpIpClient>("192.168.0.101", 502, std::chrono::milliseconds(500));
+
+    const auto& reader = std::make_shared<wolkabout::ModbusReader>(
+      *modbusClient, std::vector<std::shared_ptr<wolkabout::ModbusDevice>>{device}, std::chrono::milliseconds(1000));
+
+    //    reader->start();
+
+    const auto thread = std::thread([] {
+        LOG(DEBUG) << "Aloha!";
+        std::this_thread::sleep_for(std::chrono::milliseconds(300));
+    });
 
     return 0;
 }
