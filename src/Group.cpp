@@ -102,8 +102,14 @@ bool Group::addMapping(std::shared_ptr<Mapping> mapping)
 
     if (mapping->getOperationType() == Mapping::OperationType::TAKE_BIT)
     {
-        m_mappings.emplace(std::to_string(mapping->getStartingAddress()) + "." + std::to_string(mapping->getBitIndex()),
-                           mapping);
+        const auto key = std::to_string(mapping->getStartingAddress()) + "." + std::to_string(mapping->getBitIndex());
+        if (m_mappings.find(key) != m_mappings.end())
+        {
+            LOG(WARN) << "Mapping " << mapping->getReference() << "(" << mapping->getStartingAddress()
+                      << ") requests a bit that is already occupied.";
+            return false;
+        }
+        m_mappings.emplace(key, mapping);
         return true;
     }
     else
