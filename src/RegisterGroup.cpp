@@ -14,6 +14,15 @@ RegisterGroup::RegisterGroup(const std::shared_ptr<RegisterMapping>& mapping)
     addMapping(mapping);
 }
 
+RegisterGroup::RegisterGroup(const RegisterGroup& instance)
+: m_registerType(instance.getRegisterType()), m_mappings(), m_slaveAddress(instance.getSlaveAddress())
+{
+    for (const auto& mapping : instance.getMappings())
+    {
+        m_mappings.emplace(std::string(mapping.first), std::make_shared<RegisterMapping>(*(mapping.second)));
+    }
+}
+
 bool RegisterGroup::addMapping(std::shared_ptr<RegisterMapping> mapping)
 {
     if (mapping->getRegisterType() != m_registerType)
@@ -155,6 +164,15 @@ uint16_t RegisterGroup::getAddressCount() const
 int8_t RegisterGroup::getSlaveAddress() const
 {
     return m_slaveAddress;
+}
+
+void RegisterGroup::setSlaveAddress(int8_t slaveAddress)
+{
+    m_slaveAddress = slaveAddress;
+    for (const auto& mapping : m_mappings)
+    {
+        mapping.second->setSlaveAddress(slaveAddress);
+    }
 }
 
 const std::map<std::string, std::shared_ptr<RegisterMapping>>& RegisterGroup::getMappings() const

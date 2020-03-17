@@ -19,6 +19,8 @@ class RegisterGroup
 public:
     explicit RegisterGroup(const std::shared_ptr<RegisterMapping>& mapping);
 
+    RegisterGroup(const RegisterGroup& instance);
+
     bool addMapping(std::shared_ptr<RegisterMapping> mapping);
 
     RegisterMapping::RegisterType getRegisterType() const;
@@ -28,6 +30,8 @@ public:
     uint16_t getAddressCount() const;
 
     int8_t getSlaveAddress() const;
+
+    void setSlaveAddress(int8_t slaveAddress);
 
     const std::map<std::string, std::shared_ptr<RegisterMapping>>& getMappings() const;
 
