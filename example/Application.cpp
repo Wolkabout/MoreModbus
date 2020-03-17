@@ -13,18 +13,36 @@ int main(int argc, char** argv)
     wolkabout::Logger::setInstance(std::move(logger));
 
     const auto& registerMapping = std::make_shared<wolkabout::Mapping>("MP1",
-            wolkabout::Mapping::RegisterType::HOLDING_REGISTER, 0);
-
-    const auto& bitMapping = std::make_shared<wolkabout::Mapping>("RM1",
-            wolkabout::Mapping::RegisterType::HOLDING_REGISTER, 0, wolkabout::Mapping::OperationType::TAKE_BIT,
-            static_cast<uint8_t>(0));
+            wolkabout::Mapping::RegisterType::HOLDING_REGISTER, 0, 1);
 
     const auto& anotherRegisterMapping = std::make_shared<wolkabout::Mapping>("MP2",
-            wolkabout::Mapping::RegisterType::HOLDING_REGISTER, 1);
+            wolkabout::Mapping::RegisterType::HOLDING_REGISTER, 3, 1);
 
-    const auto& group = std::make_shared<wolkabout::Group>(bitMapping);
-    group->addMapping(anotherRegisterMapping);
+    const auto& stringMapping = std::make_shared<wolkabout::Mapping>("STR1",
+            wolkabout::Mapping::RegisterType::HOLDING_REGISTER, std::vector<int16_t> {0, 1, 2}, 1,
+                    wolkabout::Mapping::OutputType::STRING, wolkabout::Mapping::OperationType::STRINGIFY);
+
+    const auto& getFirstBitMapping = std::make_shared<wolkabout::Mapping>("B4-1",
+            wolkabout::Mapping::RegisterType::HOLDING_REGISTER, 4, 1, wolkabout::Mapping::OperationType::TAKE_BIT,
+            0);
+
+    const auto& getSecondBitMapping = std::make_shared<wolkabout::Mapping>("B4-2",
+          wolkabout::Mapping::RegisterType::HOLDING_REGISTER, 4, 1, wolkabout::Mapping::OperationType::TAKE_BIT,
+          1);
+
+    const auto& fifthRegister = std::make_shared<wolkabout::Mapping>("MP5",
+            wolkabout::Mapping::RegisterType::HOLDING_REGISTER, 5, 1);
+
+    const auto& sixthRegister = std::make_shared<wolkabout::Mapping>("MP6",
+            wolkabout::Mapping::RegisterType::HOLDING_REGISTER, 8, 1);
+
+    const auto& group = std::make_shared<wolkabout::Group>(anotherRegisterMapping);
     group->addMapping(registerMapping);
+    group->addMapping(stringMapping);
+    group->addMapping(getFirstBitMapping);
+    group->addMapping(getSecondBitMapping);
+    group->addMapping(fifthRegister);
+    group->addMapping(sixthRegister);
 
     LOG(DEBUG) << "Aloha!";
 

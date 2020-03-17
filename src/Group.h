@@ -16,7 +16,7 @@ class Group
 public:
     explicit Group(const std::shared_ptr<Mapping>& mapping);
 
-    void addMapping(std::shared_ptr<Mapping> mapping);
+    bool addMapping(std::shared_ptr<Mapping> mapping);
 
     Mapping::RegisterType getRegisterType() const;
 
@@ -26,10 +26,10 @@ public:
 
     const std::map<std::string, std::shared_ptr<Mapping>>& getMappings() const;
 
+    static uint16_t getAddressFromString(const std::string& string);
+
 private:
     Mapping::RegisterType m_registerType;
-    uint16_t m_startingAddress;
-    uint16_t m_addressCount;
 
     std::map<std::string, std::shared_ptr<Mapping>> m_mappings;
 };

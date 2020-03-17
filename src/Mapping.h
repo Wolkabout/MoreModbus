@@ -44,19 +44,20 @@ public:
     };
 
     // Default case
-    Mapping(const std::string& reference, RegisterType registerType, int16_t address, bool readRestricted = false);
-
-    // Default, with override (allows HR/IR to be both UINT16 and INT16)
-    Mapping(const std::string& reference, RegisterType registerType, int16_t address, OutputType type,
+    Mapping(const std::string& reference, RegisterType registerType, int16_t address, uint8_t slaveAddress,
             bool readRestricted = false);
 
+    // Default, with override (allows HR/IR to be both UINT16 and INT16)
+    Mapping(const std::string& reference, RegisterType registerType, int16_t address, uint8_t slaveAddress,
+            OutputType type, bool readRestricted = false);
+
     // For mappings where you need to fetch a single bit off of a HR/IR.
-    Mapping(const std::string& reference, RegisterType registerType, int16_t address, OperationType operation,
-            int8_t bitIndex, bool readRestricted = false);
+    Mapping(const std::string& reference, RegisterType registerType, int16_t address, uint8_t slaveAddress,
+            OperationType operation, int8_t bitIndex, bool readRestricted = false);
 
     // For mapping where there's more registers (not discrete types).
     Mapping(const std::string& reference, RegisterType registerType, const std::vector<int16_t>& addresses,
-            OutputType type, OperationType operation, bool readRestricted = false);
+            uint8_t slaveAddress, OutputType type, OperationType operation, bool readRestricted = false);
 
     const std::string& getReference() const;
 
@@ -67,6 +68,8 @@ public:
     int16_t getAddress() const;
 
     const std::vector<int16_t>& getAddresses() const;
+
+    uint8_t getSlaveAddress() const;
 
     int16_t getStartingAddress() const;
 
@@ -87,6 +90,7 @@ private:
     RegisterType m_registerType;
     int16_t m_address = -1;
     std::vector<int16_t> m_addresses;
+    uint8_t m_slaveAddress = -1;
 
     // Wolkabout output data
     OutputType m_outputType;

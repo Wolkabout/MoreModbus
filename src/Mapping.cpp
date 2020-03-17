@@ -6,10 +6,12 @@
 
 namespace wolkabout
 {
-Mapping::Mapping(const std::string& reference, Mapping::RegisterType registerType, int16_t address, bool readRestricted)
+Mapping::Mapping(const std::string& reference, Mapping::RegisterType registerType, int16_t address,
+                 uint8_t slaveAddress, bool readRestricted)
 : m_reference(reference)
 , m_registerType(registerType)
 , m_address(address)
+, m_slaveAddress(slaveAddress)
 , m_readRestricted(readRestricted)
 , m_operationType(OperationType::NONE)
 {
@@ -26,11 +28,12 @@ Mapping::Mapping(const std::string& reference, Mapping::RegisterType registerTyp
     }
 }
 
-Mapping::Mapping(const std::string& reference, Mapping::RegisterType registerType, int16_t address, OutputType type,
-                 bool readRestricted)
+Mapping::Mapping(const std::string& reference, Mapping::RegisterType registerType, int16_t address,
+                 uint8_t slaveAddress, OutputType type, bool readRestricted)
 : m_reference(reference)
 , m_registerType(registerType)
 , m_address(address)
+, m_slaveAddress(slaveAddress)
 , m_readRestricted(readRestricted)
 , m_outputType(type)
 , m_operationType(OperationType::NONE)
@@ -56,11 +59,12 @@ Mapping::Mapping(const std::string& reference, Mapping::RegisterType registerTyp
     }
 }
 
-Mapping::Mapping(const std::string& reference, Mapping::RegisterType registerType, int16_t address, OperationType type,
-                 int8_t bitIndex, bool readRestricted)
+Mapping::Mapping(const std::string& reference, Mapping::RegisterType registerType, int16_t address,
+                 uint8_t slaveAddress, OperationType type, int8_t bitIndex, bool readRestricted)
 : m_reference(reference)
 , m_registerType(registerType)
 , m_address(address)
+, m_slaveAddress(slaveAddress)
 , m_readRestricted(readRestricted)
 , m_bitIndex(bitIndex)
 , m_outputType(OutputType::BOOL)
@@ -73,10 +77,12 @@ Mapping::Mapping(const std::string& reference, Mapping::RegisterType registerTyp
 }
 
 Mapping::Mapping(const std::string& reference, Mapping::RegisterType registerType,
-                 const std::vector<int16_t>& addresses, OutputType type, OperationType operation, bool readRestricted)
+                 const std::vector<int16_t>& addresses, uint8_t slaveAddress, OutputType type, OperationType operation,
+                 bool readRestricted)
 : m_reference(reference)
 , m_registerType(registerType)
 , m_addresses(addresses)
+, m_slaveAddress(slaveAddress)
 , m_readRestricted(readRestricted)
 , m_outputType(type)
 , m_operationType(operation)
@@ -138,6 +144,11 @@ int16_t Mapping::getAddress() const
 const std::vector<int16_t>& Mapping::getAddresses() const
 {
     return m_addresses;
+}
+
+uint8_t Mapping::getSlaveAddress() const
+{
+    return m_slaveAddress;
 }
 
 int16_t Mapping::getStartingAddress() const
