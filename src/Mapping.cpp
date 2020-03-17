@@ -15,6 +15,7 @@ Mapping::Mapping(const std::string& reference, Mapping::RegisterType registerTyp
 , m_readRestricted(readRestricted)
 , m_operationType(OperationType::NONE)
 {
+    // On default, assign default OutputType for type of register.
     switch (m_registerType)
     {
     case RegisterType::INPUT_REGISTER:
@@ -42,6 +43,7 @@ Mapping::Mapping(const std::string& reference, Mapping::RegisterType registerTyp
     {
     case RegisterType::INPUT_REGISTER:
     case RegisterType::HOLDING_REGISTER:
+        // Allow Registers to be INT16, UINT16.
         if (m_outputType != OutputType::INT16 && m_outputType != OutputType::UINT16)
         {
             throw std::logic_error("Single address register mapping can\'t"
@@ -98,21 +100,32 @@ Mapping::Mapping(const std::string& reference, Mapping::RegisterType registerTyp
     }
 
     // Can be two registers that are being merged into a 32bit, or multiple ones merging into a string.
-    if (m_operationType == OperationType::MERGE_BIG_ENDIAN || m_operationType == OperationType::MERGE_LITTLE_ENDIAN ||
-        m_operationType == OperationType::MERGE_FLOAT)
+    if (m_operationType == OperationType::MERGE_BIG_ENDIAN || m_operationType == OperationType::MERGE_LITTLE_ENDIAN)
     {
         if (m_addresses.size() != 2)
         {
             throw std::logic_error("Merge operations work only with 2 registers.");
         }
 
-        if (m_outputType != OutputType::INT32 && m_outputType != OutputType::UINT32 &&
-            m_outputType != OutputType::FLOAT)
+        if (m_outputType != OutputType::INT32 && m_outputType != OutputType::UINT32)
         {
-            throw std::logic_error("Merge operations output 32bit types (INT32, UINT32, FLOAT).");
+            throw std::logic_error("Merge operations (with endians) output 32bit types (INT32, UINT32).");
         }
     }
-    else if (m_operationType == OperationType::STRINGIFY)
+    else if (m_operationType == OperationType::MERGE_FLOAT)
+    {
+        if (m_addresses.size() != 2)
+        {
+            throw std::logic_error("Merge operations work only with 2 registers.");
+        }
+
+        if (m_outputType != OutputType::FLOAT)
+        {
+            throw std::logic_error("Merge for floats can only output FLOAT.");
+        }
+    }
+    else if (m_operationType == OperationType::STRINGIFY_ASCII || m_operationType == OperationType::STRINGIFY_UNICODE ||
+             m_operationType == OperationType::STRINGIFY_UTF16)
     {
         if (m_outputType != OutputType::STRING)
         {

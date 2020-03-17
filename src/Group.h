@@ -11,6 +11,9 @@
 
 namespace wolkabout
 {
+// Group serves to merge multiple mappings that can be read with a single Modbus command.
+// It groups Mappings of same type, that can be found next to each other.
+// When values are read, they're assigned to each Mapping as necessary.
 class Group
 {
 public:
