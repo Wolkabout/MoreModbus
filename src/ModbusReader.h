@@ -41,6 +41,7 @@ private:
     // Reconnect logic
     unsigned long m_timeoutIterator;
     const std::vector<int> m_timeoutDurations = {1, 5, 10, 15, 30, 60, 300, 600, 1800, 3600};
+    std::vector<int8_t> m_errorDevices;
     std::atomic_bool m_shouldReconnect{};
 
     // Threading and reader data

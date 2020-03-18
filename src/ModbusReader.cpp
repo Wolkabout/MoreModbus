@@ -104,7 +104,7 @@ void ModbusReader::run()
         {
             if (m_modbusClient.isConnected())
             {
-                LOG(TRACE) << "Reading devices.";
+                LOG(DEBUG) << "Reading devices.";
                 for (const auto& device : m_devices)
                 {
                     m_threads[device.second->getSlaveAddress()] =
@@ -117,6 +117,26 @@ void ModbusReader::run()
                 {
                     m_threads[device.second->getSlaveAddress()]->join();
                 }
+
+                if (m_errorDevices.size() == m_devices.size())
+                {
+                    m_shouldReconnect = true;
+                    LOG(WARN) << "ModbusReader: No devices have been read successfully. Reconnecting...";
+                }
+                else if (!m_errorDevices.empty())
+                {
+                    for (const auto& errorDevice : m_errorDevices)
+                    {
+                        m_deviceActiveStatus[errorDevice] = false;
+                    }
+                    LOG(WARN) << "ModbusReader: Some devices haven't been read successfully.";
+                }
+                else
+                {
+                    LOG(DEBUG) << "ModbusReader: All devices have been read successfully.";
+                }
+
+                m_errorDevices.clear();
             }
             else
             {
@@ -130,11 +150,14 @@ void ModbusReader::run()
 
 void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
 {
-    LOG(DEBUG) << "Reading device " << device->getName();
+    LOG(TRACE) << "Reading device : " << device->getName();
+
+    // Work on this logic, read all groups and do it properly.
+    // Also, parse types and values as necessary.
     bool value;
     if (!m_modbusClient.readCoil(device->getSlaveAddress(), 0, value))
     {
-        m_shouldReconnect = true;
+        m_errorDevices.emplace_back(device->getSlaveAddress());
     }
 }
 }    // namespace wolkabout
