@@ -7,7 +7,7 @@
 namespace wolkabout
 {
 ModbusDevice::ModbusDevice(const std::string& name, int8_t slaveAddress)
-: m_name(name), m_slaveAddress(slaveAddress), m_mappings(), m_groups()
+: m_name(name), m_slaveAddress(slaveAddress), m_groups(), m_mappings()
 {
 }
 

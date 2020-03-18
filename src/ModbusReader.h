@@ -35,7 +35,7 @@ private:
     std::map<int8_t, std::shared_ptr<ModbusDevice>> m_devices;
 
     // Threading and reader data
-    std::atomic_bool m_readerShouldRun;
+    std::atomic_bool m_readerShouldRun{};
     std::unique_ptr<std::thread> m_mainReaderThread;
     std::map<int8_t, std::unique_ptr<std::thread>> m_readerThreads;
     std::chrono::milliseconds m_readPeriod;

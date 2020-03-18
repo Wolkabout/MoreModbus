@@ -22,7 +22,7 @@ public:
 
     RegisterGroup(const RegisterGroup& instance);
 
-    bool addMapping(std::shared_ptr<RegisterMapping> mapping);
+    bool addMapping(const std::shared_ptr<RegisterMapping>& mapping);
 
     RegisterMapping::RegisterType getRegisterType() const;
 

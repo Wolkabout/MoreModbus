@@ -12,14 +12,13 @@
 #include <sys/time.h>
 #else
 #include "stdint.h"
-
 #include <time.h>
 typedef int ssize_t;
 #endif
-#include "modbus.h"
-
 #include <config.h>
 #include <sys/types.h>
+
+#include "modbus.h"
 
 MODBUS_BEGIN_DECLS
 

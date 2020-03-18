@@ -55,17 +55,17 @@ public:
     // Applies default operation, where COIL/INPUT_CONTACT registers are interpreted as BOOL,
     // and HOLDING_REGISTER/INPUT_REGISTER registers are interpreted as INT16.
     RegisterMapping(const std::string& reference, RegisterType registerType, int16_t address,
-                    bool readRestricted = false, uint8_t slaveAddress = -1);
+                    bool readRestricted = false, int8_t slaveAddress = -1);
 
     // Default case
     // But allows HOLDING_REGISTER/INPUT_REGISTER to be INT16 or UINT16 with given argument.
     RegisterMapping(const std::string& reference, RegisterType registerType, int16_t address, OutputType type,
-                    bool readRestricted = false, uint8_t slaveAddress = -1);
+                    bool readRestricted = false, int8_t slaveAddress = -1);
 
     // Bit fetch case
     // Choose a HOLDING_REGISTER/INPUT_REGISTER, and take a bit off of it, and return as BOOL.
     RegisterMapping(const std::string& reference, RegisterType registerType, int16_t address, OperationType operation,
-                    int8_t bitIndex, bool readRestricted = false, uint8_t slaveAddress = -1);
+                    int8_t bitIndex, bool readRestricted = false, int8_t slaveAddress = -1);
 
     // For mapping where there's more registers (not discrete types).
     // Can be used in case where you need to merge 2 registers into 32 bit types (such as UINT32, INT32, FLOAT)
@@ -73,7 +73,7 @@ public:
     // Can be also used to merge strings, take `n` amount of registers, interpreting each REGISTER
     // as two ASCII characters, two UNICODE characters or one UTF-16 character.
     RegisterMapping(const std::string& reference, RegisterType registerType, const std::vector<int16_t>& addresses,
-                    OutputType type, OperationType operation, bool readRestricted = false, uint8_t slaveAddress = -1);
+                    OutputType type, OperationType operation, bool readRestricted = false, int8_t slaveAddress = -1);
 
     const std::string& getReference() const;
 

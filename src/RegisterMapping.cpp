@@ -9,12 +9,12 @@
 namespace wolkabout
 {
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                                 int16_t address, bool readRestricted, uint8_t slaveAddress)
+                                 int16_t address, bool readRestricted, int8_t slaveAddress)
 : m_reference(reference)
+, m_readRestricted(readRestricted)
 , m_registerType(registerType)
 , m_address(address)
 , m_slaveAddress(slaveAddress)
-, m_readRestricted(readRestricted)
 , m_operationType(OperationType::NONE)
 {
     // On default, assign default OutputType for type of register.
@@ -32,12 +32,12 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 }
 
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                                 int16_t address, OutputType type, bool readRestricted, uint8_t slaveAddress)
+                                 int16_t address, OutputType type, bool readRestricted, int8_t slaveAddress)
 : m_reference(reference)
+, m_readRestricted(readRestricted)
 , m_registerType(registerType)
 , m_address(address)
 , m_slaveAddress(slaveAddress)
-, m_readRestricted(readRestricted)
 , m_outputType(type)
 , m_operationType(OperationType::NONE)
 {
@@ -65,15 +65,15 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                                  int16_t address, OperationType type, int8_t bitIndex, bool readRestricted,
-                                 uint8_t slaveAddress)
+                                 int8_t slaveAddress)
 : m_reference(reference)
+, m_readRestricted(readRestricted)
 , m_registerType(registerType)
 , m_address(address)
 , m_slaveAddress(slaveAddress)
-, m_readRestricted(readRestricted)
-, m_bitIndex(bitIndex)
 , m_outputType(OutputType::BOOL)
 , m_operationType(OperationType::TAKE_BIT)
+, m_bitIndex(bitIndex)
 {
     if (m_registerType == RegisterType::COIL || m_registerType == RegisterType::INPUT_CONTACT)
     {
@@ -83,12 +83,12 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                                  const std::vector<int16_t>& addresses, OutputType type, OperationType operation,
-                                 bool readRestricted, uint8_t slaveAddress)
+                                 bool readRestricted, int8_t slaveAddress)
 : m_reference(reference)
+, m_readRestricted(readRestricted)
 , m_registerType(registerType)
 , m_addresses(addresses)
 , m_slaveAddress(slaveAddress)
-, m_readRestricted(readRestricted)
 , m_outputType(type)
 , m_operationType(operation)
 {
@@ -185,7 +185,7 @@ int16_t RegisterMapping::getRegisterCount() const
 {
     if (m_address == -1)
     {
-        return m_addresses.size();
+        return static_cast<int16_t>(m_addresses.size());
     }
     return 1;
 }

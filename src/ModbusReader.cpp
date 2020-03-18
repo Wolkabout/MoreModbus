@@ -10,7 +10,7 @@ namespace wolkabout
 {
 ModbusReader::ModbusReader(ModbusClient& modbusClient, const std::vector<std::shared_ptr<ModbusDevice>>& devices,
                            const std::chrono::milliseconds& readPeriod)
-: m_modbusClient(modbusClient), m_devices(), m_readPeriod(readPeriod)
+: m_modbusClient(modbusClient), m_devices(), m_readerShouldRun(false), m_readPeriod(readPeriod)
 {
     LOG(INFO) << "Initializing ModbusReader...";
     for (const auto& device : devices)
@@ -35,12 +35,14 @@ void ModbusReader::start()
     if (m_readerShouldRun)
         return;
 
+    m_readerShouldRun = true;
     LOG(DEBUG) << "Starting ModbusReader.";
+
     m_modbusClient.connect();
-    for (const auto& device : m_devices)
-    {
-        m_readerThreads.emplace(device.first, new std::thread(&ModbusReader::run, this));
-    }
+    //    for (const auto& device : m_devices)
+    //    {
+    //        m_readerThreads.emplace(device.first, new std::thread(&ModbusReader::run, this));
+    //    }
     LOG(DEBUG) << "Started ModbusReader.";
 }
 
@@ -49,15 +51,21 @@ void ModbusReader::stop()
     if (!m_readerShouldRun)
         return;
 
+    m_readerShouldRun = false;
     LOG(DEBUG) << "Stopping ModbusReader.";
-    for (auto& thread : m_readerThreads)
+
+    //    for (auto& thread : m_readerThreads)
+    //    {
+    //        if (thread.second->joinable())
+    //        {
+    //            thread.second->join();
+    //        }
+    //    }
+
+    if (m_modbusClient.isConnected())
     {
-        if (thread.second->joinable())
-        {
-            thread.second->join();
-        }
+        m_modbusClient.disconnect();
     }
-    m_modbusClient.disconnect();
     LOG(DEBUG) << "Stopped ModbusReader.";
 }
 

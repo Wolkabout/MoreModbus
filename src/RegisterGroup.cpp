@@ -10,13 +10,13 @@
 namespace wolkabout
 {
 RegisterGroup::RegisterGroup(const std::shared_ptr<RegisterMapping>& mapping)
-: m_registerType(mapping->getRegisterType()), m_mappings(), m_slaveAddress(mapping->getSlaveAddress())
+: m_registerType(mapping->getRegisterType()), m_slaveAddress(mapping->getSlaveAddress()), m_mappings()
 {
     addMapping(mapping);
 }
 
 RegisterGroup::RegisterGroup(const RegisterGroup& instance)
-: m_registerType(instance.getRegisterType()), m_mappings(), m_slaveAddress(instance.getSlaveAddress())
+: m_registerType(instance.getRegisterType()), m_slaveAddress(instance.getSlaveAddress()), m_mappings()
 {
     for (const auto& mapping : instance.getMappings())
     {
@@ -24,7 +24,7 @@ RegisterGroup::RegisterGroup(const RegisterGroup& instance)
     }
 }
 
-bool RegisterGroup::addMapping(std::shared_ptr<RegisterMapping> mapping)
+bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
 {
     if (mapping->getRegisterType() != m_registerType)
     {
@@ -130,7 +130,7 @@ bool RegisterGroup::addMapping(std::shared_ptr<RegisterMapping> mapping)
     }
     else
     {
-        for (uint i = 0; i < mapping->getRegisterCount(); i++)
+        for (uint16_t i = 0; i < mapping->getRegisterCount(); i++)
         {
             m_mappings.emplace(std::to_string(mapping->getStartingAddress() + i), mapping);
         }
@@ -154,12 +154,12 @@ uint16_t RegisterGroup::getAddressCount() const
     for (const auto& pair : m_mappings)
     {
         const auto address = getAddressFromString(pair.first);
-        if (std::find(mappings.begin(), mappings.end(), address) != mappings.end())
+        if (std::find(mappings.begin(), mappings.end(), address) == mappings.end())
         {
             mappings.emplace_back(address);
         }
     }
-    return mappings.size();
+    return static_cast<uint16_t>(mappings.size());
 }
 
 int8_t RegisterGroup::getSlaveAddress() const
@@ -185,10 +185,10 @@ uint16_t RegisterGroup::getAddressFromString(const std::string& string)
 {
     auto firstAddressString = std::string(string);
     auto dotIndex = firstAddressString.find('.');
-    if (dotIndex != -1)
+    if (dotIndex != static_cast<uint16_t>(-1))
     {
         firstAddressString = firstAddressString.substr(0, dotIndex);
     }
-    return std::stoul(firstAddressString);
+    return static_cast<uint16_t>(std::stoul(firstAddressString));
 }
 }    // namespace wolkabout
