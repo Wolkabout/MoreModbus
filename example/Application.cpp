@@ -58,5 +58,10 @@ int main(int argc, char** argv)
 
     reader->start();
 
+    while (reader->isRunning())
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    }
+
     return 0;
 }

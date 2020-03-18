@@ -30,14 +30,16 @@ public:
 private:
     void run();
 
+    void readDevice(const std::shared_ptr<ModbusDevice>& device);
+
     // Modbus client and device data
     ModbusClient& m_modbusClient;
     std::map<int8_t, std::shared_ptr<ModbusDevice>> m_devices;
 
     // Threading and reader data
     std::atomic_bool m_readerShouldRun{};
+    std::atomic_bool m_shouldReconnect{};
     std::unique_ptr<std::thread> m_mainReaderThread;
-    std::map<int8_t, std::unique_ptr<std::thread>> m_readerThreads;
     std::chrono::milliseconds m_readPeriod;
 };
 }    // namespace wolkabout
