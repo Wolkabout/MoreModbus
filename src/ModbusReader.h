@@ -9,6 +9,7 @@
 #include "modbus/ModbusClient.h"
 
 #include <atomic>
+#include <functional>
 #include <thread>
 
 namespace wolkabout
@@ -35,11 +36,17 @@ private:
     // Modbus client and device data
     ModbusClient& m_modbusClient;
     std::map<int8_t, std::shared_ptr<ModbusDevice>> m_devices;
+    std::map<int8_t, bool> m_deviceActiveStatus;
+
+    // Reconnect logic
+    unsigned long m_timeoutIterator;
+    const std::vector<int> m_timeoutDurations = {1, 5, 10, 15, 30, 60, 300, 600, 1800, 3600};
+    std::atomic_bool m_shouldReconnect{};
 
     // Threading and reader data
     std::atomic_bool m_readerShouldRun{};
-    std::atomic_bool m_shouldReconnect{};
     std::unique_ptr<std::thread> m_mainReaderThread;
+    std::map<int8_t, std::unique_ptr<std::thread>> m_threads;
     std::chrono::milliseconds m_readPeriod;
 };
 }    // namespace wolkabout

@@ -50,6 +50,9 @@ int main(int argc, char** argv)
     const auto& device = std::make_shared<wolkabout::ModbusDevice>("Test Device 1", 1);
     device->addGroup(group);
 
+    const auto& device2 = std::make_shared<wolkabout::ModbusDevice>("Test Device 2", 2);
+    device->addGroup(group);
+
     const auto& modbusClient =
       std::make_shared<wolkabout::LibModbusTcpIpClient>("192.168.0.101", 502, std::chrono::milliseconds(500));
 
