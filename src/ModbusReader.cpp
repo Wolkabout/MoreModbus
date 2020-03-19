@@ -3,6 +3,7 @@
 //
 
 #include "ModbusReader.h"
+#include "modbus/ModbusGroupReader.h"
 
 #include "utility/Logger.h"
 
@@ -164,8 +165,21 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
 
     // Work on this logic, read all groups and do it properly.
     // Also, parse types and values as necessary.
-    bool value;
-    if (!m_modbusClient.readCoil(device->getSlaveAddress(), 0, value))
+    uint16_t unreadGroups = 0;
+
+    // Read through all the groups.
+    for (const auto& group : device->getGroups())
+    {
+        if (!ModbusGroupReader::readGroup(m_modbusClient, *group))
+        {
+            LOG(WARN) << "Group starting at : " << group->getStartingAddress() << " on slave "
+                      << group->getSlaveAddress() << " had error while reading.";
+            unreadGroups++;
+        }
+    }
+
+    // If all the groups had error while reading, report the device as having errors.
+    if (unreadGroups == device->getGroups().size())
     {
         m_errorDevices.emplace_back(device->getSlaveAddress());
     }
