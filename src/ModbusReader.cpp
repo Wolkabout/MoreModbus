@@ -13,6 +13,8 @@ ModbusReader::ModbusReader(ModbusClient& modbusClient, const std::vector<std::sh
 : m_modbusClient(modbusClient), m_devices(), m_readerShouldRun(false), m_threads(), m_readPeriod(readPeriod)
 {
     LOG(INFO) << "Initializing ModbusReader...";
+    // Intialize everything necessary for devices, assume they're at first offline,
+    // and don't have any running threads.
     for (const auto& device : devices)
     {
         m_devices.emplace(device->getSlaveAddress(), device);
@@ -39,6 +41,7 @@ void ModbusReader::start()
 
     m_readerShouldRun = true;
     LOG(DEBUG) << "Starting ModbusReader.";
+    // Attempt the first establishment of connection, and start the main thread.
     if (!m_modbusClient.isConnected())
     {
         m_modbusClient.connect();
@@ -55,6 +58,7 @@ void ModbusReader::stop()
 
     m_readerShouldRun = false;
     LOG(DEBUG) << "Stopping ModbusReader.";
+    // Disconnect the modbus devices, and stop the main thread.
     if (m_modbusClient.isConnected())
     {
         m_modbusClient.disconnect();
@@ -73,10 +77,11 @@ void ModbusReader::run()
     {
         if (m_shouldReconnect)
         {
+            // Reconnect logic, the thread will be stuck in this if-case until
+            // the modbus connection is reestablished.
+            // Report all devices as non-active.
             LOG(TRACE) << "We should try to reconnect.";
             m_shouldReconnect = false;
-
-            // Reconnect logic
             for (auto& device : m_deviceActiveStatus)
             {
                 device.second = false;
@@ -86,6 +91,7 @@ void ModbusReader::run()
             LOG(INFO) << "ModbusReader: Attempting to connect";
             while (!m_modbusClient.connect())
             {
+                // Timing logic, increase the time after which we attempt to reconnect.
                 std::this_thread::sleep_for(std::chrono::seconds(m_timeoutDurations[m_timeoutIterator]));
                 if ((uint)m_timeoutIterator < m_timeoutDurations.size() - 1)
                 {
@@ -95,6 +101,7 @@ void ModbusReader::run()
             m_shouldReconnect = false;
             m_timeoutIterator = 0;
 
+            // Report all devices as active.
             for (auto& device : m_deviceActiveStatus)
             {
                 device.second = true;
@@ -105,6 +112,9 @@ void ModbusReader::run()
             if (m_modbusClient.isConnected())
             {
                 LOG(DEBUG) << "Reading devices.";
+                // Start thread foreach device, wait the readPeriod for the threads to execute, and
+                // join them back in. Process if some of them reported errors, if all, go to reconnect,
+                // if just some are, report them as non-active.
                 for (const auto& device : m_devices)
                 {
                     m_threads[device.second->getSlaveAddress()] =

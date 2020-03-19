@@ -20,6 +20,10 @@ class RegisterGroup
 public:
     explicit RegisterGroup(const std::shared_ptr<RegisterMapping>& mapping);
 
+    // Overriden default copy constructor to ensure deep copy of objects which we own
+    // shared pointers to. This is done because for every group, we want to have
+    // copies of mappings, since they're the ones tracking values and their changes
+    // for each separate register on each separate slave address.
     RegisterGroup(const RegisterGroup& instance);
 
     bool addMapping(const std::shared_ptr<RegisterMapping>& mapping);
