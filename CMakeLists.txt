@@ -19,6 +19,7 @@ set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS}    -Wall -Wextra -pedantic             
                                             -Wwrite-strings -Werror=non-virtual-dtor")
 
 find_package(Threads REQUIRED)
+include_directories("src")
 
 file(GLOB_RECURSE HEADER_FILES src/*.h src/*.hpp)
 file(GLOB_RECURSE SOURCE_FILES src/*.c src/*.cpp)
