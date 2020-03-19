@@ -38,30 +38,22 @@ public:
     LibModbusSerialRtuClient(std::string serialPort, int baudRate, char dataBits, char stopBits, BitParity bitParity,
                              std::chrono::milliseconds responseTimeout);
 
-    virtual ~LibModbusSerialRtuClient();
+    ~LibModbusSerialRtuClient() override;
 
 private:
     bool createContext() override;
     bool destroyContext() override;
 
-    bool writeHoldingRegister(int address, signed short value) override;
-    bool writeHoldingRegister(int address, unsigned short value) override;
-    bool writeHoldingRegister(int address, float value) override;
+    bool writeHoldingRegister(int address, uint16_t value) override;
 
     bool writeCoil(int address, bool value) override;
 
-    bool readInputRegisters(int address, int number, std::vector<signed short>& values) override;
-    bool readInputRegisters(int address, int number, std::vector<unsigned short>& values) override;
-    bool readInputRegisters(int address, int number, std::vector<float>& values) override;
+    bool readInputRegisters(int address, int number, std::vector<uint16_t>& values) override;
 
     bool readInputContacts(int address, int number, std::vector<bool>& values) override;
 
-    bool readHoldingRegister(int address, signed short& value) override;
-    bool readHoldingRegisters(int address, int number, std::vector<signed short>& values) override;
-    bool readHoldingRegister(int address, unsigned short& value) override;
-    bool readHoldingRegisters(int address, int number, std::vector<unsigned short>& values) override;
-    bool readHoldingRegister(int address, float& value) override;
-    bool readHoldingRegisters(int address, int number, std::vector<float>& values) override;
+    bool readHoldingRegister(int address, uint16_t& value) override;
+    bool readHoldingRegisters(int address, int number, std::vector<uint16_t>& values) override;
 
     bool readCoil(int address, bool& value) override;
     bool readCoils(int address, int number, std::vector<bool>& values) override;

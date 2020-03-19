@@ -26,7 +26,7 @@ file(GLOB_RECURSE SOURCE_FILES src/*.c src/*.cpp)
 
 link_directories(${PROJECT_SOURCE_DIR}/out/lib)
 
-add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES} ${HEADER_FILES} src/ModbusDevice.cpp src/ModbusDevice.h)
+add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES} ${HEADER_FILES})
 target_link_libraries(${PROJECT_NAME} modbus pthread)
 
 file(GLOB_RECURSE EXAMPLE_SOURCE_FILES example/*.cpp)

@@ -29,7 +29,7 @@ namespace wolkabout
 class ModbusClient
 {
 public:
-    ModbusClient(std::chrono::milliseconds responseTimeout);
+    explicit ModbusClient(std::chrono::milliseconds responseTimeout);
     virtual ~ModbusClient() = default;
 
     bool connect();
@@ -37,27 +37,17 @@ public:
 
     bool isConnected();
 
-    bool writeHoldingRegister(int slaveAddress, int address, signed short value);
-    bool writeHoldingRegister(int slaveAddress, int address, unsigned short value);
-    bool writeHoldingRegister(int slaveAddress, int address, float value);
-    bool writeHoldingRegisters(int slaveAddress, int address, std::vector<short>& values);
-    bool writeHoldingRegisters(int slaveAddress, int address, std::vector<unsigned short>& values);
-    bool writeHoldingRegisters(int slaveAddress, int address, std::vector<float>& values);
+    bool writeHoldingRegister(int slaveAddress, int address, uint16_t value);
+    bool writeHoldingRegisters(int slaveAddress, int address, std::vector<uint16_t>& values);
 
     bool writeCoil(int slaveAddress, int address, bool value);
 
-    bool readInputRegisters(int slaveAddress, int address, int number, std::vector<signed short>& values);
-    bool readInputRegisters(int slaveAddress, int address, int number, std::vector<unsigned short>& values);
-    bool readInputRegisters(int slaveAddress, int address, int number, std::vector<float>& values);
-
     bool readInputContacts(int slaveAddress, int address, int number, std::vector<bool>& values);
 
-    bool readHoldingRegister(int slaveAddress, int address, signed short& value);
-    bool readHoldingRegister(int slaveAddress, int address, unsigned short& value);
-    bool readHoldingRegister(int slaveAddress, int address, float& value);
-    bool readHoldingRegisters(int slaveAddress, int address, int number, std::vector<signed short>& values);
-    bool readHoldingRegisters(int slaveAddress, int address, int number, std::vector<unsigned short>& values);
-    bool readHoldingRegisters(int slaveAddress, int address, int number, std::vector<float>& values);
+    bool readHoldingRegister(int slaveAddress, int address, uint16_t& value);
+    bool readHoldingRegisters(int slaveAddress, int address, int number, std::vector<uint16_t>& values);
+
+    bool readInputRegisters(int slaveAddress, int address, int number, std::vector<uint16_t>& values);
 
     bool readCoil(int slaveAddress, int address, bool& value);
     bool readCoils(int slaveAddress, int address, int number, std::vector<bool>& values);
@@ -66,50 +56,22 @@ protected:
     virtual bool createContext() = 0;
     virtual bool destroyContext() = 0;
 
-    virtual bool writeHoldingRegister(int address, signed short value);
-    virtual bool writeHoldingRegister(int address, unsigned short value);
-    virtual bool writeHoldingRegister(int address, float value);
-    virtual bool writeHoldingRegisters(int address, std::vector<short>& values);
-    virtual bool writeHoldingRegisters(int address, std::vector<unsigned short>& values);
-    virtual bool writeHoldingRegisters(int address, std::vector<float>& values);
+    virtual bool writeHoldingRegister(int address, uint16_t value);
+    virtual bool writeHoldingRegisters(int address, std::vector<uint16_t>& values);
 
     virtual bool writeCoil(int address, bool value);
 
-    virtual bool readInputRegisters(int address, int number, std::vector<signed short>& values);
-    virtual bool readInputRegisters(int address, int number, std::vector<unsigned short>& values);
-    virtual bool readInputRegisters(int address, int number, std::vector<float>& values);
+    virtual bool readHoldingRegister(int address, uint16_t& value);
+    virtual bool readHoldingRegisters(int address, int number, std::vector<uint16_t>& values);
 
-    virtual bool readInputContacts(int address, int number, std::vector<bool>& values);
-
-    virtual bool readHoldingRegister(int address, signed short& value);
-    virtual bool readHoldingRegister(int address, unsigned short& value);
-    virtual bool readHoldingRegister(int address, float& value);
-    virtual bool readHoldingRegisters(int address, int number, std::vector<signed short>& values);
-    virtual bool readHoldingRegisters(int address, int number, std::vector<unsigned short>& values);
-    virtual bool readHoldingRegisters(int address, int number, std::vector<float>& values);
+    virtual bool readInputRegisters(int address, int number, std::vector<uint16_t>& values);
 
     virtual bool readCoil(int address, bool& value);
     virtual bool readCoils(int address, int number, std::vector<bool>& values);
 
+    virtual bool readInputContacts(int address, int number, std::vector<bool>& values);
+
     virtual bool changeSlaveAddress(int address);
-
-    union ModbusValue {
-        unsigned short unsignedShortValues[2];
-        signed short signedShortValue;
-        unsigned short unsignedShortValue;
-        float floatValue;
-
-        ModbusValue()
-        {
-            unsignedShortValues[0] = 0u;
-            unsignedShortValues[1] = 0u;
-
-            signedShortValue = 0;
-            unsignedShortValue = 0u;
-            floatValue = 0.0f;
-        }
-    };
-
     std::chrono::milliseconds m_responseTimeout;
 
     bool m_connected;
