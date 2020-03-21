@@ -2,11 +2,12 @@
 // Created by Nexyy on 16/03/2020.
 //
 
-#include "../src/ModbusDevice.h"
-#include "../src/ModbusReader.h"
-#include "../src/RegisterGroup.h"
-#include "../src/modbus/LibModbusTcpIpClient.h"
-#include "../src/utility/ConsoleLogger.h"
+#include "ModbusDevice.h"
+#include "ModbusReader.h"
+#include "RegisterGroup.h"
+#include "modbus/LibModbusTcpIpClient.h"
+#include "utility/ConsoleLogger.h"
+#include "utility/DataParsers.h"
 
 int main(int argc, char** argv)
 {
@@ -59,12 +60,25 @@ int main(int argc, char** argv)
     const auto& reader = std::make_shared<wolkabout::ModbusReader>(
       *modbusClient, std::vector<std::shared_ptr<wolkabout::ModbusDevice>>{device}, std::chrono::milliseconds(1000));
 
-    reader->start();
+    const auto& bytes = std::vector<uint16_t>{16706, 17184};
+    LOG(DEBUG) << wolkabout::DataParsers::registersToAsciiString(bytes);
+    LOG(DEBUG) << wolkabout::DataParsers::registersToUnicodeString(bytes);
 
-    while (reader->isRunning())
-    {
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-    }
+    const auto& newBytes = std::vector<uint16_t>{32768, 1};
+    LOG(DEBUG) << wolkabout::DataParsers::registersToInt32(newBytes, wolkabout::DataParsers::Endian::BIG);
+    LOG(DEBUG) << wolkabout::DataParsers::registersToInt32(newBytes, wolkabout::DataParsers::Endian::LITTLE);
+    LOG(DEBUG) << wolkabout::DataParsers::registersToUint32(newBytes, wolkabout::DataParsers::Endian::BIG);
+    LOG(DEBUG) << wolkabout::DataParsers::registersToUint32(newBytes, wolkabout::DataParsers::Endian::LITTLE);
+
+    const auto& array = wolkabout::DataParsers::asciiStringToRegisters("Aloha!");
+    LOG(DEBUG) << wolkabout::DataParsers::registersToAsciiString(array);
+
+    //    reader->start();
+    //
+    //    while (reader->isRunning())
+    //    {
+    //        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    //    }
 
     return 0;
 }

@@ -47,7 +47,6 @@ public:
         MERGE_FLOAT,
         STRINGIFY_ASCII,
         STRINGIFY_UNICODE,
-        STRINGIFY_UTF16,
         TAKE_BIT
     };
 

@@ -127,8 +127,7 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
             throw std::logic_error("Merge for floats can only output FLOAT.");
         }
     }
-    else if (m_operationType == OperationType::STRINGIFY_ASCII || m_operationType == OperationType::STRINGIFY_UNICODE ||
-             m_operationType == OperationType::STRINGIFY_UTF16)
+    else if (m_operationType == OperationType::STRINGIFY_ASCII || m_operationType == OperationType::STRINGIFY_UNICODE)
     {
         if (m_outputType != OutputType::STRING)
         {
