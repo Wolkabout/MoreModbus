@@ -33,6 +33,12 @@ public:
     static int32_t registersToInt32(const std::vector<uint16_t>& value, Endian endian);
     static uint32_t registersToUint32(const std::vector<uint16_t>& value, Endian endian);
     static float registersToFloat(const std::vector<uint16_t>& value);
+
+private:
+    static uint8_t MAX_UINT8;
+    static uint8_t SHIFT_UINT8;
+    static uint16_t MAX_UINT16;
+    static uint16_t SHIFT_UINT16;
 };
 }    // namespace wolkabout
 

@@ -9,6 +9,15 @@
 #include "utility/ConsoleLogger.h"
 #include "utility/DataParsers.h"
 
+#include <bitset>
+
+template <class T>
+void printBits(T value)
+{
+    std::bitset<sizeof(T) * 8> set(value);
+    LOG(TRACE) << set;
+}
+
 int main(int argc, char** argv)
 {
     // Setup logger
@@ -64,7 +73,7 @@ int main(int argc, char** argv)
     LOG(DEBUG) << wolkabout::DataParsers::registersToAsciiString(bytes);
     LOG(DEBUG) << wolkabout::DataParsers::registersToUnicodeString(bytes);
 
-    const auto& newBytes = std::vector<uint16_t>{32768, 1};
+    const auto& newBytes = std::vector<uint16_t>{32768, 0};
     LOG(DEBUG) << wolkabout::DataParsers::registersToInt32(newBytes, wolkabout::DataParsers::Endian::BIG);
     LOG(DEBUG) << wolkabout::DataParsers::registersToInt32(newBytes, wolkabout::DataParsers::Endian::LITTLE);
     LOG(DEBUG) << wolkabout::DataParsers::registersToUint32(newBytes, wolkabout::DataParsers::Endian::BIG);
@@ -72,6 +81,13 @@ int main(int argc, char** argv)
 
     const auto& array = wolkabout::DataParsers::asciiStringToRegisters("Aloha!");
     LOG(DEBUG) << wolkabout::DataParsers::registersToAsciiString(array);
+    LOG(DEBUG) << wolkabout::DataParsers::registersToUnicodeString(array);
+
+    int32_t attempt = -1;
+    auto uintAttempt = static_cast<uint32_t>(attempt);
+
+    printBits(attempt);
+    printBits(uintAttempt);
 
     //    reader->start();
     //
