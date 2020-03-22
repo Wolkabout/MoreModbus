@@ -4,6 +4,7 @@
 
 #include "RegisterMapping.h"
 
+#include <algorithm>
 #include <stdexcept>
 
 namespace wolkabout
@@ -202,5 +203,34 @@ RegisterMapping::OperationType RegisterMapping::getOperationType() const
 int8_t RegisterMapping::getBitIndex() const
 {
     return m_bitIndex;
+}
+
+void RegisterMapping::update(const std::vector<uint16_t>& newValue)
+{
+    if (newValue.size() != m_byteValues.size())
+    {
+        throw std::logic_error("RegisterMapping: The value array has to be the same size, it cannot change.")
+    }
+
+}
+
+void RegisterMapping::update(bool newRegisterValue)
+{
+
+}
+
+const std::vector<uint16_t> &RegisterMapping::getBytesValues() const
+{
+    return m_byteValues;
+}
+
+bool RegisterMapping::getBoolValue() const
+{
+    return m_boolValue;
+}
+
+void RegisterMapping::setValid(bool valid)
+{
+    m_isValid = valid;
 }
 }    // namespace wolkabout

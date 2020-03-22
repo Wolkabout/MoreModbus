@@ -98,6 +98,16 @@ public:
 
     int8_t getBitIndex() const;
 
+    void update(const std::vector<uint16_t>& newValue);
+
+    void update(bool newRegisterValue);
+
+    const std::vector<uint16_t>& getBytesValues() const;
+
+    bool getBoolValue() const;
+
+    void setValid(bool valid);
+
 private:
     // General mapping data
     std::string m_reference;
@@ -113,6 +123,12 @@ private:
     OutputType m_outputType;
     OperationType m_operationType;
     int8_t m_bitIndex = -1;
+
+    // Value change watching logic
+    bool m_boolValue{};
+    std::vector<uint16_t> m_byteValues;
+    bool m_isInitialized{};
+    bool m_isValid{};
 };
 }    // namespace wolkabout
 
