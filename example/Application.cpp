@@ -11,8 +11,7 @@
 
 #include <bitset>
 
-template <class T>
-void printBits(T value)
+template <class T> void printBits(T value)
 {
     std::bitset<sizeof(T) * 8> set(value);
     LOG(TRACE) << set;
@@ -69,32 +68,12 @@ int main(int argc, char** argv)
     const auto& reader = std::make_shared<wolkabout::ModbusReader>(
       *modbusClient, std::vector<std::shared_ptr<wolkabout::ModbusDevice>>{device}, std::chrono::milliseconds(1000));
 
-    const auto& bytes = std::vector<uint16_t>{16706, 17184};
-    LOG(DEBUG) << wolkabout::DataParsers::registersToAsciiString(bytes);
-    LOG(DEBUG) << wolkabout::DataParsers::registersToUnicodeString(bytes);
+    reader->start();
 
-    const auto& newBytes = std::vector<uint16_t>{32768, 0};
-    LOG(DEBUG) << wolkabout::DataParsers::registersToInt32(newBytes, wolkabout::DataParsers::Endian::BIG);
-    LOG(DEBUG) << wolkabout::DataParsers::registersToInt32(newBytes, wolkabout::DataParsers::Endian::LITTLE);
-    LOG(DEBUG) << wolkabout::DataParsers::registersToUint32(newBytes, wolkabout::DataParsers::Endian::BIG);
-    LOG(DEBUG) << wolkabout::DataParsers::registersToUint32(newBytes, wolkabout::DataParsers::Endian::LITTLE);
-
-    const auto& array = wolkabout::DataParsers::asciiStringToRegisters("Aloha!");
-    LOG(DEBUG) << wolkabout::DataParsers::registersToAsciiString(array);
-    LOG(DEBUG) << wolkabout::DataParsers::registersToUnicodeString(array);
-
-    int32_t attempt = -1;
-    auto uintAttempt = static_cast<uint32_t>(attempt);
-
-    printBits(attempt);
-    printBits(uintAttempt);
-
-    //    reader->start();
-    //
-    //    while (reader->isRunning())
-    //    {
-    //        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-    //    }
+    while (reader->isRunning())
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    }
 
     return 0;
 }

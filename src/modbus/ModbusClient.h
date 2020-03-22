@@ -17,7 +17,7 @@
 #ifndef MODBUSCLIENT_H
 #define MODBUSCLIENT_H
 
-#include "libmodbus/modbus.h"
+#include "modbus/libmodbus/modbus.h"
 
 #include <chrono>
 #include <mutex>

@@ -5,6 +5,7 @@
 #include "DataParsers.h"
 #include "utility/Logger.h"
 
+#include <bitset>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -32,8 +33,7 @@ std::vector<uint16_t> DataParsers::unicodeStringToRegisters(const std::string& v
     std::vector<uint16_t> values;
     for (uint i = 0; i < value.size(); i = i + 2)
     {
-        auto firstChar = static_cast<uint8_t>(value[i]),
-             secondChar = static_cast<uint8_t>(value[i + 1]);
+        auto firstChar = static_cast<uint8_t>(value[i]), secondChar = static_cast<uint8_t>(value[i + 1]);
         values.emplace_back((firstChar << SHIFT_UINT8) + secondChar);
     }
     return values;
@@ -56,7 +56,12 @@ std::vector<uint16_t> DataParsers::uint32ToRegisters(uint32_t value, DataParsers
 
 std::vector<uint16_t> DataParsers::floatToRegisters(float value)
 {
-    return std::vector<uint16_t>();
+    union {
+        float floatValue;
+        uint16_t registerValues[2];
+    } converter{};
+    converter.floatValue = value;
+    return std::vector<uint16_t>{converter.registerValues[0], converter.registerValues[1]};
 }
 
 std::string DataParsers::registersToAsciiString(const std::vector<uint16_t>& value)
@@ -106,6 +111,12 @@ float DataParsers::registersToFloat(const std::vector<uint16_t>& value)
     if (value.size() != 2)
         throw std::logic_error("DataParsers: You must pass exactly 2 values to parse into an Float.");
 
-    return 0;
+    union {
+        float floatValue;
+        uint16_t registerValues[2];
+    } converter{};
+    converter.registerValues[0] = value[0];
+    converter.registerValues[1] = value[1];
+    return converter.floatValue;
 }
 }    // namespace wolkabout
