@@ -93,8 +93,7 @@ int32_t DataParsers::registersToInt32(const std::vector<uint16_t>& value, DataPa
     if (value.size() != 2)
         throw std::logic_error("DataParsers: You must pass exactly 2 values to parse into an Int32.");
 
-    uint8_t bigValue = (endian == DataParsers::Endian::LITTLE), smallValue = !bigValue;
-    return static_cast<int32_t>((value[bigValue] << SHIFT_UINT16) + value[smallValue]);
+    return static_cast<int32_t>(registersToUint32(value, endian));
 }
 
 uint32_t DataParsers::registersToUint32(const std::vector<uint16_t>& value, DataParsers::Endian endian)
@@ -118,5 +117,20 @@ float DataParsers::registersToFloat(const std::vector<uint16_t>& value)
     converter.registerValues[0] = value[0];
     converter.registerValues[1] = value[1];
     return converter.floatValue;
+}
+
+int16_t DataParsers::uint16ToInt16(uint16_t value)
+{
+    return static_cast<int16_t>(value);
+}
+
+uint16_t DataParsers::int16ToUint16(int16_t value)
+{
+    return static_cast<uint16_t>(value);
+}
+
+std::bitset<sizeof(uint16_t) * 8> DataParsers::separteBits(uint16_t value)
+{
+    return {value};
 }
 }    // namespace wolkabout
