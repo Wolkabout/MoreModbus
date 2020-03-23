@@ -51,7 +51,7 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
         // Allow Registers to be INT16, UINT16.
         if (m_outputType != OutputType::INT16 && m_outputType != OutputType::UINT16)
         {
-            throw std::logic_error("Single address register mapping can\'t"
+            throw std::logic_error("RegisterMapping: Single address register mapping can\'t"
                                    " be anything else than INT16, UINT16.");
         }
         break;
@@ -59,7 +59,7 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
     case RegisterType::INPUT_CONTACT:
         if (m_outputType != OutputType::BOOL)
         {
-            throw std::logic_error("Single address discrete register can\'t"
+            throw std::logic_error("RegisterMapping: Single address discrete register can\'t"
                                    " be anything else than BOOL.");
         }
         break;
@@ -80,10 +80,9 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 {
     if (m_registerType == RegisterType::COIL || m_registerType == RegisterType::INPUT_CONTACT)
     {
-        throw std::logic_error("Take bit can\'t be done over COIL/INPUT_CONTACT.");
+        throw std::logic_error("RegisterMapping: Take bit can\'t be done over COIL/INPUT_CONTACT.");
     }
 }
-
 
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                                  const std::vector<int16_t>& addresses, OutputType type, OperationType operation,
@@ -98,12 +97,12 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 {
     if (m_registerType == RegisterType::COIL || m_registerType == RegisterType::INPUT_CONTACT)
     {
-        throw std::logic_error("Multi register mapping can\'t be COIL or INPUT_CONTACT.");
+        throw std::logic_error("RegisterMapping: Multi register mapping can\'t be COIL or INPUT_CONTACT.");
     }
 
     if (m_outputType == OutputType::BOOL || m_outputType == OutputType::INT16 || m_outputType == OutputType::UINT16)
     {
-        throw std::logic_error("Multi register mapping can\'t be BOOL, INT16 or UINT16.");
+        throw std::logic_error("RegisterMapping: Multi register mapping can\'t be BOOL, INT16 or UINT16.");
     }
 
     // Can be two registers that are being merged into a 32bit, or multiple ones merging into a string.
@@ -111,31 +110,32 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
     {
         if (m_addresses.size() != 2)
         {
-            throw std::logic_error("Merge operations work only with 2 registers.");
+            throw std::logic_error("RegisterMapping: Merge operations work only with 2 registers.");
         }
 
         if (m_outputType != OutputType::INT32 && m_outputType != OutputType::UINT32)
         {
-            throw std::logic_error("Merge operations (with endians) output 32bit types (INT32, UINT32).");
+            throw std::logic_error("RegisterMapping: Merge operations (with endians)"
+                                   " output 32bit types (INT32, UINT32).");
         }
     }
     else if (m_operationType == OperationType::MERGE_FLOAT)
     {
         if (m_addresses.size() != 2)
         {
-            throw std::logic_error("Merge operations work only with 2 registers.");
+            throw std::logic_error("RegisterMapping: Merge operations work only with 2 registers.");
         }
 
         if (m_outputType != OutputType::FLOAT)
         {
-            throw std::logic_error("Merge for floats can only output FLOAT.");
+            throw std::logic_error("RegisterMapping: Merge for floats can only output FLOAT.");
         }
     }
     else if (m_operationType == OperationType::STRINGIFY_ASCII || m_operationType == OperationType::STRINGIFY_UNICODE)
     {
         if (m_outputType != OutputType::STRING)
         {
-            throw std::logic_error("Stringify can only return string.");
+            throw std::logic_error("RegisterMapping: Stringify can only return string.");
         }
     }
 
@@ -252,7 +252,7 @@ bool RegisterMapping::update(bool newRegisterValue)
     return !isValueInitialized || different || !isValid;
 }
 
-const std::vector<uint16_t> &RegisterMapping::getBytesValues() const
+const std::vector<uint16_t>& RegisterMapping::getBytesValues() const
 {
     return m_byteValues;
 }

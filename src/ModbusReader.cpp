@@ -12,7 +12,7 @@ ModbusReader::ModbusReader(ModbusClient& modbusClient, const std::vector<std::sh
                            const std::chrono::milliseconds& readPeriod)
 : m_modbusClient(modbusClient), m_devices(), m_readerShouldRun(false), m_threads(), m_readPeriod(readPeriod)
 {
-    LOG(INFO) << "Initializing ModbusReader...";
+    LOG(INFO) << "ModbusReader: Initializing ModbusReader...";
     // Initialize everything necessary for devices, assume they're at first offline,
     // and don't have any running threads.
     for (const auto& device : devices)
@@ -21,7 +21,7 @@ ModbusReader::ModbusReader(ModbusClient& modbusClient, const std::vector<std::sh
         m_deviceActiveStatus.emplace(device->getSlaveAddress(), false);
         m_threads.emplace(device->getSlaveAddress(), nullptr);
     }
-    LOG(INFO) << "ModbusReader initialized. Created " << devices.size() << " device(s).";
+    LOG(INFO) << "ModbusReader: ModbusReader initialized. Created " << devices.size() << " device(s).";
 }
 
 ModbusReader::~ModbusReader()
@@ -39,7 +39,7 @@ void ModbusReader::start()
     if (m_readerShouldRun)
         return;
 
-    LOG(DEBUG) << "Starting ModbusReader.";
+    LOG(DEBUG) << "ModbusReader: Starting ModbusReader.";
     // Attempt the first establishment of connection, and start the main thread.
     m_readerShouldRun = true;
 
@@ -49,7 +49,7 @@ void ModbusReader::start()
     }
 
     m_mainReaderThread = std::unique_ptr<std::thread>(new std::thread(&ModbusReader::run, this));
-    LOG(DEBUG) << "Started ModbusReader.";
+    LOG(DEBUG) << "ModbusReader: Started ModbusReader.";
 }
 
 void ModbusReader::stop()
@@ -57,7 +57,7 @@ void ModbusReader::stop()
     if (!m_readerShouldRun)
         return;
 
-    LOG(DEBUG) << "Stopping ModbusReader.";
+    LOG(DEBUG) << "ModbusReader: Stopping ModbusReader.";
     // Disconnect the modbus devices, and stop the main thread.
     m_readerShouldRun = false;
 
@@ -70,7 +70,7 @@ void ModbusReader::stop()
     {
         m_mainReaderThread->join();
     }
-    LOG(DEBUG) << "Stopped ModbusReader.";
+    LOG(DEBUG) << "ModbusReader: Stopped ModbusReader.";
 }
 
 void ModbusReader::run()
@@ -82,7 +82,7 @@ void ModbusReader::run()
             // Reconnect logic, the thread will be stuck in this if-case until
             // the modbus connection is reestablished.
             // Report all devices as non-active.
-            LOG(TRACE) << "We should try to reconnect.";
+            LOG(TRACE) << "ModbusReader: Attempting to reconnect.";
             m_shouldReconnect = false;
             for (auto& device : m_deviceActiveStatus)
             {
@@ -113,7 +113,7 @@ void ModbusReader::run()
         {
             if (m_modbusClient.isConnected())
             {
-                LOG(DEBUG) << "Reading devices.";
+                LOG(DEBUG) << "ModbusReader: Reading devices.";
                 // Start thread foreach device, wait the readPeriod for the threads to execute, and
                 // join them back in. Process if some of them reported errors, if all, go to reconnect,
                 // if just some are, report them as non-active.
@@ -162,7 +162,7 @@ void ModbusReader::run()
 
 void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
 {
-    LOG(TRACE) << "Reading device : " << device->getName();
+    LOG(TRACE) << "ModbusReader: Reading device : " << device->getName();
 
     // Work on this logic, read all groups and do it properly.
     // Also, parse types and values as necessary.
@@ -173,7 +173,7 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
     {
         if (!ModbusGroupReader::readGroup(m_modbusClient, *group))
         {
-            LOG(WARN) << "Group starting at : " << group->getStartingAddress() << " on slave "
+            LOG(WARN) << "ModbusReader: Group starting at : " << group->getStartingAddress() << " on slave "
                       << group->getSlaveAddress() << " had error while reading.";
             unreadGroups++;
         }

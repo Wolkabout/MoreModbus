@@ -30,12 +30,17 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
 {
     if (mapping->getRegisterType() != m_registerType)
     {
-        throw std::logic_error("You can\'t add different typed registers in a group.");
+        throw std::logic_error("RegisterGroup: You can\'t add different typed registers in a group.");
     }
 
     if (mapping->getSlaveAddress() != m_slaveAddress)
     {
-        throw std::logic_error("You can\'t add mappings for different slave addresses.");
+        throw std::logic_error("RegisterGroup: You can\'t add mappings for different slave addresses.");
+    }
+
+    if (mapping->isReadRestricted())
+    {
+        throw std::logic_error("RegisterGroup: Read restricted mappings have to have groups of their own!");
     }
 
     if (!m_mappings.empty())
@@ -51,7 +56,7 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
             if (m_mappings.find(std::to_string(mapping->getStartingAddress())) != m_mappings.end())
             {
                 // The address we're targeting is already fully claimed.
-                LOG(WARN) << "Mapping " << mapping->getReference()
+                LOG(WARN) << "RegisterGroup: Mapping " << mapping->getReference()
                           << " can\'t take a bit. Other register"
                              "is already taking the full value.";
                 return false;
@@ -64,7 +69,7 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
                 if (diff != 1)
                 {
                     // It must be exactly one address before.
-                    LOG(WARN) << "Mapping " << mapping->getReference()
+                    LOG(WARN) << "RegisterGroup: Mapping " << mapping->getReference()
                               << " is ahead of the group by more than 1 "
                                  " address.";
                     return false;
@@ -76,7 +81,8 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
                 if (diff != 1)
                 {
                     // It must be exactly one address after.
-                    LOG(WARN) << "Mapping " << mapping->getReference() << " is after the group by more than 1 address.";
+                    LOG(WARN) << "RegisterGroup: Mapping " << mapping->getReference()
+                              << " is after the group by more than 1 address.";
                     return false;
                 }
             }
@@ -94,10 +100,10 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
                 if (diff != 0)
                 {
                     // They're going to have a gap in between. That's not allowed in a group.
-                    LOG(WARN) << "Mapping " << mapping->getReference() << "(" << mapping->getStartingAddress()
-                              << ") does not fit in the group (" << firstMappingAddress << " with "
-                              << mappingAddressCount << " address(es) ... " << firstGroupAddress << ", address gap is "
-                              << diff << ")";
+                    LOG(WARN) << "RegisterGroup: Mapping " << mapping->getReference() << "("
+                              << mapping->getStartingAddress() << ") does not fit in the group (" << firstMappingAddress
+                              << " with " << mappingAddressCount << " address(es) ... " << firstGroupAddress
+                              << ", address gap is " << diff << ")";
                     return false;
                 }
             }
@@ -108,9 +114,9 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
                 if (diff != 0)
                 {
                     // They're also going to have a gap in between.
-                    LOG(WARN) << "Mapping " << mapping->getReference() << "(" << mapping->getStartingAddress()
-                              << ") does not fit in the group (" << firstGroupAddress << " -> "
-                              << (firstGroupAddress + groupAddressCount - 1) << " ... " << firstMappingAddress
+                    LOG(WARN) << "RegisterGroup: Mapping " << mapping->getReference() << "("
+                              << mapping->getStartingAddress() << ") does not fit in the group (" << firstGroupAddress
+                              << " -> " << (firstGroupAddress + groupAddressCount - 1) << " ... " << firstMappingAddress
                               << ", address gap is " << diff << ")";
                     return false;
                 }
@@ -120,10 +126,11 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
 
     if (mapping->getOperationType() == RegisterMapping::OperationType::TAKE_BIT)
     {
-        const auto key = std::to_string(mapping->getStartingAddress()) + SEPARATOR + std::to_string(mapping->getBitIndex());
+        const auto key =
+          std::to_string(mapping->getStartingAddress()) + SEPARATOR + std::to_string(mapping->getBitIndex());
         if (m_mappings.find(key) != m_mappings.end())
         {
-            LOG(WARN) << "Mapping " << mapping->getReference() << "(" << mapping->getStartingAddress()
+            LOG(WARN) << "RegisterGroup: Mapping " << mapping->getReference() << "(" << mapping->getStartingAddress()
                       << ") requests a bit that is already occupied.";
             return false;
         }
@@ -183,7 +190,8 @@ const std::map<std::string, std::shared_ptr<RegisterMapping>>& RegisterGroup::ge
     return m_mappings;
 }
 
-std::vector<std::string> RegisterGroup::getMappingsClaims() const {
+std::vector<std::string> RegisterGroup::getMappingsClaims() const
+{
     std::vector<std::string> claims(m_mappings.size());
     for (const auto& mappingPair : m_mappings)
     {

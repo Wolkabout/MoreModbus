@@ -15,7 +15,6 @@
  */
 
 #include "LibModbusTcpIpClient.h"
-
 #include "ModbusClient.h"
 #include "utility/Logger.h"
 

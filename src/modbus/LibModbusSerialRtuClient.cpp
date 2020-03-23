@@ -15,13 +15,11 @@
  */
 
 #include "LibModbusSerialRtuClient.h"
-
 #include "utility/Logger.h"
 
 #include <cerrno>
 #include <chrono>
 #include <cstdint>
-#include <mutex>
 #include <string>
 #include <thread>
 #include <utility>
