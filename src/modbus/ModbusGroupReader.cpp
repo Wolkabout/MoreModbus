@@ -91,7 +91,7 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
         }
 
         const auto address = RegisterGroup::getAddressFromString(mapping.first);
-        if (mapping.first.find(RegisterGroup::SEPARATOR))
+        if (mapping.first.find(RegisterGroup::SEPARATOR) != std::string::npos)
         {
             const auto& bits = DataParsers::separteBits(values[valueCounter++]);
             uint shift = 0;
@@ -106,7 +106,7 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
                 if (mapping.second->update(bitValue))
                 {
                     LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '"
-                              << mapping.second->getReference() << "' Value: '" << bitValue;
+                              << mapping.second->getReference() << "' Value: '" << bitValue << "'";
                     // Notify of value change.
                     // TODO External
                 }
@@ -117,7 +117,7 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
         {
             // If the mapping has multiple values, they will get added now, and their loop iterations
             // will be skipped.
-            std::vector<uint16_t> data(static_cast<uint16_t>(mapping.second->getRegisterCount()));
+            std::vector<uint16_t> data;
             for (int i = 0; i < mapping.second->getRegisterCount(); i++)
             {
                 if (i > 0)
@@ -128,8 +128,8 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
 
             if (mapping.second->update(data))
             {
-                LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '" << mapping.second->getReference()
-                          << "'";
+                LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '"
+                          << mapping.second->getReference() << "'";
                 // Notify of value change.
                 // TODO External
             }

@@ -63,7 +63,7 @@ int main(int argc, char** argv)
     device->addGroup(group);
 
     const auto& modbusClient =
-      std::make_shared<wolkabout::LibModbusTcpIpClient>("192.168.0.101", 502, std::chrono::milliseconds(500));
+      std::make_shared<wolkabout::LibModbusTcpIpClient>("192.168.0.20", 502, std::chrono::milliseconds(500));
 
     const auto& reader = std::make_shared<wolkabout::ModbusReader>(
       *modbusClient, std::vector<std::shared_ptr<wolkabout::ModbusDevice>>{device}, std::chrono::milliseconds(1000));

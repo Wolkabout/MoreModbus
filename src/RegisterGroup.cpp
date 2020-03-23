@@ -192,7 +192,7 @@ const std::map<std::string, std::shared_ptr<RegisterMapping>>& RegisterGroup::ge
 
 std::vector<std::string> RegisterGroup::getMappingsClaims() const
 {
-    std::vector<std::string> claims(m_mappings.size());
+    std::vector<std::string> claims;
     for (const auto& mappingPair : m_mappings)
     {
         claims.emplace_back(mappingPair.first);
@@ -202,7 +202,7 @@ std::vector<std::string> RegisterGroup::getMappingsClaims() const
 
 std::vector<std::shared_ptr<RegisterMapping>> RegisterGroup::getMappings() const
 {
-    std::vector<std::shared_ptr<RegisterMapping>> mappings(m_mappings.size());
+    std::vector<std::shared_ptr<RegisterMapping>> mappings;
     for (const auto& mappingPair : m_mappings)
     {
         mappings.emplace_back(mappingPair.second);
