@@ -9,6 +9,8 @@
 
 namespace wolkabout
 {
+const char RegisterGroup::SEPARATOR = '.';
+
 RegisterGroup::RegisterGroup(const std::shared_ptr<RegisterMapping>& mapping)
 : m_registerType(mapping->getRegisterType()), m_slaveAddress(mapping->getSlaveAddress()), m_mappings()
 {
@@ -18,7 +20,7 @@ RegisterGroup::RegisterGroup(const std::shared_ptr<RegisterMapping>& mapping)
 RegisterGroup::RegisterGroup(const RegisterGroup& instance)
 : m_registerType(instance.getRegisterType()), m_slaveAddress(instance.getSlaveAddress()), m_mappings()
 {
-    for (const auto& mapping : instance.getMappings())
+    for (const auto& mapping : instance.getMappingsMap())
     {
         m_mappings.emplace(std::string(mapping.first), std::make_shared<RegisterMapping>(*(mapping.second)));
     }
@@ -118,7 +120,7 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
 
     if (mapping->getOperationType() == RegisterMapping::OperationType::TAKE_BIT)
     {
-        const auto key = std::to_string(mapping->getStartingAddress()) + "." + std::to_string(mapping->getBitIndex());
+        const auto key = std::to_string(mapping->getStartingAddress()) + SEPARATOR + std::to_string(mapping->getBitIndex());
         if (m_mappings.find(key) != m_mappings.end())
         {
             LOG(WARN) << "Mapping " << mapping->getReference() << "(" << mapping->getStartingAddress()
@@ -176,19 +178,49 @@ void RegisterGroup::setSlaveAddress(int8_t slaveAddress)
     }
 }
 
-const std::map<std::string, std::shared_ptr<RegisterMapping>>& RegisterGroup::getMappings() const
+const std::map<std::string, std::shared_ptr<RegisterMapping>>& RegisterGroup::getMappingsMap() const
 {
     return m_mappings;
+}
+
+std::vector<std::string> RegisterGroup::getMappingsClaims() const {
+    std::vector<std::string> claims(m_mappings.size());
+    for (const auto& mappingPair : m_mappings)
+    {
+        claims.emplace_back(mappingPair.first);
+    }
+    return claims;
+}
+
+std::vector<std::shared_ptr<RegisterMapping>> RegisterGroup::getMappings() const
+{
+    std::vector<std::shared_ptr<RegisterMapping>> mappings(m_mappings.size());
+    for (const auto& mappingPair : m_mappings)
+    {
+        mappings.emplace_back(mappingPair.second);
+    }
+    return mappings;
 }
 
 uint16_t RegisterGroup::getAddressFromString(const std::string& string)
 {
     auto firstAddressString = std::string(string);
-    auto dotIndex = firstAddressString.find('.');
-    if (dotIndex != static_cast<uint16_t>(-1))
+    auto dotIndex = firstAddressString.find(SEPARATOR);
+    if (dotIndex != std::string::npos)
     {
         firstAddressString = firstAddressString.substr(0, dotIndex);
     }
     return static_cast<uint16_t>(std::stoul(firstAddressString));
+}
+
+int16_t RegisterGroup::getBitFromString(const std::string& string)
+{
+    auto firstAddressString = std::string(string);
+    auto dotIndex = firstAddressString.find(SEPARATOR);
+    if (dotIndex == std::string::npos)
+    {
+        return -1;
+    }
+    return static_cast<int16_t>(std::stoi(firstAddressString.substr(dotIndex + 1)));
 }
 }    // namespace wolkabout

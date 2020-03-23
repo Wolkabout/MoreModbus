@@ -18,6 +18,8 @@ namespace wolkabout
 class RegisterGroup
 {
 public:
+    const static char SEPARATOR;
+
     explicit RegisterGroup(const std::shared_ptr<RegisterMapping>& mapping);
 
     // Overriden default copy constructor to ensure deep copy of objects which we own
@@ -38,9 +40,15 @@ public:
 
     void setSlaveAddress(int8_t slaveAddress);
 
-    const std::map<std::string, std::shared_ptr<RegisterMapping>>& getMappings() const;
+    const std::map<std::string, std::shared_ptr<RegisterMapping>>& getMappingsMap() const;
+
+    std::vector<std::string> getMappingsClaims() const;
+
+    std::vector<std::shared_ptr<RegisterMapping>> getMappings() const;
 
     static uint16_t getAddressFromString(const std::string& string);
+
+    static int16_t getBitFromString(const std::string& string);
 
 private:
     RegisterMapping::RegisterType m_registerType;
