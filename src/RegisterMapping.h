@@ -98,9 +98,9 @@ public:
 
     int8_t getBitIndex() const;
 
-    void update(const std::vector<uint16_t>& newValue);
+    bool update(const std::vector<uint16_t>& newValues);
 
-    void update(bool newRegisterValue);
+    bool update(bool newRegisterValue);
 
     const std::vector<uint16_t>& getBytesValues() const;
 
@@ -127,8 +127,8 @@ private:
     // Value change watching logic
     bool m_boolValue{};
     std::vector<uint16_t> m_byteValues;
-    bool m_isInitialized{};
-    bool m_isValid{};
+    bool m_isInitialized = false;
+    bool m_isValid = false;
 };
 }    // namespace wolkabout
 

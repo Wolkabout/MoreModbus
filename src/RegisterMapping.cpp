@@ -17,6 +17,7 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 , m_address(address)
 , m_slaveAddress(slaveAddress)
 , m_operationType(OperationType::NONE)
+, m_byteValues(1)
 {
     // On default, assign default OutputType for type of register.
     switch (m_registerType)
@@ -41,6 +42,7 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 , m_slaveAddress(slaveAddress)
 , m_outputType(type)
 , m_operationType(OperationType::NONE)
+, m_byteValues(1)
 {
     switch (m_registerType)
     {
@@ -81,6 +83,7 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
         throw std::logic_error("Take bit can\'t be done over COIL/INPUT_CONTACT.");
     }
 }
+
 
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                                  const std::vector<int16_t>& addresses, OutputType type, OperationType operation,
@@ -135,6 +138,8 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
             throw std::logic_error("Stringify can only return string.");
         }
     }
+
+    m_byteValues = std::vector<uint16_t>(m_addresses.size());
 }
 
 const std::string& RegisterMapping::getReference() const
@@ -205,18 +210,46 @@ int8_t RegisterMapping::getBitIndex() const
     return m_bitIndex;
 }
 
-void RegisterMapping::update(const std::vector<uint16_t>& newValue)
+bool RegisterMapping::update(const std::vector<uint16_t>& newValues)
 {
-    if (newValue.size() != m_byteValues.size())
+    if (newValues.size() != m_byteValues.size())
     {
-        throw std::logic_error("RegisterMapping: The value array has to be the same size, it cannot change.")
+        throw std::logic_error("RegisterMapping: The value array has to be the same size, it cannot change.");
     }
 
+    bool different = false;
+    uint i = 0;
+    while (!different && i < newValues.size())
+    {
+        if (m_byteValues[i] != newValues[i])
+        {
+            different = true;
+        }
+        ++i;
+    }
+    m_byteValues = newValues;
+
+    bool isValueInitialized = m_isInitialized;
+    m_isInitialized = true;
+
+    bool isValid = m_isValid;
+    m_isValid = true;
+
+    return !isValueInitialized || different || !isValid;
 }
 
-void RegisterMapping::update(bool newRegisterValue)
+bool RegisterMapping::update(bool newRegisterValue)
 {
+    bool different = m_boolValue != newRegisterValue;
+    m_boolValue = newRegisterValue;
 
+    bool isValueInitialized = m_isInitialized;
+    m_isInitialized = true;
+
+    bool isValid = m_isValid;
+    m_isValid = true;
+
+    return !isValueInitialized || different || !isValid;
 }
 
 const std::vector<uint16_t> &RegisterMapping::getBytesValues() const
