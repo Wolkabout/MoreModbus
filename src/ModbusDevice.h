@@ -7,6 +7,8 @@
 
 #include "RegisterGroup.h"
 
+#include <functional>
+
 namespace wolkabout
 {
 class ModbusDevice
@@ -24,11 +26,16 @@ public:
 
     const std::map<std::string, std::shared_ptr<RegisterMapping>>& getMappings() const;
 
+    void setOnMappingValueChange(
+      const std::function<void(const std::shared_ptr<RegisterMapping>&)>& onMappingValueChange);
+
 private:
     std::string m_name;
     int8_t m_slaveAddress;
     std::vector<std::shared_ptr<RegisterGroup>> m_groups;
     std::map<std::string, std::shared_ptr<RegisterMapping>> m_mappings;
+
+    std::function<void(const std::shared_ptr<RegisterMapping>&)> m_onMappingValueChange;
 };
 }    // namespace wolkabout
 

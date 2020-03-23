@@ -17,7 +17,7 @@ void ModbusDevice::addGroup(const std::shared_ptr<RegisterGroup>& group)
     copyGroup->setSlaveAddress(m_slaveAddress);
     m_groups.emplace_back(copyGroup);
 
-    for (const auto& mapping : copyGroup->getMappings())
+    for (const auto& mapping : copyGroup->getMappingsMap())
     {
         m_mappings.emplace(mapping.first, mapping.second);
     }
@@ -41,5 +41,11 @@ const std::vector<std::shared_ptr<RegisterGroup>>& ModbusDevice::getGroups() con
 const std::map<std::string, std::shared_ptr<RegisterMapping>>& ModbusDevice::getMappings() const
 {
     return m_mappings;
+}
+
+void ModbusDevice::setOnMappingValueChange(
+  const std::function<void(const std::shared_ptr<RegisterMapping>&)>& onMappingValueChange)
+{
+    m_onMappingValueChange = onMappingValueChange;
 }
 }    // namespace wolkabout

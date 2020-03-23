@@ -4,7 +4,6 @@
 
 #include "ModbusReader.h"
 #include "modbus/ModbusGroupReader.h"
-
 #include "utility/Logger.h"
 
 namespace wolkabout
@@ -14,7 +13,7 @@ ModbusReader::ModbusReader(ModbusClient& modbusClient, const std::vector<std::sh
 : m_modbusClient(modbusClient), m_devices(), m_readerShouldRun(false), m_threads(), m_readPeriod(readPeriod)
 {
     LOG(INFO) << "Initializing ModbusReader...";
-    // Intialize everything necessary for devices, assume they're at first offline,
+    // Initialize everything necessary for devices, assume they're at first offline,
     // and don't have any running threads.
     for (const auto& device : devices)
     {
@@ -40,9 +39,10 @@ void ModbusReader::start()
     if (m_readerShouldRun)
         return;
 
-    m_readerShouldRun = true;
     LOG(DEBUG) << "Starting ModbusReader.";
     // Attempt the first establishment of connection, and start the main thread.
+    m_readerShouldRun = true;
+
     if (!m_modbusClient.isConnected())
     {
         m_modbusClient.connect();
@@ -57,9 +57,10 @@ void ModbusReader::stop()
     if (!m_readerShouldRun)
         return;
 
-    m_readerShouldRun = false;
     LOG(DEBUG) << "Stopping ModbusReader.";
     // Disconnect the modbus devices, and stop the main thread.
+    m_readerShouldRun = false;
+
     if (m_modbusClient.isConnected())
     {
         m_modbusClient.disconnect();

@@ -47,7 +47,7 @@ private:
 
     // Reconnect logic, modbusClient will after a failed read/connection,
     // try to reconnect in increasing periods of time.
-    unsigned long m_timeoutIterator;
+    unsigned long m_timeoutIterator{};
     const std::vector<int> m_timeoutDurations = {1, 5, 10, 15, 30, 60, 300, 600, 1800, 3600};
     // All devices that experienced an error reading all the registers, will put their
     // slave address in this vector. And they can be reported offline.
