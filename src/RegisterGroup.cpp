@@ -12,13 +12,19 @@ namespace wolkabout
 const char RegisterGroup::SEPARATOR = '.';
 
 RegisterGroup::RegisterGroup(const std::shared_ptr<RegisterMapping>& mapping)
-: m_registerType(mapping->getRegisterType()), m_slaveAddress(mapping->getSlaveAddress()), m_mappings()
+: m_registerType(mapping->getRegisterType())
+, m_slaveAddress(mapping->getSlaveAddress())
+, m_readRestricted(mapping->isReadRestricted())
+, m_mappings()
 {
     addMapping(mapping);
 }
 
 RegisterGroup::RegisterGroup(const RegisterGroup& instance)
-: m_registerType(instance.getRegisterType()), m_slaveAddress(instance.getSlaveAddress()), m_mappings()
+: m_registerType(instance.getRegisterType())
+, m_slaveAddress(instance.getSlaveAddress())
+, m_readRestricted(instance.isReadRestricted())
+, m_mappings()
 {
     for (const auto& mapping : instance.getMappingsMap())
     {
@@ -183,6 +189,11 @@ void RegisterGroup::setSlaveAddress(int8_t slaveAddress)
     {
         mapping.second->setSlaveAddress(slaveAddress);
     }
+}
+
+bool RegisterGroup::isReadRestricted() const
+{
+    return m_readRestricted;
 }
 
 const std::map<std::string, std::shared_ptr<RegisterMapping>>& RegisterGroup::getMappingsMap() const

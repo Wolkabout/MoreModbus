@@ -10,6 +10,9 @@ namespace wolkabout
 {
 bool ModbusGroupReader::readGroup(wolkabout::ModbusClient& modbusClient, wolkabout::RegisterGroup& group)
 {
+    if (group.isReadRestricted())
+        return true;
+
     switch (group.getRegisterType())
     {
     case RegisterMapping::RegisterType::COIL:
@@ -79,9 +82,10 @@ bool ModbusGroupReader::readDiscreteInputGroup(ModbusClient& modbusClient, Regis
 void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vector<uint16_t>& values)
 {
     const auto& claims = group.getMappingsClaims();
+    const auto& mappings = group.getMappingsMap();
 
     uint skipMappings = 0, valueCounter = 0, mappingCounter = 0;
-    for (const auto& mapping : group.getMappingsMap())
+    for (const auto& mapping : mappings)
     {
         if (skipMappings > 0)
         {
@@ -103,10 +107,11 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
                 const auto bitIndex = RegisterGroup::getBitFromString(claims[mappingCounter + shift]);
                 const auto bitValue = bits[static_cast<uint16_t>(bitIndex)];
 
-                if (mapping.second->update(bitValue))
+                const auto& bitMapping = mappings.at(claims[mappingCounter + shift]);
+                if (bitMapping->update(bitValue))
                 {
                     LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '"
-                              << mapping.second->getReference() << "' Value: '" << bitValue << "'";
+                              << bitMapping->getReference() << "' Value: '" << bitValue << "'";
                     // Notify of value change.
                     // TODO External
                 }
@@ -118,18 +123,20 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
             // If the mapping has multiple values, they will get added now, and their loop iterations
             // will be skipped.
             std::vector<uint16_t> data;
+            std::string loggingString;
             for (int i = 0; i < mapping.second->getRegisterCount(); i++)
             {
                 if (i > 0)
                     skipMappings++;
 
+                loggingString.append(std::to_string(values[valueCounter]) + " ");
                 data.emplace_back(values[valueCounter++]);
             }
 
             if (mapping.second->update(data))
             {
                 LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '"
-                          << mapping.second->getReference() << "'";
+                          << mapping.second->getReference() << "' Values: " << loggingString;
                 // Notify of value change.
                 // TODO External
             }

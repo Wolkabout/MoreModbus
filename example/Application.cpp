@@ -21,7 +21,7 @@ int main(int argc, char** argv)
 {
     // Setup logger
     auto logger = std::unique_ptr<wolkabout::ConsoleLogger>(new wolkabout::ConsoleLogger());
-    logger->setLogLevel(wolkabout::LogLevel::TRACE);
+    logger->setLogLevel(wolkabout::LogLevel::DEBUG);
     wolkabout::Logger::setInstance(std::move(logger));
 
     const auto& registerMapping = std::make_shared<wolkabout::RegisterMapping>(
@@ -57,9 +57,6 @@ int main(int argc, char** argv)
     group->addMapping(sixthRegister);
 
     const auto& device = std::make_shared<wolkabout::ModbusDevice>("Test Device 1", 1);
-    device->addGroup(group);
-
-    const auto& device2 = std::make_shared<wolkabout::ModbusDevice>("Test Device 2", 2);
     device->addGroup(group);
 
     const auto& modbusClient =

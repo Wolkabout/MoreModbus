@@ -40,6 +40,8 @@ public:
 
     void setSlaveAddress(int8_t slaveAddress);
 
+    bool isReadRestricted() const;
+
     const std::map<std::string, std::shared_ptr<RegisterMapping>>& getMappingsMap() const;
 
     std::vector<std::string> getMappingsClaims() const;
@@ -53,6 +55,7 @@ public:
 private:
     RegisterMapping::RegisterType m_registerType;
     int8_t m_slaveAddress;
+    bool m_readRestricted;
 
     std::map<std::string, std::shared_ptr<RegisterMapping>> m_mappings;
 };

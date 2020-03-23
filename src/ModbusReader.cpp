@@ -145,7 +145,7 @@ void ModbusReader::run()
                 }
                 else
                 {
-                    LOG(DEBUG) << "ModbusReader: All devices have been read successfully.";
+                    LOG(TRACE) << "ModbusReader: All devices have been read successfully.";
                 }
 
                 m_errorDevices.clear();
