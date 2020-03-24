@@ -47,7 +47,7 @@ int main()
                                                                getFirstBitMapping, getSecondBitMapping, fifthRegister,
                                                                sixthRegister});
 
-    device->setOnMappingValueChange([&](const wolkabout::RegisterMapping& mapping) {
+    device->setOnMappingValueChange([](const wolkabout::RegisterMapping& mapping) {
         // You can do this for all output types.
         if (mapping.getOutputType() == wolkabout::RegisterMapping::OutputType::BOOL)
         {

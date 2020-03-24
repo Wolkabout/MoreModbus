@@ -39,6 +39,12 @@ bool wolkabout::StringMapping::update(const std::vector<uint16_t>& newValues)
 
 bool StringMapping::writeValue(const std::string& newValue)
 {
+    if (newValue.size() > static_cast<uint16_t>(getRegisterCount() * 2))
+    {
+        throw std::logic_error("StringMapping: You can\'t write a string that\'s longer than " +
+                               std::to_string(getRegisterCount() * 2) + " characters!");
+    }
+
     std::vector<uint16_t> bytes;
     if (m_operationType == OperationType::STRINGIFY_ASCII)
         bytes = DataParsers::asciiStringToRegisters(newValue);
