@@ -44,9 +44,14 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
         throw std::logic_error("RegisterGroup: You can\'t add mappings for different slave addresses.");
     }
 
-    if (mapping->isReadRestricted())
+    if (mapping->isReadRestricted() && !m_readRestricted)
     {
         throw std::logic_error("RegisterGroup: Read restricted mappings have to have groups of their own!");
+    }
+
+    if (mapping->isReadRestricted() && m_readRestricted)
+    {
+        return appendMapping(mapping);
     }
 
     if (!m_mappings.empty())
@@ -130,10 +135,15 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
         }
     }
 
+    return appendMapping(mapping);
+}
+
+bool RegisterGroup::appendMapping(const std::shared_ptr<RegisterMapping>& mapping)
+{
     if (mapping->getOperationType() == RegisterMapping::OperationType::TAKE_BIT)
     {
         const auto key =
-          std::to_string(mapping->getStartingAddress()) + SEPARATOR + std::to_string(mapping->getBitIndex());
+                std::to_string(mapping->getStartingAddress()) + SEPARATOR + std::to_string(mapping->getBitIndex());
         if (m_mappings.find(key) != m_mappings.end())
         {
             LOG(WARN) << "RegisterGroup: Mapping " << mapping->getReference() << "(" << mapping->getStartingAddress()

@@ -53,6 +53,8 @@ public:
     static int16_t getBitFromString(const std::string& string);
 
 private:
+    bool appendMapping(const std::shared_ptr<RegisterMapping>& mapping);
+
     RegisterMapping::RegisterType m_registerType;
     int8_t m_slaveAddress;
     bool m_readRestricted;
