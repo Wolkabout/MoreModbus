@@ -15,7 +15,8 @@ ModbusDevice::ModbusDevice(const std::string& name, int8_t slaveAddress,
 : m_name(name), m_slaveAddress(slaveAddress), m_groups()
 {
     std::map<RegisterMapping::RegisterType, std::shared_ptr<RegisterGroup>> readRestrictedGroups;
-    std::set<std::shared_ptr<RegisterMapping>, CompareFunction> set(mappings.begin(), mappings.end(), &ModbusDevice::compareMappings);
+    std::set<std::shared_ptr<RegisterMapping>, CompareFunction> set(mappings.begin(), mappings.end(),
+                                                                    &ModbusDevice::compareMappings);
 
     std::shared_ptr<RegisterGroup> previousGroup = nullptr;
     for (const auto& mapping : set)

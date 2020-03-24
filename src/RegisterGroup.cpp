@@ -140,7 +140,7 @@ bool RegisterGroup::appendMapping(const std::shared_ptr<RegisterMapping>& mappin
     if (mapping->getOperationType() == RegisterMapping::OperationType::TAKE_BIT)
     {
         const auto key =
-                std::to_string(mapping->getStartingAddress()) + SEPARATOR + std::to_string(mapping->getBitIndex());
+          std::to_string(mapping->getStartingAddress()) + SEPARATOR + std::to_string(mapping->getBitIndex());
         if (m_mappings.find(key) != m_mappings.end())
         {
             LOG(WARN) << "RegisterGroup: Mapping " << mapping->getReference() << "(" << mapping->getStartingAddress()

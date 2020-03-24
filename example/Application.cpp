@@ -2,10 +2,10 @@
 // Created by Nexyy on 16/03/2020.
 //
 
-#include <mappings/BoolMapping.h>
 #include "ModbusDevice.h"
 #include "ModbusReader.h"
 #include "RegisterGroup.h"
+#include "mappings/BoolMapping.h"
 #include "mappings/StringMapping.h"
 #include "modbus/LibModbusTcpIpClient.h"
 #include "utility/ConsoleLogger.h"

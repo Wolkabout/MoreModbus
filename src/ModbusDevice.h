@@ -29,7 +29,8 @@ public:
 
     void triggerOnMappingValueChange(const RegisterMapping& mapping);
 
-    static bool compareMappings(const std::shared_ptr<RegisterMapping>& left, const std::shared_ptr<RegisterMapping>& right);
+    static bool compareMappings(const std::shared_ptr<RegisterMapping>& left,
+                                const std::shared_ptr<RegisterMapping>& right);
 
 private:
     std::string m_name;

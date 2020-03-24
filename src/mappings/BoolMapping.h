@@ -15,7 +15,7 @@ public:
     BoolMapping(const std::string& reference, RegisterType registerType, int16_t address, bool readRestricted = false,
                 int8_t slaveAddress = -1);
 
-    BoolMapping(const std::string &reference, RegisterType registerType, int16_t address, OperationType operation,
+    BoolMapping(const std::string& reference, RegisterType registerType, int16_t address, OperationType operation,
                 int8_t bitIndex, bool readRestricted = false, int8_t slaveAddress = -1);
 
     bool writeValue(bool value);

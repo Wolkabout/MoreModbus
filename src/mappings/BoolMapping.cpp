@@ -19,7 +19,8 @@ BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::Register
 }
 
 BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::RegisterType registerType, int16_t address,
-                         RegisterMapping::OperationType operation, int8_t bitIndex, bool readRestricted, int8_t slaveAddress)
+                         RegisterMapping::OperationType operation, int8_t bitIndex, bool readRestricted,
+                         int8_t slaveAddress)
 : RegisterMapping(reference, registerType, address, operation, bitIndex, readRestricted, slaveAddress)
 {
     if (!(operation == OperationType::TAKE_BIT))
