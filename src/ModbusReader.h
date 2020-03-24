@@ -21,12 +21,12 @@ namespace wolkabout
 class ModbusReader
 {
 public:
+    static ModbusReader* getInstance();
+
     ModbusReader(ModbusClient& modbusClient, const std::vector<std::shared_ptr<ModbusDevice>>& devices,
                  const std::chrono::milliseconds& readPeriod);
 
     virtual ~ModbusReader();
-
-    static ModbusReader* getInstance();
 
     bool writeToMapping(RegisterMapping& mapping, const std::vector<uint16_t>& values);
 

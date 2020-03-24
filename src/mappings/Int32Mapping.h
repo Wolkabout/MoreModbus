@@ -12,10 +12,10 @@ namespace wolkabout
 class Int32Mapping : public RegisterMapping
 {
 public:
-    Int32Mapping(const std::string &reference, RegisterType registerType, const std::vector<int16_t> &addresses,
+    Int32Mapping(const std::string& reference, RegisterType registerType, const std::vector<int16_t>& addresses,
                  OperationType operation, bool readRestricted = false, int8_t slaveAddress = -1);
 
-    bool update(const std::vector<uint16_t> &newValues) override;
+    bool update(const std::vector<uint16_t>& newValues) override;
 
     bool writeValue(int32_t value);
 
@@ -24,6 +24,6 @@ public:
 private:
     int32_t m_int32Value{};
 };
-}
+}    // namespace wolkabout
 
-#endif //WOLKABOUT_MODBUS_INT32MAPPING_H
+#endif    // WOLKABOUT_MODBUS_INT32MAPPING_H

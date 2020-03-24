@@ -7,14 +7,15 @@
 
 #include "ModbusReader.h"
 
-namespace wolkabout {
+namespace wolkabout
+{
 class FloatMapping : public RegisterMapping
 {
 public:
-    FloatMapping(const std::string &reference, RegisterType registerType, const std::vector<int16_t> &addresses,
-            bool readRestricted = false, int8_t slaveAddress = -1);
+    FloatMapping(const std::string& reference, RegisterType registerType, const std::vector<int16_t>& addresses,
+                 bool readRestricted = false, int8_t slaveAddress = -1);
 
-    bool update(const std::vector<uint16_t> &newValues) override;
+    bool update(const std::vector<uint16_t>& newValues) override;
 
     bool writeValue(float value);
 
@@ -23,6 +24,6 @@ public:
 private:
     float m_floatValue;
 };
-}
+}    // namespace wolkabout
 
-#endif //WOLKABOUT_MODBUS_FLOATMAPPING_H
+#endif    // WOLKABOUT_MODBUS_FLOATMAPPING_H

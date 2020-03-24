@@ -8,6 +8,8 @@
 
 namespace wolkabout
 {
+ModbusReader* ModbusReader::INSTANCE = nullptr;
+
 ModbusReader::ModbusReader(ModbusClient& modbusClient, const std::vector<std::shared_ptr<ModbusDevice>>& devices,
                            const std::chrono::milliseconds& readPeriod)
 : m_modbusClient(modbusClient), m_devices(), m_readerShouldRun(false), m_threads(), m_readPeriod(readPeriod)
