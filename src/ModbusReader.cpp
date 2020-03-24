@@ -59,6 +59,11 @@ bool ModbusReader::writeToMapping(RegisterMapping& mapping, const std::vector<ui
                                std::to_string(mapping.getRegisterCount()) + ".");
     }
 
+    if (m_devices.find(mapping.getSlaveAddress()) != m_devices.end())
+    {
+        throw std::logic_error("ModbusReader: Mapping slave address isn\'t registered with the ModbusReader.");
+    }
+
     if (!m_modbusClient.writeHoldingRegisters(mapping.getSlaveAddress(), mapping.getStartingAddress(),
                                               const_cast<std::vector<uint16_t>&>(values)))
     {
@@ -69,6 +74,7 @@ bool ModbusReader::writeToMapping(RegisterMapping& mapping, const std::vector<ui
     }
 
     mapping.update(values);
+    m_devices[mapping.getSlaveAddress()]->triggerOnMappingValueChange(mapping);
     return true;
 }
 
@@ -77,6 +83,11 @@ bool ModbusReader::writeToMapping(RegisterMapping& mapping, bool value)
     if (mapping.getRegisterType() != RegisterMapping::RegisterType::COIL)
     {
         throw std::logic_error("ModbusReader: You can\'t write bool to anything other than COIL mapping.");
+    }
+
+    if (m_devices.find(mapping.getSlaveAddress()) != m_devices.end())
+    {
+        throw std::logic_error("ModbusReader: Mapping slave address isn\'t registered with the ModbusReader.");
     }
 
     if (!m_modbusClient.writeCoil(mapping.getSlaveAddress(), mapping.getStartingAddress(), value))
@@ -88,6 +99,7 @@ bool ModbusReader::writeToMapping(RegisterMapping& mapping, bool value)
     }
 
     mapping.update(value);
+    m_devices[mapping.getSlaveAddress()]->triggerOnMappingValueChange(mapping);
     return true;
 }
 

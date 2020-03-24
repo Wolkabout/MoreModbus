@@ -43,9 +43,13 @@ const std::map<std::string, std::shared_ptr<RegisterMapping>>& ModbusDevice::get
     return m_mappings;
 }
 
-void ModbusDevice::setOnMappingValueChange(
-  const std::function<void(const std::shared_ptr<RegisterMapping>&)>& onMappingValueChange)
+void ModbusDevice::setOnMappingValueChange(const std::function<void(const RegisterMapping&)>& onMappingValueChange)
 {
     m_onMappingValueChange = onMappingValueChange;
+}
+
+void ModbusDevice::triggerOnMappingValueChange(const RegisterMapping& mapping)
+{
+    m_onMappingValueChange(mapping);
 }
 }    // namespace wolkabout
