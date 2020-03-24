@@ -40,16 +40,11 @@ int main()
     const auto& sixthRegister = std::make_shared<wolkabout::RegisterMapping>(
       "MP6", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 8);
 
-    const auto& group = std::make_shared<wolkabout::RegisterGroup>(anotherRegisterMapping);
-    group->addMapping(registerMapping);
-    group->addMapping(stringMapping);
-    group->addMapping(getFirstBitMapping);
-    group->addMapping(getSecondBitMapping);
-    group->addMapping(fifthRegister);
-    group->addMapping(sixthRegister);
-
-    const auto& device = std::make_shared<wolkabout::ModbusDevice>("Test Device 1", 1);
-    device->addGroup(group);
+    const auto& device = std::make_shared<wolkabout::ModbusDevice>(
+      "Test Device 1", 1,
+      std::vector<std::shared_ptr<wolkabout::RegisterMapping>>{registerMapping, anotherRegisterMapping, stringMapping,
+                                                               getFirstBitMapping, getSecondBitMapping, fifthRegister,
+                                                               sixthRegister});
 
     device->setOnMappingValueChange([&](const wolkabout::RegisterMapping& mapping) {
         LOG(DEBUG) << "Application: Mapping " << mapping.getReference() << " value changed.";

@@ -234,6 +234,12 @@ void ModbusReader::run()
 
 void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
 {
+    if (device->getGroups().empty())
+    {
+        LOG(WARN) << "ModbusReader: Device " << device->getName() << " has no mappings.";
+        return;
+    }
+
     LOG(TRACE) << "ModbusReader: Reading device : " << device->getName();
 
     // Work on this logic, read all groups and do it properly.

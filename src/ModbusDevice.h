@@ -14,9 +14,8 @@ namespace wolkabout
 class ModbusDevice
 {
 public:
-    ModbusDevice(const std::string& name, int8_t slaveAddress);
-
-    void addGroup(const std::shared_ptr<RegisterGroup>& group);
+    ModbusDevice(const std::string& name, int8_t slaveAddress,
+                 const std::vector<std::shared_ptr<RegisterMapping>>& mappings);
 
     const std::string& getName() const;
 

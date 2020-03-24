@@ -3,24 +3,37 @@
 //
 
 #include "ModbusDevice.h"
+#include "utility/Logger.h"
+
+#include <algorithm>
 
 namespace wolkabout
 {
-ModbusDevice::ModbusDevice(const std::string& name, int8_t slaveAddress)
+ModbusDevice::ModbusDevice(const std::string& name, int8_t slaveAddress,
+                           const std::vector<std::shared_ptr<RegisterMapping>>& mappings)
 : m_name(name), m_slaveAddress(slaveAddress), m_groups(), m_mappings()
 {
-}
-
-void ModbusDevice::addGroup(const std::shared_ptr<RegisterGroup>& group)
-{
-    const auto copyGroup = std::make_shared<RegisterGroup>(*group);
-    copyGroup->setSlaveAddress(m_slaveAddress);
-    m_groups.emplace_back(copyGroup);
-
-    for (const auto& mapping : copyGroup->getMappingsMap())
+    for (const auto& mapping : mappings)
     {
-        m_mappings.emplace(mapping.first, mapping.second);
+        const auto group = std::make_shared<RegisterGroup>(mapping);
+        group->setSlaveAddress(slaveAddress);
+        m_groups.insert(m_groups.end(), group);
+
+        for (const auto& groupMapping : group->getMappingsMap())
+        {
+            m_mappings.emplace(groupMapping.first, groupMapping.second);
+        }
     }
+
+    // Figure out groups from mappings.
+    //    std::sort(mappings.begin(), mappings.end(),
+    //              [](const std::shared_ptr<RegisterMapping>& first, const std::shared_ptr<RegisterMapping>& second) {
+    //                  if (first->getRegisterType() != second->getRegisterType())
+    //                      return first->getRegisterType() < second->getRegisterType();
+    //                  if (first->isReadRestricted())
+    //                      return true;
+    //                  return first->getStartingAddress() < second->getStartingAddress();
+    //              });
 }
 
 const std::string& ModbusDevice::getName() const

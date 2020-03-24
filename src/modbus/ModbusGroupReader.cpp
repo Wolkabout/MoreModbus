@@ -102,7 +102,8 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
         {
             const auto& bits = DataParsers::separteBits(values[valueCounter++]);
             uint shift = 0;
-            while (address == RegisterGroup::getAddressFromString(claims[mappingCounter + shift]))
+            while (mappingCounter + shift <= group.getMappings().size() - 1 &&
+                   address == RegisterGroup::getAddressFromString(claims[mappingCounter + shift]))
             {
                 if (shift > 0)
                     skipMappings++;
