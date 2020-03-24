@@ -5,19 +5,11 @@
 #include "ModbusDevice.h"
 #include "ModbusReader.h"
 #include "RegisterGroup.h"
+#include "mappings/StringMapping.h"
 #include "modbus/LibModbusTcpIpClient.h"
 #include "utility/ConsoleLogger.h"
-#include "utility/DataParsers.h"
 
-#include <bitset>
-
-template <class T> void printBits(T value)
-{
-    std::bitset<sizeof(T) * 8> set(value);
-    LOG(TRACE) << set;
-}
-
-int main(int argc, char** argv)
+int main()
 {
     // Setup logger
     auto logger = std::unique_ptr<wolkabout::ConsoleLogger>(new wolkabout::ConsoleLogger());
@@ -30,9 +22,9 @@ int main(int argc, char** argv)
     const auto& anotherRegisterMapping = std::make_shared<wolkabout::RegisterMapping>(
       "MP2", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 3);
 
-    const auto& stringMapping = std::make_shared<wolkabout::RegisterMapping>(
+    const auto& stringMapping = std::make_shared<wolkabout::StringMapping>(
       "STR1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, std::vector<int16_t>{0, 1, 2},
-      wolkabout::RegisterMapping::OutputType::STRING, wolkabout::RegisterMapping::OperationType::STRINGIFY_ASCII);
+      wolkabout::RegisterMapping::OperationType::STRINGIFY_ASCII);
 
     const auto& getFirstBitMapping =
       std::make_shared<wolkabout::RegisterMapping>("B4-1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER,

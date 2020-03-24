@@ -110,8 +110,8 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
                 const auto& bitMapping = mappings.at(claims[mappingCounter + shift]);
                 if (bitMapping->update(bitValue))
                 {
-                    LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '"
-                              << bitMapping->getReference() << "' Value: '" << bitValue << "'";
+                    LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '" << bitMapping->getReference()
+                              << "' Value: '" << bitValue << "'";
                     // Notify of value change.
                     // TODO External
                 }
@@ -135,8 +135,8 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
 
             if (mapping.second->update(data))
             {
-                LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '"
-                          << mapping.second->getReference() << "' Values: " << loggingString;
+                LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '" << mapping.second->getReference()
+                          << "' Values: " << loggingString;
                 // Notify of value change.
                 // TODO External
             }

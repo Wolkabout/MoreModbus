@@ -26,6 +26,12 @@ public:
 
     virtual ~ModbusReader();
 
+    static ModbusReader* getInstance();
+
+    bool writeToMapping(RegisterMapping& mapping, const std::vector<uint16_t>& values);
+
+    bool writeToMapping(RegisterMapping& mapping, bool value);
+
     bool isRunning() const;
 
     void start();
@@ -33,6 +39,9 @@ public:
     void stop();
 
 private:
+    // Singleton
+    static ModbusReader* INSTANCE;
+
     // Main thread, handles initializing reading of devices, their status, and the modbus connection.
     void run();
 

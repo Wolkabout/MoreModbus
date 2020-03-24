@@ -12,6 +12,12 @@ ModbusReader::ModbusReader(ModbusClient& modbusClient, const std::vector<std::sh
                            const std::chrono::milliseconds& readPeriod)
 : m_modbusClient(modbusClient), m_devices(), m_readerShouldRun(false), m_threads(), m_readPeriod(readPeriod)
 {
+    // Singleton logic
+    if (INSTANCE != nullptr)
+        delete this;
+
+    INSTANCE = this;
+
     LOG(INFO) << "ModbusReader: Initializing ModbusReader...";
     // Initialize everything necessary for devices, assume they're at first offline,
     // and don't have any running threads.
@@ -26,12 +32,61 @@ ModbusReader::ModbusReader(ModbusClient& modbusClient, const std::vector<std::sh
 
 ModbusReader::~ModbusReader()
 {
+    // Singleton logic
+    if (INSTANCE == this)
+        INSTANCE = nullptr;
+
     stop();
 }
 
 bool ModbusReader::isRunning() const
 {
     return m_readerShouldRun;
+}
+
+bool ModbusReader::writeToMapping(RegisterMapping& mapping, const std::vector<uint16_t>& values)
+{
+    if (mapping.getRegisterType() != RegisterMapping::RegisterType::HOLDING_REGISTER)
+    {
+        throw std::logic_error("ModbusReader: You can\'t write bytes to anything other than HOLDING_REGISTER mapping.");
+    }
+
+    if (mapping.getRegisterCount() != static_cast<int16_t>(values.size()))
+    {
+        throw std::logic_error("ModbusReader: Received " + std::to_string(values.size()) + " values, but need " +
+                               std::to_string(mapping.getRegisterCount()) + ".");
+    }
+
+    if (!m_modbusClient.writeHoldingRegisters(mapping.getSlaveAddress(), mapping.getStartingAddress(),
+                                              const_cast<std::vector<uint16_t>&>(values)))
+    {
+        LOG(WARN) << "ModbusReader: Unable to write holding register values - Register address : "
+                  << mapping.getStartingAddress() << " Registers : " << values.size();
+        mapping.setValid(false);
+        return false;
+    }
+
+    mapping.update(values);
+    return true;
+}
+
+bool ModbusReader::writeToMapping(RegisterMapping& mapping, bool value)
+{
+    if (mapping.getRegisterType() != RegisterMapping::RegisterType::COIL)
+    {
+        throw std::logic_error("ModbusReader: You can\'t write bool to anything other than COIL mapping.");
+    }
+
+    if (!m_modbusClient.writeCoil(mapping.getSlaveAddress(), mapping.getStartingAddress(), value))
+    {
+        LOG(WARN) << "ModbusReader: Unable to write coil value - Register address : " << mapping.getStartingAddress()
+                  << " Value : " << value;
+        mapping.setValid(false);
+        return false;
+    }
+
+    mapping.update(value);
+    return true;
 }
 
 void ModbusReader::start()
@@ -184,5 +239,10 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
     {
         m_errorDevices.emplace_back(device->getSlaveAddress());
     }
+}
+
+ModbusReader* ModbusReader::getInstance()
+{
+    return INSTANCE;
 }
 }    // namespace wolkabout

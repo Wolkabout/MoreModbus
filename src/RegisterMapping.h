@@ -74,6 +74,8 @@ public:
     RegisterMapping(const std::string& reference, RegisterType registerType, const std::vector<int16_t>& addresses,
                     OutputType type, OperationType operation, bool readRestricted = false, int8_t slaveAddress = -1);
 
+    virtual ~RegisterMapping() = default;
+
     const std::string& getReference() const;
 
     bool isReadRestricted() const;
@@ -98,7 +100,7 @@ public:
 
     int8_t getBitIndex() const;
 
-    bool update(const std::vector<uint16_t>& newValues);
+    virtual bool update(const std::vector<uint16_t>& newValues);
 
     bool update(bool newRegisterValue);
 
@@ -108,7 +110,7 @@ public:
 
     void setValid(bool valid);
 
-private:
+protected:
     // General mapping data
     std::string m_reference;
     bool m_readRestricted;
