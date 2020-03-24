@@ -23,8 +23,6 @@ public:
 
     const std::vector<std::shared_ptr<RegisterGroup>>& getGroups() const;
 
-    const std::map<std::string, std::shared_ptr<RegisterMapping>>& getMappings() const;
-
     void setOnMappingValueChange(const std::function<void(const RegisterMapping&)>& onMappingValueChange);
 
     void triggerOnMappingValueChange(const RegisterMapping& mapping);
@@ -33,7 +31,6 @@ private:
     std::string m_name;
     int8_t m_slaveAddress;
     std::vector<std::shared_ptr<RegisterGroup>> m_groups;
-    std::map<std::string, std::shared_ptr<RegisterMapping>> m_mappings;
 
     std::function<void(const RegisterMapping&)> m_onMappingValueChange;
 };

@@ -64,7 +64,7 @@ bool ModbusReader::writeToMapping(RegisterMapping& mapping, const std::vector<ui
                                std::to_string(mapping.getRegisterCount()) + ".");
     }
 
-    if (m_devices.find(mapping.getSlaveAddress()) != m_devices.end())
+    if (m_devices.find(mapping.getSlaveAddress()) == m_devices.end())
     {
         throw std::logic_error("ModbusReader: Mapping slave address isn\'t registered with the ModbusReader.");
     }

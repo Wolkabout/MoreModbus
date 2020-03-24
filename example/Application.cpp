@@ -2,6 +2,7 @@
 // Created by Nexyy on 16/03/2020.
 //
 
+#include <mappings/BoolMapping.h>
 #include "ModbusDevice.h"
 #include "ModbusReader.h"
 #include "RegisterGroup.h"
@@ -47,7 +48,22 @@ int main()
                                                                sixthRegister});
 
     device->setOnMappingValueChange([&](const wolkabout::RegisterMapping& mapping) {
-        LOG(DEBUG) << "Application: Mapping " << mapping.getReference() << " value changed.";
+        // You can do this for all output types.
+        if (mapping.getOutputType() == wolkabout::RegisterMapping::OutputType::BOOL)
+        {
+            const auto& boolean = (const wolkabout::BoolMapping&)mapping;
+            LOG(DEBUG) << "Application: Mapping is bool, value : " << boolean.getBoolValue();
+        }
+        else if (mapping.getOutputType() == wolkabout::RegisterMapping::OutputType::STRING)
+        {
+            auto& string = (wolkabout::StringMapping&)mapping;
+            LOG(DEBUG) << "Application: Mapping is string, value : " << string.getStringValue();
+            string.writeValue("Fruit!");
+        }
+        else
+        {
+            LOG(DEBUG) << "Application: Mapping " << mapping.getReference() << " value changed.";
+        }
     });
 
     const auto& modbusClient =
