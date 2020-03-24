@@ -4,6 +4,7 @@
 
 #include "ModbusReader.h"
 #include "modbus/ModbusGroupReader.h"
+#include "utility/DataParsers.h"
 #include "utility/Logger.h"
 
 namespace wolkabout
@@ -51,7 +52,7 @@ const std::map<int8_t, std::shared_ptr<ModbusDevice>>& ModbusReader::getDevices(
     return m_devices;
 }
 
-bool ModbusReader::writeToMapping(RegisterMapping& mapping, const std::vector<uint16_t>& values)
+bool ModbusReader::writeMapping(RegisterMapping& mapping, const std::vector<uint16_t>& values)
 {
     if (mapping.getRegisterType() != RegisterMapping::RegisterType::HOLDING_REGISTER)
     {
@@ -82,14 +83,14 @@ bool ModbusReader::writeToMapping(RegisterMapping& mapping, const std::vector<ui
     return true;
 }
 
-bool ModbusReader::writeToMapping(RegisterMapping& mapping, bool value)
+bool ModbusReader::writeMapping(RegisterMapping& mapping, bool value)
 {
     if (mapping.getRegisterType() != RegisterMapping::RegisterType::COIL)
     {
         throw std::logic_error("ModbusReader: You can\'t write bool to anything other than COIL mapping.");
     }
 
-    if (m_devices.find(mapping.getSlaveAddress()) != m_devices.end())
+    if (m_devices.find(mapping.getSlaveAddress()) == m_devices.end())
     {
         throw std::logic_error("ModbusReader: Mapping slave address isn\'t registered with the ModbusReader.");
     }
@@ -104,6 +105,60 @@ bool ModbusReader::writeToMapping(RegisterMapping& mapping, bool value)
 
     mapping.update(value);
     return true;
+}
+
+bool ModbusReader::writeBitMapping(RegisterMapping& mapping, bool value)
+{
+    if (mapping.getRegisterType() != RegisterMapping::RegisterType::HOLDING_REGISTER)
+    {
+        throw std::logic_error("ModbusReader: You can\'t write bit to anything other than HOLDING_REGISTER mapping.");
+    }
+
+    if (mapping.getOperationType() != RegisterMapping::OperationType::TAKE_BIT)
+    {
+        throw std::logic_error("ModbusReader: You can\'t write bit to mapping that isn\'t TAKE_BIT.");
+    }
+
+    if (m_devices.find(mapping.getSlaveAddress()) == m_devices.end())
+    {
+        throw std::logic_error("ModbusReader: Mapping slave address isn\'t registered with the ModbusReader.");
+    }
+
+    // Read value
+    uint16_t registerValue;
+    if (!m_modbusClient.readHoldingRegister(mapping.getSlaveAddress(), mapping.getStartingAddress(), registerValue))
+    {
+        LOG(WARN) << "ModbusReader: Unable to read holding register value - Register address : "
+                  << mapping.getStartingAddress() << " for purpose of writing a bit into it.";
+        mapping.setValid(false);
+        return false;
+    }
+
+    uint16_t newValue = registerValue;
+
+    // Append bit
+    const auto index = static_cast<uint8_t>(mapping.getBitIndex());
+    const auto& bits = DataParsers::separteBits(registerValue);
+    if (bits[index] != value)
+    {
+        const int delta = (1 << index) * (value ? 1 : -1);
+        newValue += delta;
+    }
+
+    // Write new value
+    if (registerValue != newValue)
+    {
+        if (!m_modbusClient.writeHoldingRegister(mapping.getSlaveAddress(), mapping.getStartingAddress(), newValue))
+        {
+            LOG(WARN) << "ModbusReader: Unable to write holding register bit - Register address : "
+                      << mapping.getStartingAddress() << " Value : " << newValue;
+            mapping.setValid(false);
+            return false;
+        }
+        mapping.update(value);
+    }
+
+    return false;
 }
 
 void ModbusReader::start()

@@ -33,7 +33,7 @@ bool FloatMapping::writeValue(float value)
         throw std::logic_error("FloatMapping: Illegal operation type set.");
     bytes = DataParsers::floatToRegisters(value);
 
-    bool success = ModbusReader::getInstance()->writeToMapping(*this, bytes);
+    bool success = ModbusReader::getInstance()->writeMapping(*this, bytes);
     if (success)
         m_floatValue = value;
 

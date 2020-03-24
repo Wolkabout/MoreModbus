@@ -51,8 +51,9 @@ int main()
         // You can do this for all output types.
         if (mapping.getOutputType() == wolkabout::RegisterMapping::OutputType::BOOL)
         {
-            const auto& boolean = (const wolkabout::BoolMapping&)mapping;
+            auto& boolean = (wolkabout::BoolMapping&)mapping;
             LOG(DEBUG) << "Application: Mapping is bool, value : " << boolean.getBoolValue();
+            boolean.writeValue(false);
         }
         else if (mapping.getOutputType() == wolkabout::RegisterMapping::OutputType::STRING)
         {

@@ -28,9 +28,11 @@ public:
 
     virtual ~ModbusReader();
 
-    bool writeToMapping(RegisterMapping& mapping, const std::vector<uint16_t>& values);
+    bool writeMapping(RegisterMapping& mapping, const std::vector<uint16_t>& values);
 
-    bool writeToMapping(RegisterMapping& mapping, bool value);
+    bool writeMapping(RegisterMapping& mapping, bool value);
+
+    bool writeBitMapping(RegisterMapping& mapping, bool value);
 
     bool isRunning() const;
 

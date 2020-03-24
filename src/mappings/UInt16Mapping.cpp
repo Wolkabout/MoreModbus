@@ -29,7 +29,7 @@ bool UInt16Mapping::writeValue(uint16_t value)
     std::vector<uint16_t> bytes;
     bytes.emplace_back(value);
 
-    bool success = ModbusReader::getInstance()->writeToMapping(*this, bytes);
+    bool success = ModbusReader::getInstance()->writeMapping(*this, bytes);
     if (success)
         m_uint16Value = value;
 

@@ -47,7 +47,7 @@ bool StringMapping::writeValue(const std::string& newValue)
     else
         throw std::logic_error("StringMapping: Illegal operation type set.");
 
-    bool success = ModbusReader::getInstance()->writeToMapping(*this, bytes);
+    bool success = ModbusReader::getInstance()->writeMapping(*this, bytes);
     if (success)
         m_stringValue = newValue;
 
