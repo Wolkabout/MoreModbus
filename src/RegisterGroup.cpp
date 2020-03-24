@@ -39,15 +39,12 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
         throw std::logic_error("RegisterGroup: You can\'t add different typed registers in a group.");
     }
 
-    if (mapping->getSlaveAddress() != m_slaveAddress)
-    {
-        throw std::logic_error("RegisterGroup: You can\'t add mappings for different slave addresses.");
-    }
-
     if (mapping->isReadRestricted() && !m_readRestricted)
     {
         throw std::logic_error("RegisterGroup: Read restricted mappings have to have groups of their own!");
     }
+
+    mapping->setSlaveAddress(m_slaveAddress);
 
     if (mapping->isReadRestricted() && m_readRestricted)
     {

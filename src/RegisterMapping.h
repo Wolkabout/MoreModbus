@@ -21,20 +21,20 @@ public:
     {
         COIL = 0,
         INPUT_CONTACT,
-        INPUT_REGISTER,
-        HOLDING_REGISTER
+        HOLDING_REGISTER,
+        INPUT_REGISTER
     };
 
     // Enumeration used to represent the Outputting type of Mapping.
     enum class OutputType
     {
         BOOL = 0,
-        STRING,
-        INT16,
         UINT16,
-        INT32,
+        INT16,
         UINT32,
-        FLOAT
+        INT32,
+        FLOAT,
+        STRING
     };
 
     // Enumeration used to represent the operation done

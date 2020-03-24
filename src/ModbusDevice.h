@@ -11,6 +11,8 @@
 
 namespace wolkabout
 {
+typedef bool (*CompareFunction)(const std::shared_ptr<RegisterMapping>&, const std::shared_ptr<RegisterMapping>&);
+
 class ModbusDevice
 {
 public:
@@ -26,6 +28,8 @@ public:
     void setOnMappingValueChange(const std::function<void(const RegisterMapping&)>& onMappingValueChange);
 
     void triggerOnMappingValueChange(const RegisterMapping& mapping);
+
+    static bool compareMappings(const std::shared_ptr<RegisterMapping>& left, const std::shared_ptr<RegisterMapping>& right);
 
 private:
     std::string m_name;
