@@ -51,6 +51,10 @@ int main()
     const auto& device = std::make_shared<wolkabout::ModbusDevice>("Test Device 1", 1);
     device->addGroup(group);
 
+    device->setOnMappingValueChange([&](const wolkabout::RegisterMapping& mapping) {
+        LOG(DEBUG) << "Application: Mapping " << mapping.getReference() << " value changed.";
+    });
+
     const auto& modbusClient =
       std::make_shared<wolkabout::LibModbusTcpIpClient>("192.168.0.20", 502, std::chrono::milliseconds(500));
 

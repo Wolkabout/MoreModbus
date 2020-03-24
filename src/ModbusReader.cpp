@@ -46,6 +46,11 @@ bool ModbusReader::isRunning() const
     return m_readerShouldRun;
 }
 
+const std::map<int8_t, std::shared_ptr<ModbusDevice>>& ModbusReader::getDevices() const
+{
+    return m_devices;
+}
+
 bool ModbusReader::writeToMapping(RegisterMapping& mapping, const std::vector<uint16_t>& values)
 {
     if (mapping.getRegisterType() != RegisterMapping::RegisterType::HOLDING_REGISTER)
@@ -74,7 +79,6 @@ bool ModbusReader::writeToMapping(RegisterMapping& mapping, const std::vector<ui
     }
 
     mapping.update(values);
-    m_devices[mapping.getSlaveAddress()]->triggerOnMappingValueChange(mapping);
     return true;
 }
 
@@ -99,7 +103,6 @@ bool ModbusReader::writeToMapping(RegisterMapping& mapping, bool value)
     }
 
     mapping.update(value);
-    m_devices[mapping.getSlaveAddress()]->triggerOnMappingValueChange(mapping);
     return true;
 }
 

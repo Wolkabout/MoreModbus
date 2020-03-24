@@ -3,6 +3,7 @@
 //
 
 #include "ModbusGroupReader.h"
+#include "ModbusReader.h"
 #include "utility/DataParsers.h"
 #include "utility/Logger.h"
 
@@ -41,8 +42,10 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
             LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '" << mapping.second->getReference()
                       << "' Value: '" << mapping.second->getBoolValue() << "'";
 
-            // Notify of value change.
-            // TODO External
+            ModbusReader::getInstance()
+              ->getDevices()
+              .at(mapping.second->getSlaveAddress())
+              ->triggerOnMappingValueChange(*mapping.second);
         }
     }
 }
@@ -112,8 +115,11 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
                 {
                     LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '" << bitMapping->getReference()
                               << "' Value: '" << bitValue << "'";
-                    // Notify of value change.
-                    // TODO External
+
+                    ModbusReader::getInstance()
+                      ->getDevices()
+                      .at(mapping.second->getSlaveAddress())
+                      ->triggerOnMappingValueChange(*bitMapping);
                 }
                 ++shift;
             }
@@ -137,8 +143,11 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
             {
                 LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '" << mapping.second->getReference()
                           << "' Values: " << loggingString;
-                // Notify of value change.
-                // TODO External
+
+                ModbusReader::getInstance()
+                  ->getDevices()
+                  .at(mapping.second->getSlaveAddress())
+                  ->triggerOnMappingValueChange(*mapping.second);
             }
         }
 

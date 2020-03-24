@@ -34,6 +34,8 @@ public:
 
     bool isRunning() const;
 
+    const std::map<int8_t, std::shared_ptr<ModbusDevice>>& getDevices() const;
+
     void start();
 
     void stop();
