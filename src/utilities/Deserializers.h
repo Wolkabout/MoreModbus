@@ -23,12 +23,13 @@
 
 namespace wolkabout
 {
-class Deserializers {
+class Deserializers
+{
 public:
     static RegisterMapping::RegisterType deserializeRegisterType(const std::string& registerType);
     static RegisterMapping::OutputType deserializeDataType(const std::string& dataType);
     static RegisterMapping::OperationType deserializeOperationType(const std::string& dataType);
 };
-}
+}    // namespace wolkabout
 
-#endif //WOLKMODBUS_DESERIALIZERS_H
+#endif    // WOLKMODBUS_DESERIALIZERS_H
