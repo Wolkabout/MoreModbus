@@ -343,7 +343,8 @@ ModbusReader* ModbusReader::getInstance()
     return INSTANCE;
 }
 
-    void ModbusReader::setOnIterationStatuses(const std::function<void(std::map<int8_t, bool>)> &onIterationStatuses) {
-        m_onIterationStatuses = onIterationStatuses;
-    }
+void ModbusReader::setOnIterationStatuses(const std::function<void(std::map<int8_t, bool>)>& onIterationStatuses)
+{
+    m_onIterationStatuses = onIterationStatuses;
+}
 }    // namespace wolkabout

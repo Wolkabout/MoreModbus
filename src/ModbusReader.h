@@ -56,7 +56,7 @@ public:
 
     void stop();
 
-    void setOnIterationStatuses(const std::function<void(std::map<int8_t, bool>)> &onIterationStatuses);
+    void setOnIterationStatuses(const std::function<void(std::map<int8_t, bool>)>& onIterationStatuses);
 
 private:
     // Singleton
