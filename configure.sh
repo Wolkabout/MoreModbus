@@ -16,20 +16,18 @@
 
 # Obtain, and build dependencies
 
-pushd dependencies
+pushd dependencies || exit
 ./download.sh
 if [ "$#" -gt 0 ]
 then
   ./make.sh $1
 else
   ./make.sh
+  cp tools/git/pre-commit .git/hooks/pre-commit
+  chmod +x .git/hooks/pre-commit
+
+  pushd out || exit
+  cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ..
+  popd || exit
 fi
-popd
-
-cp tools/git/pre-commit .git/hooks/pre-commit
-chmod +x .git/hooks/pre-commit
-
-pushd out
-cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ..
-popd
-
+popd || exit
