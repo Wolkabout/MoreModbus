@@ -15,7 +15,7 @@
  */
 
 #include "RegisterGroup.h"
-#include "utility/Logger.h"
+#include "utilities/Logger.h"
 
 #include <algorithm>
 

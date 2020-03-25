@@ -15,7 +15,7 @@
  */
 
 #include "ModbusDevice.h"
-#include "utility/Logger.h"
+#include "utilities/Logger.h"
 
 #include <algorithm>
 #include <set>

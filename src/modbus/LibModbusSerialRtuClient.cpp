@@ -15,7 +15,7 @@
  */
 
 #include "LibModbusSerialRtuClient.h"
-#include "utility/Logger.h"
+#include "utilities/Logger.h"
 
 #include <cerrno>
 #include <chrono>

@@ -21,7 +21,7 @@
 #include "mappings/StringMapping.h"
 #include "mappings/UInt16Mapping.h"
 #include "modbus/LibModbusTcpIpClient.h"
-#include "utility/ConsoleLogger.h"
+#include "utilities/ConsoleLogger.h"
 
 int main()
 {

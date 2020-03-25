@@ -16,8 +16,8 @@
 
 #include "ModbusReader.h"
 #include "modbus/ModbusGroupReader.h"
-#include "utility/DataParsers.h"
-#include "utility/Logger.h"
+#include "utilities/DataParsers.h"
+#include "utilities/Logger.h"
 
 namespace wolkabout
 {
