@@ -14,13 +14,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-BASE_DIR="$(pwd)"
-
-BUILD_DIR="$BASE_DIR/build"
-LIB_DIR="$BUILD_DIR/lib"
-
-LIB_DEPLOY_DIR="$BASE_DIR/../out/lib"
-INCLUDE_DEPLOY_DIR="$BASE_DIR/../src"
+if [ $# -gt 0 ]
+then
+  BASE_DIR=$1
+  BUILD_DIR="$BASE_DIR/out/libmodbus/build"
+  LIB_DIR="$BUILD_DIR/lib"
+  LIB_DEPLOY_DIR="$BASE_DIR/out/lib"
+else
+  BASE_DIR="$(pwd)"
+  BUILD_DIR="$BASE_DIR/build"
+  LIB_DIR="$BUILD_DIR/lib"
+  LIB_DEPLOY_DIR="$BASE_DIR/../out/lib"
+  INCLUDE_DEPLOY_DIR="$BASE_DIR/../src"
+fi
 
 LIB_EXTENSION="so"
 
@@ -30,15 +36,13 @@ fi
 
 mkdir -pv "$BUILD_DIR"
 
-
 # libmodbus
 if [ ! -f "$LIB_DIR/libmodbus.$LIB_EXTENSION" ]; then
     echo "Building libmodbus"
     pushd libmodbus
 
     sh autogen.sh
-    ./configure --prefix=$BASE_DIR --includedir=$BASE_DIR/carwash/include  \
-                --libdir=$LIB_DIR --disable-tests
+    ./configure --libdir=$LIB_DIR --disable-tests
 
     make -j8 && make install
     popd
@@ -47,7 +51,5 @@ fi
 # Copy shared libraries
 mkdir -p $LIB_DEPLOY_DIR
 
-
 # libmodbus
-cp $BASE_DIR/libmodbus/src/*.h $INCLUDE_DEPLOY_DIR/modbus/libmodbus
 cp $BUILD_DIR/lib/libmodbus.*$LIB_EXTENSION* $LIB_DEPLOY_DIR

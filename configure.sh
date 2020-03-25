@@ -18,7 +18,12 @@
 
 pushd dependencies
 ./download.sh
-./make.sh
+if [ "$#" -gt 0 ]
+then
+  ./make.sh $1
+else
+  ./make.sh
+fi
 popd
 
 cp tools/git/pre-commit .git/hooks/pre-commit
