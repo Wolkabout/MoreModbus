@@ -1,12 +1,25 @@
-//
-// Created by Nexyy on 16/03/2020.
-//
+/*
+ * Copyright 2020 WolkAbout Technology s.r.o.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #include "ModbusDevice.h"
 #include "ModbusReader.h"
 #include "RegisterGroup.h"
 #include "mappings/BoolMapping.h"
 #include "mappings/StringMapping.h"
+#include "mappings/UInt16Mapping.h"
 #include "modbus/LibModbusTcpIpClient.h"
 #include "utility/ConsoleLogger.h"
 
@@ -17,29 +30,29 @@ int main()
     logger->setLogLevel(wolkabout::LogLevel::DEBUG);
     wolkabout::Logger::setInstance(std::move(logger));
 
-    const auto& registerMapping = std::make_shared<wolkabout::RegisterMapping>(
-      "MP1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 0);
+    const auto& registerMapping =
+      std::make_shared<wolkabout::UInt16Mapping>("MP1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 0);
 
-    const auto& anotherRegisterMapping = std::make_shared<wolkabout::RegisterMapping>(
-      "MP2", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 3);
+    const auto& anotherRegisterMapping =
+      std::make_shared<wolkabout::UInt16Mapping>("MP2", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 3);
 
     const auto& stringMapping = std::make_shared<wolkabout::StringMapping>(
       "STR1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, std::vector<int16_t>{0, 1, 2},
       wolkabout::RegisterMapping::OperationType::STRINGIFY_ASCII);
 
     const auto& getFirstBitMapping =
-      std::make_shared<wolkabout::RegisterMapping>("B4-1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER,
-                                                   4, wolkabout::RegisterMapping::OperationType::TAKE_BIT, 0);
+      std::make_shared<wolkabout::BoolMapping>("B4-1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 4,
+                                               wolkabout::RegisterMapping::OperationType::TAKE_BIT, 0);
 
     const auto& getSecondBitMapping =
-      std::make_shared<wolkabout::RegisterMapping>("B4-2", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER,
-                                                   4, wolkabout::RegisterMapping::OperationType::TAKE_BIT, 1);
+      std::make_shared<wolkabout::BoolMapping>("B4-2", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 4,
+                                               wolkabout::RegisterMapping::OperationType::TAKE_BIT, 1);
 
-    const auto& fifthRegister = std::make_shared<wolkabout::RegisterMapping>(
-      "MP5", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 5);
+    const auto& fifthRegister =
+      std::make_shared<wolkabout::UInt16Mapping>("MP5", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 5);
 
-    const auto& sixthRegister = std::make_shared<wolkabout::RegisterMapping>(
-      "MP6", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 8);
+    const auto& sixthRegister =
+      std::make_shared<wolkabout::UInt16Mapping>("MP6", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 8);
 
     const auto& device = std::make_shared<wolkabout::ModbusDevice>(
       "Test Device 1", 1,

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(wolkabout_modbus C CXX)
+project(WolkaboutModbus C CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS}    -Wall -Wextra -pedantic                                                    \
@@ -26,7 +26,7 @@ file(GLOB_RECURSE SOURCE_FILES src/*.c src/*.cpp)
 
 link_directories(${PROJECT_SOURCE_DIR}/out/lib)
 
-add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES} ${HEADER_FILES} src/modbus/ModbusGroupReader.cpp src/modbus/ModbusGroupReader.h)
+add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES} ${HEADER_FILES})
 target_link_libraries(${PROJECT_NAME} modbus pthread)
 
 file(GLOB_RECURSE EXAMPLE_SOURCE_FILES example/*.cpp)
