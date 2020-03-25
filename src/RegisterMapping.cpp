@@ -31,6 +31,11 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 , m_operationType(OperationType::NONE)
 , m_byteValues(1)
 {
+    if (readRestricted && (static_cast<uint16_t>(registerType) % 2 == 1))
+    {
+        throw std::logic_error("RegisterMapping: Absurd mapping, can\'t be readRestricted and read-only.");
+    }
+
     // On default, assign default OutputType for type of register.
     switch (m_registerType)
     {
@@ -56,6 +61,11 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 , m_operationType(OperationType::NONE)
 , m_byteValues(1)
 {
+    if (readRestricted && (static_cast<uint16_t>(registerType) % 2 == 1))
+    {
+        throw std::logic_error("RegisterMapping: Absurd mapping, can\'t be readRestricted and read-only.");
+    }
+
     switch (m_registerType)
     {
     case RegisterType::INPUT_REGISTER:
@@ -90,6 +100,11 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 , m_operationType(OperationType::TAKE_BIT)
 , m_bitIndex(bitIndex)
 {
+    if (readRestricted && (static_cast<uint16_t>(registerType) % 2 == 1))
+    {
+        throw std::logic_error("RegisterMapping: Absurd mapping, can\'t be readRestricted and read-only.");
+    }
+
     if (m_registerType == RegisterType::COIL || m_registerType == RegisterType::INPUT_CONTACT)
     {
         throw std::logic_error("RegisterMapping: Take bit can\'t be done over COIL/INPUT_CONTACT.");
@@ -107,6 +122,11 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 , m_outputType(type)
 , m_operationType(operation)
 {
+    if (readRestricted && (static_cast<uint16_t>(registerType) % 2 == 1))
+    {
+        throw std::logic_error("RegisterMapping: Absurd mapping, can\'t be readRestricted and read-only.");
+    }
+
     if (m_registerType == RegisterType::COIL || m_registerType == RegisterType::INPUT_CONTACT)
     {
         throw std::logic_error("RegisterMapping: Multi register mapping can\'t be COIL or INPUT_CONTACT.");
