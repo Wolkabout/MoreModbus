@@ -64,6 +64,11 @@ const std::map<int8_t, std::shared_ptr<ModbusDevice>>& ModbusReader::getDevices(
     return m_devices;
 }
 
+const std::map<int8_t, bool>& ModbusReader::getDeviceStatuses() const
+{
+    return m_deviceActiveStatus;
+}
+
 bool ModbusReader::writeMapping(RegisterMapping& mapping, const std::vector<uint16_t>& values)
 {
     if (mapping.getRegisterType() != RegisterMapping::RegisterType::HOLDING_REGISTER)
@@ -260,6 +265,7 @@ void ModbusReader::run()
                 {
                     m_threads[device.second->getSlaveAddress()] =
                       std::unique_ptr<std::thread>(new std::thread(&ModbusReader::readDevice, this, device.second));
+                    m_deviceActiveStatus[device.second->getSlaveAddress()] = true;
                 }
 
                 std::this_thread::sleep_for(m_readPeriod);
@@ -288,6 +294,7 @@ void ModbusReader::run()
                 }
 
                 m_errorDevices.clear();
+                m_onIterationStatuses(m_deviceActiveStatus);
             }
             else
             {
@@ -335,4 +342,8 @@ ModbusReader* ModbusReader::getInstance()
 {
     return INSTANCE;
 }
+
+    void ModbusReader::setOnIterationStatuses(const std::function<void(std::map<int8_t, bool>)> &onIterationStatuses) {
+        m_onIterationStatuses = onIterationStatuses;
+    }
 }    // namespace wolkabout

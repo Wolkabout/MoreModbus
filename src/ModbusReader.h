@@ -50,9 +50,13 @@ public:
 
     const std::map<int8_t, std::shared_ptr<ModbusDevice>>& getDevices() const;
 
+    const std::map<int8_t, bool>& getDeviceStatuses() const;
+
     void start();
 
     void stop();
+
+    void setOnIterationStatuses(const std::function<void(std::map<int8_t, bool>)> &onIterationStatuses);
 
 private:
     // Singleton
@@ -64,6 +68,8 @@ private:
     // Does the logic of reading all devices groups, and parsing data to
     // each separate mapping as the mapping requires them.
     void readDevice(const std::shared_ptr<ModbusDevice>& device);
+
+    std::function<void(std::map<int8_t, bool>)> m_onIterationStatuses;
 
     // Modbus client and device data
     ModbusClient& m_modbusClient;
