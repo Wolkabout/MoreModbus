@@ -45,7 +45,7 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
             ModbusReader::getInstance()
               ->getDevices()
               .at(mapping.second->getSlaveAddress())
-              ->triggerOnMappingValueChange(*mapping.second);
+              ->triggerOnMappingValueChange(mapping.second);
         }
     }
 }
@@ -120,7 +120,7 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
                     ModbusReader::getInstance()
                       ->getDevices()
                       .at(mapping.second->getSlaveAddress())
-                      ->triggerOnMappingValueChange(*bitMapping);
+                      ->triggerOnMappingValueChange(bitMapping);
                 }
                 ++shift;
             }
@@ -148,7 +148,7 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
                 ModbusReader::getInstance()
                   ->getDevices()
                   .at(mapping.second->getSlaveAddress())
-                  ->triggerOnMappingValueChange(*mapping.second);
+                  ->triggerOnMappingValueChange(mapping.second);
             }
         }
 
