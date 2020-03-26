@@ -33,7 +33,7 @@ bool RegisterGroup::compareFunction(const std::pair<std::string, std::shared_ptr
     return getBitFromString(right.first) - getBitFromString(left.first);
 }
 
-bool RegisterGroup::keyExistsInSet(const std::string &key)
+bool RegisterGroup::keyExistsInSet(const std::string& key)
 {
     for (const auto& pair : m_mappings)
     {
