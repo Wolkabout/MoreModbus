@@ -21,9 +21,15 @@
 
 #include <map>
 #include <memory>
+#include <set>
 
 namespace wolkabout
 {
+typedef bool (*MappingCompareFunction)(const std::pair<std::string, std::shared_ptr<RegisterMapping>>& left,
+                                       const std::pair<std::string, std::shared_ptr<RegisterMapping>>& right);
+
+typedef std::set<std::pair<std::string, std::shared_ptr<RegisterMapping>>, MappingCompareFunction> MappingsMap;
+
 // Group serves to merge multiple mappings that can be read with a single Modbus command.
 // It groups Mappings of same type, that can be found next to each other.
 // When values are read, they're assigned to each Mapping as necessary.
@@ -54,7 +60,7 @@ public:
 
     bool isReadRestricted() const;
 
-    const std::map<std::string, std::shared_ptr<RegisterMapping>>& getMappingsMap() const;
+    std::map<std::string, std::shared_ptr<RegisterMapping>> getMappingsMap() const;
 
     std::vector<std::string> getMappingsClaims() const;
 
@@ -67,11 +73,16 @@ public:
 private:
     bool appendMapping(const std::shared_ptr<RegisterMapping>& mapping);
 
+    static bool compareFunction(const std::pair<std::string, std::shared_ptr<RegisterMapping>>& left,
+                                const std::pair<std::string, std::shared_ptr<RegisterMapping>>& right);
+
+    bool keyExistsInSet(const std::string& key);
+
     RegisterMapping::RegisterType m_registerType;
     int8_t m_slaveAddress;
     bool m_readRestricted;
 
-    std::map<std::string, std::shared_ptr<RegisterMapping>> m_mappings;
+    MappingsMap m_mappings;
 };
 }    // namespace wolkabout
 

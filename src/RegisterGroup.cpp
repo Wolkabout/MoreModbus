@@ -23,11 +23,31 @@ namespace wolkabout
 {
 const char RegisterGroup::SEPARATOR = '.';
 
+bool RegisterGroup::compareFunction(const std::pair<std::string, std::shared_ptr<RegisterMapping>>& left,
+                                    const std::pair<std::string, std::shared_ptr<RegisterMapping>>& right)
+{
+    const auto addressComp = getAddressFromString(right.first) - getAddressFromString(left.first);
+    if (addressComp != 0)
+        return addressComp > 0;
+
+    return getBitFromString(right.first) - getBitFromString(left.first);
+}
+
+bool RegisterGroup::keyExistsInSet(const std::string &key)
+{
+    for (const auto& pair : m_mappings)
+    {
+        if (pair.first == key)
+            return true;
+    }
+    return false;
+}
+
 RegisterGroup::RegisterGroup(const std::shared_ptr<RegisterMapping>& mapping)
 : m_registerType(mapping->getRegisterType())
 , m_slaveAddress(mapping->getSlaveAddress())
 , m_readRestricted(mapping->isReadRestricted())
-, m_mappings()
+, m_mappings(&RegisterGroup::compareFunction)
 {
     addMapping(mapping);
 }
@@ -36,7 +56,7 @@ RegisterGroup::RegisterGroup(const RegisterGroup& instance)
 : m_registerType(instance.getRegisterType())
 , m_slaveAddress(instance.getSlaveAddress())
 , m_readRestricted(instance.isReadRestricted())
-, m_mappings()
+, m_mappings(&RegisterGroup::compareFunction)
 {
     for (const auto& mapping : instance.getMappingsMap())
     {
@@ -73,7 +93,7 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
         if (mapping->getOperationType() == RegisterMapping::OperationType::TAKE_BIT)
         {
             // If we're just adding bits, we don't need to apply same ruling.
-            if (m_mappings.find(std::to_string(mapping->getStartingAddress())) != m_mappings.end())
+            if (keyExistsInSet(std::to_string(mapping->getStartingAddress())))
             {
                 // The address we're targeting is already fully claimed.
                 LOG(WARN) << "RegisterGroup: Mapping " << mapping->getReference()
@@ -153,7 +173,7 @@ bool RegisterGroup::appendMapping(const std::shared_ptr<RegisterMapping>& mappin
     {
         const auto key =
           std::to_string(mapping->getStartingAddress()) + SEPARATOR + std::to_string(mapping->getBitIndex());
-        if (m_mappings.find(key) != m_mappings.end())
+        if (keyExistsInSet(std::to_string(mapping->getStartingAddress())))
         {
             LOG(WARN) << "RegisterGroup: Mapping " << mapping->getReference() << "(" << mapping->getStartingAddress()
                       << ") requests a bit that is already occupied.";
@@ -215,9 +235,14 @@ bool RegisterGroup::isReadRestricted() const
     return m_readRestricted;
 }
 
-const std::map<std::string, std::shared_ptr<RegisterMapping>>& RegisterGroup::getMappingsMap() const
+std::map<std::string, std::shared_ptr<RegisterMapping>> RegisterGroup::getMappingsMap() const
 {
-    return m_mappings;
+    std::map<std::string, std::shared_ptr<RegisterMapping>> map;
+    for (const auto& pair : m_mappings)
+    {
+        map.emplace(pair.first, pair.second);
+    }
+    return map;
 }
 
 std::vector<std::string> RegisterGroup::getMappingsClaims() const
