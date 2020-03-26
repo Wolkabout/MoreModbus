@@ -95,7 +95,8 @@ void ModbusDevice::setOnMappingValueChange(const std::function<void(const Regist
 
 void ModbusDevice::triggerOnMappingValueChange(const RegisterMapping& mapping)
 {
-    m_onMappingValueChange(mapping);
+    if (m_onMappingValueChange != nullptr)
+        m_onMappingValueChange(mapping);
 }
 
 bool ModbusDevice::compareMappings(const std::shared_ptr<RegisterMapping>& left,

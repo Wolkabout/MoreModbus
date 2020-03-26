@@ -294,7 +294,8 @@ void ModbusReader::run()
                 }
 
                 m_errorDevices.clear();
-                m_onIterationStatuses(m_deviceActiveStatus);
+                if (m_onIterationStatuses != nullptr)
+                    m_onIterationStatuses(m_deviceActiveStatus);
             }
             else
             {
