@@ -88,7 +88,8 @@ const std::vector<std::shared_ptr<RegisterGroup>>& ModbusDevice::getGroups() con
     return m_groups;
 }
 
-void ModbusDevice::setOnMappingValueChange(const std::function<void(const std::shared_ptr<RegisterMapping>&)>& onMappingValueChange)
+void ModbusDevice::setOnMappingValueChange(
+  const std::function<void(const std::shared_ptr<RegisterMapping>&)>& onMappingValueChange)
 {
     m_onMappingValueChange = onMappingValueChange;
 }

@@ -37,7 +37,8 @@ public:
 
     const std::vector<std::shared_ptr<RegisterGroup>>& getGroups() const;
 
-    void setOnMappingValueChange(const std::function<void(const std::shared_ptr<RegisterMapping>&)>& onMappingValueChange);
+    void setOnMappingValueChange(
+      const std::function<void(const std::shared_ptr<RegisterMapping>&)>& onMappingValueChange);
 
     void triggerOnMappingValueChange(const std::shared_ptr<RegisterMapping>& mapping);
 
