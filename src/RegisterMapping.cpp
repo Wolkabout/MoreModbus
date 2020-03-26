@@ -294,6 +294,16 @@ bool RegisterMapping::getBoolValue() const
     return m_boolValue;
 }
 
+bool RegisterMapping::isInitialized() const
+{
+    return m_isInitialized;
+}
+
+bool RegisterMapping::isValid() const
+{
+    return m_isValid;
+}
+
 void RegisterMapping::setValid(bool valid)
 {
     m_isValid = valid;

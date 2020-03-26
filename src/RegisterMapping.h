@@ -120,6 +120,10 @@ public:
 
     bool getBoolValue() const;
 
+    bool isInitialized() const;
+
+    bool isValid() const;
+
     void setValid(bool valid);
 
 protected:
