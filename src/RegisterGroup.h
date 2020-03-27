@@ -60,11 +60,11 @@ public:
 
     bool isReadRestricted() const;
 
+    const MappingsMap& getMappings() const;
+
     std::map<std::string, std::shared_ptr<RegisterMapping>> getMappingsMap() const;
 
     std::vector<std::string> getMappingsClaims() const;
-
-    std::vector<std::shared_ptr<RegisterMapping>> getMappings() const;
 
     static uint16_t getAddressFromString(const std::string& string);
 

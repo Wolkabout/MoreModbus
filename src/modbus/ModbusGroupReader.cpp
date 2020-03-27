@@ -85,7 +85,9 @@ bool ModbusGroupReader::readDiscreteInputGroup(ModbusClient& modbusClient, Regis
 void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vector<uint16_t>& values)
 {
     const auto& claims = group.getMappingsClaims();
-    const auto& mappings = group.getMappingsMap();
+    const auto& mappingsSet = group.getMappings();
+    const auto& mappings =
+      std::vector<std::pair<std::string, std::shared_ptr<RegisterMapping>>>(mappingsSet.begin(), mappingsSet.end());
 
     uint skipMappings = 0, valueCounter = 0, mappingCounter = 0;
     for (const auto& mapping : mappings)
@@ -111,16 +113,16 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
                 const auto bitIndex = RegisterGroup::getBitFromString(claims[mappingCounter + shift]);
                 const auto bitValue = bits[static_cast<uint16_t>(bitIndex)];
 
-                const auto& bitMapping = mappings.at(claims[mappingCounter + shift]);
-                if (bitMapping->update(bitValue))
+                const auto& bitMapping = mappings.at(mappingCounter + shift);
+                if (bitMapping.second->update(bitValue))
                 {
-                    LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '" << bitMapping->getReference()
-                              << "' Value: '" << bitValue << "'";
+                    LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '"
+                              << bitMapping.second->getReference() << "' Value: '" << bitValue << "'";
 
                     ModbusReader::getInstance()
                       ->getDevices()
                       .at(mapping.second->getSlaveAddress())
-                      ->triggerOnMappingValueChange(bitMapping);
+                      ->triggerOnMappingValueChange(bitMapping.second);
                 }
                 ++shift;
             }

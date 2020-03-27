@@ -30,7 +30,7 @@ bool RegisterGroup::compareFunction(const std::pair<std::string, std::shared_ptr
     if (addressComp != 0)
         return addressComp > 0;
 
-    return getBitFromString(right.first) - getBitFromString(left.first);
+    return getBitFromString(left.first) < getBitFromString(right.first);
 }
 
 bool RegisterGroup::keyExistsInSet(const std::string& key)
@@ -255,14 +255,9 @@ std::vector<std::string> RegisterGroup::getMappingsClaims() const
     return claims;
 }
 
-std::vector<std::shared_ptr<RegisterMapping>> RegisterGroup::getMappings() const
+const MappingsMap& RegisterGroup::getMappings() const
 {
-    std::vector<std::shared_ptr<RegisterMapping>> mappings;
-    for (const auto& mappingPair : m_mappings)
-    {
-        mappings.emplace_back(mappingPair.second);
-    }
-    return mappings;
+    return m_mappings;
 }
 
 uint16_t RegisterGroup::getAddressFromString(const std::string& string)
