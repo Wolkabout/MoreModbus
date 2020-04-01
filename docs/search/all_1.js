@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['consolelogger_1',['ConsoleLogger',['../classwolkabout_1_1ConsoleLogger.html',1,'wolkabout']]]
+  ['boolmapping_1',['BoolMapping',['../classwolkabout_1_1BoolMapping.html',1,'wolkabout']]]
 ];

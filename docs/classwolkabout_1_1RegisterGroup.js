@@ -4,7 +4,7 @@ var classwolkabout_1_1RegisterGroup =
     [ "RegisterGroup", "classwolkabout_1_1RegisterGroup.html#a1d956c1e4d956bc2d636533115d4a9f7", null ],
     [ "addMapping", "classwolkabout_1_1RegisterGroup.html#ad4ecd90e7486b4f306c92c64d895dc0d", null ],
     [ "getAddressCount", "classwolkabout_1_1RegisterGroup.html#a32e082961d96a9c0f6c89e0f04adeca3", null ],
-    [ "getMappings", "classwolkabout_1_1RegisterGroup.html#a779fe9f8a7f98338a93482ad393efb5d", null ],
+    [ "getMappings", "classwolkabout_1_1RegisterGroup.html#ad39637bd202c03617336f40a12f5c09a", null ],
     [ "getMappingsClaims", "classwolkabout_1_1RegisterGroup.html#ada3bffe012b7d6600846349ccc1e8f10", null ],
     [ "getMappingsMap", "classwolkabout_1_1RegisterGroup.html#ab894865e583b998d1fed9c325311eb73", null ],
     [ "getRegisterType", "classwolkabout_1_1RegisterGroup.html#a074a695079cd80356a6049244abd87c9", null ],

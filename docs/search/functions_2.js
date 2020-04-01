@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['operator_2b_3d_52',['operator+=',['../classwolkabout_1_1Logger.html#a8158a308cb549d3205aa5a983966f3c0',1,'wolkabout::Logger']]],
-  ['operator_3c_3c_53',['operator&lt;&lt;',['../classwolkabout_1_1Log.html#a23b59c505505ab6a3feba37e325a5fdc',1,'wolkabout::Log']]]
+  ['getinstance_59',['getInstance',['../classwolkabout_1_1Logger.html#aa19bc019b979d2ea737303585554a2af',1,'wolkabout::Logger']]],
+  ['getloglevel_60',['getLogLevel',['../classwolkabout_1_1Log.html#ad2fff429f398f5898fab01e3c25a229d',1,'wolkabout::Log']]],
+  ['getmessage_61',['getMessage',['../classwolkabout_1_1Log.html#aa57059d4389236552dbeffcc368331a7',1,'wolkabout::Log']]]
 ];

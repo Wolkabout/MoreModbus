@@ -148,11 +148,11 @@ $(document).ready(function(){initNavTree('RegisterGroup_8h_source.html',''); ini
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">bool</span> isReadRestricted() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    std::map&lt;std::string, std::shared_ptr&lt;RegisterMapping&gt;&gt; getMappingsMap() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">const</span> MappingsMap&amp; getMappings() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    std::vector&lt;std::string&gt; getMappingsClaims() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    std::map&lt;std::string, std::shared_ptr&lt;RegisterMapping&gt;&gt; getMappingsMap() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    std::vector&lt;std::shared_ptr&lt;RegisterMapping&gt;&gt; getMappings() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    std::vector&lt;std::string&gt; getMappingsClaims() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">static</span> uint16_t getAddressFromString(<span class="keyword">const</span> std::string&amp; <span class="keywordtype">string</span>);</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
@@ -183,7 +183,7 @@ $(document).ready(function(){initNavTree('RegisterGroup_8h_source.html',''); ini
 			<ul>
 				<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><b>RegisterGroup.h</b></li>
 				<li class="footer">
-					Generated on Wed Apr 1 2020 10:00:48 for MoreModbus by <a href="http://www.doxygen.org/index.html">
+					Generated on Wed Apr 1 2020 11:05:33 for MoreModbus by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.18.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.
 				</li>

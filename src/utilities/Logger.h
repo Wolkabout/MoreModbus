@@ -36,7 +36,7 @@ enum class LogLevel
 /**
  * @brief Converts a log level from string.
  * @param level log level as string
- * @return coresponding log level (supported: ERROR, WARN, INFO, DEBUG and
+ * @return corresponding log level (supported: ERROR, WARN, INFO, DEBUG and
  * TRACE. All other will be considered as ERROR)
  */
 wolkabout::LogLevel from_string(std::string level);
@@ -45,7 +45,7 @@ wolkabout::LogLevel from_string(std::string level);
  * @brief The Logger class
  *
  * Abstract class that should be extended by specific logger. Logger is accessed
- * as a signeton. But this single instance must be set via #setInstance.
+ * as a singleton. But this single instance must be set via #setInstance.
  */
 class Logger
 {

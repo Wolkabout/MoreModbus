@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['setinstance_22',['setInstance',['../classwolkabout_1_1Logger.html#ab405a1a78759c313b7bde964537ebf22',1,'wolkabout::Logger']]],
-  ['setloglevel_23',['setLogLevel',['../classwolkabout_1_1ConsoleLogger.html#a3b5c5d9d2bc3c3706d6a42f97a55ea0a',1,'wolkabout::ConsoleLogger::setLogLevel()'],['../classwolkabout_1_1Logger.html#a7c86cea6907199d02cc692a224927a16',1,'wolkabout::Logger::setLogLevel()']]],
-  ['stringmapping_24',['StringMapping',['../classwolkabout_1_1StringMapping.html',1,'wolkabout']]]
+  ['operator_2b_3d_24',['operator+=',['../classwolkabout_1_1Logger.html#a8158a308cb549d3205aa5a983966f3c0',1,'wolkabout::Logger']]],
+  ['operator_3c_3c_25',['operator&lt;&lt;',['../classwolkabout_1_1Log.html#a23b59c505505ab6a3feba37e325a5fdc',1,'wolkabout::Log']]]
 ];

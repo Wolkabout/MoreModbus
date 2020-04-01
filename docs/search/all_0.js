@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['boolmapping_0',['BoolMapping',['../classwolkabout_1_1BoolMapping.html',1,'wolkabout']]]
+  ['asciistringtoregisters_0',['asciiStringToRegisters',['../classwolkabout_1_1DataParsers.html#ab01758299d562364173eee2f703b256c',1,'wolkabout::DataParsers']]]
 ];

@@ -112,52 +112,57 @@ $(document).ready(function(){initNavTree('DataParsers_8h_source.html',''); initR
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span>wolkabout</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="classwolkabout_1_1DataParsers.html">   27</a></span>&#160;<span class="keyword">class </span><a class="code" href="classwolkabout_1_1DataParsers.html">DataParsers</a></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">enum class</span> Endian</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        BIG = 0,</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        LITTLE</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    };</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">static</span> std::vector&lt;uint16_t&gt; asciiStringToRegisters(<span class="keyword">const</span> std::string&amp; value);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">static</span> std::vector&lt;uint16_t&gt; unicodeStringToRegisters(<span class="keyword">const</span> std::string&amp; value);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">static</span> std::vector&lt;uint16_t&gt; int32ToRegisters(int32_t value, Endian endian);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">static</span> std::vector&lt;uint16_t&gt; uint32ToRegisters(uint32_t value, Endian endian);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">static</span> std::vector&lt;uint16_t&gt; floatToRegisters(<span class="keywordtype">float</span> value);</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="classwolkabout_1_1DataParsers.html">   31</a></span>&#160;<span class="keyword">class </span><a class="code" href="classwolkabout_1_1DataParsers.html">DataParsers</a></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classwolkabout_1_1DataParsers.html#ab867585b944c5fe3a5175d3e31185d04">   37</a></span>&#160;    <span class="keyword">enum class</span> <a class="code" href="classwolkabout_1_1DataParsers.html#ab867585b944c5fe3a5175d3e31185d04">Endian</a></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        BIG = 0,</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        LITTLE</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    };</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">static</span> std::string registersToAsciiString(<span class="keyword">const</span> std::vector&lt;uint16_t&gt;&amp; value);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">static</span> std::string registersToUnicodeString(<span class="keyword">const</span> std::vector&lt;uint16_t&gt;&amp; value);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">static</span> int32_t registersToInt32(<span class="keyword">const</span> std::vector&lt;uint16_t&gt;&amp; value, Endian endian);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">static</span> uint32_t registersToUint32(<span class="keyword">const</span> std::vector&lt;uint16_t&gt;&amp; value, Endian endian);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">float</span> registersToFloat(<span class="keyword">const</span> std::vector&lt;uint16_t&gt;&amp; value);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">static</span> int16_t uint16ToInt16(uint16_t value);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">static</span> uint16_t int16ToUint16(int16_t value);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">static</span> std::bitset&lt;<span class="keyword">sizeof</span>(uint16_t) * 8&gt; separteBits(uint16_t value);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">static</span> uint8_t MAX_UINT8;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">static</span> uint8_t SHIFT_UINT8;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">static</span> uint16_t MAX_UINT16;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">static</span> uint16_t SHIFT_UINT16;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;};</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}    <span class="comment">// namespace wolkabout</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#endif    // WOLKABOUT_MODBUS_DATAPARSERS_H</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">static</span> std::vector&lt;uint16_t&gt; <a class="code" href="classwolkabout_1_1DataParsers.html#ab01758299d562364173eee2f703b256c">asciiStringToRegisters</a>(<span class="keyword">const</span> std::string&amp; value);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">static</span> std::vector&lt;uint16_t&gt; <a class="code" href="classwolkabout_1_1DataParsers.html#a2e2c08ff4c07c583d2177efa44be9fc5">unicodeStringToRegisters</a>(<span class="keyword">const</span> std::string&amp; value);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">static</span> std::vector&lt;uint16_t&gt; <a class="code" href="classwolkabout_1_1DataParsers.html#a0dfa859d71150563f980d22a1531bf8b">int32ToRegisters</a>(int32_t value, <a class="code" href="classwolkabout_1_1DataParsers.html#ab867585b944c5fe3a5175d3e31185d04">Endian</a> endian);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">static</span> std::vector&lt;uint16_t&gt; uint32ToRegisters(uint32_t value, <a class="code" href="classwolkabout_1_1DataParsers.html#ab867585b944c5fe3a5175d3e31185d04">Endian</a> endian);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keyword">static</span> std::vector&lt;uint16_t&gt; floatToRegisters(<span class="keywordtype">float</span> value);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">static</span> std::string registersToAsciiString(<span class="keyword">const</span> std::vector&lt;uint16_t&gt;&amp; value);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">static</span> std::string registersToUnicodeString(<span class="keyword">const</span> std::vector&lt;uint16_t&gt;&amp; value);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keyword">static</span> int32_t registersToInt32(<span class="keyword">const</span> std::vector&lt;uint16_t&gt;&amp; value, <a class="code" href="classwolkabout_1_1DataParsers.html#ab867585b944c5fe3a5175d3e31185d04">Endian</a> endian);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keyword">static</span> uint32_t registersToUint32(<span class="keyword">const</span> std::vector&lt;uint16_t&gt;&amp; value, <a class="code" href="classwolkabout_1_1DataParsers.html#ab867585b944c5fe3a5175d3e31185d04">Endian</a> endian);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">float</span> registersToFloat(<span class="keyword">const</span> std::vector&lt;uint16_t&gt;&amp; value);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">static</span> int16_t uint16ToInt16(uint16_t value);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">static</span> uint16_t int16ToUint16(int16_t value);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">static</span> std::bitset&lt;<span class="keyword">sizeof</span>(uint16_t) * 8&gt; separateBits(uint16_t value);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">static</span> uint8_t MAX_UINT8;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">static</span> uint8_t SHIFT_UINT8;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">static</span> uint16_t MAX_UINT16;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">static</span> uint16_t SHIFT_UINT16;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;};</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}    <span class="comment">// namespace wolkabout</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">#endif    // WOLKABOUT_MODBUS_DATAPARSERS_H</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclasswolkabout_1_1DataParsers_html"><div class="ttname"><a href="classwolkabout_1_1DataParsers.html">wolkabout::DataParsers</a></div><div class="ttdef"><b>Definition:</b> DataParsers.h:28</div></div>
+<div class="ttc" id="aclasswolkabout_1_1DataParsers_html_ab867585b944c5fe3a5175d3e31185d04"><div class="ttname"><a href="classwolkabout_1_1DataParsers.html#ab867585b944c5fe3a5175d3e31185d04">wolkabout::DataParsers::Endian</a></div><div class="ttdeci">Endian</div><div class="ttdoc">Enum used for parsing methods where Endian needs to be defined.</div><div class="ttdef"><b>Definition:</b> DataParsers.h:38</div></div>
+<div class="ttc" id="aclasswolkabout_1_1DataParsers_html_a0dfa859d71150563f980d22a1531bf8b"><div class="ttname"><a href="classwolkabout_1_1DataParsers.html#a0dfa859d71150563f980d22a1531bf8b">wolkabout::DataParsers::int32ToRegisters</a></div><div class="ttdeci">static std::vector&lt; uint16_t &gt; int32ToRegisters(int32_t value, Endian endian)</div><div class="ttdoc">Convert passed 32-bit Integer value, where we separate it to two 16-bit uint16_t, order dictated by t...</div><div class="ttdef"><b>Definition:</b> DataParsers.cpp:53</div></div>
+<div class="ttc" id="aclasswolkabout_1_1DataParsers_html_a2e2c08ff4c07c583d2177efa44be9fc5"><div class="ttname"><a href="classwolkabout_1_1DataParsers.html#a2e2c08ff4c07c583d2177efa44be9fc5">wolkabout::DataParsers::unicodeStringToRegisters</a></div><div class="ttdeci">static std::vector&lt; uint16_t &gt; unicodeStringToRegisters(const std::string &amp;value)</div><div class="ttdoc">Convert passed string value, where each character can be interpreted as an UNICODE (only 0-255) chara...</div><div class="ttdef"><b>Definition:</b> DataParsers.cpp:42</div></div>
+<div class="ttc" id="aclasswolkabout_1_1DataParsers_html"><div class="ttname"><a href="classwolkabout_1_1DataParsers.html">wolkabout::DataParsers</a></div><div class="ttdoc">Collection of Utility methods, necessary for parsing data, between uint16_t, and wanted user types.</div><div class="ttdef"><b>Definition:</b> DataParsers.h:32</div></div>
+<div class="ttc" id="aclasswolkabout_1_1DataParsers_html_ab01758299d562364173eee2f703b256c"><div class="ttname"><a href="classwolkabout_1_1DataParsers.html#ab01758299d562364173eee2f703b256c">wolkabout::DataParsers::asciiStringToRegisters</a></div><div class="ttdeci">static std::vector&lt; uint16_t &gt; asciiStringToRegisters(const std::string &amp;value)</div><div class="ttdoc">Convert passed string value, where each character can be interpreted as an ASCII character into an ui...</div><div class="ttdef"><b>Definition:</b> DataParsers.cpp:31</div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_7b5d38f1875f1b693f62ca6a108a1129.html">utilities</a></li><li class="navelem"><b>DataParsers.h</b></li>
 				<li class="footer">
-					Generated on Wed Apr 1 2020 10:00:48 for MoreModbus by <a href="http://www.doxygen.org/index.html">
+					Generated on Wed Apr 1 2020 11:05:33 for MoreModbus by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.18.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.
 				</li>

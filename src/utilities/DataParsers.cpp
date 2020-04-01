@@ -140,7 +140,7 @@ uint16_t DataParsers::int16ToUint16(int16_t value)
     return static_cast<uint16_t>(value);
 }
 
-std::bitset<sizeof(uint16_t) * 8> DataParsers::separteBits(uint16_t value)
+std::bitset<sizeof(uint16_t) * 8> DataParsers::separateBits(uint16_t value)
 {
     return {value};
 }

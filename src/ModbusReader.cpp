@@ -155,7 +155,7 @@ bool ModbusReader::writeBitMapping(RegisterMapping& mapping, bool value)
 
     // Append bit
     const auto index = static_cast<uint8_t>(mapping.getBitIndex());
-    const auto& bits = DataParsers::separteBits(registerValue);
+    const auto& bits = DataParsers::separateBits(registerValue);
     if (bits[index] != value)
     {
         const int delta = (1 << index) * (value ? 1 : -1);
