@@ -37,9 +37,10 @@ public:
 
     const std::vector<std::shared_ptr<RegisterGroup>>& getGroups() const;
 
-    void setOnMappingValueChange(const std::function<void(const RegisterMapping&)>& onMappingValueChange);
+    void setOnMappingValueChange(
+      const std::function<void(const std::shared_ptr<RegisterMapping>&)>& onMappingValueChange);
 
-    void triggerOnMappingValueChange(const RegisterMapping& mapping);
+    void triggerOnMappingValueChange(const std::shared_ptr<RegisterMapping>& mapping);
 
     static bool compareMappings(const std::shared_ptr<RegisterMapping>& left,
                                 const std::shared_ptr<RegisterMapping>& right);
@@ -49,7 +50,7 @@ private:
     int8_t m_slaveAddress;
     std::vector<std::shared_ptr<RegisterGroup>> m_groups;
 
-    std::function<void(const RegisterMapping&)> m_onMappingValueChange;
+    std::function<void(const std::shared_ptr<RegisterMapping>&)> m_onMappingValueChange;
 };
 }    // namespace wolkabout
 

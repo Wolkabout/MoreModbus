@@ -41,7 +41,7 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
     {
     case RegisterType::INPUT_REGISTER:
     case RegisterType::HOLDING_REGISTER:
-        m_outputType = OutputType::INT16;
+        m_outputType = OutputType::UINT16;
         break;
     case RegisterType::COIL:
     case RegisterType::INPUT_CONTACT:

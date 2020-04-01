@@ -60,23 +60,23 @@ int main()
                                                                getFirstBitMapping, getSecondBitMapping, fifthRegister,
                                                                sixthRegister});
 
-    device->setOnMappingValueChange([](const wolkabout::RegisterMapping& mapping) {
+    device->setOnMappingValueChange([](const std::shared_ptr<wolkabout::RegisterMapping>& mapping) {
         // You can do this for all output types.
-        if (mapping.getOutputType() == wolkabout::RegisterMapping::OutputType::BOOL)
+        if (mapping->getOutputType() == wolkabout::RegisterMapping::OutputType::BOOL)
         {
-            auto& boolean = (wolkabout::BoolMapping&)mapping;
-            LOG(DEBUG) << "Application: Mapping is bool, value : " << boolean.getBoolValue();
-            boolean.writeValue(false);
+            auto& boolean = (std::shared_ptr<wolkabout::BoolMapping>&)mapping;
+            LOG(DEBUG) << "Application: Mapping is bool, value : " << boolean->getBoolValue();
+            boolean->writeValue(false);
         }
-        else if (mapping.getOutputType() == wolkabout::RegisterMapping::OutputType::STRING)
+        else if (mapping->getOutputType() == wolkabout::RegisterMapping::OutputType::STRING)
         {
-            auto& string = (wolkabout::StringMapping&)mapping;
-            LOG(DEBUG) << "Application: Mapping is string, value : " << string.getStringValue();
-            string.writeValue("Fruit!");
+            auto& string = (std::shared_ptr<wolkabout::StringMapping>&)mapping;
+            LOG(DEBUG) << "Application: Mapping is string, value : " << string->getStringValue();
+            string->writeValue("Fruit!");
         }
         else
         {
-            LOG(DEBUG) << "Application: Mapping " << mapping.getReference() << " value changed.";
+            LOG(DEBUG) << "Application: Mapping " << mapping->getReference() << " value changed.";
         }
     });
 
