@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['unicodestringtoregisters_68',['unicodeStringToRegisters',['../classwolkabout_1_1DataParsers.html#a2e2c08ff4c07c583d2177efa44be9fc5',1,'wolkabout::DataParsers']]]
+  ['operator_2b_3d_94',['operator+=',['../classwolkabout_1_1Logger.html#a8158a308cb549d3205aa5a983966f3c0',1,'wolkabout::Logger']]],
+  ['operator_3c_3c_95',['operator&lt;&lt;',['../classwolkabout_1_1Log.html#a23b59c505505ab6a3feba37e325a5fdc',1,'wolkabout::Log']]]
 ];

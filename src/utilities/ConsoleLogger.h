@@ -23,6 +23,9 @@
 
 namespace wolkabout
 {
+/**
+ * @brief Implementation of Logger class, using iostream to output to stdout.
+ */
 class ConsoleLogger : public Logger
 {
 public:

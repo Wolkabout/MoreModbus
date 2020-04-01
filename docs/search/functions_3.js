@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['int32toregisters_62',['int32ToRegisters',['../classwolkabout_1_1DataParsers.html#a0dfa859d71150563f980d22a1531bf8b',1,'wolkabout::DataParsers']]]
+  ['floatmapping_78',['FloatMapping',['../classwolkabout_1_1FloatMapping.html#afee8a0895f8a6281b1cd97851bb8852a',1,'wolkabout::FloatMapping']]],
+  ['floattoregisters_79',['floatToRegisters',['../classwolkabout_1_1DataParsers.html#a9affb4a7ad271e76a44eb74d9b49e554',1,'wolkabout::DataParsers']]]
 ];

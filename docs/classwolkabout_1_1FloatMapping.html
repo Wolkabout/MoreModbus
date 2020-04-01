@@ -89,6 +89,11 @@ $(document).ready(function(){initNavTree('classwolkabout_1_1FloatMapping.html','
 <div class="title">wolkabout::FloatMapping Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Class describing a <a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> with output type FLOAT.  
+ <a href="classwolkabout_1_1FloatMapping.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="FloatMapping_8h_source.html">FloatMapping.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for wolkabout::FloatMapping:</div>
 <div class="dyncontent">
@@ -101,17 +106,17 @@ Inheritance diagram for wolkabout::FloatMapping:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afee8a0895f8a6281b1cd97851bb8852a"><td class="memItemLeft" align="right" valign="top"><a id="afee8a0895f8a6281b1cd97851bb8852a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>FloatMapping</b> (const std::string &amp;reference, RegisterType registerType, const std::vector&lt; int16_t &gt; &amp;addresses, bool readRestricted=false, int8_t slaveAddress=-1)</td></tr>
+<tr class="memitem:afee8a0895f8a6281b1cd97851bb8852a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1FloatMapping.html#afee8a0895f8a6281b1cd97851bb8852a">FloatMapping</a> (const std::string &amp;reference, RegisterType registerType, const std::vector&lt; int16_t &gt; &amp;addresses, bool readRestricted=false, int8_t slaveAddress=-1)</td></tr>
+<tr class="memdesc:afee8a0895f8a6281b1cd97851bb8852a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor defining two register addresses which can be read and written as two registers.  <a href="classwolkabout_1_1FloatMapping.html#afee8a0895f8a6281b1cd97851bb8852a">More...</a><br /></td></tr>
 <tr class="separator:afee8a0895f8a6281b1cd97851bb8852a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78fa323e66986b39c4b90a2a57e4e94c"><td class="memItemLeft" align="right" valign="top"><a id="a78fa323e66986b39c4b90a2a57e4e94c"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> (const std::vector&lt; uint16_t &gt; &amp;newValues) override</td></tr>
+<tr class="memitem:a78fa323e66986b39c4b90a2a57e4e94c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1FloatMapping.html#a78fa323e66986b39c4b90a2a57e4e94c">update</a> (const std::vector&lt; uint16_t &gt; &amp;newValues) override</td></tr>
 <tr class="separator:a78fa323e66986b39c4b90a2a57e4e94c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bde61dd4b3f30e2bb24a3504a4d0998"><td class="memItemLeft" align="right" valign="top"><a id="a9bde61dd4b3f30e2bb24a3504a4d0998"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>writeValue</b> (float value)</td></tr>
+<tr class="memitem:a9bde61dd4b3f30e2bb24a3504a4d0998"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1FloatMapping.html#a9bde61dd4b3f30e2bb24a3504a4d0998">writeValue</a> (float value)</td></tr>
+<tr class="memdesc:a9bde61dd4b3f30e2bb24a3504a4d0998"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers the client to write the value for this register.  <a href="classwolkabout_1_1FloatMapping.html#a9bde61dd4b3f30e2bb24a3504a4d0998">More...</a><br /></td></tr>
 <tr class="separator:a9bde61dd4b3f30e2bb24a3504a4d0998"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70b4ff77aff29cdef1f26c6db23ba633"><td class="memItemLeft" align="right" valign="top"><a id="a70b4ff77aff29cdef1f26c6db23ba633"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>getFloatValue</b> () const</td></tr>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1FloatMapping.html#a70b4ff77aff29cdef1f26c6db23ba633">getFloatValue</a> () const</td></tr>
+<tr class="memdesc:a70b4ff77aff29cdef1f26c6db23ba633"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the last written/read value of registers, already parsed as float. <br /></td></tr>
 <tr class="separator:a70b4ff77aff29cdef1f26c6db23ba633"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classwolkabout_1_1RegisterMapping"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classwolkabout_1_1RegisterMapping')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classwolkabout_1_1RegisterMapping.html">wolkabout::RegisterMapping</a></td></tr>
 <tr class="memitem:a33af9c7955ad76142cda9c71f3aaf6c4 inherit pub_methods_classwolkabout_1_1RegisterMapping"><td class="memItemLeft" align="right" valign="top"><a id="a33af9c7955ad76142cda9c71f3aaf6c4"></a>
@@ -255,6 +260,125 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_isInitialized</b> =
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_isValid</b> = false</td></tr>
 <tr class="separator:a97fb7d4a37261de5dfed63a9bb4d2c4f inherit pro_attribs_classwolkabout_1_1RegisterMapping"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Class describing a <a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> with output type FLOAT. </p>
+<p>This Mapping merges two registers into a single float value. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="afee8a0895f8a6281b1cd97851bb8852a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afee8a0895f8a6281b1cd97851bb8852a">&#9670;&nbsp;</a></span>FloatMapping()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wolkabout::FloatMapping::FloatMapping </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">RegisterMapping::RegisterType&#160;</td>
+          <td class="paramname"><em>registerType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int16_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>addresses</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>readRestricted</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>slaveAddress</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor defining two register addresses which can be read and written as two registers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">reference</td><td>Name for the Mapping. </td></tr>
+    <tr><td class="paramname">registerType</td><td>Type, which will accept HOLDING_REGISTER &amp; INPUT_REGISTER </td></tr>
+    <tr><td class="paramname">addresses</td><td>Modbus register addresses passed as vector of int16_t's </td></tr>
+    <tr><td class="paramname">readRestricted</td><td>Is the Mapping write only? </td></tr>
+    <tr><td class="paramname">slaveAddress</td><td>Slave address of device, leave to be assigned by device, default is -1. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a78fa323e66986b39c4b90a2a57e4e94c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78fa323e66986b39c4b90a2a57e4e94c">&#9670;&nbsp;</a></span>update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::FloatMapping::update </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; uint16_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>newValues</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Override methods will be executed on devices reading thread, so that this parsing can be done for each device on their own respective thread. </p>
+
+<p>Reimplemented from <a class="el" href="classwolkabout_1_1RegisterMapping.html">wolkabout::RegisterMapping</a>.</p>
+
+</div>
+</div>
+<a id="a9bde61dd4b3f30e2bb24a3504a4d0998"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bde61dd4b3f30e2bb24a3504a4d0998">&#9670;&nbsp;</a></span>writeValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::FloatMapping::writeValue </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Triggers the client to write the value for this register. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>Float value to be written </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Result of the operation, whether or not it was successful </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/mappings/<a class="el" href="FloatMapping_8h_source.html">FloatMapping.h</a></li>
 <li>src/mappings/FloatMapping.cpp</li>
@@ -266,7 +390,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_isValid</b> = false
 			<ul>
 				<li class="navelem"><b>wolkabout</b></li><li class="navelem"><a class="el" href="classwolkabout_1_1FloatMapping.html">FloatMapping</a></li>
 				<li class="footer">
-					Generated on Wed Apr 1 2020 11:05:33 for MoreModbus by <a href="http://www.doxygen.org/index.html">
+					Generated on Wed Apr 1 2020 17:40:05 for MoreModbus by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.18.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.
 				</li>

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['getinstance_59',['getInstance',['../classwolkabout_1_1Logger.html#aa19bc019b979d2ea737303585554a2af',1,'wolkabout::Logger']]],
-  ['getloglevel_60',['getLogLevel',['../classwolkabout_1_1Log.html#ad2fff429f398f5898fab01e3c25a229d',1,'wolkabout::Log']]],
-  ['getmessage_61',['getMessage',['../classwolkabout_1_1Log.html#aa57059d4389236552dbeffcc368331a7',1,'wolkabout::Log']]]
+  ['deserializedatatype_75',['deserializeDataType',['../classwolkabout_1_1Deserializers.html#aeedf7d620df68a6662e53a95e53aa8c3',1,'wolkabout::Deserializers']]],
+  ['deserializeoperationtype_76',['deserializeOperationType',['../classwolkabout_1_1Deserializers.html#afcca14ce5983ab4af16b369a16722f02',1,'wolkabout::Deserializers']]],
+  ['deserializeregistertype_77',['deserializeRegisterType',['../classwolkabout_1_1Deserializers.html#a4902f2d10cb7fc5aaf440df96ce667c4',1,'wolkabout::Deserializers']]]
 ];

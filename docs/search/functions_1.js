@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['deserializedatatype_56',['deserializeDataType',['../classwolkabout_1_1Deserializers.html#aeedf7d620df68a6662e53a95e53aa8c3',1,'wolkabout::Deserializers']]],
-  ['deserializeoperationtype_57',['deserializeOperationType',['../classwolkabout_1_1Deserializers.html#afcca14ce5983ab4af16b369a16722f02',1,'wolkabout::Deserializers']]],
-  ['deserializeregistertype_58',['deserializeRegisterType',['../classwolkabout_1_1Deserializers.html#a4902f2d10cb7fc5aaf440df96ce667c4',1,'wolkabout::Deserializers']]]
+  ['boolmapping_74',['BoolMapping',['../classwolkabout_1_1BoolMapping.html#a41e949f1cc1f32a91ed3faa0090dd36d',1,'wolkabout::BoolMapping::BoolMapping(const std::string &amp;reference, RegisterType registerType, int16_t address, bool readRestricted=false, int8_t slaveAddress=-1)'],['../classwolkabout_1_1BoolMapping.html#aaf16326367ec707d7e26a363c6c20217',1,'wolkabout::BoolMapping::BoolMapping(const std::string &amp;reference, RegisterType registerType, int16_t address, OperationType operation, int8_t bitIndex, bool readRestricted=false, int8_t slaveAddress=-1)']]]
 ];
