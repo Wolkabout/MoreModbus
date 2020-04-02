@@ -25,8 +25,13 @@
 var NAVTREE =
 [
   [ "MoreModbus", "index.html", [
-    [ "Compiling", "index.html#autotoc_md1", null ],
     [ "Classes", "annotated.html", [
+      [ "Compiling", "index.html#autotoc_md0", null ],
+      [ "Usage", "index.html#autotoc_md1", [
+        [ "Device", "index.html#autotoc_md5", null ],
+        [ "Client", "index.html#autotoc_md6", null ],
+        [ "Reader", "index.html#autotoc_md7", null ]
+      ] ],
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <modbus/LibModbusSerialRtuClient.h>
 #include "ModbusDevice.h"
 #include "ModbusReader.h"
 #include "RegisterGroup.h"
@@ -81,6 +82,12 @@ int main()
         }
     });
 
+    // Serial RTU client
+    //    const auto& modbusClient = std::make_shared<wolkabout::LibModbusSerialRtuClient>(
+    //      "/dev/tty0", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+    //      std::chrono::milliseconds(500));
+
+    // TCP IP client
     const auto& modbusClient =
       std::make_shared<wolkabout::LibModbusTcpIpClient>("<IP ADDRESS>", 502, std::chrono::milliseconds(500));
 

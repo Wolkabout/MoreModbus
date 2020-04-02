@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=9"/>
 		<meta name="generator" content="Doxygen 1.8.18"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
-		<title>MoreModbus: MoreModbus</title>
+		<title>MoreModbus: Main Page</title>
 		<link href="tabs.css" rel="stylesheet" type="text/css"/>
 		<script type="text/javascript" src="jquery.js"></script>
 		<script type="text/javascript" src="dynsections.js"></script>
@@ -83,10 +83,11 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">MoreModbus </div>  </div>
+<div class="title">MoreModbus Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md_README"></a> This is an abstraction layer over the <code>libmodbus</code> library. The functionality added allow creation of mappings that create more meaningful data from modbus registers, such as 32 bit types created from two registers, strings, and single bits from registers.</p>
+<div class="textblock"><p><a class="anchor" id="md_README"></a>#MoreModbus</p>
+<p>This is an abstraction layer over the <code>libmodbus</code> library. The functionality added allow creation of mappings that create more meaningful data from modbus registers, such as 32 bit types created from two registers, strings, and single bits from registers.</p>
 <p>This library contains <code>Mappings</code>, the base building block. <code>Mapping</code> implies a single, logical bit of data. They are of different types different from the native modbus <code>uint16_t</code>, like:</p><ul>
 <li>INT16, UINT16 (where UINT16 is native for registers)</li>
 <li>INT32, UINT32, FLOAT</li>
@@ -112,8 +113,8 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </ul>
 <p>You can create a <code>Device</code> that groups <code>Mappings</code>. A <code>Group</code> contains <code>Mappings</code> that can be read with a single modbus message, and then the data is aggregated to each <code>Mapping</code>, and parsed to requested type.</p>
 <p>Also, there exists a <code>Reader</code> that takes in all devices. This part is multi-threaded, all devices get their own thread for reading the groups and parsing the data.</p>
-<h1><a class="anchor" id="autotoc_md1"></a>
-Compiling</h1>
+<h2><a class="anchor" id="autotoc_md0"></a>
+Compiling</h2>
 <p>This library requires:</p><ul>
 <li>GNU GCC and G++</li>
 <li>CMake</li>
@@ -125,6 +126,92 @@ Compiling</h1>
 <div class="line">make</div>
 </div><!-- fragment --><p>After that, you can run the example, and run the tests </p><div class="fragment"><div class="line">./moreModbusExample</div>
 <div class="line">./moreModbusTests (tests still missing, coming soon)</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1"></a>
+Usage</h2>
+<p>Create some mappings, you can create some normal mappings</p>
+<h4><a class="anchor" id="autotoc_md2"></a>
+Default Mapping</h4>
+<p>All the HOLDING_REGISTER/INPUT_REGISTER mappings by default are UInt16Mappings, and INPUT_CONTACT/COIL are BoolMapping.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">const auto&amp; normalRegisterMapping =</div>
+<div class="line">  std::make_shared&lt;wolkabout::UInt16Mapping&gt;(&quot;U16M&quot;, wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 0);</div>
+<div class="line"> </div>
+<div class="line">const auto&amp; normalContactMapping =</div>
+<div class="line">  std::make_shared&lt;wolkabout::BoolMapping&gt;(&quot;BM&quot;, wolkabout::RegisterMapping::RegisterType::INPUT_CONTACT, 0);</div>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md3"></a>
+Multi Register Mapping</h4>
+<p>You can create a multi-register mapping, by listing the addresses in a vector. You of course, need to list the operation for the mapping, and make it as a Int32Mapping, UInt32Mapping or StringMapping based on the return value you want.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">const auto&amp; stringMapping = std::make_shared&lt;wolkabout::StringMapping&gt;(</div>
+<div class="line">  &quot;STR1&quot;, wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, std::vector&lt;int16_t&gt;{0, 1, 2},</div>
+<div class="line">  wolkabout::RegisterMapping::OperationType::STRINGIFY_ASCII);</div>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md4"></a>
+Bit Mapping</h4>
+<p>You can create a bit mapping, one that will take a single bit from a register.You need to enlist as type HOLDING_REGISTER / INPUT_REGISTER, the TAKE_BIT operation and the bit index.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">const auto&amp; getFirstBitMapping =</div>
+<div class="line">      std::make_shared&lt;wolkabout::BoolMapping&gt;(&quot;B4-1&quot;, wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 4,</div>
+<div class="line">                                               wolkabout::RegisterMapping::OperationType::TAKE_BIT, 0);</div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md5"></a>
+Device</h3>
+<p>Next you need to merge all the mappings into a device. While creating the device, you also hand it a slaveAddress, which will be used to access it over SERIAL/RTU if you use RS485 with multiple devices.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">const auto&amp; mappings = std::vector&lt;std::shared_ptr&lt;wolkabout::RegisterMapping&gt;&gt;{normalRegisterMapping, </div>
+<div class="line">                                    normalContactMapping, stringMapping, getFirstBitMapping, getSecondBitMapping};</div>
+<div class="line"> </div>
+<div class="line">const auto&amp; device = std::make_shared&lt;wolkabout::ModbusDevice&gt;(</div>
+<div class="line">      &quot;Test Device 1&quot;, 1, mappings);</div>
+</div><!-- fragment --><p>The device is also automatically creating <code>Groups</code>, so that part is completely out of the users hands.</p>
+<p>If you want to be able to see mappings change in value, you have to set up the callback method. Of course, since you're getting the <code>std::shared_ptr&lt;RegisterMapping&gt;</code> you need to cast it by the output type, if you want access to the parsed value.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">device-&gt;setOnMappingValueChange([](const std::shared_ptr&lt;wolkabout::RegisterMapping&gt;&amp; mapping) {</div>
+<div class="line">    // You can do this for all output types.</div>
+<div class="line">    if (mapping-&gt;getOutputType() == wolkabout::RegisterMapping::OutputType::BOOL)</div>
+<div class="line">    {</div>
+<div class="line">        const auto&amp; boolMapping = std::dynamic_pointer_cast&lt;wolkabout::BoolMapping&gt;(mapping);</div>
+<div class="line">        LOG(DEBUG) &lt;&lt; &quot;Application: Mapping is bool, value : &quot; &lt;&lt; boolMapping-&gt;getBoolValue();</div>
+<div class="line"> </div>
+<div class="line">        if (!boolMapping-&gt;getBoolValue())</div>
+<div class="line">            boolMapping-&gt;writeValue(true);</div>
+<div class="line">    }</div>
+<div class="line">    else if (mapping-&gt;getOutputType() == wolkabout::RegisterMapping::OutputType::STRING)</div>
+<div class="line">    {</div>
+<div class="line">        const auto&amp; stringMapping = std::dynamic_pointer_cast&lt;wolkabout::StringMapping&gt;(mapping);</div>
+<div class="line">        LOG(DEBUG) &lt;&lt; &quot;Application: Mapping is string, value : &quot; &lt;&lt; stringMapping-&gt;getStringValue();</div>
+<div class="line"> </div>
+<div class="line">        if (stringMapping-&gt;getStringValue().empty())</div>
+<div class="line">            stringMapping-&gt;writeValue(&quot;Test&quot;);</div>
+<div class="line">    }</div>
+<div class="line">    else</div>
+<div class="line">    {</div>
+<div class="line">        LOG(DEBUG) &lt;&lt; &quot;Application: Mapping &quot; &lt;&lt; mapping-&gt;getReference() &lt;&lt; &quot; value changed.&quot;;</div>
+<div class="line">    }</div>
+<div class="line">});</div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md6"></a>
+Client</h3>
+<p>You can create a client, TCP/IP or SERIAL/RTU depending on your needs. This will be necessary for the reader.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">const auto&amp; modbusClient = std::make_shared&lt;wolkabout::LibModbusSerialRtuClient&gt;(</div>
+<div class="line">  &quot;/dev/tty0&quot;, 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE, std::chrono::milliseconds(500));</div>
+<div class="line"> </div>
+<div class="line">const auto&amp; modbusClient =</div>
+<div class="line">  std::make_shared&lt;wolkabout::LibModbusTcpIpClient&gt;(&quot;&lt;IP ADDRESS&gt;&quot;, 502, std::chrono::milliseconds(500));</div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md7"></a>
+Reader</h3>
+<p>And the final part, is the reader logic, which needs the client, and list of all devices that the reader should read.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">const auto&amp; reader = std::make_shared&lt;wolkabout::ModbusReader&gt;(</div>
+<div class="line">      *modbusClient, std::vector&lt;std::shared_ptr&lt;wolkabout::ModbusDevice&gt;&gt;{device}, std::chrono::milliseconds(1000));</div>
+</div><!-- fragment --><p>And the control to start/stop, you can invoke methods. While the reader is running, make sure your main thread doesn't stop running, because the whole program will stop, and the reader, with the program, will crash. You can do that with a while loop with a sleep method inside.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">reader-&gt;start();</div>
+<div class="line"> </div>
+<div class="line">while (reader-&gt;isRunning())</div>
+<div class="line">{</div>
+<div class="line">    std::this_thread::sleep_for(std::chrono::milliseconds(1000));</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">reader-&gt;stop();</div>
 </div><!-- fragment --> </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -132,7 +219,7 @@ Compiling</h1>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Thu Apr 2 2020 14:47:57 for MoreModbus by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Apr 2 2020 15:41:49 for MoreModbus by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.18.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.
 				</li>

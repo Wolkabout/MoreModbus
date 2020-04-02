@@ -1,6 +1,9 @@
 var annotated_dup =
 [
     [ "wolkabout", null, [
+      [ "Default Mapping", "index.html#autotoc_md2", null ],
+      [ "Multi Register Mapping", "index.html#autotoc_md3", null ],
+      [ "Bit Mapping", "index.html#autotoc_md4", null ],
       [ "BoolMapping", "classwolkabout_1_1BoolMapping.html", "classwolkabout_1_1BoolMapping" ],
       [ "ConsoleLogger", "classwolkabout_1_1ConsoleLogger.html", "classwolkabout_1_1ConsoleLogger" ],
       [ "DataParsers", "classwolkabout_1_1DataParsers.html", "classwolkabout_1_1DataParsers" ],
