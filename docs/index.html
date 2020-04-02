@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=9"/>
 		<meta name="generator" content="Doxygen 1.8.18"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
-		<title>MoreModbus: Main Page</title>
+		<title>MoreModbus: MoreModbus</title>
 		<link href="tabs.css" rel="stylesheet" type="text/css"/>
 		<script type="text/javascript" src="jquery.js"></script>
 		<script type="text/javascript" src="dynsections.js"></script>
@@ -83,18 +83,56 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">MoreModbus Documentation</div>  </div>
+<div class="title">MoreModbus </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md_README"></a>This is the MoreModbus library! </p>
-</div></div><!-- PageDoc -->
+<div class="textblock"><p><a class="anchor" id="md_README"></a> This is an abstraction layer over the <code>libmodbus</code> library. The functionality added allow creation of mappings that create more meaningful data from modbus registers, such as 32 bit types created from two registers, strings, and single bits from registers.</p>
+<p>This library contains <code>Mappings</code>, the base building block. <code>Mapping</code> implies a single, logical bit of data. They are of different types different from the native modbus <code>uint16_t</code>, like:</p><ul>
+<li>INT16, UINT16 (where UINT16 is native for registers)</li>
+<li>INT32, UINT32, FLOAT</li>
+<li>STRING</li>
+<li>BOOL (where BOOL is native for discrete types)</li>
+</ul>
+<p>These are built using operations</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadCenter">TYPE </th><th class="markdownTableHeadCenter">OPERATIONS  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyCenter">INT32, UINT32 </td><td class="markdownTableBodyCenter">MERGE_BIG_ENDIAN, MERGE_LITTLE_ENDIAN  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyCenter">FLOAT </td><td class="markdownTableBodyCenter">MERGE_FLOAT  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyCenter">STRING </td><td class="markdownTableBodyCenter">STRINGIFY_ASCII, STRINGIFY_UNICODE  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyCenter">BOOL </td><td class="markdownTableBodyCenter">TAKE_BIT  </td></tr>
+</table>
+<ul>
+<li>STRINGIFY_ASCII (0-127) and STRINGIFY_UNICODE (0-255) both store two characters as a single <code>uint16_t</code> (understandable to modbus)</li>
+<li>TAKE_BIT in combination with an index takes an exact bit (0-15) of a 16-bit register</li>
+</ul>
+<p>You can create a <code>Device</code> that groups <code>Mappings</code>. A <code>Group</code> contains <code>Mappings</code> that can be read with a single modbus message, and then the data is aggregated to each <code>Mapping</code>, and parsed to requested type.</p>
+<p>Also, there exists a <code>Reader</code> that takes in all devices. This part is multi-threaded, all devices get their own thread for reading the groups and parsing the data.</p>
+<h1><a class="anchor" id="autotoc_md1"></a>
+Compiling</h1>
+<p>This library requires:</p><ul>
+<li>GNU GCC and G++</li>
+<li>CMake</li>
+<li>Libmodbus (this is downloaded by the script)</li>
+</ul>
+<p>So run </p><div class="fragment"><div class="line">sudo apt install gcc g++ cmake</div>
+</div><!-- fragment --><p>And after that, run the configuration script </p><div class="fragment"><div class="line">./configure.sh</div>
+</div><!-- fragment --><p>The out directory should be generated, so move in there, and run build </p><div class="fragment"><div class="line">cd out</div>
+<div class="line">make</div>
+</div><!-- fragment --><p>After that, you can run the example, and run the tests </p><div class="fragment"><div class="line">./moreModbusExample</div>
+<div class="line">./moreModbusTests (tests still missing, coming soon)</div>
+</div><!-- fragment --> </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Thu Apr 2 2020 13:51:07 for MoreModbus by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Apr 2 2020 14:47:57 for MoreModbus by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.18.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.
 				</li>

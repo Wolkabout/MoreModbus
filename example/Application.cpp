@@ -30,16 +30,20 @@ int main()
     logger->setLogLevel(wolkabout::LogLevel::DEBUG);
     wolkabout::Logger::setInstance(std::move(logger));
 
-    const auto& registerMapping =
-      std::make_shared<wolkabout::UInt16Mapping>("MP1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 0);
+    // Create a regular Register Mapping
+    const auto& normalRegisterMapping =
+      std::make_shared<wolkabout::UInt16Mapping>("U16M", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 0);
 
-    const auto& anotherRegisterMapping =
-      std::make_shared<wolkabout::UInt16Mapping>("MP2", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 3);
+    // Create a regular Discrete Mapping
+    const auto& normalContactMapping =
+      std::make_shared<wolkabout::BoolMapping>("BM", wolkabout::RegisterMapping::RegisterType::INPUT_CONTACT, 0);
 
+    // Create a String Mapping
     const auto& stringMapping = std::make_shared<wolkabout::StringMapping>(
       "STR1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, std::vector<int16_t>{0, 1, 2},
       wolkabout::RegisterMapping::OperationType::STRINGIFY_ASCII);
 
+    // Create some Bit Mappings
     const auto& getFirstBitMapping =
       std::make_shared<wolkabout::BoolMapping>("B4-1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 4,
                                                wolkabout::RegisterMapping::OperationType::TAKE_BIT, 0);
@@ -48,31 +52,28 @@ int main()
       std::make_shared<wolkabout::BoolMapping>("B4-2", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 4,
                                                wolkabout::RegisterMapping::OperationType::TAKE_BIT, 1);
 
-    const auto& fifthRegister =
-      std::make_shared<wolkabout::UInt16Mapping>("MP5", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 5);
-
-    const auto& sixthRegister =
-      std::make_shared<wolkabout::UInt16Mapping>("MP6", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 8);
-
     const auto& device = std::make_shared<wolkabout::ModbusDevice>(
       "Test Device 1", 1,
-      std::vector<std::shared_ptr<wolkabout::RegisterMapping>>{registerMapping, anotherRegisterMapping, stringMapping,
-                                                               getFirstBitMapping, getSecondBitMapping, fifthRegister,
-                                                               sixthRegister});
+      std::vector<std::shared_ptr<wolkabout::RegisterMapping>>{normalRegisterMapping, normalContactMapping,
+                                                               stringMapping, getFirstBitMapping, getSecondBitMapping});
 
     device->setOnMappingValueChange([](const std::shared_ptr<wolkabout::RegisterMapping>& mapping) {
         // You can do this for all output types.
         if (mapping->getOutputType() == wolkabout::RegisterMapping::OutputType::BOOL)
         {
-            auto& boolean = (std::shared_ptr<wolkabout::BoolMapping>&)mapping;
-            LOG(DEBUG) << "Application: Mapping is bool, value : " << boolean->getBoolValue();
-            boolean->writeValue(false);
+            const auto& boolMapping = std::dynamic_pointer_cast<wolkabout::BoolMapping>(mapping);
+            LOG(DEBUG) << "Application: Mapping is bool, value : " << boolMapping->getBoolValue();
+
+            if (!boolMapping->getBoolValue())
+                boolMapping->writeValue(true);
         }
         else if (mapping->getOutputType() == wolkabout::RegisterMapping::OutputType::STRING)
         {
-            auto& string = (std::shared_ptr<wolkabout::StringMapping>&)mapping;
-            LOG(DEBUG) << "Application: Mapping is string, value : " << string->getStringValue();
-            string->writeValue("Fruit!");
+            const auto& stringMapping = std::dynamic_pointer_cast<wolkabout::StringMapping>(mapping);
+            LOG(DEBUG) << "Application: Mapping is string, value : " << stringMapping->getStringValue();
+
+            if (stringMapping->getStringValue().empty())
+                stringMapping->writeValue("Test");
         }
         else
         {
@@ -81,7 +82,7 @@ int main()
     });
 
     const auto& modbusClient =
-      std::make_shared<wolkabout::LibModbusTcpIpClient>("192.168.0.20", 502, std::chrono::milliseconds(500));
+      std::make_shared<wolkabout::LibModbusTcpIpClient>("<IP ADDRESS>", 502, std::chrono::milliseconds(500));
 
     const auto& reader = std::make_shared<wolkabout::ModbusReader>(
       *modbusClient, std::vector<std::shared_ptr<wolkabout::ModbusDevice>>{device}, std::chrono::milliseconds(1000));
