@@ -90,68 +90,71 @@ $(document).ready(function(){initNavTree('classwolkabout_1_1LibModbusSerialRtuCl
 <div class="title">wolkabout::LibModbusSerialRtuClient Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><a class="el" href="classwolkabout_1_1ModbusClient.html" title="Main interface class for Clients to inherit.">ModbusClient</a> implementation for Modbus SERIAL/RTU connections.  
+ <a href="classwolkabout_1_1LibModbusSerialRtuClient.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="LibModbusSerialRtuClient_8h_source.html">LibModbusSerialRtuClient.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for wolkabout::LibModbusSerialRtuClient:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="classwolkabout_1_1LibModbusSerialRtuClient.png" usemap="#wolkabout::LibModbusSerialRtuClient_map" alt=""/>
   <map id="wolkabout::LibModbusSerialRtuClient_map" name="wolkabout::LibModbusSerialRtuClient_map">
-<area href="classwolkabout_1_1ModbusClient.html" alt="wolkabout::ModbusClient" shape="rect" coords="0,0,219,24"/>
+<area href="classwolkabout_1_1ModbusClient.html" title="Main interface class for Clients to inherit." alt="wolkabout::ModbusClient" shape="rect" coords="0,0,219,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:acce3245e843aecc7434b158f58dc367f"><td class="memItemLeft" align="right" valign="top"><a id="acce3245e843aecc7434b158f58dc367f"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>BitParity</b> { <b>NONE</b>, 
+<tr class="memitem:acce3245e843aecc7434b158f58dc367f"><td class="memItemLeft" align="right" valign="top"><a id="acce3245e843aecc7434b158f58dc367f"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1LibModbusSerialRtuClient.html#acce3245e843aecc7434b158f58dc367f">BitParity</a> { <b>NONE</b>, 
 <b>EVEN</b>, 
 <b>ODD</b>
  }</td></tr>
+<tr class="memdesc:acce3245e843aecc7434b158f58dc367f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates the bitParity of slaves. <br /></td></tr>
 <tr class="separator:acce3245e843aecc7434b158f58dc367f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a96336ce8bc18039aa7f3d8ac663bee6b"><td class="memItemLeft" align="right" valign="top"><a id="a96336ce8bc18039aa7f3d8ac663bee6b"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>LibModbusSerialRtuClient</b> (std::string serialPort, int baudRate, char dataBits, char stopBits, BitParity bitParity, std::chrono::milliseconds responseTimeout)</td></tr>
+<tr class="memitem:a96336ce8bc18039aa7f3d8ac663bee6b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1LibModbusSerialRtuClient.html#a96336ce8bc18039aa7f3d8ac663bee6b">LibModbusSerialRtuClient</a> (std::string serialPort, int baudRate, char dataBits, char stopBits, <a class="el" href="classwolkabout_1_1LibModbusSerialRtuClient.html#acce3245e843aecc7434b158f58dc367f">BitParity</a> bitParity, std::chrono::milliseconds responseTimeout)</td></tr>
+<tr class="memdesc:a96336ce8bc18039aa7f3d8ac663bee6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for the client.  <a href="classwolkabout_1_1LibModbusSerialRtuClient.html#a96336ce8bc18039aa7f3d8ac663bee6b">More...</a><br /></td></tr>
 <tr class="separator:a96336ce8bc18039aa7f3d8ac663bee6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classwolkabout_1_1ModbusClient"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classwolkabout_1_1ModbusClient')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classwolkabout_1_1ModbusClient.html">wolkabout::ModbusClient</a></td></tr>
 <tr class="memitem:a47ad4068ab6abf6bc26daf713e9c7908 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top"><a id="a47ad4068ab6abf6bc26daf713e9c7908"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ModbusClient</b> (std::chrono::milliseconds responseTimeout)</td></tr>
 <tr class="separator:a47ad4068ab6abf6bc26daf713e9c7908 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acfe70782e4360c357a38b264771ef3ea inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top"><a id="acfe70782e4360c357a38b264771ef3ea"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>connect</b> ()</td></tr>
+<tr class="memitem:acfe70782e4360c357a38b264771ef3ea inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#acfe70782e4360c357a38b264771ef3ea">connect</a> ()</td></tr>
 <tr class="separator:acfe70782e4360c357a38b264771ef3ea inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c05c1f5628dee1df7d8641f8b3a86f7 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top"><a id="a6c05c1f5628dee1df7d8641f8b3a86f7"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>disconnect</b> ()</td></tr>
+<tr class="memitem:a6c05c1f5628dee1df7d8641f8b3a86f7 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#a6c05c1f5628dee1df7d8641f8b3a86f7">disconnect</a> ()</td></tr>
 <tr class="separator:a6c05c1f5628dee1df7d8641f8b3a86f7 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad32921afcb3fc1c101ce1bc78ccaad7d inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top"><a id="ad32921afcb3fc1c101ce1bc78ccaad7d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isConnected</b> ()</td></tr>
+<tr class="memitem:ad32921afcb3fc1c101ce1bc78ccaad7d inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#ad32921afcb3fc1c101ce1bc78ccaad7d">isConnected</a> ()</td></tr>
 <tr class="separator:ad32921afcb3fc1c101ce1bc78ccaad7d inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad129e38520d3a833847d64e6c7efdbe6 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top"><a id="ad129e38520d3a833847d64e6c7efdbe6"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>writeHoldingRegister</b> (int slaveAddress, int address, uint16_t value)</td></tr>
+<tr class="memitem:ad129e38520d3a833847d64e6c7efdbe6 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#ad129e38520d3a833847d64e6c7efdbe6">writeHoldingRegister</a> (int slaveAddress, int address, uint16_t value)</td></tr>
+<tr class="memdesc:ad129e38520d3a833847d64e6c7efdbe6 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a single uint16_t value into a HOLDING REGISTER, targeting the address.  <a href="classwolkabout_1_1ModbusClient.html#ad129e38520d3a833847d64e6c7efdbe6">More...</a><br /></td></tr>
 <tr class="separator:ad129e38520d3a833847d64e6c7efdbe6 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14c5c2a6886ebae005fac9f9a10b22bb inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top"><a id="a14c5c2a6886ebae005fac9f9a10b22bb"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>writeHoldingRegisters</b> (int slaveAddress, int address, std::vector&lt; uint16_t &gt; &amp;values)</td></tr>
+<tr class="memitem:a14c5c2a6886ebae005fac9f9a10b22bb inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#a14c5c2a6886ebae005fac9f9a10b22bb">writeHoldingRegisters</a> (int slaveAddress, int address, std::vector&lt; uint16_t &gt; &amp;values)</td></tr>
+<tr class="memdesc:a14c5c2a6886ebae005fac9f9a10b22bb inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes multiple uint16_t values into HOLDING REGISTERS, targeting the address, and however many registers after, dictated by the length of vector passed as value.  <a href="classwolkabout_1_1ModbusClient.html#a14c5c2a6886ebae005fac9f9a10b22bb">More...</a><br /></td></tr>
 <tr class="separator:a14c5c2a6886ebae005fac9f9a10b22bb inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6fd35d96ec95248b0bf6ebafcaadd99a inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top"><a id="a6fd35d96ec95248b0bf6ebafcaadd99a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>writeCoil</b> (int slaveAddress, int address, bool value)</td></tr>
+<tr class="memitem:a6fd35d96ec95248b0bf6ebafcaadd99a inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#a6fd35d96ec95248b0bf6ebafcaadd99a">writeCoil</a> (int slaveAddress, int address, bool value)</td></tr>
+<tr class="memdesc:a6fd35d96ec95248b0bf6ebafcaadd99a inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a single bool value to a COIL, targeting the address.  <a href="classwolkabout_1_1ModbusClient.html#a6fd35d96ec95248b0bf6ebafcaadd99a">More...</a><br /></td></tr>
 <tr class="separator:a6fd35d96ec95248b0bf6ebafcaadd99a inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a660fe606fbe9436d87a91013cc5dea07 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top"><a id="a660fe606fbe9436d87a91013cc5dea07"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>readInputContacts</b> (int slaveAddress, int address, int number, std::vector&lt; bool &gt; &amp;values)</td></tr>
+<tr class="memitem:a660fe606fbe9436d87a91013cc5dea07 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#a660fe606fbe9436d87a91013cc5dea07">readInputContacts</a> (int slaveAddress, int address, int number, std::vector&lt; bool &gt; &amp;values)</td></tr>
+<tr class="memdesc:a660fe606fbe9436d87a91013cc5dea07 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads from multiple INPUT_CONTACTS, starting from address, reading as much as passed argument number dictates.  <a href="classwolkabout_1_1ModbusClient.html#a660fe606fbe9436d87a91013cc5dea07">More...</a><br /></td></tr>
 <tr class="separator:a660fe606fbe9436d87a91013cc5dea07 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6bff9527b119c1a7f225f765e96ff09 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top"><a id="ae6bff9527b119c1a7f225f765e96ff09"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>readHoldingRegister</b> (int slaveAddress, int address, uint16_t &amp;value)</td></tr>
+<tr class="memitem:ae6bff9527b119c1a7f225f765e96ff09 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#ae6bff9527b119c1a7f225f765e96ff09">readHoldingRegister</a> (int slaveAddress, int address, uint16_t &amp;value)</td></tr>
+<tr class="memdesc:ae6bff9527b119c1a7f225f765e96ff09 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads from a single HOLDING_REGISTER, targeting the address.  <a href="classwolkabout_1_1ModbusClient.html#ae6bff9527b119c1a7f225f765e96ff09">More...</a><br /></td></tr>
 <tr class="separator:ae6bff9527b119c1a7f225f765e96ff09 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3a5075a2d275cd5c7920d9e81f45961 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top"><a id="ae3a5075a2d275cd5c7920d9e81f45961"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>readHoldingRegisters</b> (int slaveAddress, int address, int number, std::vector&lt; uint16_t &gt; &amp;values)</td></tr>
+<tr class="memitem:ae3a5075a2d275cd5c7920d9e81f45961 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#ae3a5075a2d275cd5c7920d9e81f45961">readHoldingRegisters</a> (int slaveAddress, int address, int number, std::vector&lt; uint16_t &gt; &amp;values)</td></tr>
+<tr class="memdesc:ae3a5075a2d275cd5c7920d9e81f45961 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads from multiple HOLDING_REGISTERS, targeting the address, reading as much as passed argument number dictates.  <a href="classwolkabout_1_1ModbusClient.html#ae3a5075a2d275cd5c7920d9e81f45961">More...</a><br /></td></tr>
 <tr class="separator:ae3a5075a2d275cd5c7920d9e81f45961 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5350a0278289d42b98425b8cb2b26432 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top"><a id="a5350a0278289d42b98425b8cb2b26432"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>readInputRegisters</b> (int slaveAddress, int address, int number, std::vector&lt; uint16_t &gt; &amp;values)</td></tr>
+<tr class="memitem:a5350a0278289d42b98425b8cb2b26432 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#a5350a0278289d42b98425b8cb2b26432">readInputRegisters</a> (int slaveAddress, int address, int number, std::vector&lt; uint16_t &gt; &amp;values)</td></tr>
+<tr class="memdesc:a5350a0278289d42b98425b8cb2b26432 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads from multiple INPUT_REGISTERS, targeting the address, reading as much as passed argument number dictates.  <a href="classwolkabout_1_1ModbusClient.html#a5350a0278289d42b98425b8cb2b26432">More...</a><br /></td></tr>
 <tr class="separator:a5350a0278289d42b98425b8cb2b26432 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbe68ac2df71d77fa95b1e2aa3bb0d24 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top"><a id="abbe68ac2df71d77fa95b1e2aa3bb0d24"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>readCoil</b> (int slaveAddress, int address, bool &amp;value)</td></tr>
+<tr class="memitem:abbe68ac2df71d77fa95b1e2aa3bb0d24 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#abbe68ac2df71d77fa95b1e2aa3bb0d24">readCoil</a> (int slaveAddress, int address, bool &amp;value)</td></tr>
+<tr class="memdesc:abbe68ac2df71d77fa95b1e2aa3bb0d24 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads from a single COIL, targeting the address.  <a href="classwolkabout_1_1ModbusClient.html#abbe68ac2df71d77fa95b1e2aa3bb0d24">More...</a><br /></td></tr>
 <tr class="separator:abbe68ac2df71d77fa95b1e2aa3bb0d24 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d8b7dfd06bece284ca74e09e137b7a8 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top"><a id="a1d8b7dfd06bece284ca74e09e137b7a8"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>readCoils</b> (int slaveAddress, int address, int number, std::vector&lt; bool &gt; &amp;values)</td></tr>
+<tr class="memitem:a1d8b7dfd06bece284ca74e09e137b7a8 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#a1d8b7dfd06bece284ca74e09e137b7a8">readCoils</a> (int slaveAddress, int address, int number, std::vector&lt; bool &gt; &amp;values)</td></tr>
+<tr class="memdesc:a1d8b7dfd06bece284ca74e09e137b7a8 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads from multiple COILS, targeting the address, reading as much as passed argument number dictates.  <a href="classwolkabout_1_1ModbusClient.html#a1d8b7dfd06bece284ca74e09e137b7a8">More...</a><br /></td></tr>
 <tr class="separator:a1d8b7dfd06bece284ca74e09e137b7a8 inherit pub_methods_classwolkabout_1_1ModbusClient"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
@@ -180,6 +183,75 @@ std::mutex&#160;</td><td class="memItemRight" valign="bottom"><b>m_modbusMutex</
 modbus_t *&#160;</td><td class="memItemRight" valign="bottom"><b>m_modbus</b></td></tr>
 <tr class="separator:a73d7256c04b77d43b0b0da789802424a inherit pro_attribs_classwolkabout_1_1ModbusClient"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p><a class="el" href="classwolkabout_1_1ModbusClient.html" title="Main interface class for Clients to inherit.">ModbusClient</a> implementation for Modbus SERIAL/RTU connections. </p>
+<p>Uses modbus_new_rtu method from libmodbus, and takes in a bunch of arguments. Overrides all the methods to add a timeout after messages. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a96336ce8bc18039aa7f3d8ac663bee6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96336ce8bc18039aa7f3d8ac663bee6b">&#9670;&nbsp;</a></span>LibModbusSerialRtuClient()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wolkabout::LibModbusSerialRtuClient::LibModbusSerialRtuClient </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>serialPort</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>baudRate</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>dataBits</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>stopBits</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classwolkabout_1_1LibModbusSerialRtuClient.html#acce3245e843aecc7434b158f58dc367f">BitParity</a>&#160;</td>
+          <td class="paramname"><em>bitParity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::milliseconds&#160;</td>
+          <td class="paramname"><em>responseTimeout</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor for the client. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">serialPort</td><td>that is used to access all the slaves </td></tr>
+    <tr><td class="paramname">baudRate</td><td>used to read the devices </td></tr>
+    <tr><td class="paramname">dataBits</td><td></td></tr>
+    <tr><td class="paramname">stopBits</td><td></td></tr>
+    <tr><td class="paramname">bitParity</td><td></td></tr>
+    <tr><td class="paramname">responseTimeout</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/modbus/<a class="el" href="LibModbusSerialRtuClient_8h_source.html">LibModbusSerialRtuClient.h</a></li>
 <li>src/modbus/LibModbusSerialRtuClient.cpp</li>
@@ -191,7 +263,7 @@ modbus_t *&#160;</td><td class="memItemRight" valign="bottom"><b>m_modbus</b></t
 			<ul>
 				<li class="navelem"><b>wolkabout</b></li><li class="navelem"><a class="el" href="classwolkabout_1_1LibModbusSerialRtuClient.html">LibModbusSerialRtuClient</a></li>
 				<li class="footer">
-					Generated on Wed Apr 1 2020 17:40:05 for MoreModbus by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Apr 2 2020 13:45:35 for MoreModbus by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.18.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.
 				</li>

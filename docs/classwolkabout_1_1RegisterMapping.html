@@ -91,6 +91,11 @@ $(document).ready(function(){initNavTree('classwolkabout_1_1RegisterMapping.html
 <div class="title">wolkabout::RegisterMapping Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Indicates a logical unit, resulting in one value, involving one/multiple/part of Modbus register(s).  
+ <a href="classwolkabout_1_1RegisterMapping.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="RegisterMapping_8h_source.html">RegisterMapping.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for wolkabout::RegisterMapping:</div>
 <div class="dyncontent">
@@ -109,13 +114,14 @@ Inheritance diagram for wolkabout::RegisterMapping:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a3d123b0e557d72949e1a403ef3076cef"><td class="memItemLeft" align="right" valign="top"><a id="a3d123b0e557d72949e1a403ef3076cef"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>RegisterType</b> { <b>COIL</b> = 0, 
+<tr class="memitem:a3d123b0e557d72949e1a403ef3076cef"><td class="memItemLeft" align="right" valign="top"><a id="a3d123b0e557d72949e1a403ef3076cef"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">RegisterType</a> { <b>COIL</b> = 0, 
 <b>INPUT_CONTACT</b>, 
 <b>HOLDING_REGISTER</b>, 
 <b>INPUT_REGISTER</b>
  }</td></tr>
+<tr class="memdesc:a3d123b0e557d72949e1a403ef3076cef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates the modbus register type defined by the protocol. <br /></td></tr>
 <tr class="separator:a3d123b0e557d72949e1a403ef3076cef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76f3406a074a12d556f11f0ad807b1a6"><td class="memItemLeft" align="right" valign="top"><a id="a76f3406a074a12d556f11f0ad807b1a6"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>OutputType</b> { <br />
+<tr class="memitem:a76f3406a074a12d556f11f0ad807b1a6"><td class="memItemLeft" align="right" valign="top"><a id="a76f3406a074a12d556f11f0ad807b1a6"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1RegisterMapping.html#a76f3406a074a12d556f11f0ad807b1a6">OutputType</a> { <br />
 &#160;&#160;<b>BOOL</b> = 0, 
 <b>UINT16</b>, 
 <b>INT16</b>, 
@@ -126,8 +132,9 @@ Public Types</h2></td></tr>
 <b>STRING</b>
 <br />
  }</td></tr>
+<tr class="memdesc:a76f3406a074a12d556f11f0ad807b1a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates the output type for mapping. <br /></td></tr>
 <tr class="separator:a76f3406a074a12d556f11f0ad807b1a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81dd6e22d9038c8c4a96be2144fb19fe"><td class="memItemLeft" align="right" valign="top"><a id="a81dd6e22d9038c8c4a96be2144fb19fe"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>OperationType</b> { <br />
+<tr class="memitem:a81dd6e22d9038c8c4a96be2144fb19fe"><td class="memItemLeft" align="right" valign="top"><a id="a81dd6e22d9038c8c4a96be2144fb19fe"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1RegisterMapping.html#a81dd6e22d9038c8c4a96be2144fb19fe">OperationType</a> { <br />
 &#160;&#160;<b>NONE</b> = 0, 
 <b>MERGE_BIG_ENDIAN</b>, 
 <b>MERGE_LITTLE_ENDIAN</b>, 
@@ -138,21 +145,22 @@ Public Types</h2></td></tr>
 <b>TAKE_BIT</b>
 <br />
  }</td></tr>
+<tr class="memdesc:a81dd6e22d9038c8c4a96be2144fb19fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates the operation type for mapping data, when it is read/written to registers. <br /></td></tr>
 <tr class="separator:a81dd6e22d9038c8c4a96be2144fb19fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a33af9c7955ad76142cda9c71f3aaf6c4"><td class="memItemLeft" align="right" valign="top"><a id="a33af9c7955ad76142cda9c71f3aaf6c4"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>RegisterMapping</b> (const std::string &amp;reference, RegisterType registerType, int16_t address, bool readRestricted=false, int8_t slaveAddress=-1)</td></tr>
+<tr class="memitem:a33af9c7955ad76142cda9c71f3aaf6c4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1RegisterMapping.html#a33af9c7955ad76142cda9c71f3aaf6c4">RegisterMapping</a> (const std::string &amp;reference, <a class="el" href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">RegisterType</a> registerType, int16_t address, bool readRestricted=false, int8_t slaveAddress=-1)</td></tr>
+<tr class="memdesc:a33af9c7955ad76142cda9c71f3aaf6c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for mapping.  <a href="classwolkabout_1_1RegisterMapping.html#a33af9c7955ad76142cda9c71f3aaf6c4">More...</a><br /></td></tr>
 <tr class="separator:a33af9c7955ad76142cda9c71f3aaf6c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acccf400b70d5d537c08c928293c514de"><td class="memItemLeft" align="right" valign="top"><a id="acccf400b70d5d537c08c928293c514de"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>RegisterMapping</b> (const std::string &amp;reference, RegisterType registerType, int16_t address, OutputType type, bool readRestricted=false, int8_t slaveAddress=-1)</td></tr>
+<tr class="memitem:acccf400b70d5d537c08c928293c514de"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1RegisterMapping.html#acccf400b70d5d537c08c928293c514de">RegisterMapping</a> (const std::string &amp;reference, <a class="el" href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">RegisterType</a> registerType, int16_t address, <a class="el" href="classwolkabout_1_1RegisterMapping.html#a76f3406a074a12d556f11f0ad807b1a6">OutputType</a> type, bool readRestricted=false, int8_t slaveAddress=-1)</td></tr>
+<tr class="memdesc:acccf400b70d5d537c08c928293c514de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for mapping with custom OutputType.  <a href="classwolkabout_1_1RegisterMapping.html#acccf400b70d5d537c08c928293c514de">More...</a><br /></td></tr>
 <tr class="separator:acccf400b70d5d537c08c928293c514de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa28f456db5030ef646a015cc864a8fb4"><td class="memItemLeft" align="right" valign="top"><a id="aa28f456db5030ef646a015cc864a8fb4"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>RegisterMapping</b> (const std::string &amp;reference, RegisterType registerType, int16_t address, OperationType operation, int8_t bitIndex, bool readRestricted=false, int8_t slaveAddress=-1)</td></tr>
+<tr class="memitem:aa28f456db5030ef646a015cc864a8fb4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1RegisterMapping.html#aa28f456db5030ef646a015cc864a8fb4">RegisterMapping</a> (const std::string &amp;reference, <a class="el" href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">RegisterType</a> registerType, int16_t address, <a class="el" href="classwolkabout_1_1RegisterMapping.html#a81dd6e22d9038c8c4a96be2144fb19fe">OperationType</a> operation, int8_t bitIndex, bool readRestricted=false, int8_t slaveAddress=-1)</td></tr>
+<tr class="memdesc:aa28f456db5030ef646a015cc864a8fb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for cases where bit is taken from a 16 bit register.  <a href="classwolkabout_1_1RegisterMapping.html#aa28f456db5030ef646a015cc864a8fb4">More...</a><br /></td></tr>
 <tr class="separator:aa28f456db5030ef646a015cc864a8fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36a2e1ba874f0469dfacbdb7085d9ee8"><td class="memItemLeft" align="right" valign="top"><a id="a36a2e1ba874f0469dfacbdb7085d9ee8"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>RegisterMapping</b> (const std::string &amp;reference, RegisterType registerType, const std::vector&lt; int16_t &gt; &amp;addresses, OutputType type, OperationType operation, bool readRestricted=false, int8_t slaveAddress=-1)</td></tr>
+<tr class="memitem:a36a2e1ba874f0469dfacbdb7085d9ee8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1RegisterMapping.html#a36a2e1ba874f0469dfacbdb7085d9ee8">RegisterMapping</a> (const std::string &amp;reference, <a class="el" href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">RegisterType</a> registerType, const std::vector&lt; int16_t &gt; &amp;addresses, <a class="el" href="classwolkabout_1_1RegisterMapping.html#a76f3406a074a12d556f11f0ad807b1a6">OutputType</a> type, <a class="el" href="classwolkabout_1_1RegisterMapping.html#a81dd6e22d9038c8c4a96be2144fb19fe">OperationType</a> operation, bool readRestricted=false, int8_t slaveAddress=-1)</td></tr>
+<tr class="memdesc:a36a2e1ba874f0469dfacbdb7085d9ee8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for cases where there is multiple registers merged into a single output value.  <a href="classwolkabout_1_1RegisterMapping.html#a36a2e1ba874f0469dfacbdb7085d9ee8">More...</a><br /></td></tr>
 <tr class="separator:a36a2e1ba874f0469dfacbdb7085d9ee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a033088e78cf461a825dda0e0df0ed601"><td class="memItemLeft" align="right" valign="top"><a id="a033088e78cf461a825dda0e0df0ed601"></a>
 const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getReference</b> () const</td></tr>
@@ -161,7 +169,7 @@ const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>ge
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isReadRestricted</b> () const</td></tr>
 <tr class="separator:a5dc171a08d53104492806eaa4b4569ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac22b2aeeb43ff9a3f6efaf0355a6c05d"><td class="memItemLeft" align="right" valign="top"><a id="ac22b2aeeb43ff9a3f6efaf0355a6c05d"></a>
-RegisterType&#160;</td><td class="memItemRight" valign="bottom"><b>getRegisterType</b> () const</td></tr>
+<a class="el" href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">RegisterType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getRegisterType</b> () const</td></tr>
 <tr class="separator:ac22b2aeeb43ff9a3f6efaf0355a6c05d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19ec2f9c0e1cd840c74494a872305724"><td class="memItemLeft" align="right" valign="top"><a id="a19ec2f9c0e1cd840c74494a872305724"></a>
 int16_t&#160;</td><td class="memItemRight" valign="bottom"><b>getAddress</b> () const</td></tr>
@@ -182,25 +190,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setSlaveAddress</b> (
 int16_t&#160;</td><td class="memItemRight" valign="bottom"><b>getRegisterCount</b> () const</td></tr>
 <tr class="separator:ade7a1502da0918f514c30c1d638f1adf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a476004a7f53f1d80263dd273aa74ca3e"><td class="memItemLeft" align="right" valign="top"><a id="a476004a7f53f1d80263dd273aa74ca3e"></a>
-OutputType&#160;</td><td class="memItemRight" valign="bottom"><b>getOutputType</b> () const</td></tr>
+<a class="el" href="classwolkabout_1_1RegisterMapping.html#a76f3406a074a12d556f11f0ad807b1a6">OutputType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getOutputType</b> () const</td></tr>
 <tr class="separator:a476004a7f53f1d80263dd273aa74ca3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1080bb1e90533e39c3bc3b0f563b1b11"><td class="memItemLeft" align="right" valign="top"><a id="a1080bb1e90533e39c3bc3b0f563b1b11"></a>
-OperationType&#160;</td><td class="memItemRight" valign="bottom"><b>getOperationType</b> () const</td></tr>
+<a class="el" href="classwolkabout_1_1RegisterMapping.html#a81dd6e22d9038c8c4a96be2144fb19fe">OperationType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getOperationType</b> () const</td></tr>
 <tr class="separator:a1080bb1e90533e39c3bc3b0f563b1b11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e68a01045f66a41ab8e721dd6980841"><td class="memItemLeft" align="right" valign="top"><a id="a9e68a01045f66a41ab8e721dd6980841"></a>
 int8_t&#160;</td><td class="memItemRight" valign="bottom"><b>getBitIndex</b> () const</td></tr>
 <tr class="separator:a9e68a01045f66a41ab8e721dd6980841"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae7a0c0470e6f0c74cc54b6cf0f61e0a"><td class="memItemLeft" align="right" valign="top"><a id="aae7a0c0470e6f0c74cc54b6cf0f61e0a"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> (const std::vector&lt; uint16_t &gt; &amp;newValues)</td></tr>
+<tr class="memitem:aae7a0c0470e6f0c74cc54b6cf0f61e0a"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1RegisterMapping.html#aae7a0c0470e6f0c74cc54b6cf0f61e0a">update</a> (const std::vector&lt; uint16_t &gt; &amp;newValues)</td></tr>
+<tr class="memdesc:aae7a0c0470e6f0c74cc54b6cf0f61e0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value watcher method, used for reader to write in new uint16_t values received by the <a class="el" href="classwolkabout_1_1ModbusGroupReader.html" title="Collection of utility methods used by ModbusReader to read a group.">ModbusGroupReader</a>.  <a href="classwolkabout_1_1RegisterMapping.html#aae7a0c0470e6f0c74cc54b6cf0f61e0a">More...</a><br /></td></tr>
 <tr class="separator:aae7a0c0470e6f0c74cc54b6cf0f61e0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe35e6be97e985b37977a83dcd4dc1dc"><td class="memItemLeft" align="right" valign="top"><a id="abe35e6be97e985b37977a83dcd4dc1dc"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> (bool newRegisterValue)</td></tr>
+<tr class="memitem:abe35e6be97e985b37977a83dcd4dc1dc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1RegisterMapping.html#abe35e6be97e985b37977a83dcd4dc1dc">update</a> (bool newRegisterValue)</td></tr>
+<tr class="memdesc:abe35e6be97e985b37977a83dcd4dc1dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value watcher method, used for reader to write in a new value received by the <a class="el" href="classwolkabout_1_1ModbusGroupReader.html" title="Collection of utility methods used by ModbusReader to read a group.">ModbusGroupReader</a>.  <a href="classwolkabout_1_1RegisterMapping.html#abe35e6be97e985b37977a83dcd4dc1dc">More...</a><br /></td></tr>
 <tr class="separator:abe35e6be97e985b37977a83dcd4dc1dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ce7b3c821c49b73eb942538bca14c7b"><td class="memItemLeft" align="right" valign="top"><a id="a3ce7b3c821c49b73eb942538bca14c7b"></a>
-const std::vector&lt; uint16_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getBytesValues</b> () const</td></tr>
+<tr class="memitem:a3ce7b3c821c49b73eb942538bca14c7b"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; uint16_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1RegisterMapping.html#a3ce7b3c821c49b73eb942538bca14c7b">getBytesValues</a> () const</td></tr>
+<tr class="memdesc:a3ce7b3c821c49b73eb942538bca14c7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return uint16_t values for mappings that use such values, otherwise return vector of length 0.  <a href="classwolkabout_1_1RegisterMapping.html#a3ce7b3c821c49b73eb942538bca14c7b">More...</a><br /></td></tr>
 <tr class="separator:a3ce7b3c821c49b73eb942538bca14c7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea65b071313fb697247091612b2d41cf"><td class="memItemLeft" align="right" valign="top"><a id="aea65b071313fb697247091612b2d41cf"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>getBoolValue</b> () const</td></tr>
+<tr class="memitem:aea65b071313fb697247091612b2d41cf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1RegisterMapping.html#aea65b071313fb697247091612b2d41cf">getBoolValue</a> () const</td></tr>
 <tr class="separator:aea65b071313fb697247091612b2d41cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66e68442e0e659e6134c7ba639bddcac"><td class="memItemLeft" align="right" valign="top"><a id="a66e68442e0e659e6134c7ba639bddcac"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isInitialized</b> () const</td></tr>
@@ -221,7 +228,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>m_reference</b
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_readRestricted</b></td></tr>
 <tr class="separator:a313f86c764e23d42d99d7d40dadb793b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98225e866096543ede656e6b58a34179"><td class="memItemLeft" align="right" valign="top"><a id="a98225e866096543ede656e6b58a34179"></a>
-RegisterType&#160;</td><td class="memItemRight" valign="bottom"><b>m_registerType</b></td></tr>
+<a class="el" href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">RegisterType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_registerType</b></td></tr>
 <tr class="separator:a98225e866096543ede656e6b58a34179"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44b820d42ac601d270334341f4008f22"><td class="memItemLeft" align="right" valign="top"><a id="a44b820d42ac601d270334341f4008f22"></a>
 int16_t&#160;</td><td class="memItemRight" valign="bottom"><b>m_address</b> = -1</td></tr>
@@ -233,10 +240,10 @@ std::vector&lt; int16_t &gt;&#160;</td><td class="memItemRight" valign="bottom">
 int8_t&#160;</td><td class="memItemRight" valign="bottom"><b>m_slaveAddress</b> = -1</td></tr>
 <tr class="separator:a7c9979d874f27fd9b239aa1168b78fad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a91795d1d97921b723e2bb7e1e3a99d"><td class="memItemLeft" align="right" valign="top"><a id="a0a91795d1d97921b723e2bb7e1e3a99d"></a>
-OutputType&#160;</td><td class="memItemRight" valign="bottom"><b>m_outputType</b></td></tr>
+<a class="el" href="classwolkabout_1_1RegisterMapping.html#a76f3406a074a12d556f11f0ad807b1a6">OutputType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_outputType</b></td></tr>
 <tr class="separator:a0a91795d1d97921b723e2bb7e1e3a99d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef766da786cd2f0e4dd1b5b3dc86e60d"><td class="memItemLeft" align="right" valign="top"><a id="aef766da786cd2f0e4dd1b5b3dc86e60d"></a>
-OperationType&#160;</td><td class="memItemRight" valign="bottom"><b>m_operationType</b></td></tr>
+<a class="el" href="classwolkabout_1_1RegisterMapping.html#a81dd6e22d9038c8c4a96be2144fb19fe">OperationType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_operationType</b></td></tr>
 <tr class="separator:aef766da786cd2f0e4dd1b5b3dc86e60d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b040d00bc97bb5daddb52227134f57f"><td class="memItemLeft" align="right" valign="top"><a id="a8b040d00bc97bb5daddb52227134f57f"></a>
 int8_t&#160;</td><td class="memItemRight" valign="bottom"><b>m_bitIndex</b> = -1</td></tr>
@@ -254,6 +261,380 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_isInitialized</b> =
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_isValid</b> = false</td></tr>
 <tr class="separator:a97fb7d4a37261de5dfed63a9bb4d2c4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Indicates a logical unit, resulting in one value, involving one/multiple/part of Modbus register(s). </p>
+<p>As definition, it takes in the RegisterType and other parameters, in which there is an OutputType, and parameters to indicate how to read values. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a33af9c7955ad76142cda9c71f3aaf6c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33af9c7955ad76142cda9c71f3aaf6c4">&#9670;&nbsp;</a></span>RegisterMapping() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wolkabout::RegisterMapping::RegisterMapping </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">RegisterMapping::RegisterType</a>&#160;</td>
+          <td class="paramname"><em>registerType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int16_t&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>readRestricted</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>slaveAddress</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Default constructor for mapping. </p>
+<p>For registerType COIL/INPUT_CONTACT, the output type is set to BOOL. For registerType HOLDING_REGISTER/INPUT_REGISTER, the output type is set to UINT16. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">reference</td><td>of the mapping, unique key for access. </td></tr>
+    <tr><td class="paramname">registerType</td><td>indicates the modbus register type. </td></tr>
+    <tr><td class="paramname">address</td><td>of the register </td></tr>
+    <tr><td class="paramname">readRestricted</td><td>indicates whether or not the mapping can be read </td></tr>
+    <tr><td class="paramname">slaveAddress</td><td>of the devices being accessed, leave as default on -1 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="acccf400b70d5d537c08c928293c514de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acccf400b70d5d537c08c928293c514de">&#9670;&nbsp;</a></span>RegisterMapping() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wolkabout::RegisterMapping::RegisterMapping </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">RegisterMapping::RegisterType</a>&#160;</td>
+          <td class="paramname"><em>registerType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int16_t&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classwolkabout_1_1RegisterMapping.html#a76f3406a074a12d556f11f0ad807b1a6">OutputType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>readRestricted</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>slaveAddress</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Default constructor for mapping with custom OutputType. </p>
+<p>For registerType COIL/INPUT_CONTACT, the output type is set to BOOL. For registerType HOLDING_REGISTER/INPUT_REGISTER, the output type can be INT16/UINT16. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">reference</td><td>of the mapping, unique key for access. </td></tr>
+    <tr><td class="paramname">registerType</td><td>indicates the modbus register type. </td></tr>
+    <tr><td class="paramname">address</td><td>of the register </td></tr>
+    <tr><td class="paramname">type</td><td>of the output wanted by the mapping </td></tr>
+    <tr><td class="paramname">readRestricted</td><td>indicates whether or not the mapping can be read </td></tr>
+    <tr><td class="paramname">slaveAddress</td><td>of the devices being accessed, leave as default on -1 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa28f456db5030ef646a015cc864a8fb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa28f456db5030ef646a015cc864a8fb4">&#9670;&nbsp;</a></span>RegisterMapping() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wolkabout::RegisterMapping::RegisterMapping </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">RegisterMapping::RegisterType</a>&#160;</td>
+          <td class="paramname"><em>registerType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int16_t&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classwolkabout_1_1RegisterMapping.html#a81dd6e22d9038c8c4a96be2144fb19fe">OperationType</a>&#160;</td>
+          <td class="paramname"><em>operation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>bitIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>readRestricted</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>slaveAddress</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor for cases where bit is taken from a 16 bit register. </p>
+<p>Takes in registerTypes HOLDING_REGISTER and INPUT_REGISTER </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">reference</td><td>of the mapping, unique key for access. </td></tr>
+    <tr><td class="paramname">registerType</td><td>indicates the modbus register type. </td></tr>
+    <tr><td class="paramname">address</td><td>of the register </td></tr>
+    <tr><td class="paramname">operation</td><td>should be set to TAKE_BIT </td></tr>
+    <tr><td class="paramname">bitIndex</td><td>which bit to take from the value (0-15) </td></tr>
+    <tr><td class="paramname">readRestricted</td><td>indicates whether or not the mapping can be read </td></tr>
+    <tr><td class="paramname">slaveAddress</td><td>of the devices being accessed, leave as default on -1 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a36a2e1ba874f0469dfacbdb7085d9ee8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36a2e1ba874f0469dfacbdb7085d9ee8">&#9670;&nbsp;</a></span>RegisterMapping() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wolkabout::RegisterMapping::RegisterMapping </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">RegisterMapping::RegisterType</a>&#160;</td>
+          <td class="paramname"><em>registerType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int16_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>addresses</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classwolkabout_1_1RegisterMapping.html#a76f3406a074a12d556f11f0ad807b1a6">OutputType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classwolkabout_1_1RegisterMapping.html#a81dd6e22d9038c8c4a96be2144fb19fe">OperationType</a>&#160;</td>
+          <td class="paramname"><em>operation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>readRestricted</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>slaveAddress</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor for cases where there is multiple registers merged into a single output value. </p>
+<p>Takes in 2 registers to get 32 bit types (such as UINT32, INT32, FLOAT) using operations as MERGE_BIG_ENDIAN &amp; MERGE_LITTLE_ENDIAN for UINT32, INT32, and MERGE_FLOAT for FLOAT, and can take in any number of register for STRING, where string will contain two characters per register interpreted by operations STRINGIFY_ASCII &amp; STRINGIFY_UNICODE. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">reference</td><td>of the mapping, unique key for access. </td></tr>
+    <tr><td class="paramname">registerType</td><td>indicates the modbus register type. </td></tr>
+    <tr><td class="paramname">addresses</td><td>of the registers </td></tr>
+    <tr><td class="paramname">type</td><td>of output, way the data will be interpreted for writing/reading </td></tr>
+    <tr><td class="paramname">operation</td><td>describing what will happen to read data from mappings </td></tr>
+    <tr><td class="paramname">readRestricted</td><td>indicates whether or not the mapping can be read </td></tr>
+    <tr><td class="paramname">slaveAddress</td><td>of the devices being accessed, leave as default on -1 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="aea65b071313fb697247091612b2d41cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea65b071313fb697247091612b2d41cf">&#9670;&nbsp;</a></span>getBoolValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::RegisterMapping::getBoolValue </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the bool value received by the <a class="el" href="classwolkabout_1_1ModbusGroupReader.html" title="Collection of utility methods used by ModbusReader to read a group.">ModbusGroupReader</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a3ce7b3c821c49b73eb942538bca14c7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ce7b3c821c49b73eb942538bca14c7b">&#9670;&nbsp;</a></span>getBytesValues()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; uint16_t &gt; &amp; wolkabout::RegisterMapping::getBytesValues </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Return uint16_t values for mappings that use such values, otherwise return vector of length 0. </p>
+<dl class="section return"><dt>Returns</dt><dd>the uint16_t values received by the <a class="el" href="classwolkabout_1_1ModbusGroupReader.html" title="Collection of utility methods used by ModbusReader to read a group.">ModbusGroupReader</a>, before parsing. </dd></dl>
+
+</div>
+</div>
+<a id="abe35e6be97e985b37977a83dcd4dc1dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe35e6be97e985b37977a83dcd4dc1dc">&#9670;&nbsp;</a></span>update() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::RegisterMapping::update </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>newRegisterValue</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Value watcher method, used for reader to write in a new value received by the <a class="el" href="classwolkabout_1_1ModbusGroupReader.html" title="Collection of utility methods used by ModbusReader to read a group.">ModbusGroupReader</a>. </p>
+<p>This is the method used for <a class="el" href="classwolkabout_1_1BoolMapping.html" title="Class describing a RegisterMapping which has an OutputType BOOLEAN.">BoolMapping</a> - ones used by COIL/INPUT_CONTACT or TAKE_BIT mappings. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newRegisterValue</td><td>new boolean value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>whether or not the update operation was successful. </dd></dl>
+
+</div>
+</div>
+<a id="aae7a0c0470e6f0c74cc54b6cf0f61e0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae7a0c0470e6f0c74cc54b6cf0f61e0a">&#9670;&nbsp;</a></span>update() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::RegisterMapping::update </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; uint16_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>newValues</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Value watcher method, used for reader to write in new uint16_t values received by the <a class="el" href="classwolkabout_1_1ModbusGroupReader.html" title="Collection of utility methods used by ModbusReader to read a group.">ModbusGroupReader</a>. </p>
+<p>Stores one, two, or however many uint16_t values the mapping requires. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newValues</td><td>vector of new uint16_t values. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>whether or not the update operation was successful. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classwolkabout_1_1Int32Mapping.html#a7daf252c5a5ab8fb639099640025b93e">wolkabout::Int32Mapping</a>, <a class="el" href="classwolkabout_1_1StringMapping.html#a39eaecd8b6a3514e5ef173cc626321f6">wolkabout::StringMapping</a>, <a class="el" href="classwolkabout_1_1UInt32Mapping.html#aad4186fc83a30788c04b1a1ed216dc8d">wolkabout::UInt32Mapping</a>, <a class="el" href="classwolkabout_1_1FloatMapping.html#a78fa323e66986b39c4b90a2a57e4e94c">wolkabout::FloatMapping</a>, <a class="el" href="classwolkabout_1_1Int16Mapping.html#a54e4a062a61498e71f72c9ed5d0f6361">wolkabout::Int16Mapping</a>, and <a class="el" href="classwolkabout_1_1UInt16Mapping.html#a31da0fb7e9545ae97b08f848a5bbde68">wolkabout::UInt16Mapping</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="RegisterMapping_8h_source.html">RegisterMapping.h</a></li>
 <li>src/RegisterMapping.cpp</li>
@@ -265,7 +646,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_isValid</b> = false
 			<ul>
 				<li class="navelem"><b>wolkabout</b></li><li class="navelem"><a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a></li>
 				<li class="footer">
-					Generated on Wed Apr 1 2020 17:40:05 for MoreModbus by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Apr 2 2020 13:45:35 for MoreModbus by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.18.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.
 				</li>

@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['operator_2b_3d_94',['operator+=',['../classwolkabout_1_1Logger.html#a8158a308cb549d3205aa5a983966f3c0',1,'wolkabout::Logger']]],
-  ['operator_3c_3c_95',['operator&lt;&lt;',['../classwolkabout_1_1Log.html#a23b59c505505ab6a3feba37e325a5fdc',1,'wolkabout::Log']]]
+  ['libmodbusserialrtuclient_139',['LibModbusSerialRtuClient',['../classwolkabout_1_1LibModbusSerialRtuClient.html#a96336ce8bc18039aa7f3d8ac663bee6b',1,'wolkabout::LibModbusSerialRtuClient']]],
+  ['libmodbustcpipclient_140',['LibModbusTcpIpClient',['../classwolkabout_1_1LibModbusTcpIpClient.html#ad02c71b2ca62d661dfe7068f3ed23468',1,'wolkabout::LibModbusTcpIpClient']]],
+  ['log_141',['Log',['../classwolkabout_1_1Log.html#a7ac703ce06cc507e70c899823e83d64d',1,'wolkabout::Log']]]
 ];

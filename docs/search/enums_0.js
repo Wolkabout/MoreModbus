@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['endian_113',['Endian',['../classwolkabout_1_1DataParsers.html#ab867585b944c5fe3a5175d3e31185d04',1,'wolkabout::DataParsers']]]
+  ['bitparity_181',['BitParity',['../classwolkabout_1_1LibModbusSerialRtuClient.html#acce3245e843aecc7434b158f58dc367f',1,'wolkabout::LibModbusSerialRtuClient']]]
 ];

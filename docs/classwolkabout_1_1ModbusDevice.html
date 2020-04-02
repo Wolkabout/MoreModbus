@@ -90,11 +90,16 @@ $(document).ready(function(){initNavTree('classwolkabout_1_1ModbusDevice.html','
 <div class="title">wolkabout::ModbusDevice Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Collection of ModbusGroups for a single Modbus server/slave.  
+ <a href="classwolkabout_1_1ModbusDevice.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="ModbusDevice_8h_source.html">ModbusDevice.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:acc9e9995705b0e787f4ddc01c1475932"><td class="memItemLeft" align="right" valign="top"><a id="acc9e9995705b0e787f4ddc01c1475932"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ModbusDevice</b> (const std::string &amp;name, int8_t slaveAddress, const std::vector&lt; std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &gt;&gt; &amp;mappings)</td></tr>
+<tr class="memitem:acc9e9995705b0e787f4ddc01c1475932"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusDevice.html#acc9e9995705b0e787f4ddc01c1475932">ModbusDevice</a> (const std::string &amp;name, int8_t slaveAddress, const std::vector&lt; std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &gt;&gt; &amp;mappings)</td></tr>
+<tr class="memdesc:acc9e9995705b0e787f4ddc01c1475932"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for the device.  <a href="classwolkabout_1_1ModbusDevice.html#acc9e9995705b0e787f4ddc01c1475932">More...</a><br /></td></tr>
 <tr class="separator:acc9e9995705b0e787f4ddc01c1475932"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bdc8b61fcbe7a401ca2fd6cb155ddbc"><td class="memItemLeft" align="right" valign="top"><a id="a7bdc8b61fcbe7a401ca2fd6cb155ddbc"></a>
 const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getName</b> () const</td></tr>
@@ -105,8 +110,8 @@ int8_t&#160;</td><td class="memItemRight" valign="bottom"><b>getSlaveAddress</b>
 <tr class="memitem:ac59f54b0bbe6f8175bc957ecaa047adb"><td class="memItemLeft" align="right" valign="top"><a id="ac59f54b0bbe6f8175bc957ecaa047adb"></a>
 const std::vector&lt; std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1RegisterGroup.html">RegisterGroup</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getGroups</b> () const</td></tr>
 <tr class="separator:ac59f54b0bbe6f8175bc957ecaa047adb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c27dcde76f66dcccf450714443f1850"><td class="memItemLeft" align="right" valign="top"><a id="a1c27dcde76f66dcccf450714443f1850"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setOnMappingValueChange</b> (const std::function&lt; void(const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &gt; &amp;)&gt; &amp;onMappingValueChange)</td></tr>
+<tr class="memitem:a1c27dcde76f66dcccf450714443f1850"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusDevice.html#a1c27dcde76f66dcccf450714443f1850">setOnMappingValueChange</a> (const std::function&lt; void(const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &gt; &amp;)&gt; &amp;onMappingValueChange)</td></tr>
+<tr class="memdesc:a1c27dcde76f66dcccf450714443f1850"><td class="mdescLeft">&#160;</td><td class="mdescRight">Event that will trigger when one of the devices mappings value changes.  <a href="classwolkabout_1_1ModbusDevice.html#a1c27dcde76f66dcccf450714443f1850">More...</a><br /></td></tr>
 <tr class="separator:a1c27dcde76f66dcccf450714443f1850"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ce6c041d170c2e6b50b4bf35eba53f8"><td class="memItemLeft" align="right" valign="top"><a id="a2ce6c041d170c2e6b50b4bf35eba53f8"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>triggerOnMappingValueChange</b> (const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &gt; &amp;mapping)</td></tr>
@@ -115,9 +120,85 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>triggerOnMappingValue
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a4757d3d137e747970ac6813c1978c417"><td class="memItemLeft" align="right" valign="top"><a id="a4757d3d137e747970ac6813c1978c417"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>compareMappings</b> (const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &gt; &amp;left, const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &gt; &amp;right)</td></tr>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusDevice.html#a4757d3d137e747970ac6813c1978c417">compareMappings</a> (const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &gt; &amp;left, const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &gt; &amp;right)</td></tr>
+<tr class="memdesc:a4757d3d137e747970ac6813c1978c417"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compare function for creating groups, in way that they have best chances to be in a group. <br /></td></tr>
 <tr class="separator:a4757d3d137e747970ac6813c1978c417"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Collection of ModbusGroups for a single Modbus server/slave. </p>
+<p>The device contains the slaveAddress, and all the groups to be read for the slave address. The groups will be created by the device, and all the slaveAddresses will be set when the device is created. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="acc9e9995705b0e787f4ddc01c1475932"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc9e9995705b0e787f4ddc01c1475932">&#9670;&nbsp;</a></span>ModbusDevice()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wolkabout::ModbusDevice::ModbusDevice </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>slaveAddress</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &gt;&gt; &amp;&#160;</td>
+          <td class="paramname"><em>mappings</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Default constructor for the device. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>unique as identification </td></tr>
+    <tr><td class="paramname">slaveAddress</td><td>unique to device, and is going to set all groups to this slaveAddress </td></tr>
+    <tr><td class="paramname">mappings</td><td>all the mappings that device will have </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a1c27dcde76f66dcccf450714443f1850"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c27dcde76f66dcccf450714443f1850">&#9670;&nbsp;</a></span>setOnMappingValueChange()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void wolkabout::ModbusDevice::setOnMappingValueChange </td>
+          <td>(</td>
+          <td class="paramtype">const std::function&lt; void(const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &gt; &amp;)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>onMappingValueChange</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Event that will trigger when one of the devices mappings value changes. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">onMappingValueChange</td><td>the callback function for callback, executed on the devices reading thread. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="ModbusDevice_8h_source.html">ModbusDevice.h</a></li>
 <li>src/ModbusDevice.cpp</li>
@@ -129,7 +210,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>compareMapping
 			<ul>
 				<li class="navelem"><b>wolkabout</b></li><li class="navelem"><a class="el" href="classwolkabout_1_1ModbusDevice.html">ModbusDevice</a></li>
 				<li class="footer">
-					Generated on Wed Apr 1 2020 17:40:05 for MoreModbus by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Apr 2 2020 13:45:35 for MoreModbus by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.18.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.
 				</li>

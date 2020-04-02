@@ -26,36 +26,85 @@
 
 namespace wolkabout
 {
-// Main workings class. Takes all the devices, and reads them periodically.
-// Separates all modbus connection and device trigger logic into a single thread.
-// Runs each owns devices modbus readings and data parsing in separate threads.
-// Does that periodically, dictated by the passed readPeriod parameter.
+/**
+ * @brief Main functional class, that accepts all devices and reads them periodcally.
+ * @details Function of the class is to periodically trigger the reading of all devices,
+ *          of course, each and every on their separate threads. Where the connection
+ *          gets split between them all, and data parsing for mappings is execute on their own
+ *          thread. And also, the on value change for mappings event is invoked.
+ *
+ *          This class is also a singleton.
+ */
 class ModbusReader
 {
 public:
+    /**
+     * @brief Get the instance of the class.
+     * @return Raw pointer to the instance.
+     */
     static ModbusReader* getInstance();
 
+    /**
+     * @brief Main constructor for the reader, that prepares all the necessary data for reading.
+     * @param modbusClient one of implementations of the abstract class
+     * @param devices list of all devices that will be read, with their slaveAddresses already set
+     * @param readPeriod time period for cycling reads
+     */
     ModbusReader(ModbusClient& modbusClient, const std::vector<std::shared_ptr<ModbusDevice>>& devices,
                  const std::chrono::milliseconds& readPeriod);
 
     virtual ~ModbusReader();
 
+    /**
+     * @brief Force the reader to write to a mapping (uint16_t values)
+     * @param mapping reference to mapping from one of devices that the reader was passed in constructor
+     * @param values array of uint16_t's, needs to contain exact amount of values as the mapping has in register count.
+     * @return whether or not the operation was successful
+     */
     bool writeMapping(RegisterMapping& mapping, const std::vector<uint16_t>& values);
 
+    /**
+     * @brief Force the reader to write to a mapping (bool value)
+     * @param mapping reference to mapping from one of device that the reader was passed in constructor
+     * @param value single boolean
+     * @return whether or not the operation was successful
+     */
     bool writeMapping(RegisterMapping& mapping, bool value);
 
+    /**
+     * @brief Force the reader to write to a mapping that interacts with a bit from an 16bit register
+     * @param mapping reference to bit mapping from one of the device that the reader was passed in constructor
+     * @param value single boolean
+     * @return whether or not the operation was successful
+     */
     bool writeBitMapping(RegisterMapping& mapping, bool value);
 
+    /**
+     * @brief Indicates whether or not the threads that read devices are running
+     * @return thread running status
+     */
     bool isRunning() const;
 
     const std::map<int8_t, std::shared_ptr<ModbusDevice>>& getDevices() const;
 
     const std::map<int8_t, bool>& getDeviceStatuses() const;
 
+    /**
+     * @brief Initializes the modbus connection, will also reconnect if it isn't working,
+     *          or it disconnected in the meanwhile. If the connection is up, it will read
+     *          the devices.
+     */
     void start();
 
+    /**
+     * @brief Halts the modbus connection and stops all device reading threads.
+     */
     void stop();
 
+    /**
+     * @brief Set the main callback for receiving device statuses after each reading cycle.
+     * @param onIterationStatuses the callback function.
+     */
     void setOnIterationStatuses(const std::function<void(std::map<int8_t, bool>)>& onIterationStatuses);
 
 private:

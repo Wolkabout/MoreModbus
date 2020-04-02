@@ -25,19 +25,26 @@
 
 namespace wolkabout
 {
+
 typedef bool (*MappingCompareFunction)(const std::pair<std::string, std::shared_ptr<RegisterMapping>>& left,
                                        const std::pair<std::string, std::shared_ptr<RegisterMapping>>& right);
 
 typedef std::set<std::pair<std::string, std::shared_ptr<RegisterMapping>>, MappingCompareFunction> MappingsMap;
 
-// Group serves to merge multiple mappings that can be read with a single Modbus command.
-// It groups Mappings of same type, that can be found next to each other.
-// When values are read, they're assigned to each Mapping as necessary.
+/**
+ * @brief Group serves to merge multiple mappings that can be read with a single Modbus command.
+ * @details It groups Mappings of same type, that can be found next to each other.
+ *          When values are read, they're assigned to each Mapping as necessary.
+ */
 class RegisterGroup
 {
 public:
     const static char SEPARATOR;
 
+    /**
+     * @brief Default constructor for the Group
+     * @param mapping that will be added to the group, their RegisterType will be taken.
+     */
     explicit RegisterGroup(const std::shared_ptr<RegisterMapping>& mapping);
 
     // Overriden default copy constructor to ensure deep copy of objects which we own
@@ -46,6 +53,13 @@ public:
     // for each separate register on each separate slave address.
     RegisterGroup(const RegisterGroup& instance);
 
+    /**
+     * @brief Add a mapping to the group.
+     * @detail Add a mapping, see if it's address and register count can be added into the group
+     *         see if it can stay in continuity.
+     * @param mapping
+     * @return whether or not the adding is successful
+     */
     bool addMapping(const std::shared_ptr<RegisterMapping>& mapping);
 
     RegisterMapping::RegisterType getRegisterType() const;
@@ -60,19 +74,46 @@ public:
 
     bool isReadRestricted() const;
 
+    /**
+     * @return all the claims strings and mappings in pairs, where the pairs
+     *         are sorted by the comparer method (by address, and bit index)
+     */
     const MappingsMap& getMappings() const;
 
+    /**
+     * @return all the claim strings with mapping in map, where the claims
+     *         are sorted by an alphanumeric sort
+     */
     std::map<std::string, std::shared_ptr<RegisterMapping>> getMappingsMap() const;
 
+    /**
+     * @return all the claim strings for mappings in the group.
+     */
     std::vector<std::string> getMappingsClaims() const;
 
+    /**
+     * @brief Utility method to fetch the address from claim string
+     * @details Address is found in the claim string before the separator
+     * @param string claim - indicates the data which mapping requires
+     * @return the address as int
+     */
     static uint16_t getAddressFromString(const std::string& string);
 
+    /**
+     * @brief Utility method to fetch the bit from claim string
+     * @details Bit index is found in the claim string after separator, value has to be in 0-15 range.
+     * @param string claim - indicates the data which mapping requires
+     * @return the bit index as int
+     */
     static int16_t getBitFromString(const std::string& string);
 
 private:
     bool appendMapping(const std::shared_ptr<RegisterMapping>& mapping);
 
+    /**
+     * @brief Utility method for sorting the pairs, so that they are sorted the way they need
+     *        to be for reading.
+     */
     static bool compareFunction(const std::pair<std::string, std::shared_ptr<RegisterMapping>>& left,
                                 const std::pair<std::string, std::shared_ptr<RegisterMapping>>& right);
 

@@ -114,88 +114,92 @@ $(document).ready(function(){initNavTree('ModbusReader_8h_source.html',''); init
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>wolkabout</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// Main workings class. Takes all the devices, and reads them periodically.</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// Separates all modbus connection and device trigger logic into a single thread.</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// Runs each owns devices modbus readings and data parsing in separate threads.</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// Does that periodically, dictated by the passed readPeriod parameter.</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classwolkabout_1_1ModbusReader.html">   33</a></span>&#160;<span class="keyword">class </span><a class="code" href="classwolkabout_1_1ModbusReader.html">ModbusReader</a></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">static</span> <a class="code" href="classwolkabout_1_1ModbusReader.html">ModbusReader</a>* getInstance();</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <a class="code" href="classwolkabout_1_1ModbusReader.html">ModbusReader</a>(<a class="code" href="classwolkabout_1_1ModbusClient.html">ModbusClient</a>&amp; modbusClient, <span class="keyword">const</span> std::vector&lt;std::shared_ptr&lt;ModbusDevice&gt;&gt;&amp; devices,</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                 <span class="keyword">const</span> std::chrono::milliseconds&amp; readPeriod);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classwolkabout_1_1ModbusReader.html">ModbusReader</a>();</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordtype">bool</span> writeMapping(<a class="code" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a>&amp; mapping, <span class="keyword">const</span> std::vector&lt;uint16_t&gt;&amp; values);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">bool</span> writeMapping(<a class="code" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a>&amp; mapping, <span class="keywordtype">bool</span> value);</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="classwolkabout_1_1ModbusReader.html">   38</a></span>&#160;<span class="keyword">class </span><a class="code" href="classwolkabout_1_1ModbusReader.html">ModbusReader</a></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">static</span> <a class="code" href="classwolkabout_1_1ModbusReader.html">ModbusReader</a>* <a class="code" href="classwolkabout_1_1ModbusReader.html#a3a799bfb7e0461f0c910d0bc9226ffc3">getInstance</a>();</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">bool</span> writeBitMapping(<a class="code" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a>&amp; mapping, <span class="keywordtype">bool</span> value);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">bool</span> isRunning() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">const</span> std::map&lt;int8_t, std::shared_ptr&lt;ModbusDevice&gt;&gt;&amp; getDevices() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">const</span> std::map&lt;int8_t, bool&gt;&amp; getDeviceStatuses() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">void</span> start();</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">void</span> stop();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">void</span> setOnIterationStatuses(<span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(std::map&lt;int8_t, bool&gt;)&gt;&amp; onIterationStatuses);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="comment">// Singleton</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">static</span> <a class="code" href="classwolkabout_1_1ModbusReader.html">ModbusReader</a>* INSTANCE;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="comment">// Main thread, handles initializing reading of devices, their status, and the modbus connection.</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordtype">void</span> run();</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="comment">// Does the logic of reading all devices groups, and parsing data to</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="comment">// each separate mapping as the mapping requires them.</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">void</span> readDevice(<span class="keyword">const</span> std::shared_ptr&lt;ModbusDevice&gt;&amp; device);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    std::function&lt;void(std::map&lt;int8_t, bool&gt;)&gt; m_onIterationStatuses;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <a class="code" href="classwolkabout_1_1ModbusReader.html#a24491a0753f6a62f84960e777adc5157">ModbusReader</a>(<a class="code" href="classwolkabout_1_1ModbusClient.html">ModbusClient</a>&amp; modbusClient, <span class="keyword">const</span> std::vector&lt;std::shared_ptr&lt;ModbusDevice&gt;&gt;&amp; devices,</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                 <span class="keyword">const</span> std::chrono::milliseconds&amp; readPeriod);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classwolkabout_1_1ModbusReader.html">ModbusReader</a>();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classwolkabout_1_1ModbusReader.html#af3a93878ed568ee9cf558f759981d3b8">writeMapping</a>(<a class="code" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a>&amp; mapping, <span class="keyword">const</span> std::vector&lt;uint16_t&gt;&amp; values);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classwolkabout_1_1ModbusReader.html#af3a93878ed568ee9cf558f759981d3b8">writeMapping</a>(<a class="code" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a>&amp; mapping, <span class="keywordtype">bool</span> value);</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">// Modbus client and device data</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="classwolkabout_1_1ModbusClient.html">ModbusClient</a>&amp; m_modbusClient;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    std::map&lt;int8_t, std::shared_ptr&lt;ModbusDevice&gt;&gt; m_devices;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    std::map&lt;int8_t, bool&gt; m_deviceActiveStatus;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="comment">// Reconnect logic, modbusClient will after a failed read/connection,</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">// try to reconnect in increasing periods of time.</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> m_timeoutIterator{};</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">const</span> std::vector&lt;int&gt; m_timeoutDurations = {1, 5, 10, 15, 30, 60, 300, 600, 1800, 3600};</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="comment">// All devices that experienced an error reading all the registers, will put their</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="comment">// slave address in this vector. And they can be reported offline.</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    std::vector&lt;int8_t&gt; m_errorDevices;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    std::atomic_bool m_shouldReconnect{};</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classwolkabout_1_1ModbusReader.html#a370a24ba2a86c048bfd25a4ed28aee17">writeBitMapping</a>(<a class="code" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a>&amp; mapping, <span class="keywordtype">bool</span> value);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classwolkabout_1_1ModbusReader.html#a3ef972d0ec201ca0711c14749e31ac5e">isRunning</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="comment">// Threading and reader data</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="comment">// Thread killswitch</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    std::atomic_bool m_readerShouldRun{};</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="comment">// Main thread that handles connection and reconnection.</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="comment">// Per-device threads, handles modbusClient call per group and parsing of data.</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    std::unique_ptr&lt;std::thread&gt; m_mainReaderThread;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    std::map&lt;int8_t, std::unique_ptr&lt;std::thread&gt;&gt; m_threads;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    std::chrono::milliseconds m_readPeriod;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;};</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}    <span class="comment">// namespace wolkabout</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">const</span> std::map&lt;int8_t, std::shared_ptr&lt;ModbusDevice&gt;&gt;&amp; getDevices() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keyword">const</span> std::map&lt;int8_t, bool&gt;&amp; getDeviceStatuses() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classwolkabout_1_1ModbusReader.html#adfed743ba2a0ec0dfc41a7419ff2aca6">start</a>();</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#endif    // WOLKABOUT_MODBUS_MODBUSREADER_H</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classwolkabout_1_1ModbusReader.html#a4ca028084e31722bd92e02352a0438b3">stop</a>();</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classwolkabout_1_1ModbusReader.html#afa5c30965f0804fa2cc91cfd73788ff9">setOnIterationStatuses</a>(<span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(std::map&lt;int8_t, bool&gt;)&gt;&amp; onIterationStatuses);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="comment">// Singleton</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keyword">static</span> <a class="code" href="classwolkabout_1_1ModbusReader.html">ModbusReader</a>* INSTANCE;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="comment">// Main thread, handles initializing reading of devices, their status, and the modbus connection.</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordtype">void</span> run();</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="comment">// Does the logic of reading all devices groups, and parsing data to</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="comment">// each separate mapping as the mapping requires them.</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keywordtype">void</span> readDevice(<span class="keyword">const</span> std::shared_ptr&lt;ModbusDevice&gt;&amp; device);</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    std::function&lt;void(std::map&lt;int8_t, bool&gt;)&gt; m_onIterationStatuses;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="comment">// Modbus client and device data</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <a class="code" href="classwolkabout_1_1ModbusClient.html">ModbusClient</a>&amp; m_modbusClient;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    std::map&lt;int8_t, std::shared_ptr&lt;ModbusDevice&gt;&gt; m_devices;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    std::map&lt;int8_t, bool&gt; m_deviceActiveStatus;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="comment">// Reconnect logic, modbusClient will after a failed read/connection,</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="comment">// try to reconnect in increasing periods of time.</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> m_timeoutIterator{};</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keyword">const</span> std::vector&lt;int&gt; m_timeoutDurations = {1, 5, 10, 15, 30, 60, 300, 600, 1800, 3600};</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="comment">// All devices that experienced an error reading all the registers, will put their</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="comment">// slave address in this vector. And they can be reported offline.</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    std::vector&lt;int8_t&gt; m_errorDevices;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    std::atomic_bool m_shouldReconnect{};</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="comment">// Threading and reader data</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="comment">// Thread killswitch</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    std::atomic_bool m_readerShouldRun{};</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="comment">// Main thread that handles connection and reconnection.</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="comment">// Per-device threads, handles modbusClient call per group and parsing of data.</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    std::unique_ptr&lt;std::thread&gt; m_mainReaderThread;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    std::map&lt;int8_t, std::unique_ptr&lt;std::thread&gt;&gt; m_threads;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    std::chrono::milliseconds m_readPeriod;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;};</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;}    <span class="comment">// namespace wolkabout</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="preprocessor">#endif    // WOLKABOUT_MODBUS_MODBUSREADER_H</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclasswolkabout_1_1RegisterMapping_html"><div class="ttname"><a href="classwolkabout_1_1RegisterMapping.html">wolkabout::RegisterMapping</a></div><div class="ttdef"><b>Definition:</b> RegisterMapping.h:29</div></div>
-<div class="ttc" id="aclasswolkabout_1_1ModbusClient_html"><div class="ttname"><a href="classwolkabout_1_1ModbusClient.html">wolkabout::ModbusClient</a></div><div class="ttdef"><b>Definition:</b> ModbusClient.h:30</div></div>
-<div class="ttc" id="aclasswolkabout_1_1ModbusReader_html"><div class="ttname"><a href="classwolkabout_1_1ModbusReader.html">wolkabout::ModbusReader</a></div><div class="ttdef"><b>Definition:</b> ModbusReader.h:34</div></div>
+<div class="ttc" id="aclasswolkabout_1_1ModbusReader_html_a4ca028084e31722bd92e02352a0438b3"><div class="ttname"><a href="classwolkabout_1_1ModbusReader.html#a4ca028084e31722bd92e02352a0438b3">wolkabout::ModbusReader::stop</a></div><div class="ttdeci">void stop()</div><div class="ttdoc">Halts the modbus connection and stops all device reading threads.</div><div class="ttdef"><b>Definition:</b> ModbusReader.cpp:199</div></div>
+<div class="ttc" id="aclasswolkabout_1_1ModbusReader_html_afa5c30965f0804fa2cc91cfd73788ff9"><div class="ttname"><a href="classwolkabout_1_1ModbusReader.html#afa5c30965f0804fa2cc91cfd73788ff9">wolkabout::ModbusReader::setOnIterationStatuses</a></div><div class="ttdeci">void setOnIterationStatuses(const std::function&lt; void(std::map&lt; int8_t, bool &gt;)&gt; &amp;onIterationStatuses)</div><div class="ttdoc">Set the main callback for receiving device statuses after each reading cycle.</div><div class="ttdef"><b>Definition:</b> ModbusReader.cpp:347</div></div>
+<div class="ttc" id="aclasswolkabout_1_1ModbusReader_html_a24491a0753f6a62f84960e777adc5157"><div class="ttname"><a href="classwolkabout_1_1ModbusReader.html#a24491a0753f6a62f84960e777adc5157">wolkabout::ModbusReader::ModbusReader</a></div><div class="ttdeci">ModbusReader(ModbusClient &amp;modbusClient, const std::vector&lt; std::shared_ptr&lt; ModbusDevice &gt;&gt; &amp;devices, const std::chrono::milliseconds &amp;readPeriod)</div><div class="ttdoc">Main constructor for the reader, that prepares all the necessary data for reading.</div><div class="ttdef"><b>Definition:</b> ModbusReader.cpp:26</div></div>
+<div class="ttc" id="aclasswolkabout_1_1RegisterMapping_html"><div class="ttname"><a href="classwolkabout_1_1RegisterMapping.html">wolkabout::RegisterMapping</a></div><div class="ttdoc">Indicates a logical unit, resulting in one value, involving one/multiple/part of Modbus register(s).</div><div class="ttdef"><b>Definition:</b> RegisterMapping.h:32</div></div>
+<div class="ttc" id="aclasswolkabout_1_1ModbusReader_html_af3a93878ed568ee9cf558f759981d3b8"><div class="ttname"><a href="classwolkabout_1_1ModbusReader.html#af3a93878ed568ee9cf558f759981d3b8">wolkabout::ModbusReader::writeMapping</a></div><div class="ttdeci">bool writeMapping(RegisterMapping &amp;mapping, const std::vector&lt; uint16_t &gt; &amp;values)</div><div class="ttdoc">Force the reader to write to a mapping (uint16_t values)</div><div class="ttdef"><b>Definition:</b> ModbusReader.cpp:72</div></div>
+<div class="ttc" id="aclasswolkabout_1_1ModbusReader_html_a3ef972d0ec201ca0711c14749e31ac5e"><div class="ttname"><a href="classwolkabout_1_1ModbusReader.html#a3ef972d0ec201ca0711c14749e31ac5e">wolkabout::ModbusReader::isRunning</a></div><div class="ttdeci">bool isRunning() const</div><div class="ttdoc">Indicates whether or not the threads that read devices are running.</div><div class="ttdef"><b>Definition:</b> ModbusReader.cpp:57</div></div>
+<div class="ttc" id="aclasswolkabout_1_1ModbusReader_html_adfed743ba2a0ec0dfc41a7419ff2aca6"><div class="ttname"><a href="classwolkabout_1_1ModbusReader.html#adfed743ba2a0ec0dfc41a7419ff2aca6">wolkabout::ModbusReader::start</a></div><div class="ttdeci">void start()</div><div class="ttdoc">Initializes the modbus connection, will also reconnect if it isn't working, or it disconnected in the...</div><div class="ttdef"><b>Definition:</b> ModbusReader.cpp:181</div></div>
+<div class="ttc" id="aclasswolkabout_1_1ModbusClient_html"><div class="ttname"><a href="classwolkabout_1_1ModbusClient.html">wolkabout::ModbusClient</a></div><div class="ttdoc">Main interface class for Clients to inherit.</div><div class="ttdef"><b>Definition:</b> ModbusClient.h:35</div></div>
+<div class="ttc" id="aclasswolkabout_1_1ModbusReader_html"><div class="ttname"><a href="classwolkabout_1_1ModbusReader.html">wolkabout::ModbusReader</a></div><div class="ttdoc">Main functional class, that accepts all devices and reads them periodcally.</div><div class="ttdef"><b>Definition:</b> ModbusReader.h:39</div></div>
+<div class="ttc" id="aclasswolkabout_1_1ModbusReader_html_a3a799bfb7e0461f0c910d0bc9226ffc3"><div class="ttname"><a href="classwolkabout_1_1ModbusReader.html#a3a799bfb7e0461f0c910d0bc9226ffc3">wolkabout::ModbusReader::getInstance</a></div><div class="ttdeci">static ModbusReader * getInstance()</div><div class="ttdoc">Get the instance of the class.</div><div class="ttdef"><b>Definition:</b> ModbusReader.cpp:342</div></div>
+<div class="ttc" id="aclasswolkabout_1_1ModbusReader_html_a370a24ba2a86c048bfd25a4ed28aee17"><div class="ttname"><a href="classwolkabout_1_1ModbusReader.html#a370a24ba2a86c048bfd25a4ed28aee17">wolkabout::ModbusReader::writeBitMapping</a></div><div class="ttdeci">bool writeBitMapping(RegisterMapping &amp;mapping, bool value)</div><div class="ttdoc">Force the reader to write to a mapping that interacts with a bit from an 16bit register.</div><div class="ttdef"><b>Definition:</b> ModbusReader.cpp:127</div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><b>ModbusReader.h</b></li>
 				<li class="footer">
-					Generated on Wed Apr 1 2020 17:40:05 for MoreModbus by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Apr 2 2020 13:45:35 for MoreModbus by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.18.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.
 				</li>

@@ -89,31 +89,67 @@ $(document).ready(function(){initNavTree('classwolkabout_1_1ModbusGroupReader.ht
 <div class="title">wolkabout::ModbusGroupReader Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Collection of utility methods used by <a class="el" href="classwolkabout_1_1ModbusReader.html" title="Main functional class, that accepts all devices and reads them periodcally.">ModbusReader</a> to read a group.  
+ <a href="classwolkabout_1_1ModbusGroupReader.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="ModbusGroupReader_8h_source.html">ModbusGroupReader.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aa1bc2a89ccf4f8c76da95e8006ec94e7"><td class="memItemLeft" align="right" valign="top"><a id="aa1bc2a89ccf4f8c76da95e8006ec94e7"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>readGroup</b> (<a class="el" href="classwolkabout_1_1ModbusClient.html">ModbusClient</a> &amp;modbusClient, <a class="el" href="classwolkabout_1_1RegisterGroup.html">RegisterGroup</a> &amp;group)</td></tr>
+<tr class="memitem:aa1bc2a89ccf4f8c76da95e8006ec94e7"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusGroupReader.html#aa1bc2a89ccf4f8c76da95e8006ec94e7">readGroup</a> (<a class="el" href="classwolkabout_1_1ModbusClient.html">ModbusClient</a> &amp;modbusClient, <a class="el" href="classwolkabout_1_1RegisterGroup.html">RegisterGroup</a> &amp;group)</td></tr>
+<tr class="memdesc:aa1bc2a89ccf4f8c76da95e8006ec94e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The main method used to read a group, and it calls other methods based on the output type of group.  <a href="classwolkabout_1_1ModbusGroupReader.html#aa1bc2a89ccf4f8c76da95e8006ec94e7">More...</a><br /></td></tr>
 <tr class="separator:aa1bc2a89ccf4f8c76da95e8006ec94e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a725f86330e35900d3e61b74dbe613ab8"><td class="memItemLeft" align="right" valign="top"><a id="a725f86330e35900d3e61b74dbe613ab8"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>passValuesToGroup</b> (<a class="el" href="classwolkabout_1_1RegisterGroup.html">RegisterGroup</a> &amp;group, const std::vector&lt; bool &gt; &amp;values)</td></tr>
-<tr class="separator:a725f86330e35900d3e61b74dbe613ab8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79110f028e78250508c34ca5120b6559"><td class="memItemLeft" align="right" valign="top"><a id="a79110f028e78250508c34ca5120b6559"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>readCoilGroup</b> (<a class="el" href="classwolkabout_1_1ModbusClient.html">ModbusClient</a> &amp;modbusClient, <a class="el" href="classwolkabout_1_1RegisterGroup.html">RegisterGroup</a> &amp;group)</td></tr>
-<tr class="separator:a79110f028e78250508c34ca5120b6559"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0915cd45558ad3db13586138e5a369a7"><td class="memItemLeft" align="right" valign="top"><a id="a0915cd45558ad3db13586138e5a369a7"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>readDiscreteInputGroup</b> (<a class="el" href="classwolkabout_1_1ModbusClient.html">ModbusClient</a> &amp;modbusClient, <a class="el" href="classwolkabout_1_1RegisterGroup.html">RegisterGroup</a> &amp;group)</td></tr>
-<tr class="separator:a0915cd45558ad3db13586138e5a369a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80b32a0aacecc2bdf868e3f8ca8da1c1"><td class="memItemLeft" align="right" valign="top"><a id="a80b32a0aacecc2bdf868e3f8ca8da1c1"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>passValuesToGroup</b> (<a class="el" href="classwolkabout_1_1RegisterGroup.html">RegisterGroup</a> &amp;group, const std::vector&lt; uint16_t &gt; &amp;values)</td></tr>
-<tr class="separator:a80b32a0aacecc2bdf868e3f8ca8da1c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0294974c5b46c248cab9d8c50daf47c1"><td class="memItemLeft" align="right" valign="top"><a id="a0294974c5b46c248cab9d8c50daf47c1"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>readHoldingRegisterGroup</b> (<a class="el" href="classwolkabout_1_1ModbusClient.html">ModbusClient</a> &amp;modbusClient, <a class="el" href="classwolkabout_1_1RegisterGroup.html">RegisterGroup</a> &amp;group)</td></tr>
-<tr class="separator:a0294974c5b46c248cab9d8c50daf47c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b274e097bac4f31d0f4eeefec389001"><td class="memItemLeft" align="right" valign="top"><a id="a5b274e097bac4f31d0f4eeefec389001"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>readInputRegisterGroup</b> (<a class="el" href="classwolkabout_1_1ModbusClient.html">ModbusClient</a> &amp;modbusClient, <a class="el" href="classwolkabout_1_1RegisterGroup.html">RegisterGroup</a> &amp;group)</td></tr>
-<tr class="separator:a5b274e097bac4f31d0f4eeefec389001"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Collection of utility methods used by <a class="el" href="classwolkabout_1_1ModbusReader.html" title="Main functional class, that accepts all devices and reads them periodcally.">ModbusReader</a> to read a group. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aa1bc2a89ccf4f8c76da95e8006ec94e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1bc2a89ccf4f8c76da95e8006ec94e7">&#9670;&nbsp;</a></span>readGroup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::ModbusGroupReader::readGroup </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classwolkabout_1_1ModbusClient.html">wolkabout::ModbusClient</a> &amp;&#160;</td>
+          <td class="paramname"><em>modbusClient</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classwolkabout_1_1RegisterGroup.html">wolkabout::RegisterGroup</a> &amp;&#160;</td>
+          <td class="paramname"><em>group</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The main method used to read a group, and it calls other methods based on the output type of group. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">modbusClient</td><td></td></tr>
+    <tr><td class="paramname">group</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Whether or not the group reading has been successful. </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/modbus/<a class="el" href="ModbusGroupReader_8h_source.html">ModbusGroupReader.h</a></li>
 <li>src/modbus/ModbusGroupReader.cpp</li>
@@ -125,7 +161,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>readInputRegis
 			<ul>
 				<li class="navelem"><b>wolkabout</b></li><li class="navelem"><a class="el" href="classwolkabout_1_1ModbusGroupReader.html">ModbusGroupReader</a></li>
 				<li class="footer">
-					Generated on Wed Apr 1 2020 17:40:05 for MoreModbus by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Apr 2 2020 13:45:35 for MoreModbus by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.18.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.
 				</li>

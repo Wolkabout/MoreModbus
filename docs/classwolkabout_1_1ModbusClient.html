@@ -91,14 +91,19 @@ $(document).ready(function(){initNavTree('classwolkabout_1_1ModbusClient.html','
 <div class="title">wolkabout::ModbusClient Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Main interface class for Clients to inherit.  
+ <a href="classwolkabout_1_1ModbusClient.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="ModbusClient_8h_source.html">ModbusClient.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for wolkabout::ModbusClient:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="classwolkabout_1_1ModbusClient.png" usemap="#wolkabout::ModbusClient_map" alt=""/>
   <map id="wolkabout::ModbusClient_map" name="wolkabout::ModbusClient_map">
-<area href="classwolkabout_1_1LibModbusSerialRtuClient.html" alt="wolkabout::LibModbusSerialRtuClient" shape="rect" coords="0,56,219,80"/>
-<area href="classwolkabout_1_1LibModbusTcpIpClient.html" alt="wolkabout::LibModbusTcpIpClient" shape="rect" coords="229,56,448,80"/>
+<area href="classwolkabout_1_1LibModbusSerialRtuClient.html" title="ModbusClient implementation for Modbus SERIAL/RTU connections." alt="wolkabout::LibModbusSerialRtuClient" shape="rect" coords="0,56,219,80"/>
+<area href="classwolkabout_1_1LibModbusTcpIpClient.html" title="ModbusClient implementation for Modbus TCP/IP connections." alt="wolkabout::LibModbusTcpIpClient" shape="rect" coords="229,56,448,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -107,41 +112,38 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a47ad4068ab6abf6bc26daf713e9c7908"><td class="memItemLeft" align="right" valign="top"><a id="a47ad4068ab6abf6bc26daf713e9c7908"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ModbusClient</b> (std::chrono::milliseconds responseTimeout)</td></tr>
 <tr class="separator:a47ad4068ab6abf6bc26daf713e9c7908"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acfe70782e4360c357a38b264771ef3ea"><td class="memItemLeft" align="right" valign="top"><a id="acfe70782e4360c357a38b264771ef3ea"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>connect</b> ()</td></tr>
+<tr class="memitem:acfe70782e4360c357a38b264771ef3ea"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#acfe70782e4360c357a38b264771ef3ea">connect</a> ()</td></tr>
 <tr class="separator:acfe70782e4360c357a38b264771ef3ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c05c1f5628dee1df7d8641f8b3a86f7"><td class="memItemLeft" align="right" valign="top"><a id="a6c05c1f5628dee1df7d8641f8b3a86f7"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>disconnect</b> ()</td></tr>
+<tr class="memitem:a6c05c1f5628dee1df7d8641f8b3a86f7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#a6c05c1f5628dee1df7d8641f8b3a86f7">disconnect</a> ()</td></tr>
 <tr class="separator:a6c05c1f5628dee1df7d8641f8b3a86f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad32921afcb3fc1c101ce1bc78ccaad7d"><td class="memItemLeft" align="right" valign="top"><a id="ad32921afcb3fc1c101ce1bc78ccaad7d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isConnected</b> ()</td></tr>
+<tr class="memitem:ad32921afcb3fc1c101ce1bc78ccaad7d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#ad32921afcb3fc1c101ce1bc78ccaad7d">isConnected</a> ()</td></tr>
 <tr class="separator:ad32921afcb3fc1c101ce1bc78ccaad7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad129e38520d3a833847d64e6c7efdbe6"><td class="memItemLeft" align="right" valign="top"><a id="ad129e38520d3a833847d64e6c7efdbe6"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>writeHoldingRegister</b> (int slaveAddress, int address, uint16_t value)</td></tr>
+<tr class="memitem:ad129e38520d3a833847d64e6c7efdbe6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#ad129e38520d3a833847d64e6c7efdbe6">writeHoldingRegister</a> (int slaveAddress, int address, uint16_t value)</td></tr>
+<tr class="memdesc:ad129e38520d3a833847d64e6c7efdbe6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a single uint16_t value into a HOLDING REGISTER, targeting the address.  <a href="classwolkabout_1_1ModbusClient.html#ad129e38520d3a833847d64e6c7efdbe6">More...</a><br /></td></tr>
 <tr class="separator:ad129e38520d3a833847d64e6c7efdbe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14c5c2a6886ebae005fac9f9a10b22bb"><td class="memItemLeft" align="right" valign="top"><a id="a14c5c2a6886ebae005fac9f9a10b22bb"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>writeHoldingRegisters</b> (int slaveAddress, int address, std::vector&lt; uint16_t &gt; &amp;values)</td></tr>
+<tr class="memitem:a14c5c2a6886ebae005fac9f9a10b22bb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#a14c5c2a6886ebae005fac9f9a10b22bb">writeHoldingRegisters</a> (int slaveAddress, int address, std::vector&lt; uint16_t &gt; &amp;values)</td></tr>
+<tr class="memdesc:a14c5c2a6886ebae005fac9f9a10b22bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes multiple uint16_t values into HOLDING REGISTERS, targeting the address, and however many registers after, dictated by the length of vector passed as value.  <a href="classwolkabout_1_1ModbusClient.html#a14c5c2a6886ebae005fac9f9a10b22bb">More...</a><br /></td></tr>
 <tr class="separator:a14c5c2a6886ebae005fac9f9a10b22bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6fd35d96ec95248b0bf6ebafcaadd99a"><td class="memItemLeft" align="right" valign="top"><a id="a6fd35d96ec95248b0bf6ebafcaadd99a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>writeCoil</b> (int slaveAddress, int address, bool value)</td></tr>
+<tr class="memitem:a6fd35d96ec95248b0bf6ebafcaadd99a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#a6fd35d96ec95248b0bf6ebafcaadd99a">writeCoil</a> (int slaveAddress, int address, bool value)</td></tr>
+<tr class="memdesc:a6fd35d96ec95248b0bf6ebafcaadd99a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a single bool value to a COIL, targeting the address.  <a href="classwolkabout_1_1ModbusClient.html#a6fd35d96ec95248b0bf6ebafcaadd99a">More...</a><br /></td></tr>
 <tr class="separator:a6fd35d96ec95248b0bf6ebafcaadd99a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a660fe606fbe9436d87a91013cc5dea07"><td class="memItemLeft" align="right" valign="top"><a id="a660fe606fbe9436d87a91013cc5dea07"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>readInputContacts</b> (int slaveAddress, int address, int number, std::vector&lt; bool &gt; &amp;values)</td></tr>
+<tr class="memitem:a660fe606fbe9436d87a91013cc5dea07"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#a660fe606fbe9436d87a91013cc5dea07">readInputContacts</a> (int slaveAddress, int address, int number, std::vector&lt; bool &gt; &amp;values)</td></tr>
+<tr class="memdesc:a660fe606fbe9436d87a91013cc5dea07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads from multiple INPUT_CONTACTS, starting from address, reading as much as passed argument number dictates.  <a href="classwolkabout_1_1ModbusClient.html#a660fe606fbe9436d87a91013cc5dea07">More...</a><br /></td></tr>
 <tr class="separator:a660fe606fbe9436d87a91013cc5dea07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6bff9527b119c1a7f225f765e96ff09"><td class="memItemLeft" align="right" valign="top"><a id="ae6bff9527b119c1a7f225f765e96ff09"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>readHoldingRegister</b> (int slaveAddress, int address, uint16_t &amp;value)</td></tr>
+<tr class="memitem:ae6bff9527b119c1a7f225f765e96ff09"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#ae6bff9527b119c1a7f225f765e96ff09">readHoldingRegister</a> (int slaveAddress, int address, uint16_t &amp;value)</td></tr>
+<tr class="memdesc:ae6bff9527b119c1a7f225f765e96ff09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads from a single HOLDING_REGISTER, targeting the address.  <a href="classwolkabout_1_1ModbusClient.html#ae6bff9527b119c1a7f225f765e96ff09">More...</a><br /></td></tr>
 <tr class="separator:ae6bff9527b119c1a7f225f765e96ff09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3a5075a2d275cd5c7920d9e81f45961"><td class="memItemLeft" align="right" valign="top"><a id="ae3a5075a2d275cd5c7920d9e81f45961"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>readHoldingRegisters</b> (int slaveAddress, int address, int number, std::vector&lt; uint16_t &gt; &amp;values)</td></tr>
+<tr class="memitem:ae3a5075a2d275cd5c7920d9e81f45961"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#ae3a5075a2d275cd5c7920d9e81f45961">readHoldingRegisters</a> (int slaveAddress, int address, int number, std::vector&lt; uint16_t &gt; &amp;values)</td></tr>
+<tr class="memdesc:ae3a5075a2d275cd5c7920d9e81f45961"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads from multiple HOLDING_REGISTERS, targeting the address, reading as much as passed argument number dictates.  <a href="classwolkabout_1_1ModbusClient.html#ae3a5075a2d275cd5c7920d9e81f45961">More...</a><br /></td></tr>
 <tr class="separator:ae3a5075a2d275cd5c7920d9e81f45961"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5350a0278289d42b98425b8cb2b26432"><td class="memItemLeft" align="right" valign="top"><a id="a5350a0278289d42b98425b8cb2b26432"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>readInputRegisters</b> (int slaveAddress, int address, int number, std::vector&lt; uint16_t &gt; &amp;values)</td></tr>
+<tr class="memitem:a5350a0278289d42b98425b8cb2b26432"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#a5350a0278289d42b98425b8cb2b26432">readInputRegisters</a> (int slaveAddress, int address, int number, std::vector&lt; uint16_t &gt; &amp;values)</td></tr>
+<tr class="memdesc:a5350a0278289d42b98425b8cb2b26432"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads from multiple INPUT_REGISTERS, targeting the address, reading as much as passed argument number dictates.  <a href="classwolkabout_1_1ModbusClient.html#a5350a0278289d42b98425b8cb2b26432">More...</a><br /></td></tr>
 <tr class="separator:a5350a0278289d42b98425b8cb2b26432"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbe68ac2df71d77fa95b1e2aa3bb0d24"><td class="memItemLeft" align="right" valign="top"><a id="abbe68ac2df71d77fa95b1e2aa3bb0d24"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>readCoil</b> (int slaveAddress, int address, bool &amp;value)</td></tr>
+<tr class="memitem:abbe68ac2df71d77fa95b1e2aa3bb0d24"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#abbe68ac2df71d77fa95b1e2aa3bb0d24">readCoil</a> (int slaveAddress, int address, bool &amp;value)</td></tr>
+<tr class="memdesc:abbe68ac2df71d77fa95b1e2aa3bb0d24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads from a single COIL, targeting the address.  <a href="classwolkabout_1_1ModbusClient.html#abbe68ac2df71d77fa95b1e2aa3bb0d24">More...</a><br /></td></tr>
 <tr class="separator:abbe68ac2df71d77fa95b1e2aa3bb0d24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d8b7dfd06bece284ca74e09e137b7a8"><td class="memItemLeft" align="right" valign="top"><a id="a1d8b7dfd06bece284ca74e09e137b7a8"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>readCoils</b> (int slaveAddress, int address, int number, std::vector&lt; bool &gt; &amp;values)</td></tr>
+<tr class="memitem:a1d8b7dfd06bece284ca74e09e137b7a8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusClient.html#a1d8b7dfd06bece284ca74e09e137b7a8">readCoils</a> (int slaveAddress, int address, int number, std::vector&lt; bool &gt; &amp;values)</td></tr>
+<tr class="memdesc:a1d8b7dfd06bece284ca74e09e137b7a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads from multiple COILS, targeting the address, reading as much as passed argument number dictates.  <a href="classwolkabout_1_1ModbusClient.html#a1d8b7dfd06bece284ca74e09e137b7a8">More...</a><br /></td></tr>
 <tr class="separator:a1d8b7dfd06bece284ca74e09e137b7a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
@@ -201,6 +203,497 @@ std::mutex&#160;</td><td class="memItemRight" valign="bottom"><b>m_modbusMutex</
 modbus_t *&#160;</td><td class="memItemRight" valign="bottom"><b>m_modbus</b></td></tr>
 <tr class="separator:a73d7256c04b77d43b0b0da789802424a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Main interface class for Clients to inherit. </p>
+<p>Describes all methods necessary for the <a class="el" href="classwolkabout_1_1ModbusGroupReader.html" title="Collection of utility methods used by ModbusReader to read a group.">ModbusGroupReader</a> to use while reading a group. Uses a mutex so calls don't overlap. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="acfe70782e4360c357a38b264771ef3ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfe70782e4360c357a38b264771ef3ea">&#9670;&nbsp;</a></span>connect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::ModbusClient::connect </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Returns whether or not the client successfully established a modbus connection or if the connection is already established. </dd></dl>
+
+</div>
+</div>
+<a id="a6c05c1f5628dee1df7d8641f8b3a86f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c05c1f5628dee1df7d8641f8b3a86f7">&#9670;&nbsp;</a></span>disconnect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::ModbusClient::disconnect </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Returns true if connection has been successfully stopped. </dd></dl>
+
+</div>
+</div>
+<a id="ad32921afcb3fc1c101ce1bc78ccaad7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad32921afcb3fc1c101ce1bc78ccaad7d">&#9670;&nbsp;</a></span>isConnected()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::ModbusClient::isConnected </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Returns whether or not the client has established a modbus client. </dd></dl>
+
+</div>
+</div>
+<a id="abbe68ac2df71d77fa95b1e2aa3bb0d24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbe68ac2df71d77fa95b1e2aa3bb0d24">&#9670;&nbsp;</a></span>readCoil()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::ModbusClient::readCoil </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>slaveAddress</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads from a single COIL, targeting the address. </p>
+<p>Modbus code function 1 is being used in this call, but only reads a single register. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">slaveAddress</td><td></td></tr>
+    <tr><td class="paramname">address</td><td></td></tr>
+    <tr><td class="paramname">value</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns whether or not the operation was successful. </dd></dl>
+
+</div>
+</div>
+<a id="a1d8b7dfd06bece284ca74e09e137b7a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d8b7dfd06bece284ca74e09e137b7a8">&#9670;&nbsp;</a></span>readCoils()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::ModbusClient::readCoils </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>slaveAddress</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>number</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; bool &gt; &amp;&#160;</td>
+          <td class="paramname"><em>values</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads from multiple COILS, targeting the address, reading as much as passed argument number dictates. </p>
+<p>Modbus code function 1 is being used in this call. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">slaveAddress</td><td></td></tr>
+    <tr><td class="paramname">address</td><td></td></tr>
+    <tr><td class="paramname">number</td><td></td></tr>
+    <tr><td class="paramname">values</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns whether or not the operation was successful. </dd></dl>
+
+</div>
+</div>
+<a id="ae6bff9527b119c1a7f225f765e96ff09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6bff9527b119c1a7f225f765e96ff09">&#9670;&nbsp;</a></span>readHoldingRegister()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::ModbusClient::readHoldingRegister </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>slaveAddress</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads from a single HOLDING_REGISTER, targeting the address. </p>
+<p>Modbus code function 3 is being used in this call, but only reads a single register. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">slaveAddress</td><td></td></tr>
+    <tr><td class="paramname">address</td><td></td></tr>
+    <tr><td class="paramname">value</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns whether or not the operation was successful. </dd></dl>
+
+</div>
+</div>
+<a id="ae3a5075a2d275cd5c7920d9e81f45961"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3a5075a2d275cd5c7920d9e81f45961">&#9670;&nbsp;</a></span>readHoldingRegisters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::ModbusClient::readHoldingRegisters </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>slaveAddress</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>number</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; uint16_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>values</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads from multiple HOLDING_REGISTERS, targeting the address, reading as much as passed argument number dictates. </p>
+<p>Modbus code function 3 is being used in this call. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">slaveAddress</td><td></td></tr>
+    <tr><td class="paramname">address</td><td></td></tr>
+    <tr><td class="paramname">number</td><td></td></tr>
+    <tr><td class="paramname">values</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns whether or not the operation was successful. </dd></dl>
+
+</div>
+</div>
+<a id="a660fe606fbe9436d87a91013cc5dea07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a660fe606fbe9436d87a91013cc5dea07">&#9670;&nbsp;</a></span>readInputContacts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::ModbusClient::readInputContacts </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>slaveAddress</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>number</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; bool &gt; &amp;&#160;</td>
+          <td class="paramname"><em>values</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads from multiple INPUT_CONTACTS, starting from address, reading as much as passed argument number dictates. </p>
+<p>Modbus code function 2 is being used in this call. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">slaveAddress</td><td></td></tr>
+    <tr><td class="paramname">address</td><td></td></tr>
+    <tr><td class="paramname">number</td><td></td></tr>
+    <tr><td class="paramname">values</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns whether or not the operation was successful. </dd></dl>
+
+</div>
+</div>
+<a id="a5350a0278289d42b98425b8cb2b26432"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5350a0278289d42b98425b8cb2b26432">&#9670;&nbsp;</a></span>readInputRegisters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::ModbusClient::readInputRegisters </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>slaveAddress</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>number</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; uint16_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>values</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads from multiple INPUT_REGISTERS, targeting the address, reading as much as passed argument number dictates. </p>
+<p>Modbus code function 4 is being used in this call. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">slaveAddress</td><td></td></tr>
+    <tr><td class="paramname">address</td><td></td></tr>
+    <tr><td class="paramname">number</td><td></td></tr>
+    <tr><td class="paramname">values</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns whether or not the operation was successful. </dd></dl>
+
+</div>
+</div>
+<a id="a6fd35d96ec95248b0bf6ebafcaadd99a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fd35d96ec95248b0bf6ebafcaadd99a">&#9670;&nbsp;</a></span>writeCoil()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::ModbusClient::writeCoil </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>slaveAddress</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Writes a single bool value to a COIL, targeting the address. </p>
+<p>Modbus code function 5 is being used in this call. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">slaveAddress</td><td></td></tr>
+    <tr><td class="paramname">address</td><td></td></tr>
+    <tr><td class="paramname">value</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns whether or not the operation was successful. </dd></dl>
+
+</div>
+</div>
+<a id="ad129e38520d3a833847d64e6c7efdbe6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad129e38520d3a833847d64e6c7efdbe6">&#9670;&nbsp;</a></span>writeHoldingRegister()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::ModbusClient::writeHoldingRegister </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>slaveAddress</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Writes a single uint16_t value into a HOLDING REGISTER, targeting the address. </p>
+<p>Modbus code function 6 is being used in this call. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">slaveAddress</td><td></td></tr>
+    <tr><td class="paramname">address</td><td></td></tr>
+    <tr><td class="paramname">value</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns whether or not the operation was successful. </dd></dl>
+
+</div>
+</div>
+<a id="a14c5c2a6886ebae005fac9f9a10b22bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14c5c2a6886ebae005fac9f9a10b22bb">&#9670;&nbsp;</a></span>writeHoldingRegisters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::ModbusClient::writeHoldingRegisters </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>slaveAddress</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; uint16_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>values</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Writes multiple uint16_t values into HOLDING REGISTERS, targeting the address, and however many registers after, dictated by the length of vector passed as value. </p>
+<p>Modbus code function 16 is being used in this call. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">slaveAddress</td><td></td></tr>
+    <tr><td class="paramname">address</td><td></td></tr>
+    <tr><td class="paramname">values</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns whether or not the operation was successful. </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/modbus/<a class="el" href="ModbusClient_8h_source.html">ModbusClient.h</a></li>
 <li>src/modbus/ModbusClient.cpp</li>
@@ -212,7 +705,7 @@ modbus_t *&#160;</td><td class="memItemRight" valign="bottom"><b>m_modbus</b></t
 			<ul>
 				<li class="navelem"><b>wolkabout</b></li><li class="navelem"><a class="el" href="classwolkabout_1_1ModbusClient.html">ModbusClient</a></li>
 				<li class="footer">
-					Generated on Wed Apr 1 2020 17:40:05 for MoreModbus by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Apr 2 2020 13:45:35 for MoreModbus by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.18.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.
 				</li>

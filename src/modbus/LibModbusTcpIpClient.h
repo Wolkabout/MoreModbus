@@ -25,9 +25,20 @@
 
 namespace wolkabout
 {
+/**
+ * @brief ModbusClient implementation for Modbus TCP/IP connections.
+ * @details Uses modbus_new_tcp method from libmodbus, and takes in the IP address and port necessary
+ *          to establish a connection.
+ */
 class LibModbusTcpIpClient : public ModbusClient
 {
 public:
+    /**
+     * @brief Constructor for the client
+     * @param ipAddress of the modbus server
+     * @param port of the modbus server
+     * @param responseTimeout for establishing the connection
+     */
     LibModbusTcpIpClient(std::string ipAddress, int port, std::chrono::milliseconds responseTimeout);
 
     virtual ~LibModbusTcpIpClient();

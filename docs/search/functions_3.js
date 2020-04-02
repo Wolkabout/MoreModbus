@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['floatmapping_78',['FloatMapping',['../classwolkabout_1_1FloatMapping.html#afee8a0895f8a6281b1cd97851bb8852a',1,'wolkabout::FloatMapping']]],
-  ['floattoregisters_79',['floatToRegisters',['../classwolkabout_1_1DataParsers.html#a9affb4a7ad271e76a44eb74d9b49e554',1,'wolkabout::DataParsers']]]
+  ['deserializedatatype_111',['deserializeDataType',['../classwolkabout_1_1Deserializers.html#aeedf7d620df68a6662e53a95e53aa8c3',1,'wolkabout::Deserializers']]],
+  ['deserializeoperationtype_112',['deserializeOperationType',['../classwolkabout_1_1Deserializers.html#afcca14ce5983ab4af16b369a16722f02',1,'wolkabout::Deserializers']]],
+  ['deserializeregistertype_113',['deserializeRegisterType',['../classwolkabout_1_1Deserializers.html#a4902f2d10cb7fc5aaf440df96ce667c4',1,'wolkabout::Deserializers']]],
+  ['disconnect_114',['disconnect',['../classwolkabout_1_1ModbusClient.html#a6c05c1f5628dee1df7d8641f8b3a86f7',1,'wolkabout::ModbusClient']]]
 ];

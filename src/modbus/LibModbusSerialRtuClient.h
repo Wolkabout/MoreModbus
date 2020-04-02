@@ -25,9 +25,17 @@
 
 namespace wolkabout
 {
+/**
+ * @brief ModbusClient implementation for Modbus SERIAL/RTU connections.
+ * @details Uses modbus_new_rtu method from libmodbus, and takes in a bunch of arguments.
+ *          Overrides all the methods to add a timeout after messages.
+ */
 class LibModbusSerialRtuClient : public ModbusClient
 {
 public:
+    /**
+     * @brief Indicates the bitParity of slaves.
+     */
     enum class BitParity
     {
         NONE,
@@ -35,6 +43,16 @@ public:
         ODD
     };
 
+
+    /**
+     * @brief Constructor for the client
+     * @param serialPort that is used to access all the slaves
+     * @param baudRate used to read the devices
+     * @param dataBits
+     * @param stopBits
+     * @param bitParity
+     * @param responseTimeout
+     */
     LibModbusSerialRtuClient(std::string serialPort, int baudRate, char dataBits, char stopBits, BitParity bitParity,
                              std::chrono::milliseconds responseTimeout);
 

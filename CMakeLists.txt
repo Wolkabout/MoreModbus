@@ -13,7 +13,7 @@
 # limitations under the License.
 
 cmake_minimum_required(VERSION 3.5)
-project(WolkModbus C CXX)
+project(MoreModbus C CXX)
 
 set_property(GLOBAL PROPERTY ALLOW_DUPLICATE_CUSTOM_TARGETS 1)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
@@ -62,8 +62,8 @@ include_directories("example")
 file(GLOB_RECURSE EXAMPLE_HEADER_FILES "example/*.h" "example/*.hpp")
 file(GLOB_RECURSE EXAMPLE_SOURCE_FILES "example/*.c" "example/*.cpp")
 
-add_executable(wolkModbusExample ${EXAMPLE_SOURCE_FILES})
-target_link_libraries(wolkModbusExample ${PROJECT_NAME})
-set_target_properties(wolkModbusExample PROPERTIES INSTALL_RPATH "$ORIGIN/lib")
+add_executable(moreModbusExample ${EXAMPLE_SOURCE_FILES})
+target_link_libraries(moreModbusExample ${PROJECT_NAME})
+set_target_properties(moreModbusExample PROPERTIES INSTALL_RPATH "$ORIGIN/lib")
 
 add_subdirectory(cmake)

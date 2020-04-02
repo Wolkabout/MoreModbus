@@ -26,30 +26,130 @@
 
 namespace wolkabout
 {
+/**
+ * @brief Main interface class for Clients to inherit.
+ * @details Describes all methods necessary for the ModbusGroupReader to use while reading
+ *          a group. Uses a mutex so calls don't overlap.
+ */
 class ModbusClient
 {
 public:
     explicit ModbusClient(std::chrono::milliseconds responseTimeout);
     virtual ~ModbusClient() = default;
 
+    /**
+     * @return Returns whether or not the client successfully established a modbus connection
+     *          or if the connection is already established.
+     */
     bool connect();
+
+    /**
+     * @return Returns true if connection has been successfully stopped.
+     */
     bool disconnect();
 
+    /**
+     * @return Returns whether or not the client has established a modbus client.
+     */
     bool isConnected();
 
+    /**
+     * @brief Writes a single uint16_t value into a HOLDING REGISTER, targeting the address.
+     * @details Modbus code function 6 is being used in this call.
+     * @param slaveAddress
+     * @param address
+     * @param value
+     * @return Returns whether or not the operation was successful.
+     */
     bool writeHoldingRegister(int slaveAddress, int address, uint16_t value);
+
+    /**
+     * @brief Writes multiple uint16_t values into HOLDING REGISTERS, targeting the address, and however many registers
+     *        after, dictated by the length of vector passed as value.
+     * @details Modbus code function 16 is being used in this call.
+     * @param slaveAddress
+     * @param address
+     * @param values
+     * @return Returns whether or not the operation was successful.
+     */
     bool writeHoldingRegisters(int slaveAddress, int address, std::vector<uint16_t>& values);
 
+    /**
+     * @brief Writes a single bool value to a COIL, targeting the address.
+     * @details Modbus code function 5 is being used in this call.
+     * @param slaveAddress
+     * @param address
+     * @param value
+     * @return Returns whether or not the operation was successful.
+     */
     bool writeCoil(int slaveAddress, int address, bool value);
 
+    /**
+     * @brief Reads from multiple INPUT_CONTACTS, starting from address,
+     *        reading as much as passed argument number dictates.
+     * @details Modbus code function 2 is being used in this call.
+     * @param slaveAddress
+     * @param address
+     * @param number
+     * @param values
+     * @return Returns whether or not the operation was successful.
+     */
     bool readInputContacts(int slaveAddress, int address, int number, std::vector<bool>& values);
 
+    /**
+     * @brief Reads from a single HOLDING_REGISTER, targeting the address.
+     * @details Modbus code function 3 is being used in this call, but only reads a single register.
+     * @param slaveAddress
+     * @param address
+     * @param value
+     * @return Returns whether or not the operation was successful.
+     */
     bool readHoldingRegister(int slaveAddress, int address, uint16_t& value);
+
+    /**
+     * @brief Reads from multiple HOLDING_REGISTERS, targeting the address,
+     *        reading as much as passed argument number dictates.
+     * @details Modbus code function 3 is being used in this call.
+     * @param slaveAddress
+     * @param address
+     * @param number
+     * @param values
+     * @return Returns whether or not the operation was successful.
+     */
     bool readHoldingRegisters(int slaveAddress, int address, int number, std::vector<uint16_t>& values);
 
+    /**
+     * @brief Reads from multiple INPUT_REGISTERS, targeting the address,
+     *        reading as much as passed argument number dictates.
+     * @details Modbus code function 4 is being used in this call.
+     * @param slaveAddress
+     * @param address
+     * @param number
+     * @param values
+     * @return Returns whether or not the operation was successful.
+     */
     bool readInputRegisters(int slaveAddress, int address, int number, std::vector<uint16_t>& values);
 
+    /**
+     * @brief Reads from a single COIL, targeting the address.
+     * @details Modbus code function 1 is being used in this call, but only reads a single register.
+     * @param slaveAddress
+     * @param address
+     * @param value
+     * @return Returns whether or not the operation was successful.
+     */
     bool readCoil(int slaveAddress, int address, bool& value);
+
+    /**
+     * @brief Reads from multiple COILS, targeting the address,
+     *        reading as much as passed argument number dictates.
+     * @details Modbus code function 1 is being used in this call.
+     * @param slaveAddress
+     * @param address
+     * @param number
+     * @param values
+     * @return Returns whether or not the operation was successful.
+     */
     bool readCoils(int slaveAddress, int address, int number, std::vector<bool>& values);
 
 protected:

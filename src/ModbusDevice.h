@@ -25,9 +25,21 @@ namespace wolkabout
 {
 typedef bool (*CompareFunction)(const std::shared_ptr<RegisterMapping>&, const std::shared_ptr<RegisterMapping>&);
 
+/**
+ * @brief Collection of ModbusGroups for a single Modbus server/slave.
+ * @details The device contains the slaveAddress, and all the groups to be read for the slave address.
+ *          The groups will be created by the device, and all the slaveAddresses will be set when the
+*           device is created.
+ */
 class ModbusDevice
 {
 public:
+    /**
+     * @brief Default constructor for the device
+     * @param name unique as identification
+     * @param slaveAddress unique to device, and is going to set all groups to this slaveAddress
+     * @param mappings all the mappings that device will have
+     */
     ModbusDevice(const std::string& name, int8_t slaveAddress,
                  const std::vector<std::shared_ptr<RegisterMapping>>& mappings);
 
@@ -37,11 +49,18 @@ public:
 
     const std::vector<std::shared_ptr<RegisterGroup>>& getGroups() const;
 
+    /**
+     * @brief Event that will trigger when one of the devices mappings value changes.
+     * @param onMappingValueChange the callback function for callback, executed on the devices reading thread.
+     */
     void setOnMappingValueChange(
       const std::function<void(const std::shared_ptr<RegisterMapping>&)>& onMappingValueChange);
 
     void triggerOnMappingValueChange(const std::shared_ptr<RegisterMapping>& mapping);
 
+    /**
+     * @brief Compare function for creating groups, in way that they have best chances to be in a group.
+     */
     static bool compareMappings(const std::shared_ptr<RegisterMapping>& left,
                                 const std::shared_ptr<RegisterMapping>& right);
 

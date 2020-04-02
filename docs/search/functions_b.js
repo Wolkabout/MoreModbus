@@ -1,4 +1,11 @@
 var searchData=
 [
-  ['writevalue_111',['writeValue',['../classwolkabout_1_1BoolMapping.html#a02b471a183c9c964cabdb667d8149d61',1,'wolkabout::BoolMapping::writeValue()'],['../classwolkabout_1_1FloatMapping.html#a9bde61dd4b3f30e2bb24a3504a4d0998',1,'wolkabout::FloatMapping::writeValue()'],['../classwolkabout_1_1Int16Mapping.html#a9fcafb0808770f8545a7029172158c00',1,'wolkabout::Int16Mapping::writeValue()'],['../classwolkabout_1_1Int32Mapping.html#ab65c080cc1821772a664dd1b6f3df452',1,'wolkabout::Int32Mapping::writeValue()'],['../classwolkabout_1_1StringMapping.html#a5f8cc00ab241e09bc14cd9fe2aa93edb',1,'wolkabout::StringMapping::writeValue()'],['../classwolkabout_1_1UInt16Mapping.html#abda41e70b38035f1f708f28a56914439',1,'wolkabout::UInt16Mapping::writeValue()'],['../classwolkabout_1_1UInt32Mapping.html#af81efd33b475e8818fde53f6cf0a0747',1,'wolkabout::UInt32Mapping::writeValue()']]]
+  ['separatebits_160',['separateBits',['../classwolkabout_1_1DataParsers.html#a494196f8f1d8748a25f10370bc39f6a3',1,'wolkabout::DataParsers']]],
+  ['setinstance_161',['setInstance',['../classwolkabout_1_1Logger.html#ab405a1a78759c313b7bde964537ebf22',1,'wolkabout::Logger']]],
+  ['setloglevel_162',['setLogLevel',['../classwolkabout_1_1ConsoleLogger.html#a3b5c5d9d2bc3c3706d6a42f97a55ea0a',1,'wolkabout::ConsoleLogger::setLogLevel()'],['../classwolkabout_1_1Logger.html#a7c86cea6907199d02cc692a224927a16',1,'wolkabout::Logger::setLogLevel()']]],
+  ['setoniterationstatuses_163',['setOnIterationStatuses',['../classwolkabout_1_1ModbusReader.html#afa5c30965f0804fa2cc91cfd73788ff9',1,'wolkabout::ModbusReader']]],
+  ['setonmappingvaluechange_164',['setOnMappingValueChange',['../classwolkabout_1_1ModbusDevice.html#a1c27dcde76f66dcccf450714443f1850',1,'wolkabout::ModbusDevice']]],
+  ['start_165',['start',['../classwolkabout_1_1ModbusReader.html#adfed743ba2a0ec0dfc41a7419ff2aca6',1,'wolkabout::ModbusReader']]],
+  ['stop_166',['stop',['../classwolkabout_1_1ModbusReader.html#a4ca028084e31722bd92e02352a0438b3',1,'wolkabout::ModbusReader']]],
+  ['stringmapping_167',['StringMapping',['../classwolkabout_1_1StringMapping.html#a5680a49e1e11a0a8c2a77fedeb5a2fe6',1,'wolkabout::StringMapping']]]
 ];

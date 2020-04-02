@@ -90,23 +90,28 @@ $(document).ready(function(){initNavTree('classwolkabout_1_1ModbusReader.html','
 <div class="title">wolkabout::ModbusReader Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Main functional class, that accepts all devices and reads them periodcally.  
+ <a href="classwolkabout_1_1ModbusReader.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="ModbusReader_8h_source.html">ModbusReader.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a24491a0753f6a62f84960e777adc5157"><td class="memItemLeft" align="right" valign="top"><a id="a24491a0753f6a62f84960e777adc5157"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ModbusReader</b> (<a class="el" href="classwolkabout_1_1ModbusClient.html">ModbusClient</a> &amp;modbusClient, const std::vector&lt; std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1ModbusDevice.html">ModbusDevice</a> &gt;&gt; &amp;devices, const std::chrono::milliseconds &amp;readPeriod)</td></tr>
+<tr class="memitem:a24491a0753f6a62f84960e777adc5157"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusReader.html#a24491a0753f6a62f84960e777adc5157">ModbusReader</a> (<a class="el" href="classwolkabout_1_1ModbusClient.html">ModbusClient</a> &amp;modbusClient, const std::vector&lt; std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1ModbusDevice.html">ModbusDevice</a> &gt;&gt; &amp;devices, const std::chrono::milliseconds &amp;readPeriod)</td></tr>
+<tr class="memdesc:a24491a0753f6a62f84960e777adc5157"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main constructor for the reader, that prepares all the necessary data for reading.  <a href="classwolkabout_1_1ModbusReader.html#a24491a0753f6a62f84960e777adc5157">More...</a><br /></td></tr>
 <tr class="separator:a24491a0753f6a62f84960e777adc5157"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3a93878ed568ee9cf558f759981d3b8"><td class="memItemLeft" align="right" valign="top"><a id="af3a93878ed568ee9cf558f759981d3b8"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>writeMapping</b> (<a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &amp;mapping, const std::vector&lt; uint16_t &gt; &amp;values)</td></tr>
+<tr class="memitem:af3a93878ed568ee9cf558f759981d3b8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusReader.html#af3a93878ed568ee9cf558f759981d3b8">writeMapping</a> (<a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &amp;mapping, const std::vector&lt; uint16_t &gt; &amp;values)</td></tr>
+<tr class="memdesc:af3a93878ed568ee9cf558f759981d3b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Force the reader to write to a mapping (uint16_t values)  <a href="classwolkabout_1_1ModbusReader.html#af3a93878ed568ee9cf558f759981d3b8">More...</a><br /></td></tr>
 <tr class="separator:af3a93878ed568ee9cf558f759981d3b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a70b60819e0da6150bb06d1b11a8128"><td class="memItemLeft" align="right" valign="top"><a id="a8a70b60819e0da6150bb06d1b11a8128"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>writeMapping</b> (<a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &amp;mapping, bool value)</td></tr>
+<tr class="memitem:a8a70b60819e0da6150bb06d1b11a8128"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusReader.html#a8a70b60819e0da6150bb06d1b11a8128">writeMapping</a> (<a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &amp;mapping, bool value)</td></tr>
+<tr class="memdesc:a8a70b60819e0da6150bb06d1b11a8128"><td class="mdescLeft">&#160;</td><td class="mdescRight">Force the reader to write to a mapping (bool value)  <a href="classwolkabout_1_1ModbusReader.html#a8a70b60819e0da6150bb06d1b11a8128">More...</a><br /></td></tr>
 <tr class="separator:a8a70b60819e0da6150bb06d1b11a8128"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a370a24ba2a86c048bfd25a4ed28aee17"><td class="memItemLeft" align="right" valign="top"><a id="a370a24ba2a86c048bfd25a4ed28aee17"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>writeBitMapping</b> (<a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &amp;mapping, bool value)</td></tr>
+<tr class="memitem:a370a24ba2a86c048bfd25a4ed28aee17"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusReader.html#a370a24ba2a86c048bfd25a4ed28aee17">writeBitMapping</a> (<a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &amp;mapping, bool value)</td></tr>
+<tr class="memdesc:a370a24ba2a86c048bfd25a4ed28aee17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Force the reader to write to a mapping that interacts with a bit from an 16bit register.  <a href="classwolkabout_1_1ModbusReader.html#a370a24ba2a86c048bfd25a4ed28aee17">More...</a><br /></td></tr>
 <tr class="separator:a370a24ba2a86c048bfd25a4ed28aee17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ef972d0ec201ca0711c14749e31ac5e"><td class="memItemLeft" align="right" valign="top"><a id="a3ef972d0ec201ca0711c14749e31ac5e"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isRunning</b> () const</td></tr>
+<tr class="memitem:a3ef972d0ec201ca0711c14749e31ac5e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusReader.html#a3ef972d0ec201ca0711c14749e31ac5e">isRunning</a> () const</td></tr>
+<tr class="memdesc:a3ef972d0ec201ca0711c14749e31ac5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates whether or not the threads that read devices are running.  <a href="classwolkabout_1_1ModbusReader.html#a3ef972d0ec201ca0711c14749e31ac5e">More...</a><br /></td></tr>
 <tr class="separator:a3ef972d0ec201ca0711c14749e31ac5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ef6e4f9fd2e997ae1b864149b69008f"><td class="memItemLeft" align="right" valign="top"><a id="a6ef6e4f9fd2e997ae1b864149b69008f"></a>
 const std::map&lt; int8_t, std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1ModbusDevice.html">ModbusDevice</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getDevices</b> () const</td></tr>
@@ -115,21 +120,261 @@ const std::map&lt; int8_t, std::shared_ptr&lt; <a class="el" href="classwolkabou
 const std::map&lt; int8_t, bool &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getDeviceStatuses</b> () const</td></tr>
 <tr class="separator:a5cd6f73fa7b96824b21f8d1e59e4e419"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adfed743ba2a0ec0dfc41a7419ff2aca6"><td class="memItemLeft" align="right" valign="top"><a id="adfed743ba2a0ec0dfc41a7419ff2aca6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>start</b> ()</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusReader.html#adfed743ba2a0ec0dfc41a7419ff2aca6">start</a> ()</td></tr>
+<tr class="memdesc:adfed743ba2a0ec0dfc41a7419ff2aca6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the modbus connection, will also reconnect if it isn't working, or it disconnected in the meanwhile. If the connection is up, it will read the devices. <br /></td></tr>
 <tr class="separator:adfed743ba2a0ec0dfc41a7419ff2aca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ca028084e31722bd92e02352a0438b3"><td class="memItemLeft" align="right" valign="top"><a id="a4ca028084e31722bd92e02352a0438b3"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>stop</b> ()</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusReader.html#a4ca028084e31722bd92e02352a0438b3">stop</a> ()</td></tr>
+<tr class="memdesc:a4ca028084e31722bd92e02352a0438b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Halts the modbus connection and stops all device reading threads. <br /></td></tr>
 <tr class="separator:a4ca028084e31722bd92e02352a0438b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa5c30965f0804fa2cc91cfd73788ff9"><td class="memItemLeft" align="right" valign="top"><a id="afa5c30965f0804fa2cc91cfd73788ff9"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setOnIterationStatuses</b> (const std::function&lt; void(std::map&lt; int8_t, bool &gt;)&gt; &amp;onIterationStatuses)</td></tr>
+<tr class="memitem:afa5c30965f0804fa2cc91cfd73788ff9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusReader.html#afa5c30965f0804fa2cc91cfd73788ff9">setOnIterationStatuses</a> (const std::function&lt; void(std::map&lt; int8_t, bool &gt;)&gt; &amp;onIterationStatuses)</td></tr>
+<tr class="memdesc:afa5c30965f0804fa2cc91cfd73788ff9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the main callback for receiving device statuses after each reading cycle.  <a href="classwolkabout_1_1ModbusReader.html#afa5c30965f0804fa2cc91cfd73788ff9">More...</a><br /></td></tr>
 <tr class="separator:afa5c30965f0804fa2cc91cfd73788ff9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a3a799bfb7e0461f0c910d0bc9226ffc3"><td class="memItemLeft" align="right" valign="top"><a id="a3a799bfb7e0461f0c910d0bc9226ffc3"></a>
-static <a class="el" href="classwolkabout_1_1ModbusReader.html">ModbusReader</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getInstance</b> ()</td></tr>
+<tr class="memitem:a3a799bfb7e0461f0c910d0bc9226ffc3"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classwolkabout_1_1ModbusReader.html">ModbusReader</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusReader.html#a3a799bfb7e0461f0c910d0bc9226ffc3">getInstance</a> ()</td></tr>
+<tr class="memdesc:a3a799bfb7e0461f0c910d0bc9226ffc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the instance of the class.  <a href="classwolkabout_1_1ModbusReader.html#a3a799bfb7e0461f0c910d0bc9226ffc3">More...</a><br /></td></tr>
 <tr class="separator:a3a799bfb7e0461f0c910d0bc9226ffc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Main functional class, that accepts all devices and reads them periodcally. </p>
+<p>Function of the class is to periodically trigger the reading of all devices, of course, each and every on their separate threads. Where the connection gets split between them all, and data parsing for mappings is execute on their own thread. And also, the on value change for mappings event is invoked.</p>
+<p>This class is also a singleton. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a24491a0753f6a62f84960e777adc5157"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24491a0753f6a62f84960e777adc5157">&#9670;&nbsp;</a></span>ModbusReader()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wolkabout::ModbusReader::ModbusReader </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classwolkabout_1_1ModbusClient.html">ModbusClient</a> &amp;&#160;</td>
+          <td class="paramname"><em>modbusClient</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1ModbusDevice.html">ModbusDevice</a> &gt;&gt; &amp;&#160;</td>
+          <td class="paramname"><em>devices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::chrono::milliseconds &amp;&#160;</td>
+          <td class="paramname"><em>readPeriod</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Main constructor for the reader, that prepares all the necessary data for reading. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">modbusClient</td><td>one of implementations of the abstract class </td></tr>
+    <tr><td class="paramname">devices</td><td>list of all devices that will be read, with their slaveAddresses already set </td></tr>
+    <tr><td class="paramname">readPeriod</td><td>time period for cycling reads </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a3a799bfb7e0461f0c910d0bc9226ffc3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a799bfb7e0461f0c910d0bc9226ffc3">&#9670;&nbsp;</a></span>getInstance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwolkabout_1_1ModbusReader.html">ModbusReader</a> * wolkabout::ModbusReader::getInstance </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the instance of the class. </p>
+<dl class="section return"><dt>Returns</dt><dd>Raw pointer to the instance. </dd></dl>
+
+</div>
+</div>
+<a id="a3ef972d0ec201ca0711c14749e31ac5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ef972d0ec201ca0711c14749e31ac5e">&#9670;&nbsp;</a></span>isRunning()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::ModbusReader::isRunning </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Indicates whether or not the threads that read devices are running. </p>
+<dl class="section return"><dt>Returns</dt><dd>thread running status </dd></dl>
+
+</div>
+</div>
+<a id="afa5c30965f0804fa2cc91cfd73788ff9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa5c30965f0804fa2cc91cfd73788ff9">&#9670;&nbsp;</a></span>setOnIterationStatuses()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void wolkabout::ModbusReader::setOnIterationStatuses </td>
+          <td>(</td>
+          <td class="paramtype">const std::function&lt; void(std::map&lt; int8_t, bool &gt;)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>onIterationStatuses</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the main callback for receiving device statuses after each reading cycle. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">onIterationStatuses</td><td>the callback function. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a370a24ba2a86c048bfd25a4ed28aee17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a370a24ba2a86c048bfd25a4ed28aee17">&#9670;&nbsp;</a></span>writeBitMapping()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::ModbusReader::writeBitMapping </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &amp;&#160;</td>
+          <td class="paramname"><em>mapping</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Force the reader to write to a mapping that interacts with a bit from an 16bit register. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mapping</td><td>reference to bit mapping from one of the device that the reader was passed in constructor </td></tr>
+    <tr><td class="paramname">value</td><td>single boolean </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>whether or not the operation was successful </dd></dl>
+
+</div>
+</div>
+<a id="a8a70b60819e0da6150bb06d1b11a8128"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a70b60819e0da6150bb06d1b11a8128">&#9670;&nbsp;</a></span>writeMapping() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::ModbusReader::writeMapping </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &amp;&#160;</td>
+          <td class="paramname"><em>mapping</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Force the reader to write to a mapping (bool value) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mapping</td><td>reference to mapping from one of device that the reader was passed in constructor </td></tr>
+    <tr><td class="paramname">value</td><td>single boolean </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>whether or not the operation was successful </dd></dl>
+
+</div>
+</div>
+<a id="af3a93878ed568ee9cf558f759981d3b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3a93878ed568ee9cf558f759981d3b8">&#9670;&nbsp;</a></span>writeMapping() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wolkabout::ModbusReader::writeMapping </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &amp;&#160;</td>
+          <td class="paramname"><em>mapping</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; uint16_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>values</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Force the reader to write to a mapping (uint16_t values) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mapping</td><td>reference to mapping from one of devices that the reader was passed in constructor </td></tr>
+    <tr><td class="paramname">values</td><td>array of uint16_t's, needs to contain exact amount of values as the mapping has in register count. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>whether or not the operation was successful </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="ModbusReader_8h_source.html">ModbusReader.h</a></li>
 <li>src/ModbusReader.cpp</li>
@@ -141,7 +386,7 @@ static <a class="el" href="classwolkabout_1_1ModbusReader.html">ModbusReader</a>
 			<ul>
 				<li class="navelem"><b>wolkabout</b></li><li class="navelem"><a class="el" href="classwolkabout_1_1ModbusReader.html">ModbusReader</a></li>
 				<li class="footer">
-					Generated on Wed Apr 1 2020 17:40:05 for MoreModbus by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Apr 2 2020 13:45:35 for MoreModbus by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.18.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.
 				</li>
