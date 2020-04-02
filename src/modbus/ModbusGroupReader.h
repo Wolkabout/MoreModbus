@@ -16,7 +16,6 @@ namespace wolkabout
 class ModbusGroupReader
 {
 public:
-
     /**
      * @brief The main method used to read a group, and it calls other methods based on the output type of group.
      * @param modbusClient
@@ -26,7 +25,6 @@ public:
     static bool readGroup(ModbusClient& modbusClient, RegisterGroup& group);
 
 private:
-
     // Discrete values operations
     /**
      * @brief Helping method that aggregates read bool values to each mapping inside a group.

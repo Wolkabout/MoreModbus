@@ -48,7 +48,8 @@ public:
     static RegisterMapping::OutputType deserializeDataType(const std::string& dataType);
 
     /**
-     * @brief Convert Operation types (7 defined in RegisterMapping class, OperationType enum) from string to own enum value.
+     * @brief Convert Operation types (7 defined in RegisterMapping class, OperationType enum) from string to own enum
+     * value.
      * @param dataType string spelled exactly as the enum cases are named
      * @return corresponding output/data type (support: NONE, MERGE_BIG_ENDIAN, MERGE_LITTLE_ENDIAN, MERGE_FLOAT,
      *          STRINGIFY_ASCII, STRINGIFY_UNICODE, TAKE_BIT).

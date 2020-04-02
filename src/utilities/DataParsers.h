@@ -145,7 +145,6 @@ public:
     static std::bitset<sizeof(uint16_t) * 8> separateBits(uint16_t value);
 
 private:
-
     /**
      * @brief Value built with 8 bits where each bit is 1.
      */

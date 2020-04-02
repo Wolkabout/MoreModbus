@@ -43,7 +43,6 @@ public:
         ODD
     };
 
-
     /**
      * @brief Constructor for the client
      * @param serialPort that is used to access all the slaves

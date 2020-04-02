@@ -25,7 +25,6 @@
 
 namespace wolkabout
 {
-
 typedef bool (*MappingCompareFunction)(const std::pair<std::string, std::shared_ptr<RegisterMapping>>& left,
                                        const std::pair<std::string, std::shared_ptr<RegisterMapping>>& right);
 

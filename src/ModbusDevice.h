@@ -29,7 +29,7 @@ typedef bool (*CompareFunction)(const std::shared_ptr<RegisterMapping>&, const s
  * @brief Collection of ModbusGroups for a single Modbus server/slave.
  * @details The device contains the slaveAddress, and all the groups to be read for the slave address.
  *          The groups will be created by the device, and all the slaveAddresses will be set when the
-*           device is created.
+ *           device is created.
  */
 class ModbusDevice
 {
