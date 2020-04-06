@@ -26,8 +26,10 @@ else
   cp tools/git/pre-commit .git/hooks/pre-commit
   chmod +x .git/hooks/pre-commit
 
+  popd || exit
   pushd out || exit
   cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ..
   popd || exit
+  pushd dependencies || exit
 fi
 popd || exit

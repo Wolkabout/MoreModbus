@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-#include <modbus/LibModbusSerialRtuClient.h>
-#include "ModbusDevice.h"
-#include "ModbusReader.h"
-#include "RegisterGroup.h"
 #include "mappings/BoolMapping.h"
 #include "mappings/StringMapping.h"
 #include "mappings/UInt16Mapping.h"
+#include "ModbusDevice.h"
+#include "ModbusReader.h"
 #include "modbus/LibModbusTcpIpClient.h"
+#include "modbus/LibModbusSerialRtuClient.h"
+#include "RegisterGroup.h"
 #include "utilities/ConsoleLogger.h"
 
 int main()
@@ -62,19 +62,19 @@ int main()
         // You can do this for all output types.
         if (mapping->getOutputType() == wolkabout::RegisterMapping::OutputType::BOOL)
         {
-            const auto& boolMapping = std::dynamic_pointer_cast<wolkabout::BoolMapping>(mapping);
-            LOG(DEBUG) << "Application: Mapping is bool, value : " << boolMapping->getBoolValue();
+            const auto& boolean = std::dynamic_pointer_cast<wolkabout::BoolMapping>(mapping);
+            LOG(DEBUG) << "Application: Mapping is bool, value : " << boolean->getBoolValue();
 
-            if (!boolMapping->getBoolValue())
-                boolMapping->writeValue(true);
+            if (!boolean->getBoolValue())
+                boolean->writeValue(true);
         }
         else if (mapping->getOutputType() == wolkabout::RegisterMapping::OutputType::STRING)
         {
-            const auto& stringMapping = std::dynamic_pointer_cast<wolkabout::StringMapping>(mapping);
-            LOG(DEBUG) << "Application: Mapping is string, value : " << stringMapping->getStringValue();
+            const auto& string = std::dynamic_pointer_cast<wolkabout::StringMapping>(mapping);
+            LOG(DEBUG) << "Application: Mapping is string, value : " << string->getStringValue();
 
-            if (stringMapping->getStringValue().empty())
-                stringMapping->writeValue("Test");
+            if (string->getStringValue().empty())
+                string->writeValue("Test");
         }
         else
         {
