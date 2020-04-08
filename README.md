@@ -35,7 +35,7 @@ for reading the groups and parsing the data.
 This library requires:
 - GNU GCC and G++
 - CMake
-- Libmodbus (this is downloaded by the script)
+- Libmodbus (this is downloaded by CMake automatically)
 
 So run
 ```shell script
