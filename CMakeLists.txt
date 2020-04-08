@@ -39,6 +39,7 @@ set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS}    -Wall -Wextra -pedantic             
 # library output
 set(CMAKE_LIBRARY_INCLUDE_DIRECTORY ${CMAKE_BINARY_DIR}/include)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR}/build)
 link_directories(${CMAKE_BINARY_DIR}/lib)
 
 add_subdirectory(dependencies)
