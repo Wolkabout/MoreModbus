@@ -41,6 +41,8 @@ set(CMAKE_LIBRARY_INCLUDE_DIRECTORY ${CMAKE_BINARY_DIR}/include)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 link_directories(${CMAKE_BINARY_DIR}/lib)
 
+add_subdirectory(dependencies)
+
 # required dependency
 find_package(Threads REQUIRED)
 
@@ -53,6 +55,7 @@ file(GLOB_RECURSE SOURCE_FILES src/*.c src/*.cpp)
 add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} modbus pthread)
 set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "$ORIGIN")
+add_dependencies(${PROJECT_NAME} libmodbus)
 
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_LIST_DIR}/src")
 
