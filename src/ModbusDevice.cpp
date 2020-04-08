@@ -77,6 +77,11 @@ const std::string& ModbusDevice::getName() const
     return m_name;
 }
 
+bool ModbusDevice::getStatus() const
+{
+    return m_status;
+}
+
 int8_t ModbusDevice::getSlaveAddress() const
 {
     return m_slaveAddress;
@@ -93,9 +98,22 @@ void ModbusDevice::setOnMappingValueChange(
     m_onMappingValueChange = onMappingValueChange;
 }
 
+void ModbusDevice::setOnStatusChange(const std::function<void(bool)>& onStatusChange)
+{
+    m_onStatusChange = onStatusChange;
+}
+
 void ModbusDevice::triggerOnMappingValueChange(const std::shared_ptr<RegisterMapping>& mapping)
 {
     if (m_onMappingValueChange != nullptr)
         m_onMappingValueChange(mapping);
+}
+
+void ModbusDevice::triggerOnStatusChange(bool status)
+{
+    if (m_onStatusChange != nullptr && m_status != status)
+        m_onStatusChange(status);
+
+    m_status = status;
 }
 }    // namespace wolkabout

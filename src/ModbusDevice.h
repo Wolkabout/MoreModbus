@@ -69,6 +69,8 @@ public:
 
     const std::string& getName() const;
 
+    bool getStatus() const;
+
     int8_t getSlaveAddress() const;
 
     const std::vector<std::shared_ptr<RegisterGroup>>& getGroups() const;
@@ -80,20 +82,25 @@ public:
     void setOnMappingValueChange(
       const std::function<void(const std::shared_ptr<RegisterMapping>&)>& onMappingValueChange);
 
+    /**
+     * @brief Event that will trigger when the devices status changes.
+     * @param onStatusChange the callback function for callback, executed on the devices reading thread.
+     */
+    void setOnStatusChange(
+            const std::function<void(bool)>& onStatusChange);
+
     void triggerOnMappingValueChange(const std::shared_ptr<RegisterMapping>& mapping);
 
-    /**
-     * @brief Compare function for creating groups, in way that they have best chances to be in a group.
-     */
-    static bool compareMappings(const std::shared_ptr<RegisterMapping>& left,
-                                const std::shared_ptr<RegisterMapping>& right);
+    void triggerOnStatusChange(bool status);
 
 private:
     std::string m_name;
+    bool m_status;
     int8_t m_slaveAddress;
     std::vector<std::shared_ptr<RegisterGroup>> m_groups;
 
     std::function<void(const std::shared_ptr<RegisterMapping>&)> m_onMappingValueChange;
+    std::function<void(bool)> m_onStatusChange;
 };
 }    // namespace wolkabout
 

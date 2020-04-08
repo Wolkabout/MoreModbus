@@ -64,9 +64,6 @@ int main()
         {
             const auto& boolean = std::dynamic_pointer_cast<wolkabout::BoolMapping>(mapping);
             LOG(DEBUG) << "Application: Mapping is bool, value : " << boolean->getBoolValue();
-
-            if (!boolean->getBoolValue())
-                boolean->writeValue(true);
         }
         else if (mapping->getOutputType() == wolkabout::RegisterMapping::OutputType::STRING)
         {
@@ -82,6 +79,11 @@ int main()
         }
     });
 
+    device->setOnStatusChange([&](bool status) {
+        LOG(DEBUG) << "Application: Device " << device->getName() << " is now " << (status ? "online" : "offline")
+                   << ".";
+    });
+
     // Serial RTU client
     //    const auto& modbusClient = std::make_shared<wolkabout::LibModbusSerialRtuClient>(
     //      "/dev/tty0", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
@@ -89,7 +91,7 @@ int main()
 
     // TCP IP client
     const auto& modbusClient =
-      std::make_shared<wolkabout::LibModbusTcpIpClient>("<IP ADDRESS>", 502, std::chrono::milliseconds(500));
+      std::make_shared<wolkabout::LibModbusTcpIpClient>("192.168.0.20", 502, std::chrono::milliseconds(500));
 
     const auto& reader = std::make_shared<wolkabout::ModbusReader>(
       *modbusClient, std::vector<std::shared_ptr<wolkabout::ModbusDevice>>{device}, std::chrono::milliseconds(1000));

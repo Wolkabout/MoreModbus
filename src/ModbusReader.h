@@ -101,12 +101,6 @@ public:
      */
     void stop();
 
-    /**
-     * @brief Set the main callback for receiving device statuses after each reading cycle.
-     * @param onIterationStatuses the callback function.
-     */
-    void setOnIterationStatuses(const std::function<void(std::map<int8_t, bool>)>& onIterationStatuses);
-
 private:
     // Singleton
     static ModbusReader* INSTANCE;
