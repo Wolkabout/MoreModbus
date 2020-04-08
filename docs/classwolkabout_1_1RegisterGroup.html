@@ -84,8 +84,6 @@ $(document).ready(function(){initNavTree('classwolkabout_1_1RegisterGroup.html',
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classwolkabout_1_1RegisterGroup-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">wolkabout::RegisterGroup Class Reference</div>  </div>
@@ -132,21 +130,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isReadRestricted</b> 
 <tr class="separator:ab894865e583b998d1fed9c325311eb73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada3bffe012b7d6600846349ccc1e8f10"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1RegisterGroup.html#ada3bffe012b7d6600846349ccc1e8f10">getMappingsClaims</a> () const</td></tr>
 <tr class="separator:ada3bffe012b7d6600846349ccc1e8f10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a44ba3a18069ed355e37e62c38d8e22ad"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1RegisterGroup.html#a44ba3a18069ed355e37e62c38d8e22ad">getAddressFromString</a> (const std::string &amp;string)</td></tr>
-<tr class="memdesc:a44ba3a18069ed355e37e62c38d8e22ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility method to fetch the address from claim string.  <a href="classwolkabout_1_1RegisterGroup.html#a44ba3a18069ed355e37e62c38d8e22ad">More...</a><br /></td></tr>
-<tr class="separator:a44ba3a18069ed355e37e62c38d8e22ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a405868cd07c497f0ca2452e7cdf7fe53"><td class="memItemLeft" align="right" valign="top">static int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1RegisterGroup.html#a405868cd07c497f0ca2452e7cdf7fe53">getBitFromString</a> (const std::string &amp;string)</td></tr>
-<tr class="memdesc:a405868cd07c497f0ca2452e7cdf7fe53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility method to fetch the bit from claim string.  <a href="classwolkabout_1_1RegisterGroup.html#a405868cd07c497f0ca2452e7cdf7fe53">More...</a><br /></td></tr>
-<tr class="separator:a405868cd07c497f0ca2452e7cdf7fe53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:ae88f3b7c06ad440c76c5a41846ecd72c"><td class="memItemLeft" align="right" valign="top"><a id="ae88f3b7c06ad440c76c5a41846ecd72c"></a>
-static const char&#160;</td><td class="memItemRight" valign="bottom"><b>SEPARATOR</b> = '.'</td></tr>
-<tr class="separator:ae88f3b7c06ad440c76c5a41846ecd72c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Group serves to merge multiple mappings that can be read with a single Modbus command. </p>
@@ -211,76 +194,6 @@ static const char&#160;</td><td class="memItemRight" valign="bottom"><b>SEPARATO
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>whether or not the adding is successful </dd></dl>
-
-</div>
-</div>
-<a id="a44ba3a18069ed355e37e62c38d8e22ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a44ba3a18069ed355e37e62c38d8e22ad">&#9670;&nbsp;</a></span>getAddressFromString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint16_t wolkabout::RegisterGroup::getAddressFromString </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>string</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Utility method to fetch the address from claim string. </p>
-<p>Address is found in the claim string before the separator </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">string</td><td>claim - indicates the data which mapping requires </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the address as int </dd></dl>
-
-</div>
-</div>
-<a id="a405868cd07c497f0ca2452e7cdf7fe53"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a405868cd07c497f0ca2452e7cdf7fe53">&#9670;&nbsp;</a></span>getBitFromString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t wolkabout::RegisterGroup::getBitFromString </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>string</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Utility method to fetch the bit from claim string. </p>
-<p>Bit index is found in the claim string after separator, value has to be in 0-15 range. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">string</td><td>claim - indicates the data which mapping requires </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the bit index as int </dd></dl>
 
 </div>
 </div>
@@ -349,7 +262,7 @@ static const char&#160;</td><td class="memItemRight" valign="bottom"><b>SEPARATO
 			<ul>
 				<li class="navelem"><b>wolkabout</b></li><li class="navelem"><a class="el" href="classwolkabout_1_1RegisterGroup.html">RegisterGroup</a></li>
 				<li class="footer">
-					Generated on Thu Apr 2 2020 15:41:49 for MoreModbus by <a href="http://www.doxygen.org/index.html">
+					Generated on Wed Apr 8 2020 15:04:36 for MoreModbus by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.18.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.
 				</li>

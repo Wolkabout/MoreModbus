@@ -23,7 +23,31 @@
 
 namespace wolkabout
 {
-typedef bool (*CompareFunction)(const std::shared_ptr<RegisterMapping>&, const std::shared_ptr<RegisterMapping>&);
+/**
+ * @brief Utility struct defining a function used by the std::set inside of ModbusDevice to sort the mappings before
+ *        an attempt at forming ModbusGroup instances for such device.
+ */
+struct CompareFunction {
+    bool operator() (const std::shared_ptr<RegisterMapping>& left, const std::shared_ptr<RegisterMapping>& right) {
+        const auto typeDiff = (int)right->getRegisterType() - (int)left->getRegisterType();
+        if (typeDiff != 0)
+            return typeDiff > 0;
+
+        const auto startDiff = right->getStartingAddress() - left->getStartingAddress();
+        if (startDiff != 0)
+            return startDiff > 0;
+
+        const auto lengthDiff = right->getRegisterCount() - left->getRegisterCount();
+        if (lengthDiff != 0)
+            return lengthDiff > 0;
+
+        const auto outputDiff = (int)right->getOutputType() - (int)left->getOutputType();
+        if (outputDiff != 0)
+            return outputDiff > 0;
+
+        return left->getBitIndex() < right->getBitIndex();
+    }
+};
 
 /**
  * @brief Collection of ModbusGroups for a single Modbus server/slave.

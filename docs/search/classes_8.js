@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['stringmapping_103',['StringMapping',['../classwolkabout_1_1StringMapping.html',1,'wolkabout']]]
+  ['registergroup_106',['RegisterGroup',['../classwolkabout_1_1RegisterGroup.html',1,'wolkabout']]],
+  ['registermapping_107',['RegisterMapping',['../classwolkabout_1_1RegisterMapping.html',1,'wolkabout']]]
 ];

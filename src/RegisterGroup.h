@@ -25,10 +25,39 @@
 
 namespace wolkabout
 {
-typedef bool (*MappingCompareFunction)(const std::pair<std::string, std::shared_ptr<RegisterMapping>>& left,
-                                       const std::pair<std::string, std::shared_ptr<RegisterMapping>>& right);
+struct GroupUtility {
+    const static char SEPARATOR;
 
-typedef std::set<std::pair<std::string, std::shared_ptr<RegisterMapping>>, MappingCompareFunction> MappingsMap;
+    /**
+     * @brief Utility method to fetch the address from claim string
+     * @details Address is found in the claim string before the separator
+     * @param string claim - indicates the data which mapping requires
+     * @return the address as int
+     */
+    static uint16_t getAddressFromString(const std::string& string);
+
+    /**
+     * @brief Utility method to fetch the bit from claim string
+     * @details Bit index is found in the claim string after separator, value has to be in 0-15 range.
+     * @param string claim - indicates the data which mapping requires
+     * @return the bit index as int
+     */
+    static int16_t getBitFromString(const std::string& string);
+
+    /**
+     * @brief Main function that serves a purpose of sorting the elements in the set created by the group.
+     */
+    bool operator() (const std::pair<std::string, std::shared_ptr<RegisterMapping>>& left,
+                     const std::pair<std::string, std::shared_ptr<RegisterMapping>>& right) {
+        const auto addressComp = getAddressFromString(right.first) - getAddressFromString(left.first);
+        if (addressComp != 0)
+            return addressComp > 0;
+
+        return getBitFromString(left.first) < getBitFromString(right.first);
+    }
+};
+
+typedef std::set<std::pair<std::string, std::shared_ptr<RegisterMapping>>, GroupUtility> MappingsMap;
 
 /**
  * @brief Group serves to merge multiple mappings that can be read with a single Modbus command.
@@ -38,7 +67,6 @@ typedef std::set<std::pair<std::string, std::shared_ptr<RegisterMapping>>, Mappi
 class RegisterGroup
 {
 public:
-    const static char SEPARATOR;
 
     /**
      * @brief Default constructor for the Group
@@ -90,31 +118,8 @@ public:
      */
     std::vector<std::string> getMappingsClaims() const;
 
-    /**
-     * @brief Utility method to fetch the address from claim string
-     * @details Address is found in the claim string before the separator
-     * @param string claim - indicates the data which mapping requires
-     * @return the address as int
-     */
-    static uint16_t getAddressFromString(const std::string& string);
-
-    /**
-     * @brief Utility method to fetch the bit from claim string
-     * @details Bit index is found in the claim string after separator, value has to be in 0-15 range.
-     * @param string claim - indicates the data which mapping requires
-     * @return the bit index as int
-     */
-    static int16_t getBitFromString(const std::string& string);
-
 private:
     bool appendMapping(const std::shared_ptr<RegisterMapping>& mapping);
-
-    /**
-     * @brief Utility method for sorting the pairs, so that they are sorted the way they need
-     *        to be for reading.
-     */
-    static bool compareFunction(const std::pair<std::string, std::shared_ptr<RegisterMapping>>& left,
-                                const std::pair<std::string, std::shared_ptr<RegisterMapping>>& right);
 
     bool keyExistsInSet(const std::string& key);
 

@@ -99,18 +99,18 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
             continue;
         }
 
-        const auto address = RegisterGroup::getAddressFromString(mapping.first);
-        if (mapping.first.find(RegisterGroup::SEPARATOR) != std::string::npos)
+        const auto address = GroupUtility::getAddressFromString(mapping.first);
+        if (mapping.first.find(GroupUtility::SEPARATOR) != std::string::npos)
         {
             const auto& bits = DataParsers::separateBits(values[valueCounter++]);
             uint shift = 0;
             while (mappingCounter + shift <= group.getMappings().size() - 1 &&
-                   address == RegisterGroup::getAddressFromString(claims[mappingCounter + shift]))
+                   address == GroupUtility::getAddressFromString(claims[mappingCounter + shift]))
             {
                 if (shift > 0)
                     skipMappings++;
 
-                const auto bitIndex = RegisterGroup::getBitFromString(claims[mappingCounter + shift]);
+                const auto bitIndex = GroupUtility::getBitFromString(claims[mappingCounter + shift]);
                 const auto bitValue = bits[static_cast<uint16_t>(bitIndex)];
 
                 const auto& bitMapping = mappings.at(mappingCounter + shift);

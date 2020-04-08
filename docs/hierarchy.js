@@ -1,7 +1,9 @@
 var hierarchy =
 [
+    [ "wolkabout::CompareFunction", "structwolkabout_1_1CompareFunction.html", null ],
     [ "wolkabout::DataParsers", "classwolkabout_1_1DataParsers.html", null ],
     [ "wolkabout::Deserializers", "classwolkabout_1_1Deserializers.html", null ],
+    [ "wolkabout::GroupUtility", "structwolkabout_1_1GroupUtility.html", null ],
     [ "wolkabout::Log", "classwolkabout_1_1Log.html", null ],
     [ "wolkabout::Logger", "classwolkabout_1_1Logger.html", [
       [ "wolkabout::ConsoleLogger", "classwolkabout_1_1ConsoleLogger.html", null ]

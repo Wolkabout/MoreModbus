@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=9"/>
 		<meta name="generator" content="Doxygen 1.8.18"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
-		<title>MoreModbus: Member List</title>
+		<title>MoreModbus: wolkabout::CompareFunction Struct Reference</title>
 		<link href="tabs.css" rel="stylesheet" type="text/css"/>
 		<script type="text/javascript" src="jquery.js"></script>
 		<script type="text/javascript" src="dynsections.js"></script>
@@ -63,7 +63,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('classwolkabout_1_1ModbusGroupReader.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('structwolkabout_1_1CompareFunction.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -82,21 +82,38 @@ $(document).ready(function(){initNavTree('classwolkabout_1_1ModbusGroupReader.ht
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="structwolkabout_1_1CompareFunction-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">wolkabout::ModbusGroupReader Member List</div>  </div>
+<div class="title">wolkabout::CompareFunction Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This is the complete list of members for <a class="el" href="classwolkabout_1_1ModbusGroupReader.html">wolkabout::ModbusGroupReader</a>, including all inherited members.</p>
-<table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="classwolkabout_1_1ModbusGroupReader.html#aa1bc2a89ccf4f8c76da95e8006ec94e7">readGroup</a>(ModbusClient &amp;modbusClient, RegisterGroup &amp;group)</td><td class="entry"><a class="el" href="classwolkabout_1_1ModbusGroupReader.html">wolkabout::ModbusGroupReader</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-</table></div><!-- contents -->
+<p>Utility struct defining a function used by the std::set inside of <a class="el" href="classwolkabout_1_1ModbusDevice.html" title="Collection of ModbusGroups for a single Modbus server/slave.">ModbusDevice</a> to sort the mappings before an attempt at forming ModbusGroup instances for such device.  
+ <a href="structwolkabout_1_1CompareFunction.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="ModbusDevice_8h_source.html">ModbusDevice.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:add00131e5f5ddf42d834c0da286ce9a1"><td class="memItemLeft" align="right" valign="top"><a id="add00131e5f5ddf42d834c0da286ce9a1"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &gt; &amp;left, const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &gt; &amp;right)</td></tr>
+<tr class="separator:add00131e5f5ddf42d834c0da286ce9a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Utility struct defining a function used by the std::set inside of <a class="el" href="classwolkabout_1_1ModbusDevice.html" title="Collection of ModbusGroups for a single Modbus server/slave.">ModbusDevice</a> to sort the mappings before an attempt at forming ModbusGroup instances for such device. </p>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<li>src/<a class="el" href="ModbusDevice_8h_source.html">ModbusDevice.h</a></li>
+</ul>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
+				<li class="navelem"><b>wolkabout</b></li><li class="navelem"><a class="el" href="structwolkabout_1_1CompareFunction.html">CompareFunction</a></li>
 				<li class="footer">
-					Generated on Wed Apr 8 2020 15:04:36 for MoreModbus by <a href="http://www.doxygen.org/index.html">
+					Generated on Wed Apr 8 2020 15:04:35 for MoreModbus by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.18.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.
 				</li>

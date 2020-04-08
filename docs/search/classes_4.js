@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['int16mapping_91',['Int16Mapping',['../classwolkabout_1_1Int16Mapping.html',1,'wolkabout']]],
-  ['int32mapping_92',['Int32Mapping',['../classwolkabout_1_1Int32Mapping.html',1,'wolkabout']]]
+  ['grouputility_95',['GroupUtility',['../structwolkabout_1_1GroupUtility.html',1,'wolkabout']]]
 ];
