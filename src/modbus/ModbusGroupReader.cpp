@@ -32,7 +32,8 @@ bool ModbusGroupReader::readGroup(wolkabout::ModbusClient& modbusClient, wolkabo
 void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vector<bool>& values)
 {
     uint i = 0;
-    for (const auto& mapping : group.getMappingsMap())
+    const auto mappingMap = group.getMappingsMap();
+    for (const auto& mapping : mappingMap)
     {
         bool newValue = values[i++];
         LOG(TRACE) << "ModbusGroupReader: Old value = " << mapping.second->getBoolValue()
@@ -84,7 +85,7 @@ bool ModbusGroupReader::readDiscreteInputGroup(ModbusClient& modbusClient, Regis
 
 void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vector<uint16_t>& values)
 {
-    const auto& claims = group.getMappingsClaims();
+    const auto claims = group.getMappingsClaims();
     const auto& mappingsSet = group.getMappings();
     const auto& mappings =
       std::vector<std::pair<std::string, std::shared_ptr<RegisterMapping>>>(mappingsSet.begin(), mappingsSet.end());

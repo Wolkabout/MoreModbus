@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['floatmapping_94',['FloatMapping',['../classwolkabout_1_1FloatMapping.html',1,'wolkabout']]]
+  ['floatmapping_93',['FloatMapping',['../classwolkabout_1_1FloatMapping.html',1,'wolkabout']]]
 ];

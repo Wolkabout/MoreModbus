@@ -141,41 +141,47 @@ $(document).ready(function(){initNavTree('ModbusDevice_8h_source.html',''); init
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keyword">const</span> std::string&amp; getName() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    int8_t getSlaveAddress() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">bool</span> getStatus() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keyword">const</span> std::vector&lt;std::shared_ptr&lt;RegisterGroup&gt;&gt;&amp; getGroups() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    int8_t getSlaveAddress() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classwolkabout_1_1ModbusDevice.html#a1c27dcde76f66dcccf450714443f1850">setOnMappingValueChange</a>(</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      <span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(<span class="keyword">const</span> std::shared_ptr&lt;RegisterMapping&gt;&amp;)&gt;&amp; onMappingValueChange);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">void</span> triggerOnMappingValueChange(<span class="keyword">const</span> std::shared_ptr&lt;RegisterMapping&gt;&amp; mapping);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keyword">const</span> std::vector&lt;std::shared_ptr&lt;RegisterGroup&gt;&gt;&amp; getGroups() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classwolkabout_1_1ModbusDevice.html#a1c27dcde76f66dcccf450714443f1850">setOnMappingValueChange</a>(</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      <span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(<span class="keyword">const</span> std::shared_ptr&lt;RegisterMapping&gt;&amp;)&gt;&amp; onMappingValueChange);</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="classwolkabout_1_1ModbusDevice.html#a1b7fe58e50fa1d0c01c3669149b685cf">   88</a></span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classwolkabout_1_1ModbusDevice.html#a1b7fe58e50fa1d0c01c3669149b685cf">compareMappings</a>(<span class="keyword">const</span> std::shared_ptr&lt;RegisterMapping&gt;&amp; left,</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                                <span class="keyword">const</span> std::shared_ptr&lt;RegisterMapping&gt;&amp; right);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    std::string m_name;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    int8_t m_slaveAddress;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    std::vector&lt;std::shared_ptr&lt;RegisterGroup&gt;&gt; m_groups;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classwolkabout_1_1ModbusDevice.html#a1ce16129bf831d37c11778fd994a259e">setOnStatusChange</a>(</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(<span class="keywordtype">bool</span>)&gt;&amp; onStatusChange);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordtype">void</span> triggerOnMappingValueChange(<span class="keyword">const</span> std::shared_ptr&lt;RegisterMapping&gt;&amp; mapping);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordtype">void</span> triggerOnStatusChange(<span class="keywordtype">bool</span> status);</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    std::function&lt;void(<span class="keyword">const</span> std::shared_ptr&lt;RegisterMapping&gt;&amp;)&gt; m_onMappingValueChange;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;};</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}    <span class="comment">// namespace wolkabout</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#endif    // WOLKABOUT_MODBUS_MODBUSDEVICE_H</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    std::string m_name;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordtype">bool</span> m_status;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    int8_t m_slaveAddress;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    std::vector&lt;std::shared_ptr&lt;RegisterGroup&gt;&gt; m_groups;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    std::function&lt;void(<span class="keyword">const</span> std::shared_ptr&lt;RegisterMapping&gt;&amp;)&gt; m_onMappingValueChange;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    std::function&lt;void(<span class="keywordtype">bool</span>)&gt; m_onStatusChange;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;};</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;}    <span class="comment">// namespace wolkabout</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#endif    // WOLKABOUT_MODBUS_MODBUSDEVICE_H</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclasswolkabout_1_1ModbusDevice_html_a1b7fe58e50fa1d0c01c3669149b685cf"><div class="ttname"><a href="classwolkabout_1_1ModbusDevice.html#a1b7fe58e50fa1d0c01c3669149b685cf">wolkabout::ModbusDevice::compareMappings</a></div><div class="ttdeci">static bool compareMappings(const std::shared_ptr&lt; RegisterMapping &gt; &amp;left, const std::shared_ptr&lt; RegisterMapping &gt; &amp;right)</div><div class="ttdoc">Compare function for creating groups, in way that they have best chances to be in a group.</div></div>
+<div class="ttc" id="aclasswolkabout_1_1ModbusDevice_html_a1ce16129bf831d37c11778fd994a259e"><div class="ttname"><a href="classwolkabout_1_1ModbusDevice.html#a1ce16129bf831d37c11778fd994a259e">wolkabout::ModbusDevice::setOnStatusChange</a></div><div class="ttdeci">void setOnStatusChange(const std::function&lt; void(bool)&gt; &amp;onStatusChange)</div><div class="ttdoc">Event that will trigger when the devices status changes.</div><div class="ttdef"><b>Definition:</b> ModbusDevice.cpp:101</div></div>
 <div class="ttc" id="aclasswolkabout_1_1ModbusDevice_html_acc9e9995705b0e787f4ddc01c1475932"><div class="ttname"><a href="classwolkabout_1_1ModbusDevice.html#acc9e9995705b0e787f4ddc01c1475932">wolkabout::ModbusDevice::ModbusDevice</a></div><div class="ttdeci">ModbusDevice(const std::string &amp;name, int8_t slaveAddress, const std::vector&lt; std::shared_ptr&lt; RegisterMapping &gt;&gt; &amp;mappings)</div><div class="ttdoc">Default constructor for the device.</div><div class="ttdef"><b>Definition:</b> ModbusDevice.cpp:25</div></div>
 <div class="ttc" id="astructwolkabout_1_1CompareFunction_html"><div class="ttname"><a href="structwolkabout_1_1CompareFunction.html">wolkabout::CompareFunction</a></div><div class="ttdoc">Utility struct defining a function used by the std::set inside of ModbusDevice to sort the mappings b...</div><div class="ttdef"><b>Definition:</b> ModbusDevice.h:30</div></div>
-<div class="ttc" id="aclasswolkabout_1_1ModbusDevice_html_a1c27dcde76f66dcccf450714443f1850"><div class="ttname"><a href="classwolkabout_1_1ModbusDevice.html#a1c27dcde76f66dcccf450714443f1850">wolkabout::ModbusDevice::setOnMappingValueChange</a></div><div class="ttdeci">void setOnMappingValueChange(const std::function&lt; void(const std::shared_ptr&lt; RegisterMapping &gt; &amp;)&gt; &amp;onMappingValueChange)</div><div class="ttdoc">Event that will trigger when one of the devices mappings value changes.</div><div class="ttdef"><b>Definition:</b> ModbusDevice.cpp:90</div></div>
+<div class="ttc" id="aclasswolkabout_1_1ModbusDevice_html_a1c27dcde76f66dcccf450714443f1850"><div class="ttname"><a href="classwolkabout_1_1ModbusDevice.html#a1c27dcde76f66dcccf450714443f1850">wolkabout::ModbusDevice::setOnMappingValueChange</a></div><div class="ttdeci">void setOnMappingValueChange(const std::function&lt; void(const std::shared_ptr&lt; RegisterMapping &gt; &amp;)&gt; &amp;onMappingValueChange)</div><div class="ttdoc">Event that will trigger when one of the devices mappings value changes.</div><div class="ttdef"><b>Definition:</b> ModbusDevice.cpp:95</div></div>
 <div class="ttc" id="aclasswolkabout_1_1ModbusDevice_html"><div class="ttname"><a href="classwolkabout_1_1ModbusDevice.html">wolkabout::ModbusDevice</a></div><div class="ttdoc">Collection of ModbusGroups for a single Modbus server/slave.</div><div class="ttdef"><b>Definition:</b> ModbusDevice.h:59</div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><b>ModbusDevice.h</b></li>
 				<li class="footer">
-					Generated on Wed Apr 8 2020 15:04:35 for MoreModbus by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Apr 9 2020 09:56:35 for MoreModbus by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.18.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.
 				</li>

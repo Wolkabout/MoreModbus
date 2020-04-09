@@ -25,6 +25,14 @@
 
 namespace wolkabout
 {
+class ModbusDevice;
+
+/**
+ * @brief Structure containing various utility data/methods for RegisterGroup class.
+ * @details Contains the helper methods for capturing address and bitIndex from the claims string.
+ *          Also, the SEPARATOR being used for creating such strings, and the sort method as operator()
+ *          used by the set for mappings.
+ */
 struct GroupUtility {
     const static char SEPARATOR;
 

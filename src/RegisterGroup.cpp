@@ -48,7 +48,8 @@ RegisterGroup::RegisterGroup(const RegisterGroup& instance)
 , m_readRestricted(instance.isReadRestricted())
 , m_mappings()
 {
-    for (const auto& mapping : instance.getMappingsMap())
+    const auto mappingMap = instance.getMappingsMap();
+    for (const auto& mapping : mappingMap)
     {
         m_mappings.emplace(std::string(mapping.first), std::make_shared<RegisterMapping>(*(mapping.second)));
     }
