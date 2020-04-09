@@ -22,9 +22,12 @@
 
 namespace wolkabout
 {
-ModbusDevice::ModbusDevice(const std::string& name, int8_t slaveAddress,
-                           const std::vector<std::shared_ptr<RegisterMapping>>& mappings)
+ModbusDevice::ModbusDevice(const std::string& name, int8_t slaveAddress)
 : m_name(name), m_slaveAddress(slaveAddress), m_groups()
+{
+}
+
+void ModbusDevice::createGroups(const std::vector<std::shared_ptr<RegisterMapping>>& mappings)
 {
     std::map<RegisterMapping::RegisterType, std::shared_ptr<RegisterGroup>> readRestrictedGroups;
     std::set<std::shared_ptr<RegisterMapping>, CompareFunction> set(mappings.begin(), mappings.end());
@@ -37,7 +40,8 @@ ModbusDevice::ModbusDevice(const std::string& name, int8_t slaveAddress,
             // Add the mapping to the readRestricted group for specific type.
             if (readRestrictedGroups[mapping->getRegisterType()] == nullptr)
             {
-                readRestrictedGroups[mapping->getRegisterType()] = std::make_shared<RegisterGroup>(mapping);
+                readRestrictedGroups[mapping->getRegisterType()] =
+                  std::make_shared<RegisterGroup>(mapping, shared_from_this());
                 m_groups.insert(m_groups.end(), readRestrictedGroups[mapping->getRegisterType()]);
             }
             else
@@ -49,8 +53,8 @@ ModbusDevice::ModbusDevice(const std::string& name, int8_t slaveAddress,
         {
             if (previousGroup == nullptr)
             {
-                previousGroup = std::make_shared<RegisterGroup>(mapping);
-                previousGroup->setSlaveAddress(slaveAddress);
+                previousGroup = std::make_shared<RegisterGroup>(mapping, shared_from_this());
+                previousGroup->setSlaveAddress(m_slaveAddress);
                 m_groups.insert(m_groups.end(), previousGroup);
                 continue;
             }
@@ -63,8 +67,8 @@ ModbusDevice::ModbusDevice(const std::string& name, int8_t slaveAddress,
                 }
             }
 
-            previousGroup = std::make_shared<RegisterGroup>(mapping);
-            previousGroup->setSlaveAddress(slaveAddress);
+            previousGroup = std::make_shared<RegisterGroup>(mapping, shared_from_this());
+            previousGroup->setSlaveAddress(m_slaveAddress);
             m_groups.insert(m_groups.end(), previousGroup);
         }
     }

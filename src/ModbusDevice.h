@@ -27,8 +27,10 @@ namespace wolkabout
  * @brief Utility struct defining a function used by the std::set inside of ModbusDevice to sort the mappings before
  *        an attempt at forming ModbusGroup instances for such device.
  */
-struct CompareFunction {
-    bool operator() (const std::shared_ptr<RegisterMapping>& left, const std::shared_ptr<RegisterMapping>& right) {
+struct CompareFunction
+{
+    bool operator()(const std::shared_ptr<RegisterMapping>& left, const std::shared_ptr<RegisterMapping>& right)
+    {
         const auto typeDiff = (int)right->getRegisterType() - (int)left->getRegisterType();
         if (typeDiff != 0)
             return typeDiff > 0;
@@ -55,17 +57,21 @@ struct CompareFunction {
  *          The groups will be created by the device, and all the slaveAddresses will be set when the
  *           device is created.
  */
-class ModbusDevice
+class ModbusDevice : public std::enable_shared_from_this<ModbusDevice>
 {
 public:
     /**
      * @brief Default constructor for the device
      * @param name unique as identification
      * @param slaveAddress unique to device, and is going to set all groups to this slaveAddress
-     * @param mappings all the mappings that device will have
      */
-    ModbusDevice(const std::string& name, int8_t slaveAddress,
-                 const std::vector<std::shared_ptr<RegisterMapping>>& mappings);
+    ModbusDevice(const std::string& name, int8_t slaveAddress);
+
+    /**
+     * @brief Create all the RegisterGroup that this device will have by providing all mappings.
+     * @param mappings container of all mappings the user wishes this device has.
+     */
+    void createGroups(const std::vector<std::shared_ptr<RegisterMapping>>& mappings);
 
     const std::string& getName() const;
 
@@ -86,8 +92,7 @@ public:
      * @brief Event that will trigger when the devices status changes.
      * @param onStatusChange the callback function for callback, executed on the devices reading thread.
      */
-    void setOnStatusChange(
-            const std::function<void(bool)>& onStatusChange);
+    void setOnStatusChange(const std::function<void(bool)>& onStatusChange);
 
     void triggerOnMappingValueChange(const std::shared_ptr<RegisterMapping>& mapping);
 

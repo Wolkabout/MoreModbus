@@ -3,6 +3,9 @@ var hierarchy =
     [ "wolkabout::CompareFunction", "structwolkabout_1_1CompareFunction.html", null ],
     [ "wolkabout::DataParsers", "classwolkabout_1_1DataParsers.html", null ],
     [ "wolkabout::Deserializers", "classwolkabout_1_1Deserializers.html", null ],
+    [ "enable_shared_from_this", null, [
+      [ "wolkabout::ModbusDevice", "classwolkabout_1_1ModbusDevice.html", null ]
+    ] ],
     [ "wolkabout::GroupUtility", "structwolkabout_1_1GroupUtility.html", null ],
     [ "wolkabout::Log", "classwolkabout_1_1Log.html", null ],
     [ "wolkabout::Logger", "classwolkabout_1_1Logger.html", [
@@ -12,7 +15,6 @@ var hierarchy =
       [ "wolkabout::LibModbusSerialRtuClient", "classwolkabout_1_1LibModbusSerialRtuClient.html", null ],
       [ "wolkabout::LibModbusTcpIpClient", "classwolkabout_1_1LibModbusTcpIpClient.html", null ]
     ] ],
-    [ "wolkabout::ModbusDevice", "classwolkabout_1_1ModbusDevice.html", null ],
     [ "wolkabout::ModbusGroupReader", "classwolkabout_1_1ModbusGroupReader.html", null ],
     [ "wolkabout::ModbusReader", "classwolkabout_1_1ModbusReader.html", null ],
     [ "wolkabout::RegisterGroup", "classwolkabout_1_1RegisterGroup.html", null ],

@@ -1,6 +1,7 @@
 var classwolkabout_1_1ModbusDevice =
 [
-    [ "ModbusDevice", "classwolkabout_1_1ModbusDevice.html#acc9e9995705b0e787f4ddc01c1475932", null ],
+    [ "ModbusDevice", "classwolkabout_1_1ModbusDevice.html#a06e88c4d8a2f1bdc6132e3965776258c", null ],
+    [ "createGroups", "classwolkabout_1_1ModbusDevice.html#a0a9621dddc2a91968e4189ef49552ba1", null ],
     [ "getGroups", "classwolkabout_1_1ModbusDevice.html#ac59f54b0bbe6f8175bc957ecaa047adb", null ],
     [ "getName", "classwolkabout_1_1ModbusDevice.html#a7bdc8b61fcbe7a401ca2fd6cb155ddbc", null ],
     [ "getSlaveAddress", "classwolkabout_1_1ModbusDevice.html#a963ef2f94d285f8254fb9ece5512f0d2", null ],

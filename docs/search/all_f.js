@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['_7elogger_87',['~Logger',['../classwolkabout_1_1Logger.html#a113fb5af86077af7259bb6079893c0da',1,'wolkabout::Logger']]]
+  ['_7elogger_89',['~Logger',['../classwolkabout_1_1Logger.html#a113fb5af86077af7259bb6079893c0da',1,'wolkabout::Logger']]]
 ];

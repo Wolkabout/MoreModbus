@@ -276,7 +276,7 @@ void ModbusReader::run()
                     for (const auto& device : m_devices)
                     {
                         m_threads[device.second->getSlaveAddress()] =
-                                std::unique_ptr<std::thread>(new std::thread(&ModbusReader::readDevice, this, device.second));
+                          std::unique_ptr<std::thread>(new std::thread(&ModbusReader::readDevice, this, device.second));
                         m_deviceActiveStatus[device.second->getSlaveAddress()] = true;
                     }
                     threadsRunning = true;
@@ -357,7 +357,7 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
             }
 
             auto duration =
-                    std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start);
+              std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start);
 
             if (duration.count() >= m_readPeriod.count())
             {

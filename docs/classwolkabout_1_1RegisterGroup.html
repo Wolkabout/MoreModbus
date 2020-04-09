@@ -97,11 +97,12 @@ $(document).ready(function(){initNavTree('classwolkabout_1_1RegisterGroup.html',
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a331e6503d7543d962494b2f30b58b977"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1RegisterGroup.html#a331e6503d7543d962494b2f30b58b977">RegisterGroup</a> (const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &gt; &amp;mapping)</td></tr>
-<tr class="memdesc:a331e6503d7543d962494b2f30b58b977"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for the Group.  <a href="classwolkabout_1_1RegisterGroup.html#a331e6503d7543d962494b2f30b58b977">More...</a><br /></td></tr>
-<tr class="separator:a331e6503d7543d962494b2f30b58b977"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af68e271083e3a4e2fce5194192d937eb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1RegisterGroup.html#af68e271083e3a4e2fce5194192d937eb">RegisterGroup</a> (const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &gt; &amp;mapping, const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1ModbusDevice.html">ModbusDevice</a> &gt; &amp;device)</td></tr>
+<tr class="memdesc:af68e271083e3a4e2fce5194192d937eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for the Group.  <a href="classwolkabout_1_1RegisterGroup.html#af68e271083e3a4e2fce5194192d937eb">More...</a><br /></td></tr>
+<tr class="separator:af68e271083e3a4e2fce5194192d937eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d956c1e4d956bc2d636533115d4a9f7"><td class="memItemLeft" align="right" valign="top"><a id="a1d956c1e4d956bc2d636533115d4a9f7"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>RegisterGroup</b> (const <a class="el" href="classwolkabout_1_1RegisterGroup.html">RegisterGroup</a> &amp;instance)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1RegisterGroup.html#a1d956c1e4d956bc2d636533115d4a9f7">RegisterGroup</a> (const <a class="el" href="classwolkabout_1_1RegisterGroup.html">RegisterGroup</a> &amp;instance)</td></tr>
+<tr class="memdesc:a1d956c1e4d956bc2d636533115d4a9f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overridden copy constructor that does deep copy of <a class="el" href="classwolkabout_1_1RegisterMapping.html" title="Indicates a logical unit, resulting in one value, involving one/multiple/part of Modbus register(s).">RegisterMapping</a> instances it owns. <br /></td></tr>
 <tr class="separator:a1d956c1e4d956bc2d636533115d4a9f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4ecd90e7486b4f306c92c64d895dc0d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1RegisterGroup.html#ad4ecd90e7486b4f306c92c64d895dc0d">addMapping</a> (const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &gt; &amp;mapping)</td></tr>
 <tr class="memdesc:ad4ecd90e7486b4f306c92c64d895dc0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a mapping to the group. @detail Add a mapping, see if it's address and register count can be added into the group see if it can stay in continuity.  <a href="classwolkabout_1_1RegisterGroup.html#ad4ecd90e7486b4f306c92c64d895dc0d">More...</a><br /></td></tr>
@@ -109,6 +110,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a074a695079cd80356a6049244abd87c9"><td class="memItemLeft" align="right" valign="top"><a id="a074a695079cd80356a6049244abd87c9"></a>
 <a class="el" href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">RegisterMapping::RegisterType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getRegisterType</b> () const</td></tr>
 <tr class="separator:a074a695079cd80356a6049244abd87c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7509adc35a79cac5aa67492b1e570327"><td class="memItemLeft" align="right" valign="top">const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1ModbusDevice.html">ModbusDevice</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1RegisterGroup.html#a7509adc35a79cac5aa67492b1e570327">getDevice</a> () const</td></tr>
+<tr class="memdesc:a7509adc35a79cac5aa67492b1e570327"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal getter for the device that owns this groups.  <a href="classwolkabout_1_1RegisterGroup.html#a7509adc35a79cac5aa67492b1e570327">More...</a><br /></td></tr>
+<tr class="separator:a7509adc35a79cac5aa67492b1e570327"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d50a1daeb58fe5963778ad3c6cc6c3f"><td class="memItemLeft" align="right" valign="top"><a id="a2d50a1daeb58fe5963778ad3c6cc6c3f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setDevice</b> (const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1ModbusDevice.html">ModbusDevice</a> &gt; &amp;device)</td></tr>
+<tr class="separator:a2d50a1daeb58fe5963778ad3c6cc6c3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a253a5d7f76ad9815ab3e716bf09bd669"><td class="memItemLeft" align="right" valign="top"><a id="a253a5d7f76ad9815ab3e716bf09bd669"></a>
 uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>getStartingAddress</b> () const</td></tr>
 <tr class="separator:a253a5d7f76ad9815ab3e716bf09bd669"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,28 +142,30 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isReadRestricted</b> 
 <div class="textblock"><p>Group serves to merge multiple mappings that can be read with a single Modbus command. </p>
 <p>It groups Mappings of same type, that can be found next to each other. When values are read, they're assigned to each Mapping as necessary. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a331e6503d7543d962494b2f30b58b977"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a331e6503d7543d962494b2f30b58b977">&#9670;&nbsp;</a></span>RegisterGroup()</h2>
+<a id="af68e271083e3a4e2fce5194192d937eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af68e271083e3a4e2fce5194192d937eb">&#9670;&nbsp;</a></span>RegisterGroup()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">wolkabout::RegisterGroup::RegisterGroup </td>
           <td>(</td>
           <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>mapping</em></td><td>)</td>
+          <td class="paramname"><em>mapping</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1ModbusDevice.html">ModbusDevice</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>device</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Default constructor for the Group. </p>
@@ -194,6 +203,26 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isReadRestricted</b> 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>whether or not the adding is successful </dd></dl>
+
+</div>
+</div>
+<a id="a7509adc35a79cac5aa67492b1e570327"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7509adc35a79cac5aa67492b1e570327">&#9670;&nbsp;</a></span>getDevice()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1ModbusDevice.html">ModbusDevice</a> &gt; &amp; wolkabout::RegisterGroup::getDevice </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Internal getter for the device that owns this groups. </p>
+<dl class="section return"><dt>Returns</dt><dd>shared pointer to that device </dd></dl>
 
 </div>
 </div>
@@ -262,7 +291,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isReadRestricted</b> 
 			<ul>
 				<li class="navelem"><b>wolkabout</b></li><li class="navelem"><a class="el" href="classwolkabout_1_1RegisterGroup.html">RegisterGroup</a></li>
 				<li class="footer">
-					Generated on Thu Apr 9 2020 09:56:35 for MoreModbus by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Apr 9 2020 11:00:06 for MoreModbus by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.18.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.
 				</li>

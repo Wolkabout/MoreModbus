@@ -33,7 +33,8 @@ class ModbusDevice;
  *          Also, the SEPARATOR being used for creating such strings, and the sort method as operator()
  *          used by the set for mappings.
  */
-struct GroupUtility {
+struct GroupUtility
+{
     const static char SEPARATOR;
 
     /**
@@ -55,8 +56,9 @@ struct GroupUtility {
     /**
      * @brief Main function that serves a purpose of sorting the elements in the set created by the group.
      */
-    bool operator() (const std::pair<std::string, std::shared_ptr<RegisterMapping>>& left,
-                     const std::pair<std::string, std::shared_ptr<RegisterMapping>>& right) {
+    bool operator()(const std::pair<std::string, std::shared_ptr<RegisterMapping>>& left,
+                    const std::pair<std::string, std::shared_ptr<RegisterMapping>>& right)
+    {
         const auto addressComp = getAddressFromString(right.first) - getAddressFromString(left.first);
         if (addressComp != 0)
             return addressComp > 0;
@@ -75,17 +77,15 @@ typedef std::set<std::pair<std::string, std::shared_ptr<RegisterMapping>>, Group
 class RegisterGroup
 {
 public:
-
     /**
      * @brief Default constructor for the Group
      * @param mapping that will be added to the group, their RegisterType will be taken.
      */
-    explicit RegisterGroup(const std::shared_ptr<RegisterMapping>& mapping);
+    RegisterGroup(const std::shared_ptr<RegisterMapping>& mapping, const std::shared_ptr<ModbusDevice>& device);
 
-    // Overriden default copy constructor to ensure deep copy of objects which we own
-    // shared pointers to. This is done because for every group, we want to have
-    // copies of mappings, since they're the ones tracking values and their changes
-    // for each separate register on each separate slave address.
+    /**
+     * @brief Overridden copy constructor that does deep copy of RegisterMapping instances it owns
+     */
     RegisterGroup(const RegisterGroup& instance);
 
     /**
@@ -98,6 +98,14 @@ public:
     bool addMapping(const std::shared_ptr<RegisterMapping>& mapping);
 
     RegisterMapping::RegisterType getRegisterType() const;
+
+    /**
+     * @brief Internal getter for the device that owns this groups
+     * @return shared pointer to that device
+     */
+    const std::shared_ptr<ModbusDevice>& getDevice() const;
+
+    void setDevice(const std::shared_ptr<ModbusDevice>& device);
 
     uint16_t getStartingAddress() const;
 
@@ -134,6 +142,8 @@ private:
     RegisterMapping::RegisterType m_registerType;
     int8_t m_slaveAddress;
     bool m_readRestricted;
+
+    std::shared_ptr<ModbusDevice> m_device;
 
     MappingsMap m_mappings;
 };
