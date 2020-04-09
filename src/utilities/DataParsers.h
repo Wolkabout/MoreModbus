@@ -80,7 +80,7 @@ public:
      * @brief Convert passed 32-bit Float value, where we separate it to two 16-bit uint16_t,
      *        order dictated by the endian mode passed as argument.
      * @param value Float value to be parsed
-     * @return vector containing two uint16_t values, created by a union
+     * @return vector containing two uint16_t values, separated bits
      */
     static std::vector<uint16_t> floatToRegisters(float value);
 
@@ -119,7 +119,7 @@ public:
     /**
      * @brief Parse inputted uint16_t values, to a 32 bit Float.
      * @param value vector of uint16_t values, most often acquired by reading with modbus client.
-     * @return parsed, union 32 bit Float
+     * @return parsed 32 bit Float
      */
     static float registersToFloat(const std::vector<uint16_t>& value);
 
