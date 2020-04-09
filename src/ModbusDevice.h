@@ -23,6 +23,8 @@
 
 namespace wolkabout
 {
+class ModbusReader;
+
 /**
  * @brief Utility struct defining a function used by the std::set inside of ModbusDevice to sort the mappings before
  *        an attempt at forming ModbusGroup instances for such device.
@@ -77,6 +79,10 @@ public:
 
     bool getStatus() const;
 
+    const std::shared_ptr<ModbusReader>& getReader() const;
+
+    void setReader(const std::shared_ptr<ModbusReader>& reader);
+
     int8_t getSlaveAddress() const;
 
     const std::vector<std::shared_ptr<RegisterGroup>>& getGroups() const;
@@ -103,6 +109,8 @@ private:
     bool m_status;
     int8_t m_slaveAddress;
     std::vector<std::shared_ptr<RegisterGroup>> m_groups;
+
+    std::shared_ptr<ModbusReader> m_reader;
 
     std::function<void(const std::shared_ptr<RegisterMapping>&)> m_onMappingValueChange;
     std::function<void(bool)> m_onStatusChange;

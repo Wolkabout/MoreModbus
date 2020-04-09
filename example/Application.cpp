@@ -28,7 +28,7 @@ int main()
 {
     // Setup logger
     auto logger = std::unique_ptr<wolkabout::ConsoleLogger>(new wolkabout::ConsoleLogger());
-    logger->setLogLevel(wolkabout::LogLevel::TRACE);
+    logger->setLogLevel(wolkabout::LogLevel::DEBUG);
     wolkabout::Logger::setInstance(std::move(logger));
 
     // Create a regular Register Mapping
@@ -94,7 +94,9 @@ int main()
       std::make_shared<wolkabout::LibModbusTcpIpClient>("192.168.0.20", 502, std::chrono::milliseconds(500));
 
     const auto& reader = std::make_shared<wolkabout::ModbusReader>(
-      *modbusClient, std::vector<std::shared_ptr<wolkabout::ModbusDevice>>{device}, std::chrono::milliseconds(1000));
+      *modbusClient, std::chrono::milliseconds(1000));
+
+    reader->addDevice(device);
 
     reader->start();
 

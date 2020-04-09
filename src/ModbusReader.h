@@ -32,28 +32,31 @@ namespace wolkabout
  *          of course, each and every on their separate threads. Where the connection
  *          gets split between them all, and data parsing for mappings is execute on their own
  *          thread. And also, the on value change for mappings event is invoked.
- *
- *          This class is also a singleton.
  */
-class ModbusReader
+class ModbusReader : public std::enable_shared_from_this<ModbusReader>
 {
 public:
-    /**
-     * @brief Get the instance of the class.
-     * @return Raw pointer to the instance.
-     */
-    static ModbusReader* getInstance();
 
     /**
      * @brief Main constructor for the reader, that prepares all the necessary data for reading.
      * @param modbusClient one of implementations of the abstract class
-     * @param devices list of all devices that will be read, with their slaveAddresses already set
      * @param readPeriod time period for cycling reads
      */
-    ModbusReader(ModbusClient& modbusClient, const std::vector<std::shared_ptr<ModbusDevice>>& devices,
-                 const std::chrono::milliseconds& readPeriod);
+    ModbusReader(ModbusClient& modbusClient, const std::chrono::milliseconds& readPeriod);
 
     virtual ~ModbusReader();
+
+    /**
+     * @brief Method that adds a single device for the reader to read.
+     * @param device shared pointer to the device
+     */
+    void addDevice(const std::shared_ptr<ModbusDevice>& device);
+
+    /**
+     * @brief Methods that adds multiple devices for the reader to read.
+     * @param devices vector containing all shared pointers for devices
+     */
+    void addDevices(const std::vector<std::shared_ptr<ModbusDevice>>& devices);
 
     /**
      * @brief Force the reader to write to a mapping (uint16_t values)
@@ -102,9 +105,6 @@ public:
     void stop();
 
 private:
-    // Singleton
-    static ModbusReader* INSTANCE;
-
     // Main thread, handles initializing reading of devices, their status, and the modbus connection.
     void run();
 

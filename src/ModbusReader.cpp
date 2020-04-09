@@ -23,36 +23,32 @@
 
 namespace wolkabout
 {
-ModbusReader* ModbusReader::INSTANCE = nullptr;
-
-ModbusReader::ModbusReader(ModbusClient& modbusClient, const std::vector<std::shared_ptr<ModbusDevice>>& devices,
-                           const std::chrono::milliseconds& readPeriod)
+ModbusReader::ModbusReader(ModbusClient& modbusClient, const std::chrono::milliseconds& readPeriod)
 : m_modbusClient(modbusClient), m_devices(), m_readerShouldRun(false), m_threads(), m_readPeriod(readPeriod)
 {
-    // Singleton logic
-    if (INSTANCE != nullptr)
-        delete this;
+}
 
-    INSTANCE = this;
+void ModbusReader::addDevice(const std::shared_ptr<ModbusDevice>& device)
+{
+    m_devices.emplace(device->getSlaveAddress(), device);
+    m_deviceActiveStatus.emplace(device->getSlaveAddress(), false);
+    m_threads.emplace(device->getSlaveAddress(), nullptr);
+    device->setReader(shared_from_this());
+    LOG(INFO) << "ModbusReader: Successfully added new device " << device->getName();
+}
 
-    LOG(INFO) << "ModbusReader: Initializing ModbusReader...";
-    // Initialize everything necessary for devices, assume they're at first offline,
-    // and don't have any running threads.
+void ModbusReader::addDevices(const std::vector<std::shared_ptr<ModbusDevice>> &devices)
+{
+    LOG(INFO) << "ModbusReader: Adding " << devices.size() << " devices.";
     for (const auto& device : devices)
     {
-        m_devices.emplace(device->getSlaveAddress(), device);
-        m_deviceActiveStatus.emplace(device->getSlaveAddress(), false);
-        m_threads.emplace(device->getSlaveAddress(), nullptr);
+        addDevice(device);
     }
-    LOG(INFO) << "ModbusReader: ModbusReader initialized. Created " << devices.size() << " device(s).";
+    LOG(INFO) << "ModbusReader: Successfully added " << devices.size() << " devices.";
 }
 
 ModbusReader::~ModbusReader()
 {
-    // Singleton logic
-    if (INSTANCE == this)
-        INSTANCE = nullptr;
-
     stop();
 }
 
@@ -378,10 +374,5 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
             std::this_thread::sleep_for(m_readPeriod);
         }
     }
-}
-
-ModbusReader* ModbusReader::getInstance()
-{
-    return INSTANCE;
 }
 }    // namespace wolkabout

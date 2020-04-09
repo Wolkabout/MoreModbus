@@ -43,10 +43,7 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
             LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '" << mapping.second->getReference()
                       << "' Value: '" << mapping.second->getBoolValue() << "'";
 
-            ModbusReader::getInstance()
-              ->getDevices()
-              .at(mapping.second->getSlaveAddress())
-              ->triggerOnMappingValueChange(mapping.second);
+            group.getDevice()->triggerOnMappingValueChange(mapping.second);
         }
     }
 }
@@ -120,9 +117,7 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
                     LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '"
                               << bitMapping.second->getReference() << "' Value: '" << bitValue << "'";
 
-                    ModbusReader::getInstance()
-                      ->getDevices()
-                      .at(mapping.second->getSlaveAddress())
+                    group.getDevice()
                       ->triggerOnMappingValueChange(bitMapping.second);
                 }
                 ++shift;
@@ -148,9 +143,7 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
                 LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '" << mapping.second->getReference()
                           << "' Values: " << loggingString;
 
-                ModbusReader::getInstance()
-                  ->getDevices()
-                  .at(mapping.second->getSlaveAddress())
+                group.getDevice()
                   ->triggerOnMappingValueChange(mapping.second);
             }
         }
