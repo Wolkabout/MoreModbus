@@ -67,12 +67,12 @@ std::vector<uint16_t> DataParsers::uint32ToRegisters(uint32_t value, DataParsers
 
 std::vector<uint16_t> DataParsers::floatToRegisters(float value)
 {
-    union {
-        float floatValue;
-        uint16_t registerValues[2];
-    } converter{};
-    converter.floatValue = value;
-    return std::vector<uint16_t>{converter.registerValues[0], converter.registerValues[1]};
+    std::bitset<32> bits(*reinterpret_cast<unsigned long*>(&value));
+    std::bitset<32> good(65535);
+    std::bitset<16> secondBits((bits & good).to_ulong());
+    std::bitset<16> firstBits((bits >> 16 & good).to_ulong());
+    return std::vector<uint16_t>{static_cast<uint16_t>(firstBits.to_ulong()),
+                                 static_cast<uint16_t>(secondBits.to_ulong())};
 }
 
 std::string DataParsers::registersToAsciiString(const std::vector<uint16_t>& value)
@@ -121,13 +121,13 @@ float DataParsers::registersToFloat(const std::vector<uint16_t>& value)
     if (value.size() != 2)
         throw std::logic_error("DataParsers: You must pass exactly 2 values to parse into an Float.");
 
-    union {
-        float floatValue;
-        uint16_t registerValues[2];
-    } converter{};
-    converter.registerValues[0] = value[0];
-    converter.registerValues[1] = value[1];
-    return converter.floatValue;
+    std::bitset<32> newBits(0);
+    newBits = newBits | std::bitset<32>(value[0]);
+    newBits <<= 16;
+    newBits = newBits | std::bitset<32>(value[1]);
+
+    auto newValue = newBits.to_ullong();
+    return *reinterpret_cast<float*>(&newValue);
 }
 
 int16_t DataParsers::uint16ToInt16(uint16_t value)
