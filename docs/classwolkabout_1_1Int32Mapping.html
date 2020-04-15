@@ -131,6 +131,12 @@ int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memitem:a36a2e1ba874f0469dfacbdb7085d9ee8 inherit pub_methods_classwolkabout_1_1RegisterMapping"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1RegisterMapping.html#a36a2e1ba874f0469dfacbdb7085d9ee8">RegisterMapping</a> (const std::string &amp;reference, <a class="el" href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">RegisterType</a> registerType, const std::vector&lt; int16_t &gt; &amp;addresses, <a class="el" href="classwolkabout_1_1RegisterMapping.html#a76f3406a074a12d556f11f0ad807b1a6">OutputType</a> type, <a class="el" href="classwolkabout_1_1RegisterMapping.html#a81dd6e22d9038c8c4a96be2144fb19fe">OperationType</a> operation, bool readRestricted=false, int8_t slaveAddress=-1)</td></tr>
 <tr class="memdesc:a36a2e1ba874f0469dfacbdb7085d9ee8 inherit pub_methods_classwolkabout_1_1RegisterMapping"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for cases where there is multiple registers merged into a single output value.  <a href="classwolkabout_1_1RegisterMapping.html#a36a2e1ba874f0469dfacbdb7085d9ee8">More...</a><br /></td></tr>
 <tr class="separator:a36a2e1ba874f0469dfacbdb7085d9ee8 inherit pub_methods_classwolkabout_1_1RegisterMapping"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50fe37f64a36f90bf11ef9a6ff059229 inherit pub_methods_classwolkabout_1_1RegisterMapping"><td class="memItemLeft" align="right" valign="top"><a id="a50fe37f64a36f90bf11ef9a6ff059229"></a>
+const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1RegisterGroup.html">RegisterGroup</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getGroup</b> () const</td></tr>
+<tr class="separator:a50fe37f64a36f90bf11ef9a6ff059229 inherit pub_methods_classwolkabout_1_1RegisterMapping"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa89fa8ce645a374e7582375ea2cd25f3 inherit pub_methods_classwolkabout_1_1RegisterMapping"><td class="memItemLeft" align="right" valign="top"><a id="aa89fa8ce645a374e7582375ea2cd25f3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setGroup</b> (const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1RegisterGroup.html">RegisterGroup</a> &gt; &amp;group)</td></tr>
+<tr class="separator:aa89fa8ce645a374e7582375ea2cd25f3 inherit pub_methods_classwolkabout_1_1RegisterMapping"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a033088e78cf461a825dda0e0df0ed601 inherit pub_methods_classwolkabout_1_1RegisterMapping"><td class="memItemLeft" align="right" valign="top"><a id="a033088e78cf461a825dda0e0df0ed601"></a>
 const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getReference</b> () const</td></tr>
 <tr class="separator:a033088e78cf461a825dda0e0df0ed601 inherit pub_methods_classwolkabout_1_1RegisterMapping"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -228,6 +234,9 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>m_reference</b
 <tr class="memitem:a313f86c764e23d42d99d7d40dadb793b inherit pro_attribs_classwolkabout_1_1RegisterMapping"><td class="memItemLeft" align="right" valign="top"><a id="a313f86c764e23d42d99d7d40dadb793b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_readRestricted</b></td></tr>
 <tr class="separator:a313f86c764e23d42d99d7d40dadb793b inherit pro_attribs_classwolkabout_1_1RegisterMapping"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08b34401abb9ad78a406f3743f18c3a8 inherit pro_attribs_classwolkabout_1_1RegisterMapping"><td class="memItemLeft" align="right" valign="top"><a id="a08b34401abb9ad78a406f3743f18c3a8"></a>
+std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1RegisterGroup.html">RegisterGroup</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_group</b></td></tr>
+<tr class="separator:a08b34401abb9ad78a406f3743f18c3a8 inherit pro_attribs_classwolkabout_1_1RegisterMapping"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98225e866096543ede656e6b58a34179 inherit pro_attribs_classwolkabout_1_1RegisterMapping"><td class="memItemLeft" align="right" valign="top"><a id="a98225e866096543ede656e6b58a34179"></a>
 <a class="el" href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">RegisterType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_registerType</b></td></tr>
 <tr class="separator:a98225e866096543ede656e6b58a34179 inherit pro_attribs_classwolkabout_1_1RegisterMapping"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -399,7 +408,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_isValid</b> = false
 			<ul>
 				<li class="navelem"><b>wolkabout</b></li><li class="navelem"><a class="el" href="classwolkabout_1_1Int32Mapping.html">Int32Mapping</a></li>
 				<li class="footer">
-					Generated on Thu Apr 2 2020 15:41:49 for MoreModbus by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Apr 9 2020 13:59:04 for MoreModbus by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.18.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.
 				</li>

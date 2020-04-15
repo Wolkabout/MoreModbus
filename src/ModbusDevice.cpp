@@ -22,13 +22,15 @@
 
 namespace wolkabout
 {
-ModbusDevice::ModbusDevice(const std::string& name, int8_t slaveAddress,
-                           const std::vector<std::shared_ptr<RegisterMapping>>& mappings)
-: m_name(name), m_slaveAddress(slaveAddress), m_groups()
+ModbusDevice::ModbusDevice(const std::string& name, int8_t slaveAddress)
+: m_name(name), m_status(false), m_slaveAddress(slaveAddress), m_groups()
+{
+}
+
+void ModbusDevice::createGroups(const std::vector<std::shared_ptr<RegisterMapping>>& mappings)
 {
     std::map<RegisterMapping::RegisterType, std::shared_ptr<RegisterGroup>> readRestrictedGroups;
-    std::set<std::shared_ptr<RegisterMapping>, CompareFunction> set(mappings.begin(), mappings.end(),
-                                                                    &ModbusDevice::compareMappings);
+    std::set<std::shared_ptr<RegisterMapping>, CompareFunction> set(mappings.begin(), mappings.end());
 
     std::shared_ptr<RegisterGroup> previousGroup = nullptr;
     for (const auto& mapping : set)
@@ -38,21 +40,26 @@ ModbusDevice::ModbusDevice(const std::string& name, int8_t slaveAddress,
             // Add the mapping to the readRestricted group for specific type.
             if (readRestrictedGroups[mapping->getRegisterType()] == nullptr)
             {
-                readRestrictedGroups[mapping->getRegisterType()] = std::make_shared<RegisterGroup>(mapping);
-                m_groups.insert(m_groups.end(), readRestrictedGroups[mapping->getRegisterType()]);
+                const auto newGroup = std::make_shared<RegisterGroup>(mapping, shared_from_this());
+                readRestrictedGroups[mapping->getRegisterType()] = newGroup;
+                m_groups.insert(m_groups.end(), newGroup);
+                mapping->setGroup(newGroup);
             }
             else
             {
-                readRestrictedGroups[mapping->getRegisterType()]->addMapping(mapping);
+                const auto group = readRestrictedGroups[mapping->getRegisterType()];
+                group->addMapping(mapping);
+                mapping->setGroup(group);
             }
         }
         else
         {
             if (previousGroup == nullptr)
             {
-                previousGroup = std::make_shared<RegisterGroup>(mapping);
-                previousGroup->setSlaveAddress(slaveAddress);
+                previousGroup = std::make_shared<RegisterGroup>(mapping, shared_from_this());
+                previousGroup->setSlaveAddress(m_slaveAddress);
                 m_groups.insert(m_groups.end(), previousGroup);
+                mapping->setGroup(previousGroup);
                 continue;
             }
 
@@ -60,13 +67,15 @@ ModbusDevice::ModbusDevice(const std::string& name, int8_t slaveAddress,
             {
                 if (previousGroup->addMapping(mapping))
                 {
+                    mapping->setGroup(previousGroup);
                     continue;
                 }
             }
 
-            previousGroup = std::make_shared<RegisterGroup>(mapping);
-            previousGroup->setSlaveAddress(slaveAddress);
+            previousGroup = std::make_shared<RegisterGroup>(mapping, shared_from_this());
+            previousGroup->setSlaveAddress(m_slaveAddress);
             m_groups.insert(m_groups.end(), previousGroup);
+            mapping->setGroup(previousGroup);
         }
     }
 
@@ -76,6 +85,11 @@ ModbusDevice::ModbusDevice(const std::string& name, int8_t slaveAddress,
 const std::string& ModbusDevice::getName() const
 {
     return m_name;
+}
+
+bool ModbusDevice::getStatus() const
+{
+    return m_status;
 }
 
 int8_t ModbusDevice::getSlaveAddress() const
@@ -94,31 +108,32 @@ void ModbusDevice::setOnMappingValueChange(
     m_onMappingValueChange = onMappingValueChange;
 }
 
+void ModbusDevice::setOnStatusChange(const std::function<void(bool)>& onStatusChange)
+{
+    m_onStatusChange = onStatusChange;
+}
+
 void ModbusDevice::triggerOnMappingValueChange(const std::shared_ptr<RegisterMapping>& mapping)
 {
     if (m_onMappingValueChange != nullptr)
         m_onMappingValueChange(mapping);
 }
 
-bool ModbusDevice::compareMappings(const std::shared_ptr<RegisterMapping>& left,
-                                   const std::shared_ptr<RegisterMapping>& right)
+void ModbusDevice::triggerOnStatusChange(bool status)
 {
-    const auto typeDiff = (int)right->getRegisterType() - (int)left->getRegisterType();
-    if (typeDiff != 0)
-        return typeDiff > 0;
+    if (m_onStatusChange != nullptr && m_status != status)
+        m_onStatusChange(status);
 
-    const auto startDiff = right->getStartingAddress() - left->getStartingAddress();
-    if (startDiff != 0)
-        return startDiff > 0;
+    m_status = status;
+}
 
-    const auto lengthDiff = right->getRegisterCount() - left->getRegisterCount();
-    if (lengthDiff != 0)
-        return lengthDiff > 0;
+const std::shared_ptr<ModbusReader>& ModbusDevice::getReader() const
+{
+    return m_reader;
+}
 
-    const auto outputDiff = (int)right->getOutputType() - (int)left->getOutputType();
-    if (outputDiff != 0)
-        return outputDiff > 0;
-
-    return left->getBitIndex() < right->getBitIndex();
+void ModbusDevice::setReader(const std::shared_ptr<ModbusReader>& reader)
+{
+    m_reader = reader;
 }
 }    // namespace wolkabout

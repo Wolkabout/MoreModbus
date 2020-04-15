@@ -18,11 +18,14 @@
 #define WOLKABOUT_MODBUS_REGISTERMAPPING_H
 
 #include <cstdint>
+#include <memory>
 #include <string>
 #include <vector>
 
 namespace wolkabout
 {
+class RegisterGroup;
+
 /**
  * @brief Indicates a logical unit, resulting in one value, involving one/multiple/part of Modbus register(s).
  * @details As definition, it takes in the RegisterType and other parameters, in which there is an OutputType,
@@ -130,6 +133,10 @@ public:
 
     virtual ~RegisterMapping() = default;
 
+    const std::shared_ptr<RegisterGroup>& getGroup() const;
+
+    void setGroup(const std::shared_ptr<RegisterGroup>& group);
+
     const std::string& getReference() const;
 
     bool isReadRestricted() const;
@@ -191,6 +198,7 @@ protected:
     // General mapping data
     std::string m_reference;
     bool m_readRestricted;
+    std::shared_ptr<RegisterGroup> m_group;
 
     // Modbus registers data
     RegisterType m_registerType;

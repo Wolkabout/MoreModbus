@@ -21,17 +21,7 @@
 
 namespace wolkabout
 {
-const char RegisterGroup::SEPARATOR = '.';
-
-bool RegisterGroup::compareFunction(const std::pair<std::string, std::shared_ptr<RegisterMapping>>& left,
-                                    const std::pair<std::string, std::shared_ptr<RegisterMapping>>& right)
-{
-    const auto addressComp = getAddressFromString(right.first) - getAddressFromString(left.first);
-    if (addressComp != 0)
-        return addressComp > 0;
-
-    return getBitFromString(left.first) < getBitFromString(right.first);
-}
+const char GroupUtility::SEPARATOR = '.';
 
 bool RegisterGroup::keyExistsInSet(const std::string& key)
 {
@@ -43,24 +33,29 @@ bool RegisterGroup::keyExistsInSet(const std::string& key)
     return false;
 }
 
-RegisterGroup::RegisterGroup(const std::shared_ptr<RegisterMapping>& mapping)
+RegisterGroup::RegisterGroup(const std::shared_ptr<RegisterMapping>& mapping,
+                             const std::shared_ptr<ModbusDevice>& device)
 : m_registerType(mapping->getRegisterType())
 , m_slaveAddress(mapping->getSlaveAddress())
 , m_readRestricted(mapping->isReadRestricted())
-, m_mappings(&RegisterGroup::compareFunction)
+, m_device(device)
+, m_mappings()
 {
     addMapping(mapping);
 }
 
 RegisterGroup::RegisterGroup(const RegisterGroup& instance)
 : m_registerType(instance.getRegisterType())
-, m_slaveAddress(instance.getSlaveAddress())
+, m_slaveAddress(-1)
 , m_readRestricted(instance.isReadRestricted())
-, m_mappings(&RegisterGroup::compareFunction)
+, m_mappings()
 {
-    for (const auto& mapping : instance.getMappingsMap())
+    const auto mappingMap = instance.getMappingsMap();
+    for (const auto& mapping : mappingMap)
     {
-        m_mappings.emplace(std::string(mapping.first), std::make_shared<RegisterMapping>(*(mapping.second)));
+        const auto newMapping = std::make_shared<RegisterMapping>(*(mapping.second));
+        m_mappings.emplace(std::string(mapping.first), newMapping);
+        newMapping->setSlaveAddress(-1);
     }
 }
 
@@ -171,8 +166,8 @@ bool RegisterGroup::appendMapping(const std::shared_ptr<RegisterMapping>& mappin
 {
     if (mapping->getOperationType() == RegisterMapping::OperationType::TAKE_BIT)
     {
-        const auto key =
-          std::to_string(mapping->getStartingAddress()) + SEPARATOR + std::to_string(mapping->getBitIndex());
+        const auto key = std::to_string(mapping->getStartingAddress()) + GroupUtility::SEPARATOR +
+                         std::to_string(mapping->getBitIndex());
         if (keyExistsInSet(std::to_string(mapping->getStartingAddress())))
         {
             LOG(WARN) << "RegisterGroup: Mapping " << mapping->getReference() << "(" << mapping->getStartingAddress()
@@ -199,7 +194,7 @@ RegisterMapping::RegisterType RegisterGroup::getRegisterType() const
 
 uint16_t RegisterGroup::getStartingAddress() const
 {
-    return getAddressFromString(m_mappings.begin()->first);
+    return GroupUtility::getAddressFromString(m_mappings.begin()->first);
 }
 
 uint16_t RegisterGroup::getAddressCount() const
@@ -207,7 +202,7 @@ uint16_t RegisterGroup::getAddressCount() const
     std::vector<int16_t> mappings;
     for (const auto& pair : m_mappings)
     {
-        const auto address = getAddressFromString(pair.first);
+        const auto address = GroupUtility::getAddressFromString(pair.first);
         if (std::find(mappings.begin(), mappings.end(), address) == mappings.end())
         {
             mappings.emplace_back(address);
@@ -260,7 +255,17 @@ const MappingsMap& RegisterGroup::getMappings() const
     return m_mappings;
 }
 
-uint16_t RegisterGroup::getAddressFromString(const std::string& string)
+const std::shared_ptr<ModbusDevice>& RegisterGroup::getDevice() const
+{
+    return m_device;
+}
+
+void RegisterGroup::setDevice(const std::shared_ptr<ModbusDevice>& device)
+{
+    m_device = device;
+}
+
+uint16_t GroupUtility::getAddressFromString(const std::string& string)
 {
     auto firstAddressString = std::string(string);
     auto dotIndex = firstAddressString.find(SEPARATOR);
@@ -271,7 +276,7 @@ uint16_t RegisterGroup::getAddressFromString(const std::string& string)
     return static_cast<uint16_t>(std::stoul(firstAddressString));
 }
 
-int16_t RegisterGroup::getBitFromString(const std::string& string)
+int16_t GroupUtility::getBitFromString(const std::string& string)
 {
     auto firstAddressString = std::string(string);
     auto dotIndex = firstAddressString.find(SEPARATOR);

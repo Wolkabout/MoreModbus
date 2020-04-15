@@ -84,7 +84,6 @@ $(document).ready(function(){initNavTree('classwolkabout_1_1ModbusReader.html','
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classwolkabout_1_1ModbusReader-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">wolkabout::ModbusReader Class Reference</div>  </div>
@@ -95,12 +94,24 @@ $(document).ready(function(){initNavTree('classwolkabout_1_1ModbusReader.html','
  <a href="classwolkabout_1_1ModbusReader.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="ModbusReader_8h_source.html">ModbusReader.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for wolkabout::ModbusReader:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classwolkabout_1_1ModbusReader.png" alt=""/>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a24491a0753f6a62f84960e777adc5157"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusReader.html#a24491a0753f6a62f84960e777adc5157">ModbusReader</a> (<a class="el" href="classwolkabout_1_1ModbusClient.html">ModbusClient</a> &amp;modbusClient, const std::vector&lt; std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1ModbusDevice.html">ModbusDevice</a> &gt;&gt; &amp;devices, const std::chrono::milliseconds &amp;readPeriod)</td></tr>
-<tr class="memdesc:a24491a0753f6a62f84960e777adc5157"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main constructor for the reader, that prepares all the necessary data for reading.  <a href="classwolkabout_1_1ModbusReader.html#a24491a0753f6a62f84960e777adc5157">More...</a><br /></td></tr>
-<tr class="separator:a24491a0753f6a62f84960e777adc5157"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07c147aa0b0013bbc964524d4c52b55c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusReader.html#a07c147aa0b0013bbc964524d4c52b55c">ModbusReader</a> (<a class="el" href="classwolkabout_1_1ModbusClient.html">ModbusClient</a> &amp;modbusClient, const std::chrono::milliseconds &amp;readPeriod)</td></tr>
+<tr class="memdesc:a07c147aa0b0013bbc964524d4c52b55c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main constructor for the reader, that prepares all the necessary data for reading.  <a href="classwolkabout_1_1ModbusReader.html#a07c147aa0b0013bbc964524d4c52b55c">More...</a><br /></td></tr>
+<tr class="separator:a07c147aa0b0013bbc964524d4c52b55c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad6b6e5ef35ad8c51e21cbf821450824"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusReader.html#aad6b6e5ef35ad8c51e21cbf821450824">addDevice</a> (const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1ModbusDevice.html">ModbusDevice</a> &gt; &amp;device)</td></tr>
+<tr class="memdesc:aad6b6e5ef35ad8c51e21cbf821450824"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method that adds a single device for the reader to read.  <a href="classwolkabout_1_1ModbusReader.html#aad6b6e5ef35ad8c51e21cbf821450824">More...</a><br /></td></tr>
+<tr class="separator:aad6b6e5ef35ad8c51e21cbf821450824"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb8cefa4b66b395be18fd4b44cab218e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusReader.html#afb8cefa4b66b395be18fd4b44cab218e">addDevices</a> (const std::vector&lt; std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1ModbusDevice.html">ModbusDevice</a> &gt;&gt; &amp;devices)</td></tr>
+<tr class="memdesc:afb8cefa4b66b395be18fd4b44cab218e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Methods that adds multiple devices for the reader to read.  <a href="classwolkabout_1_1ModbusReader.html#afb8cefa4b66b395be18fd4b44cab218e">More...</a><br /></td></tr>
+<tr class="separator:afb8cefa4b66b395be18fd4b44cab218e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3a93878ed568ee9cf558f759981d3b8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusReader.html#af3a93878ed568ee9cf558f759981d3b8">writeMapping</a> (<a class="el" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a> &amp;mapping, const std::vector&lt; uint16_t &gt; &amp;values)</td></tr>
 <tr class="memdesc:af3a93878ed568ee9cf558f759981d3b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Force the reader to write to a mapping (uint16_t values)  <a href="classwolkabout_1_1ModbusReader.html#af3a93878ed568ee9cf558f759981d3b8">More...</a><br /></td></tr>
 <tr class="separator:af3a93878ed568ee9cf558f759981d3b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,23 +138,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusReader.html#a4ca028084e31722bd92e02352a0438b3">stop</a> ()</td></tr>
 <tr class="memdesc:a4ca028084e31722bd92e02352a0438b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Halts the modbus connection and stops all device reading threads. <br /></td></tr>
 <tr class="separator:a4ca028084e31722bd92e02352a0438b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa5c30965f0804fa2cc91cfd73788ff9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusReader.html#afa5c30965f0804fa2cc91cfd73788ff9">setOnIterationStatuses</a> (const std::function&lt; void(std::map&lt; int8_t, bool &gt;)&gt; &amp;onIterationStatuses)</td></tr>
-<tr class="memdesc:afa5c30965f0804fa2cc91cfd73788ff9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the main callback for receiving device statuses after each reading cycle.  <a href="classwolkabout_1_1ModbusReader.html#afa5c30965f0804fa2cc91cfd73788ff9">More...</a><br /></td></tr>
-<tr class="separator:afa5c30965f0804fa2cc91cfd73788ff9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a3a799bfb7e0461f0c910d0bc9226ffc3"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classwolkabout_1_1ModbusReader.html">ModbusReader</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwolkabout_1_1ModbusReader.html#a3a799bfb7e0461f0c910d0bc9226ffc3">getInstance</a> ()</td></tr>
-<tr class="memdesc:a3a799bfb7e0461f0c910d0bc9226ffc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the instance of the class.  <a href="classwolkabout_1_1ModbusReader.html#a3a799bfb7e0461f0c910d0bc9226ffc3">More...</a><br /></td></tr>
-<tr class="separator:a3a799bfb7e0461f0c910d0bc9226ffc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Main functional class, that accepts all devices and reads them periodcally. </p>
-<p>Function of the class is to periodically trigger the reading of all devices, of course, each and every on their separate threads. Where the connection gets split between them all, and data parsing for mappings is execute on their own thread. And also, the on value change for mappings event is invoked.</p>
-<p>This class is also a singleton. </p>
+<p>Function of the class is to periodically trigger the reading of all devices, of course, each and every on their separate threads. Where the connection gets split between them all, and data parsing for mappings is execute on their own thread. And also, the on value change for mappings event is invoked. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a24491a0753f6a62f84960e777adc5157"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24491a0753f6a62f84960e777adc5157">&#9670;&nbsp;</a></span>ModbusReader()</h2>
+<a id="a07c147aa0b0013bbc964524d4c52b55c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07c147aa0b0013bbc964524d4c52b55c">&#9670;&nbsp;</a></span>ModbusReader()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -153,12 +154,6 @@ Static Public Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classwolkabout_1_1ModbusClient.html">ModbusClient</a> &amp;&#160;</td>
           <td class="paramname"><em>modbusClient</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1ModbusDevice.html">ModbusDevice</a> &gt;&gt; &amp;&#160;</td>
-          <td class="paramname"><em>devices</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -178,7 +173,6 @@ Static Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">modbusClient</td><td>one of implementations of the abstract class </td></tr>
-    <tr><td class="paramname">devices</td><td>list of all devices that will be read, with their slaveAddresses already set </td></tr>
     <tr><td class="paramname">readPeriod</td><td>time period for cycling reads </td></tr>
   </table>
   </dd>
@@ -187,31 +181,55 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3a799bfb7e0461f0c910d0bc9226ffc3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a799bfb7e0461f0c910d0bc9226ffc3">&#9670;&nbsp;</a></span>getInstance()</h2>
+<a id="aad6b6e5ef35ad8c51e21cbf821450824"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad6b6e5ef35ad8c51e21cbf821450824">&#9670;&nbsp;</a></span>addDevice()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classwolkabout_1_1ModbusReader.html">ModbusReader</a> * wolkabout::ModbusReader::getInstance </td>
+          <td class="memname">void wolkabout::ModbusReader::addDevice </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1ModbusDevice.html">ModbusDevice</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>device</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Get the instance of the class. </p>
-<dl class="section return"><dt>Returns</dt><dd>Raw pointer to the instance. </dd></dl>
+<p>Method that adds a single device for the reader to read. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">device</td><td>shared pointer to the device </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afb8cefa4b66b395be18fd4b44cab218e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb8cefa4b66b395be18fd4b44cab218e">&#9670;&nbsp;</a></span>addDevices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void wolkabout::ModbusReader::addDevices </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::shared_ptr&lt; <a class="el" href="classwolkabout_1_1ModbusDevice.html">ModbusDevice</a> &gt;&gt; &amp;&#160;</td>
+          <td class="paramname"><em>devices</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Methods that adds multiple devices for the reader to read. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">devices</td><td>vector containing all shared pointers for devices </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -232,32 +250,6 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Indicates whether or not the threads that read devices are running. </p>
 <dl class="section return"><dt>Returns</dt><dd>thread running status </dd></dl>
-
-</div>
-</div>
-<a id="afa5c30965f0804fa2cc91cfd73788ff9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa5c30965f0804fa2cc91cfd73788ff9">&#9670;&nbsp;</a></span>setOnIterationStatuses()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void wolkabout::ModbusReader::setOnIterationStatuses </td>
-          <td>(</td>
-          <td class="paramtype">const std::function&lt; void(std::map&lt; int8_t, bool &gt;)&gt; &amp;&#160;</td>
-          <td class="paramname"><em>onIterationStatuses</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set the main callback for receiving device statuses after each reading cycle. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">onIterationStatuses</td><td>the callback function. </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
@@ -386,7 +378,7 @@ Static Public Member Functions</h2></td></tr>
 			<ul>
 				<li class="navelem"><b>wolkabout</b></li><li class="navelem"><a class="el" href="classwolkabout_1_1ModbusReader.html">ModbusReader</a></li>
 				<li class="footer">
-					Generated on Thu Apr 2 2020 15:41:49 for MoreModbus by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Apr 9 2020 13:59:04 for MoreModbus by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.18.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.
 				</li>

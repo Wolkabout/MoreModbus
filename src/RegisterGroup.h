@@ -25,10 +25,49 @@
 
 namespace wolkabout
 {
-typedef bool (*MappingCompareFunction)(const std::pair<std::string, std::shared_ptr<RegisterMapping>>& left,
-                                       const std::pair<std::string, std::shared_ptr<RegisterMapping>>& right);
+class ModbusDevice;
 
-typedef std::set<std::pair<std::string, std::shared_ptr<RegisterMapping>>, MappingCompareFunction> MappingsMap;
+/**
+ * @brief Structure containing various utility data/methods for RegisterGroup class.
+ * @details Contains the helper methods for capturing address and bitIndex from the claims string.
+ *          Also, the SEPARATOR being used for creating such strings, and the sort method as operator()
+ *          used by the set for mappings.
+ */
+struct GroupUtility
+{
+    const static char SEPARATOR;
+
+    /**
+     * @brief Utility method to fetch the address from claim string
+     * @details Address is found in the claim string before the separator
+     * @param string claim - indicates the data which mapping requires
+     * @return the address as int
+     */
+    static uint16_t getAddressFromString(const std::string& string);
+
+    /**
+     * @brief Utility method to fetch the bit from claim string
+     * @details Bit index is found in the claim string after separator, value has to be in 0-15 range.
+     * @param string claim - indicates the data which mapping requires
+     * @return the bit index as int
+     */
+    static int16_t getBitFromString(const std::string& string);
+
+    /**
+     * @brief Main function that serves a purpose of sorting the elements in the set created by the group.
+     */
+    bool operator()(const std::pair<std::string, std::shared_ptr<RegisterMapping>>& left,
+                    const std::pair<std::string, std::shared_ptr<RegisterMapping>>& right)
+    {
+        const auto addressComp = getAddressFromString(right.first) - getAddressFromString(left.first);
+        if (addressComp != 0)
+            return addressComp > 0;
+
+        return getBitFromString(left.first) < getBitFromString(right.first);
+    }
+};
+
+typedef std::set<std::pair<std::string, std::shared_ptr<RegisterMapping>>, GroupUtility> MappingsMap;
 
 /**
  * @brief Group serves to merge multiple mappings that can be read with a single Modbus command.
@@ -38,18 +77,15 @@ typedef std::set<std::pair<std::string, std::shared_ptr<RegisterMapping>>, Mappi
 class RegisterGroup
 {
 public:
-    const static char SEPARATOR;
-
     /**
      * @brief Default constructor for the Group
      * @param mapping that will be added to the group, their RegisterType will be taken.
      */
-    explicit RegisterGroup(const std::shared_ptr<RegisterMapping>& mapping);
+    RegisterGroup(const std::shared_ptr<RegisterMapping>& mapping, const std::shared_ptr<ModbusDevice>& device);
 
-    // Overriden default copy constructor to ensure deep copy of objects which we own
-    // shared pointers to. This is done because for every group, we want to have
-    // copies of mappings, since they're the ones tracking values and their changes
-    // for each separate register on each separate slave address.
+    /**
+     * @brief Overridden copy constructor that does deep copy of RegisterMapping instances it owns
+     */
     RegisterGroup(const RegisterGroup& instance);
 
     /**
@@ -62,6 +98,14 @@ public:
     bool addMapping(const std::shared_ptr<RegisterMapping>& mapping);
 
     RegisterMapping::RegisterType getRegisterType() const;
+
+    /**
+     * @brief Internal getter for the device that owns this groups
+     * @return shared pointer to that device
+     */
+    const std::shared_ptr<ModbusDevice>& getDevice() const;
+
+    void setDevice(const std::shared_ptr<ModbusDevice>& device);
 
     uint16_t getStartingAddress() const;
 
@@ -90,37 +134,16 @@ public:
      */
     std::vector<std::string> getMappingsClaims() const;
 
-    /**
-     * @brief Utility method to fetch the address from claim string
-     * @details Address is found in the claim string before the separator
-     * @param string claim - indicates the data which mapping requires
-     * @return the address as int
-     */
-    static uint16_t getAddressFromString(const std::string& string);
-
-    /**
-     * @brief Utility method to fetch the bit from claim string
-     * @details Bit index is found in the claim string after separator, value has to be in 0-15 range.
-     * @param string claim - indicates the data which mapping requires
-     * @return the bit index as int
-     */
-    static int16_t getBitFromString(const std::string& string);
-
 private:
     bool appendMapping(const std::shared_ptr<RegisterMapping>& mapping);
-
-    /**
-     * @brief Utility method for sorting the pairs, so that they are sorted the way they need
-     *        to be for reading.
-     */
-    static bool compareFunction(const std::pair<std::string, std::shared_ptr<RegisterMapping>>& left,
-                                const std::pair<std::string, std::shared_ptr<RegisterMapping>>& right);
 
     bool keyExistsInSet(const std::string& key);
 
     RegisterMapping::RegisterType m_registerType;
     int8_t m_slaveAddress;
     bool m_readRestricted;
+
+    std::shared_ptr<ModbusDevice> m_device;
 
     MappingsMap m_mappings;
 };

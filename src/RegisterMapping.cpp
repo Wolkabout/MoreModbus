@@ -308,4 +308,14 @@ void RegisterMapping::setValid(bool valid)
 {
     m_isValid = valid;
 }
+
+const std::shared_ptr<RegisterGroup>& RegisterMapping::getGroup() const
+{
+    return m_group;
+}
+
+void RegisterMapping::setGroup(const std::shared_ptr<RegisterGroup>& group)
+{
+    m_group = group;
+}
 }    // namespace wolkabout

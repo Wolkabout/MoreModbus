@@ -45,7 +45,7 @@ bool Int16Mapping::writeValue(int16_t value)
     std::vector<uint16_t> bytes;
     bytes.emplace_back(DataParsers::int16ToUint16(value));
 
-    bool success = ModbusReader::getInstance()->writeMapping(*this, bytes);
+    bool success = getGroup()->getDevice()->getReader()->writeMapping(*this, bytes);
     if (success)
         m_int16Value = value;
 

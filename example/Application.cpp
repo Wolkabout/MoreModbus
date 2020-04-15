@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
+#include "ModbusDevice.h"
+#include "ModbusReader.h"
+#include "RegisterGroup.h"
 #include "mappings/BoolMapping.h"
 #include "mappings/StringMapping.h"
 #include "mappings/UInt16Mapping.h"
-#include "ModbusDevice.h"
-#include "ModbusReader.h"
-#include "modbus/LibModbusTcpIpClient.h"
 #include "modbus/LibModbusSerialRtuClient.h"
-#include "RegisterGroup.h"
+#include "modbus/LibModbusTcpIpClient.h"
 #include "utilities/ConsoleLogger.h"
 
 int main()
@@ -53,10 +53,10 @@ int main()
       std::make_shared<wolkabout::BoolMapping>("B4-2", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 4,
                                                wolkabout::RegisterMapping::OperationType::TAKE_BIT, 1);
 
-    const auto& device = std::make_shared<wolkabout::ModbusDevice>(
-      "Test Device 1", 1,
-      std::vector<std::shared_ptr<wolkabout::RegisterMapping>>{normalRegisterMapping, normalContactMapping,
-                                                               stringMapping, getFirstBitMapping, getSecondBitMapping});
+    const auto& device = std::make_shared<wolkabout::ModbusDevice>("Test Device 1", 1);
+
+    device->createGroups(std::vector<std::shared_ptr<wolkabout::RegisterMapping>>{
+      normalRegisterMapping, normalContactMapping, stringMapping, getFirstBitMapping, getSecondBitMapping});
 
     device->setOnMappingValueChange([](const std::shared_ptr<wolkabout::RegisterMapping>& mapping) {
         // You can do this for all output types.
@@ -64,9 +64,6 @@ int main()
         {
             const auto& boolean = std::dynamic_pointer_cast<wolkabout::BoolMapping>(mapping);
             LOG(DEBUG) << "Application: Mapping is bool, value : " << boolean->getBoolValue();
-
-            if (!boolean->getBoolValue())
-                boolean->writeValue(true);
         }
         else if (mapping->getOutputType() == wolkabout::RegisterMapping::OutputType::STRING)
         {
@@ -82,6 +79,11 @@ int main()
         }
     });
 
+    device->setOnStatusChange([&](bool status) {
+        LOG(DEBUG) << "Application: Device " << device->getName() << " is now " << (status ? "online" : "offline")
+                   << ".";
+    });
+
     // Serial RTU client
     //    const auto& modbusClient = std::make_shared<wolkabout::LibModbusSerialRtuClient>(
     //      "/dev/tty0", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
@@ -89,10 +91,12 @@ int main()
 
     // TCP IP client
     const auto& modbusClient =
-      std::make_shared<wolkabout::LibModbusTcpIpClient>("<IP ADDRESS>", 502, std::chrono::milliseconds(500));
+      std::make_shared<wolkabout::LibModbusTcpIpClient>("<IP_ADDRESS>", 502, std::chrono::milliseconds(500));
 
     const auto& reader = std::make_shared<wolkabout::ModbusReader>(
-      *modbusClient, std::vector<std::shared_ptr<wolkabout::ModbusDevice>>{device}, std::chrono::milliseconds(1000));
+      *modbusClient, std::chrono::milliseconds(1000));
+
+    reader->addDevice(device);
 
     reader->start();
 

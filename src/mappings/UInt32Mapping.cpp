@@ -59,7 +59,7 @@ bool UInt32Mapping::writeValue(uint32_t value)
     else
         throw std::logic_error("UInt32Mapping: Illegal operation type set.");
 
-    bool success = ModbusReader::getInstance()->writeMapping(*this, bytes);
+    bool success = getGroup()->getDevice()->getReader()->writeMapping(*this, bytes);
     if (success)
         m_uint32Value = value;
 

@@ -45,9 +45,9 @@ bool BoolMapping::writeValue(bool value)
 {
     bool success;
     if (m_operationType == OperationType::TAKE_BIT)
-        success = ModbusReader::getInstance()->writeBitMapping(*this, value);
+        success = getGroup()->getDevice()->getReader()->writeBitMapping(*this, value);
     else
-        success = ModbusReader::getInstance()->writeMapping(*this, value);
+        success = getGroup()->getDevice()->getReader()->writeMapping(*this, value);
 
     if (success)
         m_boolValue = value;

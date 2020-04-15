@@ -19,38 +19,36 @@
 #include "utilities/DataParsers.h"
 #include "utilities/Logger.h"
 
+#include <algorithm>
+
 namespace wolkabout
 {
-ModbusReader* ModbusReader::INSTANCE = nullptr;
-
-ModbusReader::ModbusReader(ModbusClient& modbusClient, const std::vector<std::shared_ptr<ModbusDevice>>& devices,
-                           const std::chrono::milliseconds& readPeriod)
+ModbusReader::ModbusReader(ModbusClient& modbusClient, const std::chrono::milliseconds& readPeriod)
 : m_modbusClient(modbusClient), m_devices(), m_readerShouldRun(false), m_threads(), m_readPeriod(readPeriod)
 {
-    // Singleton logic
-    if (INSTANCE != nullptr)
-        delete this;
+}
 
-    INSTANCE = this;
+void ModbusReader::addDevice(const std::shared_ptr<ModbusDevice>& device)
+{
+    m_devices.emplace(device->getSlaveAddress(), device);
+    m_deviceActiveStatus.emplace(device->getSlaveAddress(), false);
+    m_threads.emplace(device->getSlaveAddress(), nullptr);
+    device->setReader(shared_from_this());
+    LOG(INFO) << "ModbusReader: Successfully added new device " << device->getName();
+}
 
-    LOG(INFO) << "ModbusReader: Initializing ModbusReader...";
-    // Initialize everything necessary for devices, assume they're at first offline,
-    // and don't have any running threads.
+void ModbusReader::addDevices(const std::vector<std::shared_ptr<ModbusDevice>> &devices)
+{
+    LOG(INFO) << "ModbusReader: Adding " << devices.size() << " devices.";
     for (const auto& device : devices)
     {
-        m_devices.emplace(device->getSlaveAddress(), device);
-        m_deviceActiveStatus.emplace(device->getSlaveAddress(), false);
-        m_threads.emplace(device->getSlaveAddress(), nullptr);
+        addDevice(device);
     }
-    LOG(INFO) << "ModbusReader: ModbusReader initialized. Created " << devices.size() << " device(s).";
+    LOG(INFO) << "ModbusReader: Successfully added " << devices.size() << " devices.";
 }
 
 ModbusReader::~ModbusReader()
 {
-    // Singleton logic
-    if (INSTANCE == this)
-        INSTANCE = nullptr;
-
     stop();
 }
 
@@ -210,6 +208,12 @@ void ModbusReader::stop()
         m_modbusClient.disconnect();
     }
 
+    for (const auto& thread : m_threads)
+    {
+        if (thread.second != nullptr && thread.second->joinable())
+            thread.second->join();
+    }
+
     if (m_mainReaderThread->joinable())
     {
         m_mainReaderThread->join();
@@ -219,6 +223,8 @@ void ModbusReader::stop()
 
 void ModbusReader::run()
 {
+    auto threadsRunning = false;
+
     while (m_readerShouldRun)
     {
         if (m_shouldReconnect)
@@ -261,41 +267,34 @@ void ModbusReader::run()
                 // Start thread foreach device, wait the readPeriod for the threads to execute, and
                 // join them back in. Process if some of them reported errors, if all, go to reconnect,
                 // if just some are, report them as non-active.
-                for (const auto& device : m_devices)
+                if (!threadsRunning)
                 {
-                    m_threads[device.second->getSlaveAddress()] =
-                      std::unique_ptr<std::thread>(new std::thread(&ModbusReader::readDevice, this, device.second));
-                    m_deviceActiveStatus[device.second->getSlaveAddress()] = true;
+                    for (const auto& device : m_devices)
+                    {
+                        m_threads[device.second->getSlaveAddress()] =
+                          std::unique_ptr<std::thread>(new std::thread(&ModbusReader::readDevice, this, device.second));
+                        m_deviceActiveStatus[device.second->getSlaveAddress()] = true;
+                    }
+                    threadsRunning = true;
                 }
 
                 std::this_thread::sleep_for(m_readPeriod);
 
-                for (const auto& device : m_devices)
+                auto deviceRead = false;
+                for (const auto& device : m_deviceActiveStatus)
                 {
-                    m_threads[device.second->getSlaveAddress()]->join();
-                }
-
-                if (m_errorDevices.size() == m_devices.size())
-                {
-                    m_shouldReconnect = true;
-                    LOG(WARN) << "ModbusReader: No devices have been read successfully. Reconnecting...";
-                }
-                else if (!m_errorDevices.empty())
-                {
-                    for (const auto& errorDevice : m_errorDevices)
+                    if (device.second)
                     {
-                        m_deviceActiveStatus[errorDevice] = false;
+                        deviceRead = true;
+                        break;
                     }
-                    LOG(WARN) << "ModbusReader: Some devices haven't been read successfully.";
-                }
-                else
-                {
-                    LOG(TRACE) << "ModbusReader: All devices have been read successfully.";
                 }
 
-                m_errorDevices.clear();
-                if (m_onIterationStatuses != nullptr)
-                    m_onIterationStatuses(m_deviceActiveStatus);
+                if (!deviceRead)
+                {
+                    LOG(WARN) << "ModbusReader: No devices have been read successfully. Reconnecting...";
+                    m_shouldReconnect = true;
+                }
             }
             else
             {
@@ -309,43 +308,71 @@ void ModbusReader::run()
 
 void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
 {
-    if (device->getGroups().empty())
+    bool connected = true;
+
+    while (true)
     {
-        LOG(WARN) << "ModbusReader: Device " << device->getName() << " has no mappings.";
-        return;
-    }
-
-    LOG(TRACE) << "ModbusReader: Reading device : " << device->getName();
-
-    // Work on this logic, read all groups and do it properly.
-    // Also, parse types and values as necessary.
-    uint16_t unreadGroups = 0;
-
-    // Read through all the groups.
-    for (const auto& group : device->getGroups())
-    {
-        if (!ModbusGroupReader::readGroup(m_modbusClient, *group))
+        if (connected)
         {
-            LOG(WARN) << "ModbusReader: Group starting at : " << group->getStartingAddress() << " on slave "
-                      << group->getSlaveAddress() << " had error while reading.";
-            unreadGroups++;
+            auto start = std::chrono::high_resolution_clock::now();
+
+            if (device->getGroups().empty())
+            {
+                LOG(WARN) << "ModbusReader: Device " << device->getName() << " has no mappings.";
+                return;
+            }
+
+            LOG(TRACE) << "ModbusReader: Reading device : " << device->getName();
+
+            // Work on this logic, read all groups and do it properly.
+            // Also, parse types and values as necessary.
+            uint16_t unreadGroups = 0;
+
+            // Read through all the groups.
+            for (const auto& group : device->getGroups())
+            {
+                if (!ModbusGroupReader::readGroup(m_modbusClient, *group))
+                {
+                    LOG(WARN) << "ModbusReader: Group starting at : " << group->getStartingAddress() << " on slave "
+                              << group->getSlaveAddress() << " had error while reading.";
+                    unreadGroups++;
+                }
+            }
+
+            // If all the groups had error while reading, report the device as having errors.
+            if (unreadGroups == device->getGroups().size())
+            {
+                m_deviceActiveStatus[device->getSlaveAddress()] = false;
+                device->triggerOnStatusChange(false);
+                connected = false;
+            }
+            else
+            {
+                m_deviceActiveStatus[device->getSlaveAddress()] = true;
+                device->triggerOnStatusChange(true);
+            }
+
+            auto duration =
+              std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start);
+
+            if (duration.count() >= m_readPeriod.count())
+            {
+                LOG(WARN) << "ModbusReader: Thread read device " << device->getName()
+                          << " for more than read period."
+                             " Skipping sleep. Consider increasing the read period.";
+            }
+            else
+            {
+                std::this_thread::sleep_for(m_readPeriod - duration);
+            }
+        }
+        else
+        {
+            if (m_deviceActiveStatus[device->getSlaveAddress()])
+                connected = true;
+
+            std::this_thread::sleep_for(m_readPeriod);
         }
     }
-
-    // If all the groups had error while reading, report the device as having errors.
-    if (unreadGroups == device->getGroups().size())
-    {
-        m_errorDevices.emplace_back(device->getSlaveAddress());
-    }
-}
-
-ModbusReader* ModbusReader::getInstance()
-{
-    return INSTANCE;
-}
-
-void ModbusReader::setOnIterationStatuses(const std::function<void(std::map<int8_t, bool>)>& onIterationStatuses)
-{
-    m_onIterationStatuses = onIterationStatuses;
 }
 }    // namespace wolkabout
