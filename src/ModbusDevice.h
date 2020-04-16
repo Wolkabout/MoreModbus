@@ -1,18 +1,21 @@
 /*
- * Copyright 2020 WolkAbout Technology s.r.o.
+ * Copyright (C) 2020 WolkAbout Technology s.r.o.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
 
 #ifndef WOLKABOUT_MODBUS_MODBUSDEVICE_H
 #define WOLKABOUT_MODBUS_MODBUSDEVICE_H
@@ -27,7 +30,7 @@ class ModbusReader;
 
 /**
  * @brief Utility struct defining a function used by the std::set inside of ModbusDevice to sort the mappings before
- *        an attempt at forming ModbusGroup instances for such device.
+ *       an attempt at forming ModbusGroup instances for such device.
  */
 struct CompareFunction
 {
@@ -56,8 +59,8 @@ struct CompareFunction
 /**
  * @brief Collection of ModbusGroups for a single Modbus server/slave.
  * @details The device contains the slaveAddress, and all the groups to be read for the slave address.
- *          The groups will be created by the device, and all the slaveAddresses will be set when the
- *           device is created.
+ *         The groups will be created by the device, and all the slaveAddresses will be set when the
+ *          device is created.
  */
 class ModbusDevice : public std::enable_shared_from_this<ModbusDevice>
 {

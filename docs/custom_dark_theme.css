@@ -35,7 +35,7 @@ a.highlighted {
 }
 
 /*********************************************/
-/**              Top main menu              **/
+/**             Top main menu              **/
 /*********************************************/
 #main-nav {
 	/* display: none; */
@@ -71,7 +71,7 @@ a.highlighted {
 
 
 /*********************************************/
-/**               Top search                **/
+/**              Top search                **/
 /*********************************************/
 #MSearchSelectWindow {
 	border: 1px solid #000000;
@@ -93,7 +93,7 @@ a.SelectItem:hover {
 }
 
 /*********************************************/
-/**                Main menu                **/
+/**               Main menu                **/
 /*********************************************/
 #nav-tree {
 	background: transparent;
@@ -105,11 +105,11 @@ a.SelectItem:hover {
 }
 
 /*********************************************/
-/**               Main content              **/
+/**              Main content              **/
 /*********************************************/
 
 /*********************************************/
-/**               Inline code               **/
+/**              Inline code               **/
 /*********************************************/
 p code,
 li code,
@@ -122,7 +122,7 @@ dd code {
 }
 
 /*********************************************/
-/**         Table of Contents (ToC)         **/
+/**        Table of Contents (ToC)         **/
 /*********************************************/
 div.toc {
 	background: #32363d;
@@ -135,7 +135,7 @@ div.toc h3 {
 }
 
 /*********************************************/
-/**              Content table              **/
+/**             Content table              **/
 /*********************************************/
 table.doxtable tr:nth-child(even) td {
 	background: #32363d;
@@ -147,7 +147,7 @@ div.header {
 }
 
 /*********************************************/
-/**               Field table               **/
+/**              Field table               **/
 /*********************************************/
 .fieldtable th {
 	background: #282923;
@@ -155,14 +155,14 @@ div.header {
 }
 
 /*********************************************/
-/**           Memitem and memtitle          **/
+/**          Memitem and memtitle          **/
 /*********************************************/
 .memdoc {
 	border: 1px solid #A8B8D9;
 }
 
 /*********************************************/
-/**             TOP navigation              **/
+/**            TOP navigation              **/
 /*********************************************/
 .tabs, .tabs2, .tabs3 {
 	background: #DDDDDD;
@@ -188,15 +188,15 @@ div.header {
 }
 
 /*********************************************/
-/**              H1 in textblocks           **/
+/**             H1 in textblocks           **/
 /*********************************************/
 
 /*********************************************/
-/**               Note, warning             **/
+/**              Note, warning             **/
 /*********************************************/
 
 /*********************************************/
-/**               Reference list            **/
+/**              Reference list            **/
 /**Similar to warning/note/todo/... messages**/
 /*********************************************/
 dl.reflist {
@@ -205,7 +205,7 @@ dl.reflist {
 
 
 /*********************************************/
-/**               Note, warning             **/
+/**              Note, warning             **/
 /*********************************************/
 #docs_list {
 	background: #32363d;
@@ -225,18 +225,18 @@ dl.reflist {
 }
 
 /*********************************************/
-/**               Resizable UI              **/
+/**              Resizable UI              **/
 /*********************************************/
 .ui-resizable-e {
 	background: #32363d;
 }
 
 /*********************************************/
-/**               Download url              **/
+/**              Download url              **/
 /*********************************************/
 
 /*********************************************/
-/**               Syntax folor              **/
+/**              Syntax folor              **/
 /*********************************************/
 div.line {
 	background: transparent;
@@ -303,7 +303,7 @@ span.lineno a {
 }
 
 /*********************************************/
-/**          Modules/Directory table        **/
+/**         Modules/Directory table        **/
 /*********************************************/
 .mdescLeft, .mdescRight, .memItemLeft, .memItemRight,
 .memTemplItemLeft, .memTemplItemRight, .memTemplParams {
@@ -321,7 +321,7 @@ h2.groupheader {
 }
 
 /*********************************************/
-/**                 Mem items               **/
+/**                Mem items               **/
 /*********************************************/
 .memtitle {
 	background: #32363d !important;
@@ -360,14 +360,14 @@ td.memItemLeft, td.memItemRight {
 
 
 /*********************************************/
-/**                 Footer                  **/
+/**                Footer                  **/
 /*********************************************/
 .titlearea {
 	border-bottom: 1px solid #32363d;
 }
 
 /*********************************************/
-/**                 Footer                  **/
+/**                Footer                  **/
 /*********************************************/
 #nav-path {
 	background: transparent;
@@ -389,7 +389,7 @@ td.memItemLeft, td.memItemRight {
 }
 
 /*********************************************/
-/**             Custom scrollbar            **/
+/**            Custom scrollbar            **/
 /*********************************************/
 ::-webkit-scrollbar {
 	width: 10px;
@@ -412,7 +412,7 @@ td.memItemLeft, td.memItemRight {
 }
 
 /*********************************************/
-/**             Custom scrollbar            **/
+/**            Custom scrollbar            **/
 /*********************************************/
 h1.glow, h2.glow, h3.glow,
 h4.glow, h5.glow, h6.glow {

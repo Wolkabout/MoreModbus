@@ -87,61 +87,64 @@ $(document).ready(function(){initNavTree('UInt16Mapping_8h_source.html',''); ini
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright 2020 WolkAbout Technology s.r.o.</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright (C) 2020 WolkAbout Technology s.r.o.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * you may not use this file except in compliance with the License.</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * You may obtain a copy of the License at</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> *      http://www.apache.org/licenses/LICENSE-2.0</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment"> * Unless required by applicable law or agreed to in writing, software</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"> * See the License for the specific language governing permissions and</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment"> * limitations under the License.</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#ifndef WOLKABOUT_MODBUS_UINT16MAPPING_H</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#define WOLKABOUT_MODBUS_UINT16MAPPING_H</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * This program is free software; you can redistribute it and/or</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * modify it under the terms of the GNU Lesser General Public</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * License as published by the Free Software Foundation; either</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> * version 3 of the License, or (at your option) any later version.</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment"> * This program is distributed in the hope that it will be useful,</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment"> * but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment"> * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment"> * Lesser General Public License for more details.</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment"> * You should have received a copy of the GNU Lesser General Public License</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"> * along with this program; if not, write to the Free Software Foundation,</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment"> * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;ModbusReader.h&quot;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">namespace </span>wolkabout</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="classwolkabout_1_1UInt16Mapping.html">   28</a></span>&#160;<span class="keyword">class </span><a class="code" href="classwolkabout_1_1UInt16Mapping.html">UInt16Mapping</a> : <span class="keyword">public</span> <a class="code" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="classwolkabout_1_1UInt16Mapping.html#a61f31367fc9986fdf5948ac910692f4c">UInt16Mapping</a>(<span class="keyword">const</span> std::string&amp; reference, <a class="code" href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">RegisterType</a> registerType, int16_t address, <span class="keywordtype">bool</span> readRestricted = <span class="keyword">false</span>,</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                  int8_t slaveAddress = -1);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classwolkabout_1_1UInt16Mapping.html#a31da0fb7e9545ae97b08f848a5bbde68">update</a>(<span class="keyword">const</span> std::vector&lt;uint16_t&gt;&amp; newValues) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classwolkabout_1_1UInt16Mapping.html#abda41e70b38035f1f708f28a56914439">writeValue</a>(uint16_t value);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    uint16_t <a class="code" href="classwolkabout_1_1UInt16Mapping.html#a2f9e17fe5c4f4dca0c9df0e6ff20a79a">getUint16Value</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    uint16_t m_uint16Value{};</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;};</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}    <span class="comment">// namespace wolkabout</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#endif    // WOLKABOUT_MODBUS_UINT16MAPPING_H</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#ifndef WOLKABOUT_MODBUS_UINT16MAPPING_H</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#define WOLKABOUT_MODBUS_UINT16MAPPING_H</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;ModbusReader.h&quot;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span>wolkabout</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="classwolkabout_1_1UInt16Mapping.html">   31</a></span>&#160;<span class="keyword">class </span><a class="code" href="classwolkabout_1_1UInt16Mapping.html">UInt16Mapping</a> : <span class="keyword">public</span> <a class="code" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="classwolkabout_1_1UInt16Mapping.html#a61f31367fc9986fdf5948ac910692f4c">UInt16Mapping</a>(<span class="keyword">const</span> std::string&amp; reference, <a class="code" href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">RegisterType</a> registerType, int16_t address, <span class="keywordtype">bool</span> readRestricted = <span class="keyword">false</span>,</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                  int8_t slaveAddress = -1);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classwolkabout_1_1UInt16Mapping.html#a31da0fb7e9545ae97b08f848a5bbde68">update</a>(<span class="keyword">const</span> std::vector&lt;uint16_t&gt;&amp; newValues) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classwolkabout_1_1UInt16Mapping.html#abda41e70b38035f1f708f28a56914439">writeValue</a>(uint16_t value);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    uint16_t <a class="code" href="classwolkabout_1_1UInt16Mapping.html#a2f9e17fe5c4f4dca0c9df0e6ff20a79a">getUint16Value</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    uint16_t m_uint16Value{};</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;};</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}    <span class="comment">// namespace wolkabout</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#endif    // WOLKABOUT_MODBUS_UINT16MAPPING_H</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclasswolkabout_1_1UInt16Mapping_html_a61f31367fc9986fdf5948ac910692f4c"><div class="ttname"><a href="classwolkabout_1_1UInt16Mapping.html#a61f31367fc9986fdf5948ac910692f4c">wolkabout::UInt16Mapping::UInt16Mapping</a></div><div class="ttdeci">UInt16Mapping(const std::string &amp;reference, RegisterType registerType, int16_t address, bool readRestricted=false, int8_t slaveAddress=-1)</div><div class="ttdoc">Constructor defining a mapping with a single register address.</div><div class="ttdef"><b>Definition:</b> UInt16Mapping.cpp:23</div></div>
-<div class="ttc" id="aclasswolkabout_1_1RegisterMapping_html_a3d123b0e557d72949e1a403ef3076cef"><div class="ttname"><a href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">wolkabout::RegisterMapping::RegisterType</a></div><div class="ttdeci">RegisterType</div><div class="ttdoc">Indicates the modbus register type defined by the protocol.</div><div class="ttdef"><b>Definition:</b> RegisterMapping.h:41</div></div>
-<div class="ttc" id="aclasswolkabout_1_1UInt16Mapping_html_a2f9e17fe5c4f4dca0c9df0e6ff20a79a"><div class="ttname"><a href="classwolkabout_1_1UInt16Mapping.html#a2f9e17fe5c4f4dca0c9df0e6ff20a79a">wolkabout::UInt16Mapping::getUint16Value</a></div><div class="ttdeci">uint16_t getUint16Value() const</div><div class="ttdoc">Get the last written/read value of registers, already parsed as UINT16.</div><div class="ttdef"><b>Definition:</b> UInt16Mapping.cpp:51</div></div>
-<div class="ttc" id="aclasswolkabout_1_1UInt16Mapping_html_abda41e70b38035f1f708f28a56914439"><div class="ttname"><a href="classwolkabout_1_1UInt16Mapping.html#abda41e70b38035f1f708f28a56914439">wolkabout::UInt16Mapping::writeValue</a></div><div class="ttdeci">bool writeValue(uint16_t value)</div><div class="ttdoc">Triggers the client to write the value for this register.</div><div class="ttdef"><b>Definition:</b> UInt16Mapping.cpp:39</div></div>
-<div class="ttc" id="aclasswolkabout_1_1UInt16Mapping_html"><div class="ttname"><a href="classwolkabout_1_1UInt16Mapping.html">wolkabout::UInt16Mapping</a></div><div class="ttdoc">Class describing a RegisterMapping with output type UINT16.</div><div class="ttdef"><b>Definition:</b> UInt16Mapping.h:29</div></div>
-<div class="ttc" id="aclasswolkabout_1_1UInt16Mapping_html_a31da0fb7e9545ae97b08f848a5bbde68"><div class="ttname"><a href="classwolkabout_1_1UInt16Mapping.html#a31da0fb7e9545ae97b08f848a5bbde68">wolkabout::UInt16Mapping::update</a></div><div class="ttdeci">bool update(const std::vector&lt; uint16_t &gt; &amp;newValues) override</div><div class="ttdef"><b>Definition:</b> UInt16Mapping.cpp:33</div></div>
-<div class="ttc" id="aclasswolkabout_1_1RegisterMapping_html"><div class="ttname"><a href="classwolkabout_1_1RegisterMapping.html">wolkabout::RegisterMapping</a></div><div class="ttdoc">Indicates a logical unit, resulting in one value, involving one/multiple/part of Modbus register(s).</div><div class="ttdef"><b>Definition:</b> RegisterMapping.h:35</div></div>
+<div class="ttc" id="aclasswolkabout_1_1UInt16Mapping_html_a61f31367fc9986fdf5948ac910692f4c"><div class="ttname"><a href="classwolkabout_1_1UInt16Mapping.html#a61f31367fc9986fdf5948ac910692f4c">wolkabout::UInt16Mapping::UInt16Mapping</a></div><div class="ttdeci">UInt16Mapping(const std::string &amp;reference, RegisterType registerType, int16_t address, bool readRestricted=false, int8_t slaveAddress=-1)</div><div class="ttdoc">Constructor defining a mapping with a single register address.</div><div class="ttdef"><b>Definition:</b> UInt16Mapping.cpp:26</div></div>
+<div class="ttc" id="aclasswolkabout_1_1RegisterMapping_html_a3d123b0e557d72949e1a403ef3076cef"><div class="ttname"><a href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">wolkabout::RegisterMapping::RegisterType</a></div><div class="ttdeci">RegisterType</div><div class="ttdoc">Indicates the modbus register type defined by the protocol.</div><div class="ttdef"><b>Definition:</b> RegisterMapping.h:44</div></div>
+<div class="ttc" id="aclasswolkabout_1_1UInt16Mapping_html_a2f9e17fe5c4f4dca0c9df0e6ff20a79a"><div class="ttname"><a href="classwolkabout_1_1UInt16Mapping.html#a2f9e17fe5c4f4dca0c9df0e6ff20a79a">wolkabout::UInt16Mapping::getUint16Value</a></div><div class="ttdeci">uint16_t getUint16Value() const</div><div class="ttdoc">Get the last written/read value of registers, already parsed as UINT16.</div><div class="ttdef"><b>Definition:</b> UInt16Mapping.cpp:54</div></div>
+<div class="ttc" id="aclasswolkabout_1_1UInt16Mapping_html_abda41e70b38035f1f708f28a56914439"><div class="ttname"><a href="classwolkabout_1_1UInt16Mapping.html#abda41e70b38035f1f708f28a56914439">wolkabout::UInt16Mapping::writeValue</a></div><div class="ttdeci">bool writeValue(uint16_t value)</div><div class="ttdoc">Triggers the client to write the value for this register.</div><div class="ttdef"><b>Definition:</b> UInt16Mapping.cpp:42</div></div>
+<div class="ttc" id="aclasswolkabout_1_1UInt16Mapping_html"><div class="ttname"><a href="classwolkabout_1_1UInt16Mapping.html">wolkabout::UInt16Mapping</a></div><div class="ttdoc">Class describing a RegisterMapping with output type UINT16.</div><div class="ttdef"><b>Definition:</b> UInt16Mapping.h:32</div></div>
+<div class="ttc" id="aclasswolkabout_1_1UInt16Mapping_html_a31da0fb7e9545ae97b08f848a5bbde68"><div class="ttname"><a href="classwolkabout_1_1UInt16Mapping.html#a31da0fb7e9545ae97b08f848a5bbde68">wolkabout::UInt16Mapping::update</a></div><div class="ttdeci">bool update(const std::vector&lt; uint16_t &gt; &amp;newValues) override</div><div class="ttdef"><b>Definition:</b> UInt16Mapping.cpp:36</div></div>
+<div class="ttc" id="aclasswolkabout_1_1RegisterMapping_html"><div class="ttname"><a href="classwolkabout_1_1RegisterMapping.html">wolkabout::RegisterMapping</a></div><div class="ttdoc">Indicates a logical unit, resulting in one value, involving one/multiple/part of Modbus register(s).</div><div class="ttdef"><b>Definition:</b> RegisterMapping.h:38</div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_27dea94239bbade6a460467c83cf1f9d.html">mappings</a></li><li class="navelem"><b>UInt16Mapping.h</b></li>
 				<li class="footer">
-					Generated on Thu Apr 9 2020 13:59:04 for MoreModbus by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Apr 16 2020 13:10:27 for MoreModbus by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.18.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.
 				</li>

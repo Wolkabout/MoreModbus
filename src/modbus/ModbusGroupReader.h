@@ -43,7 +43,7 @@ private:
 
     /**
      * @brief Read a group of INPUT_CONTACT mappings,
-     *        and aggregate read values to each mapping, using passValuesToGroup()
+     *       and aggregate read values to each mapping, using passValuesToGroup()
      * @param modbusClient
      * @param group
      * @return Whether or not the group reading has been successful.
@@ -60,7 +60,7 @@ private:
 
     /**
      * @brief Read a group of HOLDING_REGISTER mappings,
-     *        and aggregates read values to each mapping, using passValuesToGroup()
+     *       and aggregates read values to each mapping, using passValuesToGroup()
      * @param modbusClient
      * @param group
      * @return Whether or not the group reading has been successful.
@@ -69,7 +69,7 @@ private:
 
     /**
      * @brief Read a group of INPUT_REGISTER mappings,
-     *        and aggregates read values to each mapping, using passValuesToGroup()
+     *       and aggregates read values to each mapping, using passValuesToGroup()
      * @param modbusClient
      * @param group
      * @return Whether or not the group reading has been successful.

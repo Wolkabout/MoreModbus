@@ -87,62 +87,65 @@ $(document).ready(function(){initNavTree('StringMapping_8h_source.html',''); ini
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright 2020 WolkAbout Technology s.r.o.</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright (C) 2020 WolkAbout Technology s.r.o.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * you may not use this file except in compliance with the License.</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * You may obtain a copy of the License at</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> *      http://www.apache.org/licenses/LICENSE-2.0</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment"> * Unless required by applicable law or agreed to in writing, software</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"> * See the License for the specific language governing permissions and</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment"> * limitations under the License.</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#ifndef WOLKABOUT_MODBUS_STRINGMAPPING_H</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#define WOLKABOUT_MODBUS_STRINGMAPPING_H</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * This program is free software; you can redistribute it and/or</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * modify it under the terms of the GNU Lesser General Public</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * License as published by the Free Software Foundation; either</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> * version 3 of the License, or (at your option) any later version.</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment"> * This program is distributed in the hope that it will be useful,</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment"> * but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment"> * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment"> * Lesser General Public License for more details.</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment"> * You should have received a copy of the GNU Lesser General Public License</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"> * along with this program; if not, write to the Free Software Foundation,</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment"> * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;ModbusReader.h&quot;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">namespace </span>wolkabout</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="classwolkabout_1_1StringMapping.html">   28</a></span>&#160;<span class="keyword">class </span><a class="code" href="classwolkabout_1_1StringMapping.html">StringMapping</a> : <span class="keyword">public</span> <a class="code" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <a class="code" href="classwolkabout_1_1StringMapping.html#a5680a49e1e11a0a8c2a77fedeb5a2fe6">StringMapping</a>(<span class="keyword">const</span> std::string&amp; reference, <a class="code" href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">RegisterType</a> registerType, <span class="keyword">const</span> std::vector&lt;int16_t&gt;&amp; addresses,</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                  <a class="code" href="classwolkabout_1_1RegisterMapping.html#a81dd6e22d9038c8c4a96be2144fb19fe">OperationType</a> operation, <span class="keywordtype">bool</span> readRestricted = <span class="keyword">false</span>, int8_t slaveAddress = -1);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classwolkabout_1_1StringMapping.html#a39eaecd8b6a3514e5ef173cc626321f6">update</a>(<span class="keyword">const</span> std::vector&lt;uint16_t&gt;&amp; newValues) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classwolkabout_1_1StringMapping.html#a5f8cc00ab241e09bc14cd9fe2aa93edb">writeValue</a>(<span class="keyword">const</span> std::string&amp; newValue);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">const</span> std::string&amp; <a class="code" href="classwolkabout_1_1StringMapping.html#af44622a3bcc73c34b52dc77bd71bfde1">getStringValue</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    std::string m_stringValue;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;};</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}    <span class="comment">// namespace wolkabout</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#endif    // WOLKABOUT_MODBUS_STRINGMAPPING_H</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#ifndef WOLKABOUT_MODBUS_STRINGMAPPING_H</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#define WOLKABOUT_MODBUS_STRINGMAPPING_H</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;ModbusReader.h&quot;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span>wolkabout</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="classwolkabout_1_1StringMapping.html">   31</a></span>&#160;<span class="keyword">class </span><a class="code" href="classwolkabout_1_1StringMapping.html">StringMapping</a> : <span class="keyword">public</span> <a class="code" href="classwolkabout_1_1RegisterMapping.html">RegisterMapping</a></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="classwolkabout_1_1StringMapping.html#a5680a49e1e11a0a8c2a77fedeb5a2fe6">StringMapping</a>(<span class="keyword">const</span> std::string&amp; reference, <a class="code" href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">RegisterType</a> registerType, <span class="keyword">const</span> std::vector&lt;int16_t&gt;&amp; addresses,</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                  <a class="code" href="classwolkabout_1_1RegisterMapping.html#a81dd6e22d9038c8c4a96be2144fb19fe">OperationType</a> operation, <span class="keywordtype">bool</span> readRestricted = <span class="keyword">false</span>, int8_t slaveAddress = -1);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classwolkabout_1_1StringMapping.html#a39eaecd8b6a3514e5ef173cc626321f6">update</a>(<span class="keyword">const</span> std::vector&lt;uint16_t&gt;&amp; newValues) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classwolkabout_1_1StringMapping.html#a5f8cc00ab241e09bc14cd9fe2aa93edb">writeValue</a>(<span class="keyword">const</span> std::string&amp; newValue);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">const</span> std::string&amp; <a class="code" href="classwolkabout_1_1StringMapping.html#af44622a3bcc73c34b52dc77bd71bfde1">getStringValue</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    std::string m_stringValue;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;};</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}    <span class="comment">// namespace wolkabout</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#endif    // WOLKABOUT_MODBUS_STRINGMAPPING_H</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclasswolkabout_1_1RegisterMapping_html_a3d123b0e557d72949e1a403ef3076cef"><div class="ttname"><a href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">wolkabout::RegisterMapping::RegisterType</a></div><div class="ttdeci">RegisterType</div><div class="ttdoc">Indicates the modbus register type defined by the protocol.</div><div class="ttdef"><b>Definition:</b> RegisterMapping.h:41</div></div>
-<div class="ttc" id="aclasswolkabout_1_1StringMapping_html_a5f8cc00ab241e09bc14cd9fe2aa93edb"><div class="ttname"><a href="classwolkabout_1_1StringMapping.html#a5f8cc00ab241e09bc14cd9fe2aa93edb">wolkabout::StringMapping::writeValue</a></div><div class="ttdeci">bool writeValue(const std::string &amp;newValue)</div><div class="ttdoc">Triggers the client to write the value for this register.</div><div class="ttdef"><b>Definition:</b> StringMapping.cpp:52</div></div>
-<div class="ttc" id="aclasswolkabout_1_1StringMapping_html"><div class="ttname"><a href="classwolkabout_1_1StringMapping.html">wolkabout::StringMapping</a></div><div class="ttdoc">Class describing a RegisterMapping with output type STRING.</div><div class="ttdef"><b>Definition:</b> StringMapping.h:29</div></div>
-<div class="ttc" id="aclasswolkabout_1_1RegisterMapping_html"><div class="ttname"><a href="classwolkabout_1_1RegisterMapping.html">wolkabout::RegisterMapping</a></div><div class="ttdoc">Indicates a logical unit, resulting in one value, involving one/multiple/part of Modbus register(s).</div><div class="ttdef"><b>Definition:</b> RegisterMapping.h:35</div></div>
-<div class="ttc" id="aclasswolkabout_1_1StringMapping_html_af44622a3bcc73c34b52dc77bd71bfde1"><div class="ttname"><a href="classwolkabout_1_1StringMapping.html#af44622a3bcc73c34b52dc77bd71bfde1">wolkabout::StringMapping::getStringValue</a></div><div class="ttdeci">const std::string &amp; getStringValue() const</div><div class="ttdoc">Get the last written/read value of registers, already parsed as STRING.</div><div class="ttdef"><b>Definition:</b> StringMapping.cpp:75</div></div>
-<div class="ttc" id="aclasswolkabout_1_1StringMapping_html_a39eaecd8b6a3514e5ef173cc626321f6"><div class="ttname"><a href="classwolkabout_1_1StringMapping.html#a39eaecd8b6a3514e5ef173cc626321f6">wolkabout::StringMapping::update</a></div><div class="ttdeci">bool update(const std::vector&lt; uint16_t &gt; &amp;newValues) override</div><div class="ttdef"><b>Definition:</b> StringMapping.cpp:35</div></div>
-<div class="ttc" id="aclasswolkabout_1_1RegisterMapping_html_a81dd6e22d9038c8c4a96be2144fb19fe"><div class="ttname"><a href="classwolkabout_1_1RegisterMapping.html#a81dd6e22d9038c8c4a96be2144fb19fe">wolkabout::RegisterMapping::OperationType</a></div><div class="ttdeci">OperationType</div><div class="ttdoc">Indicates the operation type for mapping data, when it is read/written to registers.</div><div class="ttdef"><b>Definition:</b> RegisterMapping.h:66</div></div>
-<div class="ttc" id="aclasswolkabout_1_1StringMapping_html_a5680a49e1e11a0a8c2a77fedeb5a2fe6"><div class="ttname"><a href="classwolkabout_1_1StringMapping.html#a5680a49e1e11a0a8c2a77fedeb5a2fe6">wolkabout::StringMapping::StringMapping</a></div><div class="ttdeci">StringMapping(const std::string &amp;reference, RegisterType registerType, const std::vector&lt; int16_t &gt; &amp;addresses, OperationType operation, bool readRestricted=false, int8_t slaveAddress=-1)</div><div class="ttdoc">Constructor defining two register addresses which can be read and written as two registers.</div><div class="ttdef"><b>Definition:</b> StringMapping.cpp:24</div></div>
+<div class="ttc" id="aclasswolkabout_1_1RegisterMapping_html_a3d123b0e557d72949e1a403ef3076cef"><div class="ttname"><a href="classwolkabout_1_1RegisterMapping.html#a3d123b0e557d72949e1a403ef3076cef">wolkabout::RegisterMapping::RegisterType</a></div><div class="ttdeci">RegisterType</div><div class="ttdoc">Indicates the modbus register type defined by the protocol.</div><div class="ttdef"><b>Definition:</b> RegisterMapping.h:44</div></div>
+<div class="ttc" id="aclasswolkabout_1_1StringMapping_html_a5f8cc00ab241e09bc14cd9fe2aa93edb"><div class="ttname"><a href="classwolkabout_1_1StringMapping.html#a5f8cc00ab241e09bc14cd9fe2aa93edb">wolkabout::StringMapping::writeValue</a></div><div class="ttdeci">bool writeValue(const std::string &amp;newValue)</div><div class="ttdoc">Triggers the client to write the value for this register.</div><div class="ttdef"><b>Definition:</b> StringMapping.cpp:55</div></div>
+<div class="ttc" id="aclasswolkabout_1_1StringMapping_html"><div class="ttname"><a href="classwolkabout_1_1StringMapping.html">wolkabout::StringMapping</a></div><div class="ttdoc">Class describing a RegisterMapping with output type STRING.</div><div class="ttdef"><b>Definition:</b> StringMapping.h:32</div></div>
+<div class="ttc" id="aclasswolkabout_1_1RegisterMapping_html"><div class="ttname"><a href="classwolkabout_1_1RegisterMapping.html">wolkabout::RegisterMapping</a></div><div class="ttdoc">Indicates a logical unit, resulting in one value, involving one/multiple/part of Modbus register(s).</div><div class="ttdef"><b>Definition:</b> RegisterMapping.h:38</div></div>
+<div class="ttc" id="aclasswolkabout_1_1StringMapping_html_af44622a3bcc73c34b52dc77bd71bfde1"><div class="ttname"><a href="classwolkabout_1_1StringMapping.html#af44622a3bcc73c34b52dc77bd71bfde1">wolkabout::StringMapping::getStringValue</a></div><div class="ttdeci">const std::string &amp; getStringValue() const</div><div class="ttdoc">Get the last written/read value of registers, already parsed as STRING.</div><div class="ttdef"><b>Definition:</b> StringMapping.cpp:78</div></div>
+<div class="ttc" id="aclasswolkabout_1_1StringMapping_html_a39eaecd8b6a3514e5ef173cc626321f6"><div class="ttname"><a href="classwolkabout_1_1StringMapping.html#a39eaecd8b6a3514e5ef173cc626321f6">wolkabout::StringMapping::update</a></div><div class="ttdeci">bool update(const std::vector&lt; uint16_t &gt; &amp;newValues) override</div><div class="ttdef"><b>Definition:</b> StringMapping.cpp:38</div></div>
+<div class="ttc" id="aclasswolkabout_1_1RegisterMapping_html_a81dd6e22d9038c8c4a96be2144fb19fe"><div class="ttname"><a href="classwolkabout_1_1RegisterMapping.html#a81dd6e22d9038c8c4a96be2144fb19fe">wolkabout::RegisterMapping::OperationType</a></div><div class="ttdeci">OperationType</div><div class="ttdoc">Indicates the operation type for mapping data, when it is read/written to registers.</div><div class="ttdef"><b>Definition:</b> RegisterMapping.h:69</div></div>
+<div class="ttc" id="aclasswolkabout_1_1StringMapping_html_a5680a49e1e11a0a8c2a77fedeb5a2fe6"><div class="ttname"><a href="classwolkabout_1_1StringMapping.html#a5680a49e1e11a0a8c2a77fedeb5a2fe6">wolkabout::StringMapping::StringMapping</a></div><div class="ttdeci">StringMapping(const std::string &amp;reference, RegisterType registerType, const std::vector&lt; int16_t &gt; &amp;addresses, OperationType operation, bool readRestricted=false, int8_t slaveAddress=-1)</div><div class="ttdoc">Constructor defining two register addresses which can be read and written as two registers.</div><div class="ttdef"><b>Definition:</b> StringMapping.cpp:27</div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_27dea94239bbade6a460467c83cf1f9d.html">mappings</a></li><li class="navelem"><b>StringMapping.h</b></li>
 				<li class="footer">
-					Generated on Thu Apr 9 2020 13:59:04 for MoreModbus by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Apr 16 2020 13:10:27 for MoreModbus by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.18.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.
 				</li>
