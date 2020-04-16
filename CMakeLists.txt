@@ -37,9 +37,9 @@ set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS}    -Wall -Wextra -pedantic             
                                             -Wwrite-strings -Werror=non-virtual-dtor")
 
 # library output
-set(CMAKE_LIBRARY_INCLUDE_DIRECTORY ${CMAKE_BINARY_DIR}/include)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR}/build)
+set(CMAKE_LIBRARY_INCLUDE_DIRECTORY ${CMAKE_PREFIX_PATH}/include)
 link_directories(${CMAKE_BINARY_DIR}/lib)
 
 add_subdirectory(dependencies)
@@ -60,14 +60,27 @@ add_dependencies(${PROJECT_NAME} libmodbus)
 
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_LIST_DIR}/src")
 
+# Tests
+include_directories("tests")
+
+file(GLOB_RECURSE TEST_HEADER_FILES "tests/*.h" "tests/*.hpp")
+file(GLOB_RECURSE TEST_SOURCE_FILES "tests/*.c" "tests/*.cpp")
+
+add_executable(${PROJECT_NAME}Tests ${TEST_SOURCE_FILES})
+target_link_libraries(${PROJECT_NAME}Tests ${PROJECT_NAME})
+target_include_directories(${PROJECT_NAME}Tests PUBLIC ${CMAKE_LIBRARY_INCLUDE_DIRECTORY})
+set_target_properties(${PROJECT_NAME}Tests PROPERTIES INSTALL_RPATH "$ORIGIN/lib")
+
+add_dependencies(${PROJECT_NAME}Tests libgtest)
+
 # Example
 include_directories("example")
 
 file(GLOB_RECURSE EXAMPLE_HEADER_FILES "example/*.h" "example/*.hpp")
 file(GLOB_RECURSE EXAMPLE_SOURCE_FILES "example/*.c" "example/*.cpp")
 
-add_executable(moreModbusExample ${EXAMPLE_SOURCE_FILES})
-target_link_libraries(moreModbusExample ${PROJECT_NAME})
-set_target_properties(moreModbusExample PROPERTIES INSTALL_RPATH "$ORIGIN/lib")
+add_executable(${PROJECT_NAME}Example ${EXAMPLE_SOURCE_FILES})
+target_link_libraries(${PROJECT_NAME}Example ${PROJECT_NAME})
+set_target_properties(${PROJECT_NAME}Example PROPERTIES INSTALL_RPATH "$ORIGIN/lib")
 
 add_subdirectory(cmake)
