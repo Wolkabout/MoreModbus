@@ -104,7 +104,7 @@ MODBUS_BEGIN_DECLS
 
 /* Consequently:
  * - RTU MODBUS ADU = 253 bytes + Server address (1 byte) + CRC (2 bytes) = 256
- *   bytes.
+ *  bytes.
  * - TCP MODBUS ADU = 253 bytes + MBAP (7 bytes) = 260 bytes.
  * so the maximum of both backend in 260 bytes. This size can used to allocate
  * an array of bytes to store responses and it will be compatible with the two

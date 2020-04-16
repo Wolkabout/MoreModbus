@@ -1,19 +1,19 @@
 /*
- *  Copyright (C) 2020 WolkAbout Technology s.r.o.
+ * Copyright (C) 2020 WolkAbout Technology s.r.o.
  *
- *  This program is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 3 of the License, or (at your option) any later version.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public License
- *  along with this program; if not, write to the Free Software Foundation,
- *  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 
@@ -29,7 +29,7 @@ namespace wolkabout
 {
 /**
  * @brief Collection of Utility methods, necessary for parsing data, between uint16_t, and
- *          wanted user types.
+ *         wanted user types.
  */
 class DataParsers
 {
@@ -45,8 +45,8 @@ public:
 
     /**
      * @brief Convert passed string value, where each character can be interpreted as an ASCII character
-     *          into an uint16_t vector, where one uint16_t holds two characters, one as first 8 bits,
-     *          and next one as other 8 bits.
+     *         into an uint16_t vector, where one uint16_t holds two characters, one as first 8 bits,
+     *         and next one as other 8 bits.
      * @param value String value to be parsed.
      * @return std::vector containing (number of value characters / 2) uint16_t values.
      */
@@ -54,8 +54,8 @@ public:
 
     /**
      * @brief Convert passed string value, where each character can be interpreted as an UNICODE (only 0-255)
-     *          character into an uint16_t vector, where one uint16_t holds two characters,
-     *          one as first 8 bits, and next one as other 8 bits.
+     *         character into an uint16_t vector, where one uint16_t holds two characters,
+     *         one as first 8 bits, and next one as other 8 bits.
      * @param value String value to be parsed.
      * @return std::vector containing (number of value characters / 2) uint16_t values.
      */
@@ -63,7 +63,7 @@ public:
 
     /**
      * @brief Convert passed 32-bit Integer value, where we separate it to two 16-bit uint16_t,
-     *        order dictated by the endian mode passed as argument.
+     *       order dictated by the endian mode passed as argument.
      * @param value Int32 value to be parsed
      * @param endian Endian mode to be used to order uint16_t's
      * @return vector containing two uint16_t values, ordered for endian
@@ -72,7 +72,7 @@ public:
 
     /**
      * @brief Convert passed 32-bit unsigned Integer value, where we separate it to two 16-bit uint16_t,
-     *        order dictated by the endian mode passed as argument.
+     *       order dictated by the endian mode passed as argument.
      * @param value UInt32 value to be parsed
      * @param endian Endian mode to be used to order uint16_t's
      * @return vector containing two uint16_t values, ordered for endian
@@ -81,7 +81,7 @@ public:
 
     /**
      * @brief Convert passed 32-bit Float value, where we separate it to two 16-bit uint16_t,
-     *        order dictated by the endian mode passed as argument.
+     *       order dictated by the endian mode passed as argument.
      * @param value Float value to be parsed
      * @return vector containing two uint16_t values, separated bits
      */

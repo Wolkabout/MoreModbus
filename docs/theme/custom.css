@@ -4,7 +4,7 @@ div.fragment, pre.fragment {
 }
 
 /*********************************************/
-/**               Main content              **/
+/**              Main content              **/
 /*********************************************/
 .contents {
 	margin: 10px auto !important;
@@ -13,7 +13,7 @@ div.fragment, pre.fragment {
 }
 
 /*********************************************/
-/**               Inline code               **/
+/**              Inline code               **/
 /*********************************************/
 p code,
 li code,
@@ -32,7 +32,7 @@ dd code {
 }
 
 /*********************************************/
-/**         Table of Contents (ToC)         **/
+/**        Table of Contents (ToC)         **/
 /*********************************************/
 div.toc {
 	margin: 0 !important;
@@ -45,14 +45,14 @@ div.toc h3 {
 }
 
 /*********************************************/
-/**              Content table              **/
+/**             Content table              **/
 /*********************************************/
 .contents table.doxtable {
 	margin: 0 auto;
 }
 
 /*********************************************/
-/**               Field table               **/
+/**              Field table               **/
 /*********************************************/
 .fieldtable {
 	box-shadow: none !important;
@@ -61,7 +61,7 @@ div.toc h3 {
 }
 
 /*********************************************/
-/**           Memitem and memtitle          **/
+/**          Memitem and memtitle          **/
 /*********************************************/
 .memitem,
 .memproto,
@@ -73,7 +73,7 @@ div.toc h3 {
 }
 
 /*********************************************/
-/**             TOP navigation              **/
+/**            TOP navigation              **/
 /*********************************************/
 .tablist a:hover,
 .tablist li.current a {
@@ -83,7 +83,7 @@ div.toc h3 {
 }
 
 /*********************************************/
-/**              H1 in textblocks           **/
+/**             H1 in textblocks           **/
 /*********************************************/
 .textblock h1 {
     border-bottom: 1px solid #32363d;
@@ -99,7 +99,7 @@ div.toc h3 {
 }
 
 /*********************************************/
-/**               Note, warning             **/
+/**              Note, warning             **/
 /*********************************************/
 dl.note,
 dl.warning,
@@ -216,7 +216,7 @@ dl.reflist dd {
 }
 
 /*********************************************/
-/**               Reference list            **/
+/**              Reference list            **/
 /**Similar to warning/note/todo/... messages**/
 /*********************************************/
 dl.reflist {
@@ -224,7 +224,7 @@ dl.reflist {
 }
 
 /*********************************************/
-/**               Note, warning             **/
+/**              Note, warning             **/
 /*********************************************/
 #docs_list {
 	padding: 0 10px;
@@ -258,14 +258,14 @@ dl.reflist {
 }
 
 /*********************************************/
-/**               Resizable UI              **/
+/**              Resizable UI              **/
 /*********************************************/
 .ui-resizable-e {
 	width: 3px;
 }
 
 /*********************************************/
-/**               Download url              **/
+/**              Download url              **/
 /*********************************************/
 .download_url {
 	font-weight: bold;
@@ -274,7 +274,7 @@ dl.reflist {
 }
 
 /*********************************************/
-/**               Syntax folor              **/
+/**              Syntax folor              **/
 /*********************************************/
 div.line a {
 	text-decoration: underline;
@@ -285,7 +285,7 @@ span.lineno a {
 }
 
 /*********************************************/
-/**          Modules/Directory table        **/
+/**         Modules/Directory table        **/
 /*********************************************/
 .directory .arrow {
 	height: initial;
@@ -296,7 +296,7 @@ span.lineno a {
 }
 
 /*********************************************/
-/**                 Mem items               **/
+/**                Mem items               **/
 /*********************************************/
 .memproto table td {
 	font-family: monospace, fixed !important;
@@ -323,16 +323,16 @@ td.memItemLeft, td.memItemRight {
 }
 
 /*********************************************/
-/**                 Footer                  **/
+/**                Footer                  **/
 /*********************************************/
 img.footer {
 	height: 22px;
 }
 
 /*********************************************/
-/**             Custom scrollbar            **/
+/**            Custom scrollbar            **/
 /*********************************************/
 
 /*********************************************/
-/**             Custom scrollbar            **/
+/**            Custom scrollbar            **/
 /*********************************************/

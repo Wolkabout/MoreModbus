@@ -1,19 +1,19 @@
 /*
- *  Copyright (C) 2020 WolkAbout Technology s.r.o.
+ * Copyright (C) 2020 WolkAbout Technology s.r.o.
  *
- *  This program is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 3 of the License, or (at your option) any later version.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public License
- *  along with this program; if not, write to the Free Software Foundation,
- *  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 
@@ -32,7 +32,7 @@ namespace wolkabout
 /**
  * @brief Main interface class for Clients to inherit.
  * @details Describes all methods necessary for the ModbusGroupReader to use while reading
- *          a group. Uses a mutex so calls don't overlap.
+ *         a group. Uses a mutex so calls don't overlap.
  */
 class ModbusClient
 {
@@ -42,7 +42,7 @@ public:
 
     /**
      * @return Returns whether or not the client successfully established a modbus connection
-     *          or if the connection is already established.
+     *         or if the connection is already established.
      */
     bool connect();
 
@@ -68,7 +68,7 @@ public:
 
     /**
      * @brief Writes multiple uint16_t values into HOLDING REGISTERS, targeting the address, and however many registers
-     *        after, dictated by the length of vector passed as value.
+     *       after, dictated by the length of vector passed as value.
      * @details Modbus code function 16 is being used in this call.
      * @param slaveAddress
      * @param address
@@ -89,7 +89,7 @@ public:
 
     /**
      * @brief Reads from multiple INPUT_CONTACTS, starting from address,
-     *        reading as much as passed argument number dictates.
+     *       reading as much as passed argument number dictates.
      * @details Modbus code function 2 is being used in this call.
      * @param slaveAddress
      * @param address
@@ -111,7 +111,7 @@ public:
 
     /**
      * @brief Reads from multiple HOLDING_REGISTERS, targeting the address,
-     *        reading as much as passed argument number dictates.
+     *       reading as much as passed argument number dictates.
      * @details Modbus code function 3 is being used in this call.
      * @param slaveAddress
      * @param address
@@ -123,7 +123,7 @@ public:
 
     /**
      * @brief Reads from multiple INPUT_REGISTERS, targeting the address,
-     *        reading as much as passed argument number dictates.
+     *       reading as much as passed argument number dictates.
      * @details Modbus code function 4 is being used in this call.
      * @param slaveAddress
      * @param address
@@ -145,7 +145,7 @@ public:
 
     /**
      * @brief Reads from multiple COILS, targeting the address,
-     *        reading as much as passed argument number dictates.
+     *       reading as much as passed argument number dictates.
      * @details Modbus code function 1 is being used in this call.
      * @param slaveAddress
      * @param address

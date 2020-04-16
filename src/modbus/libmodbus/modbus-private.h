@@ -46,9 +46,9 @@ typedef enum
 } modbus_backend_type_t;
 
 /*
- *  ---------- Request     Indication ----------
- *  | Client | ---------------------->| Server |
- *  ---------- Confirmation  Response ----------
+ * ---------- Request     Indication ----------
+ * | Client | ---------------------->| Server |
+ * ---------- Confirmation  Response ----------
  */
 typedef enum
 {

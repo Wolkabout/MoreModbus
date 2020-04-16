@@ -1,19 +1,19 @@
 /*
- *  Copyright (C) 2020 WolkAbout Technology s.r.o.
+ * Copyright (C) 2020 WolkAbout Technology s.r.o.
  *
- *  This program is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 3 of the License, or (at your option) any later version.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public License
- *  along with this program; if not, write to the Free Software Foundation,
- *  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 
@@ -32,7 +32,7 @@ class RegisterGroup;
 /**
  * @brief Indicates a logical unit, resulting in one value, involving one/multiple/part of Modbus register(s).
  * @details As definition, it takes in the RegisterType and other parameters, in which there is an OutputType,
- *          and parameters to indicate how to read values.
+ *         and parameters to indicate how to read values.
  */
 class RegisterMapping
 {
@@ -79,7 +79,7 @@ public:
     /**
      * @brief Default constructor for mapping
      * @details For registerType COIL/INPUT_CONTACT, the output type is set to BOOL.
-     *          For registerType HOLDING_REGISTER/INPUT_REGISTER, the output type is set to UINT16.
+     *         For registerType HOLDING_REGISTER/INPUT_REGISTER, the output type is set to UINT16.
      * @param reference of the mapping, unique key for access.
      * @param registerType indicates the modbus register type.
      * @param address of the register
@@ -92,7 +92,7 @@ public:
     /**
      * @brief Default constructor for mapping with custom OutputType.
      * @details For registerType COIL/INPUT_CONTACT, the output type is set to BOOL.
-     *          For registerType HOLDING_REGISTER/INPUT_REGISTER, the output type can be INT16/UINT16.
+     *         For registerType HOLDING_REGISTER/INPUT_REGISTER, the output type can be INT16/UINT16.
      * @param reference of the mapping, unique key for access.
      * @param registerType indicates the modbus register type.
      * @param address of the register
@@ -120,9 +120,9 @@ public:
     /**
      * @brief Constructor for cases where there is multiple registers merged into a single output value.
      * @details Takes in 2 registers to get 32 bit types (such as UINT32, INT32, FLOAT)
-     *          using operations as MERGE_BIG_ENDIAN & MERGE_LITTLE_ENDIAN for UINT32, INT32, and MERGE_FLOAT for FLOAT,
-     *          and can take in any number of register for STRING, where string will contain two characters per register
-     *          interpreted by operations STRINGIFY_ASCII & STRINGIFY_UNICODE.
+     *         using operations as MERGE_BIG_ENDIAN & MERGE_LITTLE_ENDIAN for UINT32, INT32, and MERGE_FLOAT for FLOAT,
+     *         and can take in any number of register for STRING, where string will contain two characters per register
+     *         interpreted by operations STRINGIFY_ASCII & STRINGIFY_UNICODE.
      * @param reference of the mapping, unique key for access.
      * @param registerType indicates the modbus register type.
      * @param addresses of the registers
