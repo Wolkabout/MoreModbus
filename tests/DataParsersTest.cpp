@@ -26,7 +26,15 @@ class DataParsersTest: public ::testing::Test
 public:
     void SetUp()
     {
-        wolkabout::Logger::setInstance(std::unique_ptr<wolkabout::ConsoleLogger>(new wolkabout::ConsoleLogger()));
+        auto logger = std::unique_ptr<wolkabout::ConsoleLogger>(new wolkabout::ConsoleLogger());
+        logger->setLogLevel(wolkabout::LogLevel::TRACE);
+        wolkabout::Logger::setInstance(std::move(logger));
+        LOG(DEBUG) << "Started tests.";
     }
 };
+
+TEST_F(DataParsersTest, SimpleTest)
+{
+    LOG(DEBUG) << "Hello World!";
+}
 }    // namespace
