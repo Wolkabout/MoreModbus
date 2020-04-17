@@ -40,7 +40,8 @@ set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS}    -Wall -Wextra -pedantic             
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR}/build)
 set(CMAKE_LIBRARY_INCLUDE_DIRECTORY ${CMAKE_PREFIX_PATH}/include)
-link_directories(${CMAKE_BINARY_DIR}/lib)
+
+link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
 add_subdirectory(dependencies)
 
@@ -56,7 +57,7 @@ file(GLOB_RECURSE SOURCE_FILES src/*.c src/*.cpp)
 add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} modbus pthread)
 set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "$ORIGIN")
-add_dependencies(${PROJECT_NAME} libmodbus)
+add_dependencies(${PROJECT_NAME} libmodbus libgtest)
 
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_LIST_DIR}/src")
 
@@ -67,11 +68,9 @@ file(GLOB_RECURSE TEST_HEADER_FILES "tests/*.h" "tests/*.hpp")
 file(GLOB_RECURSE TEST_SOURCE_FILES "tests/*.c" "tests/*.cpp")
 
 add_executable(${PROJECT_NAME}Tests ${TEST_SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME}Tests ${PROJECT_NAME})
+target_link_libraries(${PROJECT_NAME}Tests ${PROJECT_NAME} gtest_main gtest)
 target_include_directories(${PROJECT_NAME}Tests PUBLIC ${CMAKE_LIBRARY_INCLUDE_DIRECTORY})
 set_target_properties(${PROJECT_NAME}Tests PROPERTIES INSTALL_RPATH "$ORIGIN/lib")
-
-add_dependencies(${PROJECT_NAME}Tests libgtest)
 
 # Example
 include_directories("example")
