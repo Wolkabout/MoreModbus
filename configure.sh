@@ -18,7 +18,7 @@
 
 cp tools/git/pre-commit .git/hooks/pre-commit
 chmod +x .git/hooks/pre-commit
-mkdir out
+mkdir -p out
 pushd out || exit
 cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ..
 popd || exit
