@@ -63,9 +63,9 @@ std::vector<uint16_t> DataParsers::uint32ToRegisters(uint32_t value, DataParsers
     uint16_t bigValue = value & MAX_UINT16;
     uint16_t smallValue = (value >> SHIFT_UINT16) & MAX_UINT16;
     if (endian == Endian::BIG)
-        return std::vector<uint16_t>{smallValue, bigValue};
-    else
         return std::vector<uint16_t>{bigValue, smallValue};
+    else
+        return std::vector<uint16_t>{smallValue, bigValue};
 }
 
 std::vector<uint16_t> DataParsers::floatToRegisters(float value)
@@ -115,7 +115,7 @@ uint32_t DataParsers::registersToUint32(const std::vector<uint16_t>& value, Data
     if (value.size() != 2)
         throw std::logic_error("DataParsers: You must pass exactly 2 values to parse into an UInt32.");
 
-    uint8_t bigValue = (endian == DataParsers::Endian::LITTLE), smallValue = !bigValue;
+    uint8_t bigValue = (endian == DataParsers::Endian::BIG), smallValue = !bigValue;
     return static_cast<uint32_t>((value[bigValue] << SHIFT_UINT16) + value[smallValue]);
 }
 
