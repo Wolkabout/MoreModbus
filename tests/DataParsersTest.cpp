@@ -22,6 +22,9 @@
 #undef private
 #undef protected
 
+#define _bits std::vector<bool>
+#define _registers std::vector<uint16_t>
+
 #include <gtest/gtest.h>
 
 #include "utilities/ConsoleLogger.h"
@@ -32,30 +35,69 @@ namespace
 class DataParsersTest : public ::testing::Test
 {
 protected:
-    std::map<uint16_t, std::vector<bool>> bitValues;
-    std::map<std::string, std::vector<std::uint16_t>> stringValues;
-    std::map<uint32_t, std::vector<std::uint16_t>> uint32Values;
-    std::map<int32_t, std::vector<std::uint16_t>> int32Values;
-    std::map<float, std::vector<std::uint16_t>> floatValues;
+    std::map<uint16_t, _bits> bitValues;
+    std::map<std::string, _registers> stringValues;
+    std::map<uint32_t, _registers> uint32ValuesBigEndian;
+    std::map<uint32_t, _registers> uint32ValuesLittleEndian;
+    std::map<int32_t, _registers> int32ValuesBigEndian;
+    std::map<int32_t, _registers> int32ValuesLittleEndian;
+    std::map<float, _registers> floatValues;
 
 public:
     void SetUpBitValues()
     {
-        bitValues.emplace(747, std::vector<bool> {0,0,0,0,0,0,1,0,1,1,1,0,1,0,1,1});
-        bitValues.emplace(2958, std::vector<bool> {0,0,0,0,1,0,1,1,1,0,0,0,1,1,1,0});
-        bitValues.emplace(14267, std::vector<bool> {0,0,1,1,0,1,1,1,1,0,1,1,1,0,1,1});
-        bitValues.emplace(15274, std::vector<bool> {0,0,1,1,1,0,1,1,1,0,1,0,1,0,1,0});
-        bitValues.emplace(20621, std::vector<bool> {0,1,0,1,0,0,0,0,1,0,0,0,1,1,0,1});
-        bitValues.emplace(44510, std::vector<bool> {1,0,1,0,1,1,0,1,1,1,0,1,1,1,1,0});
-        bitValues.emplace(47701, std::vector<bool> {1,0,1,1,1,0,1,0,0,1,0,1,0,1,0,1});
-        bitValues.emplace(50616, std::vector<bool> {1,1,0,0,0,1,0,1,1,0,1,1,1,0,0,0});
-        bitValues.emplace(52175, std::vector<bool> {1,1,0,0,1,0,1,1,1,1,0,0,1,1,1,1});
-        bitValues.emplace(56402, std::vector<bool> {1,1,0,1,1,1,0,0,0,1,0,1,0,0,1,0});
+        bitValues.emplace(747, _bits {0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1});
+        bitValues.emplace(2958, _bits {0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0});
+        bitValues.emplace(14267, _bits {0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1});
+        bitValues.emplace(15274, _bits {0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0});
+        bitValues.emplace(20621, _bits {0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1});
+        bitValues.emplace(44510, _bits {1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0});
+        bitValues.emplace(47701, _bits {1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1});
+        bitValues.emplace(50616, _bits {1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0});
+        bitValues.emplace(52175, _bits {1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1});
+        bitValues.emplace(56402, _bits {1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0});
     }
 
     void SetUpStringValues()
     {
+        stringValues.emplace("Aloha", _registers {16748, 28520, 24832});
+        stringValues.emplace("Aloha!", _registers {16748, 28520, 24865});
+        stringValues.emplace("ASCII", _registers {16723, 17225, 18688});
+        stringValues.emplace("Unicode", _registers {21870, 26979, 28516, 25856});
+    }
 
+    void SetUpUInt32Values()
+    {
+        uint32ValuesBigEndian.emplace(1908, _registers {1908, 0});
+        uint32ValuesBigEndian.emplace(66666332, _registers {16220, 1017});
+        uint32ValuesBigEndian.emplace(945890348, _registers {9260, 14433});
+        uint32ValuesBigEndian.emplace(2313852345, _registers {38329, 35306});
+
+        uint32ValuesLittleEndian.emplace(25953, _registers {0, 25953});
+        uint32ValuesLittleEndian.emplace(231589259, _registers {3533, 50571});
+        uint32ValuesLittleEndian.emplace(2412900252, _registers {36817, 61340});
+        uint32ValuesLittleEndian.emplace(4128992390, _registers {63003, 27782});
+    }
+
+    void SetUpInt32Values()
+    {
+        int32ValuesBigEndian.emplace(-1, _registers {65535, 65535});
+        int32ValuesBigEndian.emplace(-103, _registers {65433, 65535});
+        int32ValuesBigEndian.emplace(-412980, _registers {45772, 65529});
+        int32ValuesBigEndian.emplace(-1012490345, _registers {40855, 50086});
+
+        int32ValuesLittleEndian.emplace(-1, _registers {65535, 65535});
+        int32ValuesLittleEndian.emplace(-103, _registers {65535, 65433});
+        int32ValuesLittleEndian.emplace(-412980, _registers {65529, 45772});
+        int32ValuesLittleEndian.emplace(-1012490345, _registers {50086, 40855});
+    }
+
+    void SetUpFloatValues()
+    {
+        floatValues.emplace(4290.243, _registers {17798, 4594});
+        floatValues.emplace(-333.6521, _registers {50086, 54136});
+        floatValues.emplace(3489.12355, _registers {17754, 4602});
+        floatValues.emplace(10.2419599, _registers {16675, 57105});
     }
 
     void SetUp()
@@ -66,20 +108,315 @@ public:
         LOG(DEBUG) << "Started tests.";
 
         SetUpBitValues();
+        SetUpStringValues();
+        SetUpUInt32Values();
+        SetUpInt32Values();
+        SetUpFloatValues();
     }
 };
 
 TEST_F(DataParsersTest, TestSeparateBits)
 {
-    for (const auto& kvp: bitValues)
+    if (bitValues.empty())
     {
-        const auto bits = wolkabout::DataParsers::separateBits(kvp.first);
+        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with.";
+    }
+
+    for (const auto& kvp : bitValues)
+    {
+        const auto calculatedBits = wolkabout::DataParsers::separateBits(kvp.first);
 
         LOG(DEBUG) << kvp.first;
         for (uint i = 0; i < 16; i++)
         {
-            EXPECT_EQ(kvp.second[i], bits[15 - i]);
+            EXPECT_EQ(kvp.second[i], calculatedBits[15 - i]);
         }
+    }
+}
+
+TEST_F(DataParsersTest, TestBytesToStringASCII)
+{
+    if (stringValues.empty())
+    {
+        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with.";
+    }
+
+    for (const auto& kvp : stringValues)
+    {
+        auto string = wolkabout::DataParsers::registersToAsciiString(kvp.second);
+
+        if (string[string.length() - 1] == '\0')
+        {
+            string.pop_back();
+        }
+
+        LOG(DEBUG) << kvp.first;
+        EXPECT_EQ(kvp.first.length(), string.length());
+        EXPECT_EQ(kvp.first, string);
+    }
+}
+
+TEST_F(DataParsersTest, TestBytesToStringUnicode)
+{
+    if (stringValues.empty())
+    {
+        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with.";
+    }
+
+    for (const auto& kvp : stringValues)
+    {
+        auto string = wolkabout::DataParsers::registersToUnicodeString(kvp.second);
+
+        if (string[string.length() - 1] == '\0')
+        {
+            string.pop_back();
+        }
+
+        LOG(DEBUG) << kvp.first;
+        EXPECT_EQ(kvp.first.length(), string.length());
+        EXPECT_EQ(kvp.first, string);
+    }
+}
+
+TEST_F(DataParsersTest, TestStringToBytesASCII)
+{
+    if (stringValues.empty())
+    {
+        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with.";
+    }
+
+    for (const auto& kvp : stringValues)
+    {
+        const auto bytes = wolkabout::DataParsers::asciiStringToRegisters(kvp.first);
+
+        LOG(DEBUG) << kvp.first;
+        ASSERT_EQ(kvp.second.size(), bytes.size());
+
+        for (uint i = 0; i < bytes.size(); i++)
+        {
+            EXPECT_EQ(kvp.second[i], bytes[i]);
+        }
+    }
+}
+
+TEST_F(DataParsersTest, TestStringToBytesUnicode)
+{
+    if (stringValues.empty())
+    {
+        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with.";
+    }
+
+    for (const auto& kvp : stringValues)
+    {
+        const auto bytes = wolkabout::DataParsers::unicodeStringToRegisters(kvp.first);
+
+        LOG(DEBUG) << kvp.first;
+        ASSERT_EQ(kvp.second.size(), bytes.size());
+
+        for (uint i = 0; i < bytes.size(); i++)
+        {
+            EXPECT_EQ(kvp.second[i], bytes[i]);
+        }
+    }
+}
+
+TEST_F(DataParsersTest, TestUInt32ToBytesBigEndian)
+{
+    if (uint32ValuesBigEndian.empty())
+    {
+        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with.";
+    }
+
+    for (const auto& kvp : uint32ValuesBigEndian)
+    {
+        const auto bytes = wolkabout::DataParsers::uint32ToRegisters(kvp.first, wolkabout::DataParsers::Endian::BIG);
+
+        LOG(DEBUG) << kvp.first;
+        ASSERT_EQ(kvp.second.size(), bytes.size());
+
+        for (uint i = 0; i < bytes.size(); i++)
+        {
+            EXPECT_EQ(kvp.second[i], bytes[i]);
+        }
+    }
+}
+
+TEST_F(DataParsersTest, TestRegistersToUInt32BigEndian)
+{
+    if (uint32ValuesBigEndian.empty())
+    {
+        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with.";
+    }
+
+    for (const auto& kvp : uint32ValuesBigEndian)
+    {
+        const auto value = wolkabout::DataParsers::registersToUint32(kvp.second, wolkabout::DataParsers::Endian::BIG);
+
+        LOG(DEBUG) << kvp.first;
+        EXPECT_EQ(kvp.first, value);
+    }
+}
+
+TEST_F(DataParsersTest, TestUInt32ToBytesLittleEndian)
+{
+    if (uint32ValuesLittleEndian.empty())
+    {
+        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with.";
+    }
+
+    for (const auto& kvp : uint32ValuesLittleEndian)
+    {
+        const auto bytes = wolkabout::DataParsers::uint32ToRegisters(kvp.first, wolkabout::DataParsers::Endian::LITTLE);
+
+        LOG(DEBUG) << kvp.first;
+        ASSERT_EQ(kvp.second.size(), bytes.size());
+
+        for (uint i = 0; i < bytes.size(); i++)
+        {
+            EXPECT_EQ(kvp.second[i], bytes[i]);
+        }
+    }
+}
+
+TEST_F(DataParsersTest, TestRegistersToUInt32LittleEndian)
+{
+    if (uint32ValuesLittleEndian.empty())
+    {
+        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with.";
+    }
+
+    for (const auto& kvp : uint32ValuesLittleEndian)
+    {
+        const auto value = wolkabout::DataParsers::registersToUint32(kvp.second, wolkabout::DataParsers::Endian::LITTLE);
+
+        LOG(DEBUG) << kvp.first;
+        EXPECT_EQ(kvp.first, value);
+    }
+}
+
+TEST_F(DataParsersTest, TestInt32ToBytesBigEndian)
+{
+    if (int32ValuesBigEndian.empty())
+    {
+        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with.";
+    }
+
+    for (const auto& kvp : int32ValuesBigEndian)
+    {
+        const auto bytes = wolkabout::DataParsers::int32ToRegisters(kvp.first, wolkabout::DataParsers::Endian::BIG);
+
+        LOG(DEBUG) << kvp.first;
+        ASSERT_EQ(kvp.second.size(), bytes.size());
+
+        for (uint i = 0; i < bytes.size(); i++)
+        {
+            EXPECT_EQ(kvp.second[i], bytes[i]);
+        }
+    }
+}
+
+TEST_F(DataParsersTest, TestRegistersToInt32BigEndian)
+{
+    if (int32ValuesBigEndian.empty())
+    {
+        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with.";
+    }
+
+    for (const auto& kvp : int32ValuesBigEndian)
+    {
+        const auto value = wolkabout::DataParsers::registersToInt32(kvp.second, wolkabout::DataParsers::Endian::BIG);
+
+        LOG(DEBUG) << kvp.first;
+        EXPECT_EQ(kvp.first, value);
+    }
+}
+
+TEST_F(DataParsersTest, TestInt32ToBytesLittleEndian)
+{
+    if (int32ValuesLittleEndian.empty())
+    {
+        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with.";
+    }
+
+    for (const auto& kvp : int32ValuesLittleEndian)
+    {
+        const auto bytes = wolkabout::DataParsers::int32ToRegisters(kvp.first, wolkabout::DataParsers::Endian::LITTLE);
+
+        LOG(DEBUG) << kvp.first;
+        ASSERT_EQ(kvp.second.size(), bytes.size());
+
+        for (uint i = 0; i < bytes.size(); i++)
+        {
+            EXPECT_EQ(kvp.second[i], bytes[i]);
+        }
+    }
+}
+
+TEST_F(DataParsersTest, TestRegistersToInt32LittleEndian)
+{
+    if (int32ValuesLittleEndian.empty())
+    {
+        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with.";
+    }
+
+    for (const auto& kvp : int32ValuesLittleEndian)
+    {
+        const auto value = wolkabout::DataParsers::registersToInt32(kvp.second, wolkabout::DataParsers::Endian::LITTLE);
+
+        LOG(DEBUG) << kvp.first;
+        EXPECT_EQ(kvp.first, value);
+    }
+}
+
+TEST_F(DataParsersTest, TestFloatToBytes)
+{
+    if (floatValues.empty())
+    {
+        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with.";
+    }
+
+    for (const auto& kvp : floatValues)
+    {
+        const auto bytes = wolkabout::DataParsers::floatToRegisters(kvp.first);
+
+        LOG(DEBUG) << kvp.first;
+        ASSERT_EQ(kvp.second.size(), bytes.size());
+
+        for (uint i = 0; i < bytes.size(); i++)
+        {
+            EXPECT_EQ(kvp.second[i], bytes[i]);
+        }
+    }
+}
+
+TEST_F(DataParsersTest, TestBytesToFloat)
+{
+    if (floatValues.empty())
+    {
+        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with.";
+    }
+
+    for (const auto& kvp : floatValues)
+    {
+        const auto value = wolkabout::DataParsers::registersToFloat(kvp.second);
+
+        LOG(DEBUG) << kvp.first;
+        EXPECT_EQ(kvp.first, value);
     }
 }
 }    // namespace
