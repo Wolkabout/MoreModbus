@@ -63,9 +63,9 @@ std::vector<uint16_t> DataParsers::uint32ToRegisters(uint32_t value, DataParsers
     uint16_t bigValue = value & MAX_UINT16;
     uint16_t smallValue = (value >> SHIFT_UINT16) & MAX_UINT16;
     if (endian == Endian::BIG)
-        return std::vector<uint16_t>{bigValue, smallValue};
-    else
         return std::vector<uint16_t>{smallValue, bigValue};
+    else
+        return std::vector<uint16_t>{bigValue, smallValue};
 }
 
 std::vector<uint16_t> DataParsers::floatToRegisters(float value)
