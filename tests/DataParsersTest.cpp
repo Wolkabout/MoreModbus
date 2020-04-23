@@ -105,7 +105,7 @@ public:
         auto logger = std::unique_ptr<wolkabout::ConsoleLogger>(new wolkabout::ConsoleLogger());
         logger->setLogLevel(wolkabout::LogLevel::WARN);
         wolkabout::Logger::setInstance(std::move(logger));
-        LOG(DEBUG) << "Started tests.";
+        LOG(DEBUG) << "Started tests " << ::testing::UnitTest::GetInstance()->current_test_info()->name() << ".";
 
         SetUpBitValues();
         SetUpStringValues();
