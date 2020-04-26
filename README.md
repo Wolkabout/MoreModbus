@@ -36,10 +36,11 @@ This library requires:
 - GNU GCC and G++
 - CMake
 - Libmodbus (this is downloaded by CMake automatically)
+- autoconf, automake, libtool (needed by Libmodbus)
 
 So run
 ```shell script
-sudo apt install gcc g++ cmake
+sudo apt install autoconf automake libtool gcc g++ cmake
 ```
 
 And after that, run the configuration script
