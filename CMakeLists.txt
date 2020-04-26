@@ -73,10 +73,8 @@ include_directories("tests")
 file(GLOB_RECURSE TEST_HEADER_FILES "tests/*.h" "tests/*.hpp")
 file(GLOB_RECURSE TEST_SOURCE_FILES "tests/*.c" "tests/*.cpp")
 
-message(${CMAKE_CXX_FLAGS})
-
 add_executable(${PROJECT_NAME}Tests ${TEST_SOURCE_FILES} ${TEST_HEADER_FILES})
-target_link_libraries(${PROJECT_NAME}Tests ${PROJECT_NAME} gtest_main gtest)
+target_link_libraries(${PROJECT_NAME}Tests ${PROJECT_NAME} gtest_main gtest gmock_main gmock)
 target_include_directories(${PROJECT_NAME}Tests PUBLIC ${CMAKE_LIBRARY_INCLUDE_DIRECTORY})
 set_target_properties(${PROJECT_NAME}Tests PROPERTIES INSTALL_RPATH "$ORIGIN/lib")
 

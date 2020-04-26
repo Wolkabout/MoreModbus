@@ -16,50 +16,55 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#define private public
+#define protected public
+#include "modbus/LibModbusTcpIpClient.h"
+#undef private
+#undef protected
+
 #include <memory>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include "mocks/LibModbusMocking.h"
 #include "modbus/libmodbus/modbus.h"
-
-using namespace ::testing;
-
-class LibModbus_MOCK
-{
-public:
-    virtual ~LibModbus_MOCK() {}
-
-    MOCK_METHOD1(modbus_flush, int(modbus_t*));
-    MOCK_METHOD1(modbus_close, void(modbus_t*));
-};
 
 class ModbusTCPClientTest : public ::testing::Test
 {
 public:
-    ModbusTCPClientTest() { _libModbusMock.reset(new ::testing::NiceMock<LibModbus_MOCK>()); }
+    virtual void SetUp()
+    {
+        _libModbusMock.reset(new ::testing::NiceMock<LibModbusMock>());
 
-    ~ModbusTCPClientTest() { _libModbusMock.reset(); }
+        modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
+          new wolkabout::LibModbusTcpIpClient("IP", 552, std::chrono::milliseconds(500)));
+    }
 
-    virtual void SetUp() {}
-    virtual void TearDown() {}
+    virtual void TearDown()
+    {
+        _libModbusMock.reset();
+    }
 
-    static std::unique_ptr<LibModbus_MOCK> _libModbusMock;
+    std::unique_ptr<wolkabout::LibModbusTcpIpClient> modbusClient;
+
+    static std::unique_ptr<LibModbusMock> _libModbusMock;
 };
 
-std::unique_ptr<LibModbus_MOCK> ModbusTCPClientTest::_libModbusMock;
+std::unique_ptr<LibModbusMock> ModbusTCPClientTest::_libModbusMock;
 
-int modbus_flush(modbus_t * ctx)
+int modbus_flush(modbus_t* ctx)
 {
-//    return ModbusTCPClientTest::_libModbusMock->modbus_flush(ctx);
-    return 1;
+    return ModbusTCPClientTest::_libModbusMock->modbus_flush(ctx);
 }
 
-void modbus_close(modbus_t * ctx)
+void modbus_close(modbus_t* ctx)
 {
-//    return ModbusTCPClientTest::_libModbusMock->modbus_close(ctx);
+    return ModbusTCPClientTest::_libModbusMock->modbus_close(ctx);
 }
 
-//TEST_F(ModbusTCPClientTest, FirstTest)
-//{
-//
-//}
+TEST_F(ModbusTCPClientTest, FirstTest)
+{
+    EXPECT_CALL(*_libModbusMock, modbus_flush).Times(1).WillOnce(Return(1));
+    EXPECT_CALL(*_libModbusMock, modbus_close).Times(1).WillOnce(Return());
+    modbusClient->disconnect();
+}
