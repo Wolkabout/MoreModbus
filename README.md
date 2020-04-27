@@ -37,10 +37,11 @@ This library requires:
 - CMake
 - Libmodbus (this is downloaded by CMake automatically)
 - autoconf, automake, libtool (needed by Libmodbus)
+- lcov (necessary for test coverage)
 
 So run
 ```shell script
-sudo apt install autoconf automake libtool gcc g++ cmake
+sudo apt install autoconf automake libtool gcc g++ cmake lcov
 ```
 
 And after that, run the configuration script
@@ -57,7 +58,12 @@ make
 After that, you can run the example, and run the tests
 ```shell script
 ./moreModbusExample
-./moreModbusTests (tests still missing, coming soon)
+./moreModbusTests
+```
+
+Also, as bonus, after you ran the tests, you can check their coverage by back to the root directory
+```shell script
+./coverage.sh
 ```
 
 ## Usage
