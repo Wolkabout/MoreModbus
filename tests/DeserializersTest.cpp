@@ -37,8 +37,11 @@ class DeserializersTest : public ::testing::Test
 {
 protected:
     std::map<RegisterType, std::string> registerTypes;
+    std::vector<std::string> invalidRegisterTypes;
     std::map<OutputType, std::string> dataTypes;
+    std::vector<std::string> invalidDataTypes;
     std::map<OperationType, std::string> operationTypes;
+    std::vector<std::string> invalidOperationTypes;
 
 public:
     void SetUpRegisterTypes()
@@ -47,6 +50,9 @@ public:
         registerTypes.emplace(RegisterType::INPUT_CONTACT, "INPUT_CONTACT");
         registerTypes.emplace(RegisterType::HOLDING_REGISTER, "HOLDING_REGISTER");
         registerTypes.emplace(RegisterType::INPUT_REGISTER, "INPUT_REGISTER");
+
+        invalidRegisterTypes = {"Boiler", "COL",    "Binder", "HOLDING_REGISTER_ACTUATOR",
+                                "Aloha",  "Hawaii", "",       "INPJOT_REGISTROJT"};
     }
 
     void SetUpDataTypes()
@@ -58,6 +64,8 @@ public:
         dataTypes.emplace(OutputType::INT32, "INT32");
         dataTypes.emplace(OutputType::FLOAT, "FLOAT");
         dataTypes.emplace(OutputType::STRING, "STRING");
+
+        invalidDataTypes = {"Lorem", "Boolean", "Ipsum", "", "String", "Dolor", "Sit", "Amet"};
     }
 
     void SetUpOperationTypes()
@@ -69,6 +77,8 @@ public:
         operationTypes.emplace(OperationType::STRINGIFY_ASCII, "STRINGIFY_ASCII");
         operationTypes.emplace(OperationType::STRINGIFY_UNICODE, "STRINGIFY_UNICODE");
         operationTypes.emplace(OperationType::TAKE_BIT, "TAKE_BIT");
+
+        invalidOperationTypes = {"We", "Take_Bit", "Will", "Rock", "You", "NON"};
     }
 
     void SetUp()
@@ -100,6 +110,20 @@ TEST_F(DeserializersTest, TestRegisterTypeDeserialization)
     }
 }
 
+TEST_F(DeserializersTest, TestInvalidRegisterTypes)
+{
+    if (invalidRegisterTypes.empty())
+    {
+        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with.";
+    }
+
+    for (const auto& value : invalidRegisterTypes)
+    {
+        EXPECT_THROW(wolkabout::Deserializers::deserializeRegisterType(value), std::logic_error);
+    }
+}
+
 TEST_F(DeserializersTest, TestDataTypeDeserialization)
 {
     if (dataTypes.empty())
@@ -113,6 +137,20 @@ TEST_F(DeserializersTest, TestDataTypeDeserialization)
         const auto type = wolkabout::Deserializers::deserializeDataType(kvp.second);
 
         EXPECT_EQ(kvp.first, type);
+    }
+}
+
+TEST_F(DeserializersTest, TestInvalidDataTypes)
+{
+    if (invalidDataTypes.empty())
+    {
+        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with.";
+    }
+
+    for (const auto& value : invalidDataTypes)
+    {
+        EXPECT_THROW(wolkabout::Deserializers::deserializeDataType(value), std::logic_error);
     }
 }
 
@@ -131,4 +169,18 @@ TEST_F(DeserializersTest, TestOperationTypeDeserialization)
         EXPECT_EQ(kvp.first, type);
     }
 }
+
+TEST_F(DeserializersTest, TestInvalidOperationTypes)
+{
+    if (invalidOperationTypes.empty())
+    {
+        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with.";
+    }
+
+    for (const auto& value : invalidOperationTypes)
+    {
+        EXPECT_THROW(wolkabout::Deserializers::deserializeOperationType(value), std::logic_error);
+    }
 }
+}    // namespace
