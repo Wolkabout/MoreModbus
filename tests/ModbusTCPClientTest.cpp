@@ -35,9 +35,6 @@ public:
     virtual void SetUp()
     {
         _libModbusMock.reset(new ::testing::NiceMock<LibModbusMock>());
-
-        modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
-          new wolkabout::LibModbusTcpIpClient("IP", 552, std::chrono::milliseconds(500)));
     }
 
     virtual void TearDown()
@@ -45,12 +42,25 @@ public:
         _libModbusMock.reset();
     }
 
-    std::unique_ptr<wolkabout::LibModbusTcpIpClient> modbusClient;
-
     static std::unique_ptr<LibModbusMock> _libModbusMock;
 };
 
 std::unique_ptr<LibModbusMock> ModbusTCPClientTest::_libModbusMock;
+
+int modbus_set_response_timeout(modbus_t * ctx, uint32_t to_sec, uint32_t to_usec)
+{
+    return ModbusTCPClientTest::_libModbusMock->modbus_set_response_timeout(ctx, to_sec, to_usec);
+}
+
+int modbus_connect(modbus_t * ctx)
+{
+    return ModbusTCPClientTest::_libModbusMock->modbus_connect(ctx);
+}
+
+modbus_t * modbus_new_tcp(const char* ip, int port)
+{
+    return ModbusTCPClientTest::_libModbusMock->modbus_new_tcp(ip, port);
+}
 
 int modbus_flush(modbus_t* ctx)
 {
@@ -62,9 +72,14 @@ void modbus_close(modbus_t* ctx)
     return ModbusTCPClientTest::_libModbusMock->modbus_close(ctx);
 }
 
-TEST_F(ModbusTCPClientTest, FirstTest)
+/*
+ * Test simply meant to check if there's still a null check on the modbus_new_tcp call.
+ */
+TEST_F(ModbusTCPClientTest, TestConnectionFailure)
 {
-    EXPECT_CALL(*_libModbusMock, modbus_flush).Times(1).WillOnce(Return(1));
-    EXPECT_CALL(*_libModbusMock, modbus_close).Times(1).WillOnce(Return());
-    modbusClient->disconnect();
+    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>
+      (new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+
+    EXPECT_CALL(*_libModbusMock, modbus_new_tcp).Times(1).WillOnce(Return(nullptr));
+    EXPECT_FALSE(modbusClient->connect());
 }

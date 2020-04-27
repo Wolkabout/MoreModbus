@@ -31,8 +31,33 @@ using namespace ::testing;
 class LibModbusMock
 {
 public:
+    /*
+     * General necessary modbus functions
+     */
+    MOCK_METHOD3(modbus_set_response_timeout, int(modbus_t*, uint32_t, uint32_t));
+    MOCK_METHOD1(modbus_connect, int(modbus_t*));
     MOCK_METHOD1(modbus_flush, int(modbus_t*));
     MOCK_METHOD1(modbus_close, void(modbus_t*));
+    MOCK_METHOD2(modbus_set_slave, int(modbus_t*, int));
+
+    /*
+     * All the read/write functions
+     */
+    MOCK_METHOD4(modbus_read_bits, int(modbus_t*, int, int, uint8_t*));
+    MOCK_METHOD4(modbus_read_input_bits, int(modbus_t*, int, int, uint8_t*));
+    MOCK_METHOD4(modbus_read_registers, int(modbus_t*, int, int, uint16_t*));
+    MOCK_METHOD4(modbus_read_input_registers, int(modbus_t*, int, int, uint16_t*));
+    MOCK_METHOD3(modbus_write_bit, int(modbus_t*, int, int));
+    MOCK_METHOD3(modbus_write_register, int(modbus_t*, int, int));
+    MOCK_METHOD4(modbus_write_bits, int(modbus_t*, int, int, const uint8_t*));
+    MOCK_METHOD4(modbus_write_registers, int(modbus_t*, int, int, const uint16_t*));
+
+    /*
+     * Ones necessary for specific ModbusClient implementations
+     */
+    MOCK_METHOD2(modbus_new_tcp, modbus_t*(const char*, int));
+    MOCK_METHOD5(modbus_new_rtu, modbus_t*(const char*, int, char, int, int));
+    MOCK_METHOD1(modbus_free, void(modbus_t*));
 };
 
 #endif    // MOREMODBUS_LIBMODBUSMOCKING_H
