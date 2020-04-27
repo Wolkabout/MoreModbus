@@ -95,8 +95,7 @@ int main()
     const auto& modbusClient =
       std::make_shared<wolkabout::LibModbusTcpIpClient>("<IP_ADDRESS>", 502, std::chrono::milliseconds(500));
 
-    const auto& reader = std::make_shared<wolkabout::ModbusReader>(
-      *modbusClient, std::chrono::milliseconds(1000));
+    const auto& reader = std::make_shared<wolkabout::ModbusReader>(*modbusClient, std::chrono::milliseconds(1000));
 
     reader->addDevice(device);
 

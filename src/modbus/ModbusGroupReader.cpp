@@ -3,6 +3,7 @@
 //
 
 #include "ModbusGroupReader.h"
+
 #include "ModbusReader.h"
 #include "utilities/DataParsers.h"
 #include "utilities/Logger.h"
@@ -117,8 +118,7 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
                     LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '"
                               << bitMapping.second->getReference() << "' Value: '" << bitValue << "'";
 
-                    group.getDevice()
-                      ->triggerOnMappingValueChange(bitMapping.second);
+                    group.getDevice()->triggerOnMappingValueChange(bitMapping.second);
                 }
                 ++shift;
             }
@@ -143,8 +143,7 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
                 LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '" << mapping.second->getReference()
                           << "' Values: " << loggingString;
 
-                group.getDevice()
-                  ->triggerOnMappingValueChange(mapping.second);
+                group.getDevice()->triggerOnMappingValueChange(mapping.second);
             }
         }
 

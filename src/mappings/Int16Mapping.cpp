@@ -16,8 +16,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
 #include "Int16Mapping.h"
+
 #include "utilities/DataParsers.h"
 
 #include <stdexcept>

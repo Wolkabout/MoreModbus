@@ -16,7 +16,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
 #ifndef WOLKABOUT_MODBUS_MODBUSREADER_H
 #define WOLKABOUT_MODBUS_MODBUSREADER_H
 
@@ -39,7 +38,6 @@ namespace wolkabout
 class ModbusReader : public std::enable_shared_from_this<ModbusReader>
 {
 public:
-
     /**
      * @brief Main constructor for the reader, that prepares all the necessary data for reading.
      * @param modbusClient one of implementations of the abstract class
