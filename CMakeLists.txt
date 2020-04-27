@@ -23,6 +23,9 @@ project(MoreModbus C CXX)
 set_property(GLOBAL PROPERTY ALLOW_DUPLICATE_CUSTOM_TARGETS 1)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 
+set(CTEST_COVERAGE_COMMAND "/usr/bin/gcov")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fprofile-arcs -ftest-coverage -lgcov")
+
 set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS}    -Wall -Wextra -pedantic                                                    \
