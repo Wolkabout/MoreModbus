@@ -18,7 +18,7 @@
 
 #define private public
 #define protected public
-#include "modbus/LibModbusTcpIpClient.h"
+#include "modbus/LibModbusSerialRtuClient.h"
 #undef private
 #undef protected
 
@@ -30,7 +30,126 @@
 #include "mocks/LibModbusMocking.h"
 #include "modbus/libmodbus/modbus.h"
 
-class ModbusSerialRTUClienTest : public ::testing::Test
+namespace
 {
-
+class ModbusSerialRTUClientTest : public ::testing::Test
+{
 };
+
+/*
+ * Test simply meant to check if there's still a null check on the modbus_new_rtu call.
+ */
+TEST_F(ModbusSerialRTUClientTest, NewRTUReturnsNull)
+{
+    const auto& modbusClient =
+      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+        std::chrono::milliseconds(500)));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_new_rtu).WillOnce(Return(nullptr));
+
+    ASSERT_FALSE(modbusClient->connect());
+    ASSERT_FALSE(modbusClient->isConnected());
+}
+
+TEST_F(ModbusSerialRTUClientTest, FirstTimeoutReturnsBad)
+{
+    const auto& modbusClient =
+      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+        std::chrono::milliseconds(500)));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_new_rtu).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_set_response_timeout).WillOnce(Return(-1));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_free).WillOnce(Return());
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_flush).WillOnce(Return(1));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_close).WillOnce(Return());
+
+    ASSERT_FALSE(modbusClient->connect());
+    ASSERT_FALSE(modbusClient->isConnected());
+}
+
+TEST_F(ModbusSerialRTUClientTest, SecondTimeoutReturnsBad)
+{
+    const auto& modbusClient =
+      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+        std::chrono::milliseconds(500)));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_new_rtu).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_set_response_timeout).WillOnce(Return(1)).WillOnce(Return(-1));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_connect).WillOnce(Return(1));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_free).WillOnce(Return());
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_flush).WillOnce(Return(1));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_close).WillOnce(Return());
+
+    ASSERT_FALSE(modbusClient->connect());
+    ASSERT_FALSE(modbusClient->isConnected());
+}
+
+TEST_F(ModbusSerialRTUClientTest, ModbusConnectFails)
+{
+    const auto& modbusClient =
+      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+        std::chrono::milliseconds(500)));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_new_rtu).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_set_response_timeout).WillOnce(Return(1));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_connect).WillOnce(Return(-1));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_free).WillOnce(Return());
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_flush).WillOnce(Return(1));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_close).WillOnce(Return());
+
+    ASSERT_FALSE(modbusClient->connect());
+    ASSERT_FALSE(modbusClient->isConnected());
+}
+
+TEST_F(ModbusSerialRTUClientTest, AlreadyConnected)
+{
+    const auto& modbusClient =
+      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+        std::chrono::milliseconds(500)));
+    modbusClient->m_connected = true;
+
+    ASSERT_TRUE(modbusClient->connect());
+    ASSERT_TRUE(modbusClient->isConnected());
+}
+
+TEST_F(ModbusSerialRTUClientTest, HappyFlow)
+{
+    const auto& modbusClient =
+      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+        std::chrono::milliseconds(500)));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_new_rtu).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_set_response_timeout).WillRepeatedly(Return(1));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_connect).WillOnce(Return(1));
+    // next three called by destructor
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_free).WillOnce(Return());
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_flush).WillOnce(Return(1));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_close).WillOnce(Return());
+
+    ASSERT_TRUE(modbusClient->connect());
+    ASSERT_TRUE(modbusClient->isConnected());
+}
+
+TEST_F(ModbusSerialRTUClientTest, SetSlaveBad)
+{
+    const auto& modbusClient =
+      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+        std::chrono::milliseconds(500)));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_set_slave).WillOnce(Return(-1));
+
+    ASSERT_FALSE(modbusClient->changeSlaveAddress(128));
+}
+
+TEST_F(ModbusSerialRTUClientTest, SetSlaveGood)
+{
+    const auto& modbusClient =
+      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+        std::chrono::milliseconds(500)));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_set_slave).WillOnce(Return(1));
+
+    ASSERT_TRUE(modbusClient->changeSlaveAddress(128));
+}
+}    // namespace

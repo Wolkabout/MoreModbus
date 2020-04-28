@@ -123,10 +123,7 @@ public:
         invalidFloatValues.emplace(-1200.01, _registers{1200, 1200, 1200});
     }
 
-    void SetUp16BitValues()
-    {
-        uintToInt.emplace(65535, -1);
-    }
+    void SetUp16BitValues() { uintToInt.emplace(65535, -1); }
 
     void SetUp()
     {

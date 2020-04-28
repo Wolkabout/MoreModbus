@@ -30,106 +30,11 @@
 #include "mocks/LibModbusMocking.h"
 #include "modbus/libmodbus/modbus.h"
 
+namespace
+{
 class ModbusTCPClientTest : public ::testing::Test
 {
-public:
-    virtual void SetUp() { _libModbusMock.reset(new ::testing::NiceMock<LibModbusMock>()); }
-
-    virtual void TearDown() { _libModbusMock.reset(); }
-
-    static std::unique_ptr<LibModbusMock> _libModbusMock;
 };
-
-std::unique_ptr<LibModbusMock> ModbusTCPClientTest::_libModbusMock;
-
-/*
- * All basic functions
- */
-int modbus_set_response_timeout(modbus_t* ctx, uint32_t to_sec, uint32_t to_usec)
-{
-    return ModbusTCPClientTest::_libModbusMock->modbus_set_response_timeout(ctx, to_sec, to_usec);
-}
-
-int modbus_connect(modbus_t* ctx)
-{
-    return ModbusTCPClientTest::_libModbusMock->modbus_connect(ctx);
-}
-
-int modbus_flush(modbus_t* ctx)
-{
-    return ModbusTCPClientTest::_libModbusMock->modbus_flush(ctx);
-}
-
-void modbus_close(modbus_t* ctx)
-{
-    return ModbusTCPClientTest::_libModbusMock->modbus_close(ctx);
-}
-
-int modbus_set_slave(modbus_t* ctx, int slave)
-{
-    return ModbusTCPClientTest::_libModbusMock->modbus_set_slave(ctx, slave);
-}
-
-/*
- * All read/write functions
- */
-int modbus_read_bits(modbus_t* ctx, int addr, int nb, uint8_t* dest)
-{
-    return ModbusTCPClientTest::_libModbusMock->modbus_read_bits(ctx, addr, nb, dest);
-}
-
-int modbus_read_input_bits(modbus_t* ctx, int addr, int nb, uint8_t* dest)
-{
-    return ModbusTCPClientTest::_libModbusMock->modbus_read_input_bits(ctx, addr, nb, dest);
-}
-
-int modbus_read_registers(modbus_t* ctx, int addr, int nb, uint16_t* dest)
-{
-    return ModbusTCPClientTest::_libModbusMock->modbus_read_registers(ctx, addr, nb, dest);
-}
-
-int modbus_read_input_registers(modbus_t* ctx, int addr, int nb, uint16_t* dest)
-{
-    return ModbusTCPClientTest::_libModbusMock->modbus_read_input_registers(ctx, addr, nb, dest);
-}
-
-int modbus_write_bit(modbus_t* ctx, int coil_addr, int status)
-{
-    return ModbusTCPClientTest::_libModbusMock->modbus_write_bit(ctx, coil_addr, status);
-}
-
-int modbus_write_register(modbus_t* ctx, int reg_addr, int value)
-{
-    return ModbusTCPClientTest::_libModbusMock->modbus_write_register(ctx, reg_addr, value);
-}
-
-int modbus_write_bits(modbus_t* ctx, int addr, int nb, const uint8_t* data)
-{
-    return ModbusTCPClientTest::_libModbusMock->modbus_write_bits(ctx, addr, nb, data);
-}
-
-int modbus_write_registers(modbus_t* ctx, int addr, int nb, const uint16_t* data)
-{
-    return ModbusTCPClientTest::_libModbusMock->modbus_write_registers(ctx, addr, nb, data);
-}
-
-/*
- * All client specific functions
- */
-modbus_t* modbus_new_tcp(const char* ip, int port)
-{
-    return ModbusTCPClientTest::_libModbusMock->modbus_new_tcp(ip, port);
-}
-
-modbus_t* modbus_new_rtu(const char* device, int baud, char parity, int data_bit, int stop_bit)
-{
-    return ModbusTCPClientTest::_libModbusMock->modbus_new_rtu(device, baud, parity, data_bit, stop_bit);
-}
-
-void modbus_free(modbus_t* ctx)
-{
-    return ModbusTCPClientTest::_libModbusMock->modbus_free(ctx);
-}
 
 /*
  * Test simply meant to check if there's still a null check on the modbus_new_tcp call.
@@ -138,7 +43,7 @@ TEST_F(ModbusTCPClientTest, NewTCPReturnsNull)
 {
     const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
       new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
-    EXPECT_CALL(*_libModbusMock, modbus_new_tcp).Times(1).WillOnce(Return(nullptr));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_new_tcp).Times(1).WillOnce(Return(nullptr));
 
     ASSERT_FALSE(modbusClient->connect());
     ASSERT_FALSE(modbusClient->isConnected());
@@ -148,11 +53,11 @@ TEST_F(ModbusTCPClientTest, FirstTimeoutReturnsBad)
 {
     const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
       new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
-    EXPECT_CALL(*_libModbusMock, modbus_new_tcp).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
-    EXPECT_CALL(*_libModbusMock, modbus_set_response_timeout).WillOnce(Return(-1));
-    EXPECT_CALL(*_libModbusMock, modbus_free).WillOnce(Return());
-    EXPECT_CALL(*_libModbusMock, modbus_flush).WillOnce(Return(1));
-    EXPECT_CALL(*_libModbusMock, modbus_close).WillOnce(Return());
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_new_tcp).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_set_response_timeout).WillOnce(Return(-1));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_free).WillOnce(Return());
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_flush).WillOnce(Return(1));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_close).WillOnce(Return());
 
     ASSERT_FALSE(modbusClient->connect());
     ASSERT_FALSE(modbusClient->isConnected());
@@ -162,12 +67,12 @@ TEST_F(ModbusTCPClientTest, SecondTimeoutReturnsBad)
 {
     const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
       new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
-    EXPECT_CALL(*_libModbusMock, modbus_new_tcp).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
-    EXPECT_CALL(*_libModbusMock, modbus_set_response_timeout).WillOnce(Return(1)).WillOnce(Return(-1));
-    EXPECT_CALL(*_libModbusMock, modbus_connect).WillOnce(Return(1));
-    EXPECT_CALL(*_libModbusMock, modbus_free).WillOnce(Return());
-    EXPECT_CALL(*_libModbusMock, modbus_flush).WillOnce(Return(1));
-    EXPECT_CALL(*_libModbusMock, modbus_close).WillOnce(Return());
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_new_tcp).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_set_response_timeout).WillOnce(Return(1)).WillOnce(Return(-1));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_connect).WillOnce(Return(1));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_free).WillOnce(Return());
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_flush).WillOnce(Return(1));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_close).WillOnce(Return());
 
     ASSERT_FALSE(modbusClient->connect());
     ASSERT_FALSE(modbusClient->isConnected());
@@ -177,12 +82,12 @@ TEST_F(ModbusTCPClientTest, ModbusConnectFails)
 {
     const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
       new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
-    EXPECT_CALL(*_libModbusMock, modbus_new_tcp).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
-    EXPECT_CALL(*_libModbusMock, modbus_set_response_timeout).WillOnce(Return(1));
-    EXPECT_CALL(*_libModbusMock, modbus_connect).WillOnce(Return(-1));
-    EXPECT_CALL(*_libModbusMock, modbus_free).WillOnce(Return());
-    EXPECT_CALL(*_libModbusMock, modbus_flush).WillOnce(Return(1));
-    EXPECT_CALL(*_libModbusMock, modbus_close).WillOnce(Return());
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_new_tcp).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_set_response_timeout).WillOnce(Return(1));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_connect).WillOnce(Return(-1));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_free).WillOnce(Return());
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_flush).WillOnce(Return(1));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_close).WillOnce(Return());
 
     ASSERT_FALSE(modbusClient->connect());
     ASSERT_FALSE(modbusClient->isConnected());
@@ -202,14 +107,33 @@ TEST_F(ModbusTCPClientTest, HappyFlow)
 {
     const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
       new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
-    EXPECT_CALL(*_libModbusMock, modbus_new_tcp).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
-    EXPECT_CALL(*_libModbusMock, modbus_set_response_timeout).WillRepeatedly(Return(1));
-    EXPECT_CALL(*_libModbusMock, modbus_connect).WillOnce(Return(1));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_new_tcp).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_set_response_timeout).WillRepeatedly(Return(1));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_connect).WillOnce(Return(1));
     // next three called by destructor
-    EXPECT_CALL(*_libModbusMock, modbus_free).WillOnce(Return());
-    EXPECT_CALL(*_libModbusMock, modbus_flush).WillOnce(Return(1));
-    EXPECT_CALL(*_libModbusMock, modbus_close).WillOnce(Return());
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_free).WillOnce(Return());
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_flush).WillOnce(Return(1));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_close).WillOnce(Return());
 
     ASSERT_TRUE(modbusClient->connect());
     ASSERT_TRUE(modbusClient->isConnected());
 }
+
+TEST_F(ModbusTCPClientTest, SetSlaveBad)
+{
+    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
+      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_set_slave).WillOnce(Return(-1));
+
+    ASSERT_FALSE(modbusClient->changeSlaveAddress(128));
+}
+
+TEST_F(ModbusTCPClientTest, SetSlaveGood)
+{
+    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
+      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    EXPECT_CALL(*LibModbusMock::_libModbusMock, modbus_set_slave).WillOnce(Return(1));
+
+    ASSERT_TRUE(modbusClient->changeSlaveAddress(128));
+}
+}    // namespace
