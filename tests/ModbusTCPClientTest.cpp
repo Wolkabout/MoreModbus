@@ -22,9 +22,10 @@
 #undef private
 #undef protected
 
-#include <memory>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <iostream>
+#include <memory>
 
 #include "mocks/LibModbusMocking.h"
 #include "modbus/libmodbus/modbus.h"
@@ -133,11 +134,82 @@ void modbus_free(modbus_t* ctx)
 /*
  * Test simply meant to check if there's still a null check on the modbus_new_tcp call.
  */
-TEST_F(ModbusTCPClientTest, TestConnectionFailure)
+TEST_F(ModbusTCPClientTest, NewTCPReturnsNull)
 {
     const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
       new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
-
     EXPECT_CALL(*_libModbusMock, modbus_new_tcp).Times(1).WillOnce(Return(nullptr));
-    EXPECT_FALSE(modbusClient->connect());
+
+    ASSERT_FALSE(modbusClient->connect());
+    ASSERT_FALSE(modbusClient->isConnected());
+}
+
+TEST_F(ModbusTCPClientTest, FirstTimeoutReturnsBad)
+{
+    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
+      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    EXPECT_CALL(*_libModbusMock, modbus_new_tcp).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
+    EXPECT_CALL(*_libModbusMock, modbus_set_response_timeout).WillOnce(Return(-1));
+    EXPECT_CALL(*_libModbusMock, modbus_free).WillOnce(Return());
+    EXPECT_CALL(*_libModbusMock, modbus_flush).WillOnce(Return(1));
+    EXPECT_CALL(*_libModbusMock, modbus_close).WillOnce(Return());
+
+    ASSERT_FALSE(modbusClient->connect());
+    ASSERT_FALSE(modbusClient->isConnected());
+}
+
+TEST_F(ModbusTCPClientTest, SecondTimeoutReturnsBad)
+{
+    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
+      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    EXPECT_CALL(*_libModbusMock, modbus_new_tcp).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
+    EXPECT_CALL(*_libModbusMock, modbus_set_response_timeout).WillOnce(Return(1)).WillOnce(Return(-1));
+    EXPECT_CALL(*_libModbusMock, modbus_connect).WillOnce(Return(1));
+    EXPECT_CALL(*_libModbusMock, modbus_free).WillOnce(Return());
+    EXPECT_CALL(*_libModbusMock, modbus_flush).WillOnce(Return(1));
+    EXPECT_CALL(*_libModbusMock, modbus_close).WillOnce(Return());
+
+    ASSERT_FALSE(modbusClient->connect());
+    ASSERT_FALSE(modbusClient->isConnected());
+}
+
+TEST_F(ModbusTCPClientTest, ModbusConnectFails)
+{
+    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
+      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    EXPECT_CALL(*_libModbusMock, modbus_new_tcp).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
+    EXPECT_CALL(*_libModbusMock, modbus_set_response_timeout).WillOnce(Return(1));
+    EXPECT_CALL(*_libModbusMock, modbus_connect).WillOnce(Return(-1));
+    EXPECT_CALL(*_libModbusMock, modbus_free).WillOnce(Return());
+    EXPECT_CALL(*_libModbusMock, modbus_flush).WillOnce(Return(1));
+    EXPECT_CALL(*_libModbusMock, modbus_close).WillOnce(Return());
+
+    ASSERT_FALSE(modbusClient->connect());
+    ASSERT_FALSE(modbusClient->isConnected());
+}
+
+TEST_F(ModbusTCPClientTest, AlreadyConnected)
+{
+    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
+      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    modbusClient->m_connected = true;
+
+    ASSERT_TRUE(modbusClient->connect());
+    ASSERT_TRUE(modbusClient->isConnected());
+}
+
+TEST_F(ModbusTCPClientTest, HappyFlow)
+{
+    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
+      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    EXPECT_CALL(*_libModbusMock, modbus_new_tcp).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
+    EXPECT_CALL(*_libModbusMock, modbus_set_response_timeout).WillRepeatedly(Return(1));
+    EXPECT_CALL(*_libModbusMock, modbus_connect).WillOnce(Return(1));
+    // next three called by destructor
+    EXPECT_CALL(*_libModbusMock, modbus_free).WillOnce(Return());
+    EXPECT_CALL(*_libModbusMock, modbus_flush).WillOnce(Return(1));
+    EXPECT_CALL(*_libModbusMock, modbus_close).WillOnce(Return());
+
+    ASSERT_TRUE(modbusClient->connect());
+    ASSERT_TRUE(modbusClient->isConnected());
 }

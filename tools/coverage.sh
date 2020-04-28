@@ -1,4 +1,5 @@
 #!/bin/bash
+cd ..
 rm ./*.info
 rm -rf ./out/coverage
 
