@@ -178,7 +178,7 @@ protected:
 
     bool m_connected;
     bool m_contextCreated;
-    std::mutex m_modbusMutex;
+    std::recursive_mutex m_modbusMutex;
     modbus_t* m_modbus;
 };
 }    // namespace wolkabout
