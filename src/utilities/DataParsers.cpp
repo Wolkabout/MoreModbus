@@ -33,7 +33,7 @@ uint16_t DataParsers::SHIFT_UINT16 = 16;
 std::vector<uint16_t> DataParsers::asciiStringToRegisters(const std::string& value)
 {
     std::vector<uint16_t> values;
-    for (uint i = 0; i < value.size(); i = i + 2)
+    for (uint32_t i = 0; i < value.size(); i = i + 2)
     {
         char firstChar = value[i], secondChar = value[i + 1];
         values.emplace_back((firstChar << SHIFT_UINT8) + secondChar);
@@ -44,7 +44,7 @@ std::vector<uint16_t> DataParsers::asciiStringToRegisters(const std::string& val
 std::vector<uint16_t> DataParsers::unicodeStringToRegisters(const std::string& value)
 {
     std::vector<uint16_t> values;
-    for (uint i = 0; i < value.size(); i = i + 2)
+    for (uint32_t i = 0; i < value.size(); i = i + 2)
     {
         auto firstChar = static_cast<uint8_t>(value[i]), secondChar = static_cast<uint8_t>(value[i + 1]);
         values.emplace_back((firstChar << SHIFT_UINT8) + secondChar);

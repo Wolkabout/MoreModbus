@@ -252,7 +252,7 @@ bool RegisterMapping::update(const std::vector<uint16_t>& newValues)
     }
 
     bool different = false;
-    uint i = 0;
+    uint32_t i = 0;
     while (!different && i < newValues.size())
     {
         if (m_byteValues[i] != newValues[i])

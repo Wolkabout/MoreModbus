@@ -248,7 +248,7 @@ void ModbusReader::run()
             {
                 // Timing logic, increase the time after which we attempt to reconnect.
                 std::this_thread::sleep_for(std::chrono::seconds(m_timeoutDurations[m_timeoutIterator]));
-                if ((uint)m_timeoutIterator < m_timeoutDurations.size() - 1)
+                if ((uint32_t)m_timeoutIterator < m_timeoutDurations.size() - 1)
                 {
                     m_timeoutIterator++;
                 }

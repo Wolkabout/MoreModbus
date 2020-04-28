@@ -46,7 +46,7 @@ bool ModbusGroupReader::readGroup(wolkabout::ModbusClient& modbusClient, wolkabo
 
 void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vector<bool>& values)
 {
-    uint i = 0;
+    uint32_t i = 0;
     const auto mappingMap = group.getMappingsMap();
     for (const auto& mapping : mappingMap)
     {
@@ -102,7 +102,7 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
     const auto& mappings =
       std::vector<std::pair<std::string, std::shared_ptr<RegisterMapping>>>(mappingsSet.begin(), mappingsSet.end());
 
-    uint skipMappings = 0, valueCounter = 0, mappingCounter = 0;
+    uint32_t skipMappings = 0, valueCounter = 0, mappingCounter = 0;
     for (const auto& mapping : mappings)
     {
         if (skipMappings > 0)
@@ -116,7 +116,7 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
         if (mapping.first.find(GroupUtility::SEPARATOR) != std::string::npos)
         {
             const auto& bits = DataParsers::separateBits(values[valueCounter++]);
-            uint shift = 0;
+            uint32_t shift = 0;
             while (mappingCounter + shift <= group.getMappings().size() - 1 &&
                    address == GroupUtility::getAddressFromString(claims[mappingCounter + shift]))
             {
