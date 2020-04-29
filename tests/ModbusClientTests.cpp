@@ -238,6 +238,140 @@ TEST_F(ModbusTCPClientTest, SetSlaveGood)
     ASSERT_TRUE(modbusClient->changeSlaveAddress(128));
 }
 
+TEST_F(ModbusTCPClientTest, WriteHoldingRegister)
+{
+    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>
+      (new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
+    EXPECT_CALL(*libModbusMock, modbus_write_register).WillOnce(Return(-1)).WillOnce(Return(1));
+    const auto booleans = std::vector<bool> {false, false, true};
+
+    for (uint32_t i = 0; i < 3; i++)
+    {
+        EXPECT_EQ(booleans[i], modbusClient->writeHoldingRegister(i+1, 1, 0));
+    }
+}
+
+TEST_F(ModbusTCPClientTest, WriteHoldingRegisters)
+{
+    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>
+      (new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
+    EXPECT_CALL(*libModbusMock, modbus_write_registers).WillOnce(Return(-1)).WillOnce(Return(1));
+    const auto booleans = std::vector<bool> {false, false, true};
+
+    std::vector<uint16_t> data{0, 1, 2, 3};
+    for (uint32_t i = 0; i < 3; i++)
+    {
+        EXPECT_EQ(booleans[i], modbusClient->writeHoldingRegisters(i+1, 1, data));
+    }
+}
+
+TEST_F(ModbusTCPClientTest, WriteCoil)
+{
+    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>
+      (new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
+    EXPECT_CALL(*libModbusMock, modbus_write_bit).WillOnce(Return(-1)).WillOnce(Return(1));
+    const auto booleans = std::vector<bool> {false, false, true};
+
+    std::vector<bool> data{true, false, false};
+    for (uint32_t i = 0; i < 3; i++)
+    {
+        EXPECT_EQ(booleans[i], modbusClient->writeCoil(i+1, 1, data[i]));
+    }
+}
+
+TEST_F(ModbusTCPClientTest, ReadInputContacts)
+{
+    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>
+      (new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
+    EXPECT_CALL(*libModbusMock, modbus_read_input_bits).WillOnce(Return(-1)).WillOnce(Return(1));
+    const auto booleans = std::vector<bool> {false, false, true};
+
+    std::vector<bool> values;
+    for (uint32_t i = 0; i < 3; i++)
+    {
+        EXPECT_EQ(booleans[i], modbusClient->readInputContacts(i+1, 0, 3, values));
+    }
+}
+
+TEST_F(ModbusTCPClientTest, ReadCoil)
+{
+    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>
+      (new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
+    EXPECT_CALL(*libModbusMock, modbus_read_bits).WillOnce(Return(-1)).WillOnce(Return(1));
+    const auto booleans = std::vector<bool> {false, false, true};
+
+    bool values;
+    for (uint32_t i = 0; i < 3; i++)
+    {
+        EXPECT_EQ(booleans[i], modbusClient->readCoil(i+1, 0, values));
+    }
+}
+
+TEST_F(ModbusTCPClientTest, ReadCoils)
+{
+    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>
+      (new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
+    EXPECT_CALL(*libModbusMock, modbus_read_bits).WillOnce(Return(-1)).WillOnce(Return(1));
+    const auto booleans = std::vector<bool> {false, false, true};
+
+    std::vector<bool> values;
+    for (uint32_t i = 0; i < 3; i++)
+    {
+        EXPECT_EQ(booleans[i], modbusClient->readCoils(i+1, 0, 3, values));
+    }
+}
+
+TEST_F(ModbusTCPClientTest, ReadInputRegisters)
+{
+    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>
+      (new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
+    EXPECT_CALL(*libModbusMock, modbus_read_input_registers).WillOnce(Return(-1)).WillOnce(Return(1));
+    const auto booleans = std::vector<bool> {false, false, true};
+
+    std::vector<uint16_t> values;
+    for (uint32_t i = 0; i < 3; i++)
+    {
+        EXPECT_EQ(booleans[i], modbusClient->readInputRegisters(i+1, 0, 3, values));
+    }
+}
+
+TEST_F(ModbusTCPClientTest, ReadHoldingRegister)
+{
+    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>
+      (new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
+    EXPECT_CALL(*libModbusMock, modbus_read_registers).WillOnce(Return(-1)).WillOnce(Return(1));
+    const auto booleans = std::vector<bool> {false, false, true};
+
+    uint16_t value;
+    for (uint32_t i = 0; i < 3; i++)
+    {
+        EXPECT_EQ(booleans[i], modbusClient->readHoldingRegister(i+1, 0, value));
+    }
+}
+
+TEST_F(ModbusTCPClientTest, ReadHoldingRegisters)
+{
+    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>
+      (new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
+    EXPECT_CALL(*libModbusMock, modbus_read_registers).WillOnce(Return(-1)).WillOnce(Return(1));
+    const auto booleans = std::vector<bool> {false, false, true};
+
+    std::vector<uint16_t> values;
+    for (uint32_t i = 0; i < 3; i++)
+    {
+        EXPECT_EQ(booleans[i], modbusClient->readHoldingRegisters(i+1, 0, 3, values));
+    }
+}
+
 TEST_F(ModbusSerialRTUClientTest, NewRTUReturnsNull)
 {
     const auto& modbusClient =
@@ -386,4 +520,156 @@ TEST_F(ModbusSerialRTUClientTest, SetSlaveGood)
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(1));
 
     ASSERT_TRUE(modbusClient->changeSlaveAddress(128));
+}
+
+TEST_F(ModbusSerialRTUClientTest, WriteHoldingRegister)
+{
+    const std::unique_ptr<wolkabout::ModbusClient>& modbusClient =
+      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+        std::chrono::milliseconds(500)));
+    EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
+    EXPECT_CALL(*libModbusMock, modbus_write_register).WillOnce(Return(-1)).WillOnce(Return(1));
+    const auto booleans = std::vector<bool> {false, false, true};
+
+    for (uint32_t i = 0; i < 3; i++)
+    {
+        EXPECT_EQ(booleans[i], modbusClient->writeHoldingRegister(i+1, 1, 0));
+    }
+}
+
+TEST_F(ModbusSerialRTUClientTest, WriteHoldingRegisters)
+{
+    const std::unique_ptr<wolkabout::ModbusClient>& modbusClient =
+      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+        std::chrono::milliseconds(500)));
+    EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
+    EXPECT_CALL(*libModbusMock, modbus_write_registers).WillOnce(Return(-1)).WillOnce(Return(1));
+    const auto booleans = std::vector<bool> {false, false, true};
+
+    std::vector<uint16_t> data{0, 1, 2, 3};
+    for (uint32_t i = 0; i < 3; i++)
+    {
+        EXPECT_EQ(booleans[i], modbusClient->writeHoldingRegisters(i+1, 1, data));
+    }
+}
+
+TEST_F(ModbusSerialRTUClientTest, WriteCoil)
+{
+    const std::unique_ptr<wolkabout::ModbusClient>& modbusClient =
+      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+        std::chrono::milliseconds(500)));
+    EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
+    EXPECT_CALL(*libModbusMock, modbus_write_bit).WillOnce(Return(-1)).WillOnce(Return(1));
+    const auto booleans = std::vector<bool> {false, false, true};
+
+    std::vector<bool> data{true, false, false};
+    for (uint32_t i = 0; i < 3; i++)
+    {
+        EXPECT_EQ(booleans[i], modbusClient->writeCoil(i+1, 1, data[i]));
+    }
+}
+
+TEST_F(ModbusSerialRTUClientTest, ReadInputContacts)
+{
+    const std::unique_ptr<wolkabout::ModbusClient>& modbusClient =
+      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+        std::chrono::milliseconds(500)));
+    EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
+    EXPECT_CALL(*libModbusMock, modbus_read_input_bits).WillOnce(Return(-1)).WillOnce(Return(1));
+    const auto booleans = std::vector<bool> {false, false, true};
+
+    std::vector<bool> values;
+    for (uint32_t i = 0; i < 3; i++)
+    {
+        EXPECT_EQ(booleans[i], modbusClient->readInputContacts(i+1, 0, 3, values));
+    }
+}
+
+TEST_F(ModbusSerialRTUClientTest, ReadCoil)
+{
+    const std::unique_ptr<wolkabout::ModbusClient>& modbusClient =
+      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+        std::chrono::milliseconds(500)));
+    EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
+    EXPECT_CALL(*libModbusMock, modbus_read_bits).WillOnce(Return(-1)).WillOnce(Return(1));
+    const auto booleans = std::vector<bool> {false, false, true};
+
+    bool values;
+    for (uint32_t i = 0; i < 3; i++)
+    {
+        EXPECT_EQ(booleans[i], modbusClient->readCoil(i+1, 0, values));
+    }
+}
+
+TEST_F(ModbusSerialRTUClientTest, ReadCoils)
+{
+    const std::unique_ptr<wolkabout::ModbusClient>& modbusClient =
+      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+        std::chrono::milliseconds(500)));
+    EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
+    EXPECT_CALL(*libModbusMock, modbus_read_bits).WillOnce(Return(-1)).WillOnce(Return(1));
+    const auto booleans = std::vector<bool> {false, false, true};
+
+    std::vector<bool> values;
+    for (uint32_t i = 0; i < 3; i++)
+    {
+        EXPECT_EQ(booleans[i], modbusClient->readCoils(i+1, 0, 3, values));
+    }
+}
+
+TEST_F(ModbusSerialRTUClientTest, ReadInputRegisters)
+{
+    const std::unique_ptr<wolkabout::ModbusClient>& modbusClient =
+      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+        std::chrono::milliseconds(500)));
+    EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
+    EXPECT_CALL(*libModbusMock, modbus_read_input_registers).WillOnce(Return(-1)).WillOnce(Return(1));
+    const auto booleans = std::vector<bool> {false, false, true};
+
+    std::vector<uint16_t> values;
+    for (uint32_t i = 0; i < 3; i++)
+    {
+        EXPECT_EQ(booleans[i], modbusClient->readInputRegisters(i+1, 0, 3, values));
+    }
+}
+
+TEST_F(ModbusSerialRTUClientTest, ReadHoldingRegister)
+{
+    const std::unique_ptr<wolkabout::ModbusClient>& modbusClient =
+      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+        std::chrono::milliseconds(500)));
+    EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
+    EXPECT_CALL(*libModbusMock, modbus_read_registers).WillOnce(Return(-1)).WillOnce(Return(1));
+    const auto booleans = std::vector<bool> {false, false, true};
+
+    uint16_t value;
+    for (uint32_t i = 0; i < 3; i++)
+    {
+        EXPECT_EQ(booleans[i], modbusClient->readHoldingRegister(i+1, 0, value));
+    }
+}
+
+TEST_F(ModbusSerialRTUClientTest, ReadHoldingRegisters)
+{
+    const std::unique_ptr<wolkabout::ModbusClient>& modbusClient =
+      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+        std::chrono::milliseconds(500)));
+    EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
+    EXPECT_CALL(*libModbusMock, modbus_read_registers).WillOnce(Return(-1)).WillOnce(Return(1));
+    const auto booleans = std::vector<bool> {false, false, true};
+
+    std::vector<uint16_t> values;
+    for (uint32_t i = 0; i < 3; i++)
+    {
+        EXPECT_EQ(booleans[i], modbusClient->readHoldingRegisters(i+1, 0, 3, values));
+    }
 }
