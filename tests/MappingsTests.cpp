@@ -92,7 +92,7 @@ public:
 
     void SetUpDefaultValues()
     {
-        registerTypes = {_registerType::INPUT_CONTACT, _registerType::COIL, _registerType::INPUT_CONTACT,
+        registerTypes = {_registerType::INPUT_CONTACT, _registerType::COIL, _registerType::INPUT_REGISTER,
                          _registerType::HOLDING_REGISTER};
         outputTypes = {_outputType::BOOL,   _outputType::FLOAT,  _outputType::INT16, _outputType::INT32,
                        _outputType::STRING, _outputType::UINT16, _outputType::UINT32};
@@ -108,6 +108,12 @@ public:
                                                    _makeCombo(INPUT_CONTACT, BOOL, NONE), _makeCombo(COIL, BOOL, NONE),
                                                    _makeCombo(INPUT_REGISTER, BOOL, TAKE_BIT),
                                                    _makeCombo(HOLDING_REGISTER, BOOL, TAKE_BIT)});
+
+        winningCombos.emplace(_outputType::UINT16, std::vector<_combination>{_makeCombo(HOLDING_REGISTER, UINT16, NONE),
+                                                                             _makeCombo(INPUT_REGISTER, UINT16, NONE)});
+
+        winningCombos.emplace(_outputType::INT16, std::vector<_combination>{_makeCombo(HOLDING_REGISTER, INT16, NONE),
+                                                                             _makeCombo(INPUT_REGISTER, INT16, NONE)});
     }
 
     bool IsWinningCombo(_outputType outputType, _combination combo)
@@ -222,5 +228,153 @@ TEST_F(MappingsTests, BoolMappingsWriteValue)
 
             MoveBackPointers();
         }
+    }
+}
+
+TEST_F(MappingsTests, UInt16MappingCreation)
+{
+    const auto& outputType = _outputType::UINT16;
+    for (const auto& registerType : registerTypes)
+    {
+        const auto& combo = _makeComboPure(registerType, outputType, _operationType::NONE);
+        const bool winning = IsWinningCombo(outputType, combo);
+
+        if (winning)
+        {
+            EXPECT_NO_THROW(wolkabout::UInt16Mapping("TEST", registerType, 0));
+        }
+        else
+        {
+            EXPECT_THROW(wolkabout::UInt16Mapping("TEST", registerType, 0), std::logic_error);
+        }
+    }
+}
+
+TEST_F(MappingsTests, UInt16MappingsWriteValue)
+{
+    const auto& outputType = _outputType::UINT16;
+    const auto& boolCombos = winningCombos[outputType];
+    for (const auto& combo : boolCombos)
+    {
+        const auto value = static_cast<uint16_t>(rand());
+        std::cout << "Testing with " << value << std::endl;
+
+        const auto registerType = std::get<0>(combo);
+        auto mapping = std::make_shared<wolkabout::UInt16Mapping>("TEST", registerType, 0);
+        MovePointers();
+        mapping->m_group = std::move(registerGroupMock);
+        if (registerType == _registerType::HOLDING_REGISTER)
+        {
+            EXPECT_CALL((ModbusReaderMock&)*(mapping->m_group->m_device->m_reader),
+                        writeMapping(_, std::vector<uint16_t>{value}))
+              .WillOnce(Return(true));
+            EXPECT_TRUE(mapping->writeValue(value));
+
+            EXPECT_EQ(value, mapping->getUint16Value());
+        }
+        else
+        {
+            EXPECT_FALSE(mapping->writeValue(value));
+        }
+
+        MoveBackPointers();
+        modbusReaderMock->m_devices.clear();
+    }
+}
+
+TEST_F(MappingsTests, UInt16MappingsInitUpdateValid)
+{
+    const auto& outputType = _outputType::UINT16;
+    const auto& boolCombos = winningCombos[outputType];
+    for (const auto& combo : boolCombos)
+    {
+        const auto value = static_cast<uint16_t>(rand());
+        std::cout << "Testing with " << value << std::endl;
+
+        const auto registerType = std::get<0>(combo);
+        auto mapping = std::make_shared<wolkabout::UInt16Mapping>("TEST", registerType, 0);
+
+        EXPECT_FALSE(mapping->isInitialized());
+        EXPECT_FALSE(mapping->isValid());
+
+        EXPECT_NO_THROW(mapping->update({value}));
+        EXPECT_EQ(value, mapping->getUint16Value());
+
+        EXPECT_TRUE(mapping->isInitialized());
+        EXPECT_TRUE(mapping->isValid());
+    }
+}
+
+TEST_F(MappingsTests, Int16MappingCreation)
+{
+    const auto& outputType = _outputType::INT16;
+    for (const auto& registerType : registerTypes)
+    {
+        const auto& combo = _makeComboPure(registerType, outputType, _operationType::NONE);
+        const bool winning = IsWinningCombo(outputType, combo);
+
+        if (winning)
+        {
+            EXPECT_NO_THROW(wolkabout::Int16Mapping("TEST", registerType, 0));
+        }
+        else
+        {
+            EXPECT_THROW(wolkabout::Int16Mapping("TEST", registerType, 0), std::logic_error);
+        }
+    }
+}
+
+TEST_F(MappingsTests, Int16MappingsWriteValue)
+{
+    const auto& outputType = _outputType::INT16;
+    const auto& boolCombos = winningCombos[outputType];
+    for (const auto& combo : boolCombos)
+    {
+        const auto value = static_cast<int16_t>(rand());
+        std::cout << "Testing with " << value << std::endl;
+
+        const auto registerType = std::get<0>(combo);
+        auto mapping = std::make_shared<wolkabout::Int16Mapping>("TEST", registerType, 0);
+        MovePointers();
+        mapping->m_group = std::move(registerGroupMock);
+        if (registerType == _registerType::HOLDING_REGISTER)
+        {
+            EXPECT_CALL((ModbusReaderMock&)*(mapping->m_group->m_device->m_reader),
+                        writeMapping(_, std::vector<uint16_t>{static_cast<uint16_t>(value)}))
+              .WillOnce(Return(true));
+            EXPECT_TRUE(mapping->writeValue(value));
+
+            EXPECT_EQ(value, mapping->getInt16Value());
+        }
+        else
+        {
+            EXPECT_FALSE(mapping->writeValue(value));
+        }
+
+        MoveBackPointers();
+        modbusReaderMock->m_devices.clear();
+    }
+}
+
+TEST_F(MappingsTests, Int16MappingsInitUpdateValid)
+{
+    const auto& outputType = _outputType::INT16;
+    const auto& boolCombos = winningCombos[outputType];
+    for (const auto& combo : boolCombos)
+    {
+        const auto value = static_cast<int16_t>(rand());
+        std::cout << "Testing with " << value << std::endl;
+
+        const auto registerType = std::get<0>(combo);
+        auto mapping = std::make_shared<wolkabout::Int16Mapping>("TEST", registerType, 0);
+
+        EXPECT_FALSE(mapping->isInitialized());
+        EXPECT_FALSE(mapping->isValid());
+
+        EXPECT_NO_THROW(mapping->update({static_cast<uint16_t>(value)}));
+        EXPECT_EQ(value, mapping->getInt16Value());
+
+        EXPECT_TRUE(mapping->isInitialized());
+        EXPECT_TRUE(mapping->isValid());
     }
 }
