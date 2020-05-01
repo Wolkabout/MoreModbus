@@ -19,12 +19,8 @@
 #define private public
 #define protected public
 #include "mappings/BoolMapping.h"
-#include "mappings/FloatMapping.h"
 #include "mappings/Int16Mapping.h"
-#include "mappings/Int32Mapping.h"
-#include "mappings/StringMapping.h"
 #include "mappings/UInt16Mapping.h"
-#include "mappings/UInt32Mapping.h"
 #include "modbus/LibModbusTcpIpClient.h"
 #include "modbus/LibModbusSerialRtuClient.h"
 #undef private
@@ -181,7 +177,7 @@ TEST_F(MappingsTests, BoolMappingsWriteValue)
     for (const auto& combo : boolCombos)
     {
         bool value = rand() % 2;
-        std::cout << "Testing with " << value << std::endl;
+//        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
         const auto operationType = std::get<2>(combo);
@@ -257,7 +253,7 @@ TEST_F(MappingsTests, UInt16MappingsWriteValue)
     for (const auto& combo : boolCombos)
     {
         const auto value = static_cast<uint16_t>(rand());
-        std::cout << "Testing with " << value << std::endl;
+//        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
         auto mapping = std::make_shared<wolkabout::UInt16Mapping>("TEST", registerType, 0);
@@ -289,7 +285,7 @@ TEST_F(MappingsTests, UInt16MappingsInitUpdateValid)
     for (const auto& combo : boolCombos)
     {
         const auto value = static_cast<uint16_t>(rand());
-        std::cout << "Testing with " << value << std::endl;
+//        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
         auto mapping = std::make_shared<wolkabout::UInt16Mapping>("TEST", registerType, 0);
@@ -331,7 +327,7 @@ TEST_F(MappingsTests, Int16MappingsWriteValue)
     for (const auto& combo : boolCombos)
     {
         const auto value = static_cast<int16_t>(rand());
-        std::cout << "Testing with " << value << std::endl;
+//        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
         auto mapping = std::make_shared<wolkabout::Int16Mapping>("TEST", registerType, 0);
@@ -363,7 +359,7 @@ TEST_F(MappingsTests, Int16MappingsInitUpdateValid)
     for (const auto& combo : boolCombos)
     {
         const auto value = static_cast<int16_t>(rand());
-        std::cout << "Testing with " << value << std::endl;
+//        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
         auto mapping = std::make_shared<wolkabout::Int16Mapping>("TEST", registerType, 0);
