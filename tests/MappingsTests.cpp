@@ -75,6 +75,19 @@ public:
         modbusClientMock.reset();
     }
 
+    void MovePointers()
+    {
+        modbusDeviceMock->m_reader = std::move(modbusReaderMock);
+        registerGroupMock->m_device = std::move(modbusDeviceMock);
+    }
+
+    void MoveBackPointers()
+    {
+        registerGroupMock.reset(new ::testing::NiceMock<RegisterGroupMock>());
+        modbusDeviceMock.reset(new ::testing::NiceMock<ModbusDeviceMock>());
+        modbusReaderMock.reset(new ::testing::NiceMock<ModbusReaderMock>(*modbusClientMock));
+    }
+
     void SetUpDefaultValues()
     {
         registerTypes = {_registerType::INPUT_CONTACT, _registerType::COIL, _registerType::INPUT_CONTACT,
@@ -107,16 +120,16 @@ public:
         return false;
     }
 
-    static std::shared_ptr<ModbusClientMock> modbusClientMock;
-    static std::shared_ptr<ModbusDeviceMock> modbusDeviceMock;
-    static std::shared_ptr<ModbusReaderMock> modbusReaderMock;
-    static std::shared_ptr<RegisterGroupMock> registerGroupMock;
+    static std::unique_ptr<ModbusClientMock> modbusClientMock;
+    static std::unique_ptr<ModbusDeviceMock> modbusDeviceMock;
+    static std::unique_ptr<ModbusReaderMock> modbusReaderMock;
+    static std::unique_ptr<RegisterGroupMock> registerGroupMock;
 };
 
-std::shared_ptr<ModbusClientMock> MappingsTests::modbusClientMock;
-std::shared_ptr<ModbusDeviceMock> MappingsTests::modbusDeviceMock;
-std::shared_ptr<ModbusReaderMock> MappingsTests::modbusReaderMock;
-std::shared_ptr<RegisterGroupMock> MappingsTests::registerGroupMock;
+std::unique_ptr<ModbusClientMock> MappingsTests::modbusClientMock;
+std::unique_ptr<ModbusDeviceMock> MappingsTests::modbusDeviceMock;
+std::unique_ptr<ModbusReaderMock> MappingsTests::modbusReaderMock;
+std::unique_ptr<RegisterGroupMock> MappingsTests::registerGroupMock;
 
 TEST_F(MappingsTests, BoolMappingCreation)
 {
@@ -153,34 +166,58 @@ TEST_F(MappingsTests, BoolMappingCreation)
     }
 }
 
+TEST_F(MappingsTests, MOCK_TESTING)
+{
+    const auto& mapping = std::make_shared<wolkabout::BoolMapping>("TEST", _registerType::COIL, 0);
+
+}
+
 TEST_F(MappingsTests, BoolMappingsWriteValue)
 {
     const auto& outputType = _outputType::BOOL;
+    int i = 0;
     for (const auto& combo : winningCombos[outputType])
     {
+        ::testing::FLAGS_gmock_verbose = "info";
+
+        const auto registerType = std::get<0>(combo);
         if (std::get<2>(combo) == _operationType::NONE)
         {
-            auto mapping = wolkabout::BoolMapping("TEST", std::get<0>(combo), 0);
-            mapping.setGroup(registerGroupMock);
-            EXPECT_CALL(*registerGroupMock, getDevice).WillOnce(ReturnRef(modbusDeviceMock));
-            EXPECT_CALL(*modbusDeviceMock, getReader).WillOnce(ReturnRef(modbusReaderMock));
-            EXPECT_CALL(*modbusReaderMock, writeMapping(Matcher<wolkabout::RegisterMapping&>(),
-              Matcher<bool>())).WillOnce(Return(1));
+            auto mapping = std::make_shared<wolkabout::BoolMapping>("TEST", registerType, 0, false, 0);
+            MovePointers();
+            mapping->m_group = std::move(registerGroupMock);
+            if (registerType == _registerType::COIL)
+            {
+                EXPECT_CALL((ModbusReaderMock&)*(mapping->m_group->m_device->m_reader), writeMapping(_, true)).WillOnce(Return(true));
+                EXPECT_TRUE(mapping->writeValue(true));
+            }
+            else
+            {
+                EXPECT_THROW(mapping->writeValue(true), std::logic_error);
+            }
 
-//            mapping.getGroup()->getDevice()->getReader();
-            EXPECT_TRUE(mapping.writeValue(true));
+            MoveBackPointers();
+            modbusReaderMock->m_devices.clear();
         }
         else
         {
-            auto mapping = wolkabout::BoolMapping("TEST", std::get<0>(combo), 0,
-              std::get<2>(combo), 0);
-            mapping.setGroup(registerGroupMock);
-            EXPECT_CALL(*registerGroupMock, getDevice).WillOnce(ReturnRef(modbusDeviceMock));
-            EXPECT_CALL(*modbusDeviceMock, getReader).WillOnce(ReturnRef(modbusReaderMock));
-            EXPECT_CALL(*modbusReaderMock, writeBitMapping).WillOnce(Return(1));
+            auto mapping = std::make_shared<wolkabout::BoolMapping>("TEST", registerType, 0, std::get<2>(combo), 0);
+            MovePointers();
+            mapping->m_group = std::move(registerGroupMock);
+            if (registerType == _registerType::HOLDING_REGISTER)
+            {
+                EXPECT_CALL((ModbusReaderMock&)*(mapping->m_group->m_device->m_reader), writeBitMapping).WillOnce(Return(true));
+                EXPECT_TRUE(mapping->writeValue(true));
+            }
+            else
+            {
+                EXPECT_THROW(mapping->writeValue(true), std::logic_error);
+            }
 
-//            mapping.getGroup()->getDevice()->getReader();
-            EXPECT_TRUE(mapping.writeValue(true));
+            MoveBackPointers();
         }
+
+        ++i;
+        ::testing::FLAGS_gmock_verbose = "error";
     }
 }

@@ -53,6 +53,7 @@ public:
     MOCK_METHOD4(readHoldingRegister, bool(int, int, int, std::vector<uint16_t>&));
     MOCK_METHOD3(readCoil, bool(int, int, bool&));
     MOCK_METHOD4(readCoils, bool(int, int, int, std::vector<bool>&));
+    MOCK_METHOD1(changeSlaveAddress, bool(int));
 };
 
 #endif    // MOREMODBUS_MODBUSCLIENTMOCK_H
