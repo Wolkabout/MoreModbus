@@ -65,7 +65,7 @@ public:
      * @param values array of uint16_t's, needs to contain exact amount of values as the mapping has in register count.
      * @return whether or not the operation was successful
      */
-    bool writeMapping(RegisterMapping& mapping, const std::vector<uint16_t>& values);
+    virtual bool writeMapping(RegisterMapping& mapping, const std::vector<uint16_t>& values);
 
     /**
      * @brief Force the reader to write to a mapping (bool value)
@@ -73,7 +73,7 @@ public:
      * @param value single boolean
      * @return whether or not the operation was successful
      */
-    bool writeMapping(RegisterMapping& mapping, bool value);
+    virtual bool writeMapping(RegisterMapping& mapping, bool value);
 
     /**
      * @brief Force the reader to write to a mapping that interacts with a bit from an 16bit register
@@ -81,7 +81,7 @@ public:
      * @param value single boolean
      * @return whether or not the operation was successful
      */
-    bool writeBitMapping(RegisterMapping& mapping, bool value);
+    virtual bool writeBitMapping(RegisterMapping& mapping, bool value);
 
     /**
      * @brief Indicates whether or not the threads that read devices are running

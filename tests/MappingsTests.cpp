@@ -73,6 +73,8 @@ public:
         modbusReaderMock.reset();
         registerGroupMock.reset();
         modbusClientMock.reset();
+
+        ::testing::FLAGS_gmock_verbose = "error";
     }
 
     void MovePointers()
@@ -175,13 +177,14 @@ TEST_F(MappingsTests, MOCK_TESTING)
 TEST_F(MappingsTests, BoolMappingsWriteValue)
 {
     const auto& outputType = _outputType::BOOL;
-    int i = 0;
-    for (const auto& combo : winningCombos[outputType])
+    const auto& boolCombos = winningCombos[outputType];
+    for (const auto& combo : boolCombos)
     {
         ::testing::FLAGS_gmock_verbose = "info";
 
         const auto registerType = std::get<0>(combo);
-        if (std::get<2>(combo) == _operationType::NONE)
+        const auto operationType = std::get<2>(combo);
+        if (operationType == _operationType::NONE)
         {
             auto mapping = std::make_shared<wolkabout::BoolMapping>("TEST", registerType, 0, false, 0);
             MovePointers();
@@ -193,7 +196,7 @@ TEST_F(MappingsTests, BoolMappingsWriteValue)
             }
             else
             {
-                EXPECT_THROW(mapping->writeValue(true), std::logic_error);
+                EXPECT_FALSE(mapping->writeValue(true));
             }
 
             MoveBackPointers();
@@ -201,7 +204,7 @@ TEST_F(MappingsTests, BoolMappingsWriteValue)
         }
         else
         {
-            auto mapping = std::make_shared<wolkabout::BoolMapping>("TEST", registerType, 0, std::get<2>(combo), 0);
+            auto mapping = std::make_shared<wolkabout::BoolMapping>("TEST", registerType, 0, operationType, 0);
             MovePointers();
             mapping->m_group = std::move(registerGroupMock);
             if (registerType == _registerType::HOLDING_REGISTER)
@@ -211,13 +214,12 @@ TEST_F(MappingsTests, BoolMappingsWriteValue)
             }
             else
             {
-                EXPECT_THROW(mapping->writeValue(true), std::logic_error);
+                EXPECT_FALSE(mapping->writeValue(true));
             }
 
             MoveBackPointers();
         }
 
-        ++i;
         ::testing::FLAGS_gmock_verbose = "error";
     }
 }
