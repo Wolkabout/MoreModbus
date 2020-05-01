@@ -168,35 +168,34 @@ TEST_F(MappingsTests, BoolMappingCreation)
     }
 }
 
-TEST_F(MappingsTests, MOCK_TESTING)
-{
-    const auto& mapping = std::make_shared<wolkabout::BoolMapping>("TEST", _registerType::COIL, 0);
-
-}
-
 TEST_F(MappingsTests, BoolMappingsWriteValue)
 {
     const auto& outputType = _outputType::BOOL;
     const auto& boolCombos = winningCombos[outputType];
     for (const auto& combo : boolCombos)
     {
-        ::testing::FLAGS_gmock_verbose = "info";
+        bool value = rand() % 2;
+        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
         const auto operationType = std::get<2>(combo);
         if (operationType == _operationType::NONE)
         {
             auto mapping = std::make_shared<wolkabout::BoolMapping>("TEST", registerType, 0, false, 0);
+            mapping->m_boolValue = !value;
             MovePointers();
             mapping->m_group = std::move(registerGroupMock);
             if (registerType == _registerType::COIL)
             {
-                EXPECT_CALL((ModbusReaderMock&)*(mapping->m_group->m_device->m_reader), writeMapping(_, true)).WillOnce(Return(true));
-                EXPECT_TRUE(mapping->writeValue(true));
+                EXPECT_CALL((ModbusReaderMock&)*(mapping->m_group->m_device->m_reader), writeMapping(_, value))
+                  .WillOnce(Return(true));
+                EXPECT_TRUE(mapping->writeValue(value));
+
+                EXPECT_EQ(value, mapping->getBoolValue());
             }
             else
             {
-                EXPECT_FALSE(mapping->writeValue(true));
+                EXPECT_FALSE(mapping->writeValue(value));
             }
 
             MoveBackPointers();
@@ -205,12 +204,16 @@ TEST_F(MappingsTests, BoolMappingsWriteValue)
         else
         {
             auto mapping = std::make_shared<wolkabout::BoolMapping>("TEST", registerType, 0, operationType, 0);
+            mapping->m_boolValue = !value;
             MovePointers();
             mapping->m_group = std::move(registerGroupMock);
             if (registerType == _registerType::HOLDING_REGISTER)
             {
-                EXPECT_CALL((ModbusReaderMock&)*(mapping->m_group->m_device->m_reader), writeBitMapping).WillOnce(Return(true));
-                EXPECT_TRUE(mapping->writeValue(true));
+                EXPECT_CALL((ModbusReaderMock&)*(mapping->m_group->m_device->m_reader), writeBitMapping)
+                  .WillOnce(Return(true));
+                EXPECT_TRUE(mapping->writeValue(value));
+
+                EXPECT_EQ(value, mapping->getBoolValue());
             }
             else
             {
@@ -219,7 +222,5 @@ TEST_F(MappingsTests, BoolMappingsWriteValue)
 
             MoveBackPointers();
         }
-
-        ::testing::FLAGS_gmock_verbose = "error";
     }
 }
