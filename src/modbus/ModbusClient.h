@@ -63,7 +63,7 @@ public:
      * @param value
      * @return Returns whether or not the operation was successful.
      */
-    bool writeHoldingRegister(int slaveAddress, int address, uint16_t value);
+    virtual bool writeHoldingRegister(int slaveAddress, int address, uint16_t value);
 
     /**
      * @brief Writes multiple uint16_t values into HOLDING REGISTERS, targeting the address, and however many registers
@@ -74,7 +74,7 @@ public:
      * @param values
      * @return Returns whether or not the operation was successful.
      */
-    bool writeHoldingRegisters(int slaveAddress, int address, std::vector<uint16_t>& values);
+    virtual bool writeHoldingRegisters(int slaveAddress, int address, std::vector<uint16_t>& values);
 
     /**
      * @brief Writes a single bool value to a COIL, targeting the address.
@@ -84,7 +84,7 @@ public:
      * @param value
      * @return Returns whether or not the operation was successful.
      */
-    bool writeCoil(int slaveAddress, int address, bool value);
+    virtual bool writeCoil(int slaveAddress, int address, bool value);
 
     /**
      * @brief Reads from multiple INPUT_CONTACTS, starting from address,
@@ -96,7 +96,7 @@ public:
      * @param values
      * @return Returns whether or not the operation was successful.
      */
-    bool readInputContacts(int slaveAddress, int address, int number, std::vector<bool>& values);
+    virtual bool readInputContacts(int slaveAddress, int address, int number, std::vector<bool>& values);
 
     /**
      * @brief Reads from a single HOLDING_REGISTER, targeting the address.
@@ -106,7 +106,7 @@ public:
      * @param value
      * @return Returns whether or not the operation was successful.
      */
-    bool readHoldingRegister(int slaveAddress, int address, uint16_t& value);
+    virtual bool readHoldingRegister(int slaveAddress, int address, uint16_t& value);
 
     /**
      * @brief Reads from multiple HOLDING_REGISTERS, targeting the address,
@@ -118,7 +118,7 @@ public:
      * @param values
      * @return Returns whether or not the operation was successful.
      */
-    bool readHoldingRegisters(int slaveAddress, int address, int number, std::vector<uint16_t>& values);
+    virtual bool readHoldingRegisters(int slaveAddress, int address, int number, std::vector<uint16_t>& values);
 
     /**
      * @brief Reads from multiple INPUT_REGISTERS, targeting the address,
@@ -130,7 +130,7 @@ public:
      * @param values
      * @return Returns whether or not the operation was successful.
      */
-    bool readInputRegisters(int slaveAddress, int address, int number, std::vector<uint16_t>& values);
+    virtual bool readInputRegisters(int slaveAddress, int address, int number, std::vector<uint16_t>& values);
 
     /**
      * @brief Reads from a single COIL, targeting the address.
@@ -140,7 +140,7 @@ public:
      * @param value
      * @return Returns whether or not the operation was successful.
      */
-    bool readCoil(int slaveAddress, int address, bool& value);
+    virtual bool readCoil(int slaveAddress, int address, bool& value);
 
     /**
      * @brief Reads from multiple COILS, targeting the address,
@@ -152,7 +152,7 @@ public:
      * @param values
      * @return Returns whether or not the operation was successful.
      */
-    bool readCoils(int slaveAddress, int address, int number, std::vector<bool>& values);
+    virtual bool readCoils(int slaveAddress, int address, int number, std::vector<bool>& values);
 
 protected:
     virtual bool createContext() = 0;
