@@ -313,7 +313,7 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
 {
     bool connected = true;
 
-    while (true)
+    while (m_readerShouldRun)
     {
         if (connected)
         {
