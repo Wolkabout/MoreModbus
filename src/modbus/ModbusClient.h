@@ -43,17 +43,17 @@ public:
      * @return Returns whether or not the client successfully established a modbus connection
      *         or if the connection is already established.
      */
-    bool connect();
+    virtual bool connect();
 
     /**
      * @return Returns true if connection has been successfully stopped.
      */
-    bool disconnect();
+    virtual bool disconnect();
 
     /**
      * @return Returns whether or not the client has established a modbus client.
      */
-    bool isConnected();
+    virtual bool isConnected();
 
     /**
      * @brief Writes a single uint16_t value into a HOLDING REGISTER, targeting the address.

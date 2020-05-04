@@ -69,7 +69,7 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
         throw std::logic_error("RegisterGroup: You can\'t add different typed registers in a group.");
     }
 
-    if (mapping->isReadRestricted() && !m_readRestricted)
+    if (mapping->isReadRestricted() != m_readRestricted)
     {
         throw std::logic_error("RegisterGroup: Read restricted mappings have to have groups of their own!");
     }
