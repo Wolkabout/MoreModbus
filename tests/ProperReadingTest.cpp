@@ -52,41 +52,52 @@ class ProperReadingTest : public ::testing::Test
 public:
     std::shared_ptr<ModbusClientMock> modbusClientMock;
 
+    std::shared_ptr<wolkabout::BoolMapping> bitMapping;
+    std::shared_ptr<wolkabout::BoolMapping> coilMapping;
+    std::shared_ptr<wolkabout::UInt16Mapping> uint16Mapping;
+    std::shared_ptr<wolkabout::StringMapping> stringMapping;
+    std::shared_ptr<wolkabout::FloatMapping> nonWriteableFloatMapping;
+
     std::vector<std::shared_ptr<wolkabout::RegisterMapping>> mappings;
     std::shared_ptr<wolkabout::ModbusDevice> device;
 
     void SetUpMappings()
     {
-        mappings.emplace_back(std::make_shared<wolkabout::UInt16Mapping>("HR1", _registerType::HOLDING_REGISTER, 0));
+        uint16Mapping = std::make_shared<wolkabout::UInt16Mapping>("HR1", _registerType::HOLDING_REGISTER, 0);
+        mappings.emplace_back(uint16Mapping);
+
         mappings.emplace_back(std::make_shared<wolkabout::UInt16Mapping>("HR2", _registerType::HOLDING_REGISTER, 1));
-        mappings.emplace_back(
-          std::make_shared<wolkabout::Int16Mapping>("HR3", _registerType::HOLDING_REGISTER, 2));
-        mappings.emplace_back(
-          std::make_shared<wolkabout::Int16Mapping>("HR4", _registerType::HOLDING_REGISTER, 3));
+        mappings.emplace_back(std::make_shared<wolkabout::Int16Mapping>("HR3", _registerType::HOLDING_REGISTER, 2));
+        mappings.emplace_back(std::make_shared<wolkabout::Int16Mapping>("HR4", _registerType::HOLDING_REGISTER, 3));
 
-        mappings.emplace_back(std::make_shared<wolkabout::UInt32Mapping>("IR1", _registerType::INPUT_REGISTER,
-                                                                    std::vector<int16_t>{0, 1}, _operationType::MERGE_LITTLE_ENDIAN));
-        mappings.emplace_back(std::make_shared<wolkabout::Int32Mapping>("IR2", _registerType::INPUT_REGISTER,
-                                                                    std::vector<int16_t>{2, 3},_operationType::MERGE_BIG_ENDIAN));
-        mappings.emplace_back(std::make_shared<wolkabout::FloatMapping>("IR3", _registerType::INPUT_REGISTER,
-                                                                    std::vector<int16_t>{4, 5}));
+        mappings.emplace_back(std::make_shared<wolkabout::UInt32Mapping>(
+          "IR1", _registerType::INPUT_REGISTER, std::vector<int16_t>{0, 1}, _operationType::MERGE_LITTLE_ENDIAN));
+        mappings.emplace_back(std::make_shared<wolkabout::Int32Mapping>(
+          "IR2", _registerType::INPUT_REGISTER, std::vector<int16_t>{2, 3}, _operationType::MERGE_BIG_ENDIAN));
 
-        mappings.emplace_back(std::make_shared<wolkabout::BoolMapping>("HRB1", _registerType::HOLDING_REGISTER, 4,
-                                                                    _operationType::TAKE_BIT, 0));
+        nonWriteableFloatMapping =
+          std::make_shared<wolkabout::FloatMapping>("IR3", _registerType::INPUT_REGISTER, std::vector<int16_t>{4, 5});
+        mappings.emplace_back(nonWriteableFloatMapping);
+
+        bitMapping = std::make_shared<wolkabout::BoolMapping>("HRB1", _registerType::HOLDING_REGISTER, 4,
+                                                              _operationType::TAKE_BIT, 0);
+        mappings.emplace_back(bitMapping);
         mappings.emplace_back(std::make_shared<wolkabout::BoolMapping>("HRB2", _registerType::HOLDING_REGISTER, 4,
-                                                                    _operationType::TAKE_BIT, 2));
+                                                                       _operationType::TAKE_BIT, 2));
         mappings.emplace_back(std::make_shared<wolkabout::BoolMapping>("HRB3", _registerType::HOLDING_REGISTER, 4,
-                                                                    _operationType::TAKE_BIT, 4));
+                                                                       _operationType::TAKE_BIT, 4));
         mappings.emplace_back(std::make_shared<wolkabout::BoolMapping>("HRB4", _registerType::HOLDING_REGISTER, 4,
-                                                                    _operationType::TAKE_BIT, 6));
-        mappings.emplace_back(std::make_shared<wolkabout::StringMapping>(
-          "HRSTR", _registerType::HOLDING_REGISTER, std::vector<int16_t>{5, 6, 7, 8, 9}, _operationType::STRINGIFY_ASCII));
+                                                                       _operationType::TAKE_BIT, 6));
 
-        mappings.emplace_back(std::make_shared<wolkabout::BoolMapping>(
-          "HRCOIL", _registerType::COIL, 0));
+        stringMapping = std::make_shared<wolkabout::StringMapping>("HRSTR", _registerType::HOLDING_REGISTER,
+                                                                   std::vector<int16_t>{5, 6, 7, 8, 9},
+                                                                   _operationType::STRINGIFY_ASCII);
+        mappings.emplace_back(stringMapping);
 
-        mappings.emplace_back(std::make_shared<wolkabout::BoolMapping>(
-          "HRIC", _registerType::INPUT_CONTACT, 0));
+        coilMapping = std::make_shared<wolkabout::BoolMapping>("HRCOIL", _registerType::COIL, 0);
+        mappings.emplace_back(coilMapping);
+
+        mappings.emplace_back(std::make_shared<wolkabout::BoolMapping>("HRIC", _registerType::INPUT_CONTACT, 0));
     }
 
     void SetUpDevices()
@@ -98,7 +109,7 @@ public:
     void SetUp()
     {
         auto logger = std::unique_ptr<wolkabout::ConsoleLogger>(new wolkabout::ConsoleLogger());
-        logger->setLogLevel(wolkabout::LogLevel::TRACE);
+        logger->setLogLevel(wolkabout::LogLevel::WARN);
         wolkabout::Logger::setInstance(std::move(logger));
 
         modbusClientMock = std::make_shared<ModbusClientMock>();
@@ -113,23 +124,39 @@ TEST_F(ProperReadingTest, InitializeReader)
     EXPECT_NO_THROW(reader->addDevice(device));
 
     const auto boolData = std::vector<bool>(10, false);
+    uint16_t uint16Single = 0;
     const auto uint16Data = std::vector<uint16_t>(10, 0);
 
     EXPECT_CALL(*modbusClientMock, isConnected).WillOnce(Return(false)).WillRepeatedly(Return(true));
     EXPECT_CALL(*modbusClientMock, connect).WillRepeatedly(Return(true));
     EXPECT_CALL(*modbusClientMock, readCoils).WillRepeatedly(DoAll(SetArgReferee<3>(boolData), Return(true)));
     EXPECT_CALL(*modbusClientMock, readInputContacts).WillRepeatedly(DoAll(SetArgReferee<3>(boolData), Return(true)));
-    EXPECT_CALL(*modbusClientMock, readHoldingRegisters).WillRepeatedly(DoAll(SetArgReferee<3>(uint16Data), Return(true)));
-    EXPECT_CALL(*modbusClientMock, readInputRegisters).WillRepeatedly(DoAll(SetArgReferee<3>(uint16Data), Return(true)));
+    EXPECT_CALL(*modbusClientMock, readHoldingRegisters)
+      .WillRepeatedly(DoAll(SetArgReferee<3>(uint16Data), Return(true)));
+    EXPECT_CALL(*modbusClientMock, readHoldingRegister)
+      .WillRepeatedly(DoAll(SetArgReferee<2>(uint16Single), Return(true)));
+    EXPECT_CALL(*modbusClientMock, readInputRegisters)
+      .WillRepeatedly(DoAll(SetArgReferee<3>(uint16Data), Return(true)));
+
+    EXPECT_CALL(*modbusClientMock, writeCoil).WillRepeatedly(Return(true));
+    EXPECT_CALL(*modbusClientMock, writeHoldingRegisters).WillRepeatedly(Return(true));
 
     EXPECT_NO_THROW(reader->start());
-    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-    reader->m_shouldReconnect = true;
-    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    EXPECT_NO_THROW(bitMapping->writeValue(true));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    EXPECT_NO_THROW(stringMapping->writeValue("Heyo!!!!!!"));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    EXPECT_NO_THROW(reader->m_shouldReconnect = true);
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    EXPECT_NO_THROW(coilMapping->writeValue(true));
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     EXPECT_CALL(*modbusClientMock, isConnected).WillOnce(Return(false)).WillRepeatedly(Return(true));
-    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-    reader->m_readerShouldRun = false;
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    EXPECT_ANY_THROW(nonWriteableFloatMapping->writeValue(100.12f));
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    EXPECT_NO_THROW(reader->m_readerShouldRun = false);
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     EXPECT_NO_THROW(reader->stop());
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-
 }

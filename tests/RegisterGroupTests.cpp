@@ -27,6 +27,7 @@
 #include <iostream>
 #include <memory>
 
+#include "mocks/ModbusDeviceMocking.h"
 #include "mocks/RegisterMappingMocking.h"
 
 class RegisterGroupTests : public ::testing::Test
@@ -91,4 +92,6 @@ TEST_F(RegisterGroupTests, InitialExampleTest)
     EXPECT_NO_THROW(readOnlyGroup = std::make_shared<wolkabout::RegisterGroup>(readRestrictedMappings[0], nullptr));
     EXPECT_TRUE(readOnlyGroup->addMapping(readRestrictedMappings[1]));
     EXPECT_THROW(readOnlyGroup->addMapping(mappings[4]), std::logic_error);
+
+    EXPECT_NO_THROW(readOnlyGroup->setDevice(std::make_shared<ModbusDeviceMock>()));
 }
