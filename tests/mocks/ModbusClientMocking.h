@@ -16,8 +16,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef MOREMODBUS_MODBUSCLIENTMOCK_H
-#define MOREMODBUS_MODBUSCLIENTMOCK_H
+#ifndef MOREMODBUS_MODBUSCLIENTMOCKING_H
+#define MOREMODBUS_MODBUSCLIENTMOCKING_H
 
 #define private public
 #define protected public
@@ -56,4 +56,4 @@ public:
     MOCK_METHOD1(changeSlaveAddress, bool(int));
 };
 
-#endif    // MOREMODBUS_MODBUSCLIENTMOCK_H
+#endif    // MOREMODBUS_MODBUSCLIENTMOCKING_H

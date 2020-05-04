@@ -41,7 +41,7 @@
 #define _makeComboPure(x, y, z) _combination(x, y, z)
 
 #include "utilities/DataParsers.h"
-#include "mocks/ModbusClientMock.h"
+#include "mocks/ModbusClientMocking.h"
 #include "mocks/ModbusDeviceMocking.h"
 #include "mocks/ModbusReaderMocking.h"
 #include "mocks/RegisterGroupMocking.h"

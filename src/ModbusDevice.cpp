@@ -30,6 +30,20 @@ ModbusDevice::ModbusDevice(const std::string& name, int8_t slaveAddress)
 {
 }
 
+ModbusDevice::ModbusDevice(const ModbusDevice& device)
+: m_name(device.m_name)
+, m_status(device.m_status)
+, m_groups()
+, m_reader(device.m_reader)
+, m_onMappingValueChange(device.m_onMappingValueChange)
+, m_onStatusChange(device.m_onStatusChange)
+{
+    for (const auto& group : device.m_groups)
+    {
+        m_groups.emplace_back(std::shared_ptr<RegisterGroup>(group));
+    }
+}
+
 void ModbusDevice::createGroups(const std::vector<std::shared_ptr<RegisterMapping>>& mappings)
 {
     std::map<RegisterMapping::RegisterType, std::shared_ptr<RegisterGroup>> readRestrictedGroups;

@@ -38,7 +38,7 @@
 #define _makeCombo(x, y, z) _combination(_registerType::x, _outputType::y, _operationType::z)
 #define _makeComboPure(x, y, z) _combination(x, y, z)
 
-#include "mocks/ModbusClientMock.h"
+#include "mocks/ModbusClientMocking.h"
 #include "mocks/ModbusDeviceMocking.h"
 #include "mocks/ModbusReaderMocking.h"
 #include "mocks/RegisterGroupMocking.h"
@@ -69,8 +69,6 @@ public:
         modbusReaderMock.reset();
         registerGroupMock.reset();
         modbusClientMock.reset();
-
-        ::testing::FLAGS_gmock_verbose = "error";
     }
 
     void MovePointers()
@@ -214,6 +212,7 @@ TEST_F(MappingsTests, BoolMappingsWriteValue)
                 EXPECT_CALL((ModbusReaderMock&)*(mapping->m_group->m_device->m_reader), writeBitMapping)
                   .WillOnce(Return(true));
                 EXPECT_TRUE(mapping->writeValue(value));
+                EXPECT_TRUE(mapping->update(value));
 
                 EXPECT_EQ(value, mapping->getBoolValue());
             }

@@ -72,6 +72,11 @@ public:
     ModbusDevice(const std::string& name, int8_t slaveAddress);
 
     /**
+     * @brief Copy constructor for the device, does complete deep copy for device and groups.
+     */
+    ModbusDevice(const ModbusDevice& device);
+
+    /**
      * @brief Create all the RegisterGroup that this device will have by providing all mappings.
      * @param mappings container of all mappings the user wishes this device has.
      */
