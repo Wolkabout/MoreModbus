@@ -183,8 +183,8 @@ TEST_F(ComplexMappingsTests, UInt32MappingsCreation)
 TEST_F(ComplexMappingsTests, UInt32MappingsWriteValue)
 {
     const auto& outputType = _outputType::UINT32;
-    const auto& boolCombos = winningCombos[outputType];
-    for (const auto& combo : boolCombos)
+    const auto& uintCombos = winningCombos[outputType];
+    for (const auto& combo : uintCombos)
     {
         const auto operationType = std::get<2>(combo);
         const auto endian = endianForOperation.at(std::get<2>(combo));
@@ -218,8 +218,8 @@ TEST_F(ComplexMappingsTests, UInt32MappingsWriteValue)
 TEST_F(ComplexMappingsTests, UInt32MappingsInitUpdateValid)
 {
     const auto& outputType = _outputType::UINT32;
-    const auto& boolCombos = winningCombos[outputType];
-    for (const auto& combo : boolCombos)
+    const auto& uintCombos = winningCombos[outputType];
+    for (const auto& combo : uintCombos)
     {
         const auto operationType = std::get<2>(combo);
         const auto endian = endianForOperation.at(operationType);
@@ -239,6 +239,12 @@ TEST_F(ComplexMappingsTests, UInt32MappingsInitUpdateValid)
 
         EXPECT_TRUE(mapping->isInitialized());
         EXPECT_TRUE(mapping->isValid());
+
+        // Redundant if checks
+        mapping->m_operationType = _operationType::STRINGIFY_UNICODE;
+
+        EXPECT_THROW(mapping->writeValue(value), std::logic_error);
+        EXPECT_THROW(mapping->update(bytes), std::logic_error);
     }
 }
 
@@ -269,8 +275,8 @@ TEST_F(ComplexMappingsTests, Int32MappingsCreation)
 TEST_F(ComplexMappingsTests, Int32MappingsWriteValue)
 {
     const auto& outputType = _outputType::INT32;
-    const auto& boolCombos = winningCombos[outputType];
-    for (const auto& combo : boolCombos)
+    const auto& intCombos = winningCombos[outputType];
+    for (const auto& combo : intCombos)
     {
         const auto operationType = std::get<2>(combo);
         const auto endian = endianForOperation.at(operationType);
@@ -304,14 +310,13 @@ TEST_F(ComplexMappingsTests, Int32MappingsWriteValue)
 TEST_F(ComplexMappingsTests, Int32MappingsInitUpdateValid)
 {
     const auto& outputType = _outputType::INT32;
-    const auto& boolCombos = winningCombos[outputType];
-    for (const auto& combo : boolCombos)
+    const auto& intCombos = winningCombos[outputType];
+    for (const auto& combo : intCombos)
     {
         const auto operationType = std::get<2>(combo);
         const auto endian = endianForOperation.at(operationType);
         const auto value = static_cast<int32_t>(rand());
         const auto bytes = wolkabout::DataParsers::int32ToRegisters(value, endian);
-        //        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
         auto mapping =
@@ -325,6 +330,12 @@ TEST_F(ComplexMappingsTests, Int32MappingsInitUpdateValid)
 
         EXPECT_TRUE(mapping->isInitialized());
         EXPECT_TRUE(mapping->isValid());
+
+        // Redundant if checks
+        mapping->m_operationType = _operationType::TAKE_BIT;
+
+        EXPECT_THROW(mapping->writeValue(value), std::logic_error);
+        EXPECT_THROW(mapping->update(bytes), std::logic_error);
     }
 }
 
@@ -350,8 +361,8 @@ TEST_F(ComplexMappingsTests, FloatMappingsCreation)
 TEST_F(ComplexMappingsTests, FloatMappingsWriteValue)
 {
     const auto& outputType = _outputType::FLOAT;
-    const auto& boolCombos = winningCombos[outputType];
-    for (const auto& combo : boolCombos)
+    const auto& floatCombos = winningCombos[outputType];
+    for (const auto& combo : floatCombos)
     {
         const auto value = static_cast<float>(rand());
         const auto bytes = wolkabout::DataParsers::floatToRegisters(value);
@@ -382,8 +393,8 @@ TEST_F(ComplexMappingsTests, FloatMappingsWriteValue)
 TEST_F(ComplexMappingsTests, FloatMappingsInitUpdateValid)
 {
     const auto& outputType = _outputType::FLOAT;
-    const auto& boolCombos = winningCombos[outputType];
-    for (const auto& combo : boolCombos)
+    const auto& floatCombos = winningCombos[outputType];
+    for (const auto& combo : floatCombos)
     {
         const auto value = static_cast<float>(rand());
         const auto bytes = wolkabout::DataParsers::floatToRegisters(value);
@@ -400,6 +411,11 @@ TEST_F(ComplexMappingsTests, FloatMappingsInitUpdateValid)
 
         EXPECT_TRUE(mapping->isInitialized());
         EXPECT_TRUE(mapping->isValid());
+
+        mapping->m_operationType = _operationType::MERGE_BIG_ENDIAN;
+
+        EXPECT_THROW(mapping->writeValue(value), std::logic_error);
+        EXPECT_THROW(mapping->update(bytes), std::logic_error);
     }
 }
 
@@ -447,8 +463,8 @@ std::string random_string( size_t length )
 TEST_F(ComplexMappingsTests, StringMappingsWriteValue)
 {
     const auto& outputType = _outputType::STRING;
-    const auto& boolCombos = winningCombos[outputType];
-    for (const auto& combo : boolCombos)
+    const auto& stringCombos = winningCombos[outputType];
+    for (const auto& combo : stringCombos)
     {
         const auto operationType = std::get<2>(combo);
         const auto addresses = std::vector<int16_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -490,14 +506,13 @@ TEST_F(ComplexMappingsTests, StringMappingsWriteValue)
 TEST_F(ComplexMappingsTests, StringMappingsInitUpdateValid)
 {
     const auto& outputType = _outputType::STRING;
-    const auto& boolCombos = winningCombos[outputType];
-    for (const auto& combo : boolCombos)
+    const auto& stringCombos = winningCombos[outputType];
+    for (const auto& combo : stringCombos)
     {
         const auto operationType = std::get<2>(combo);
         const auto addresses = std::vector<int16_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
         const auto value = random_string(addresses.size() * 2);
-        auto bytes = std::vector<uint16_t>();
-        //        std::cout << "Testing with " << value << std::endl;
+        const auto bytes = wolkabout::DataParsers::asciiStringToRegisters(value);
 
         const auto registerType = std::get<0>(combo);
         auto mapping = std::make_shared<wolkabout::StringMapping>("TEST", registerType, addresses, operationType);
@@ -510,5 +525,30 @@ TEST_F(ComplexMappingsTests, StringMappingsInitUpdateValid)
 
         EXPECT_TRUE(mapping->isInitialized());
         EXPECT_TRUE(mapping->isValid());
+
+        mapping->m_operationType = _operationType::MERGE_LITTLE_ENDIAN;
+
+        EXPECT_THROW(mapping->writeValue(value), std::logic_error);
+        EXPECT_THROW(mapping->update(bytes), std::logic_error);
+    }
+}
+
+TEST_F(ComplexMappingsTests, StringMappingsUpdateFailCauseSize)
+{
+    const auto& outputType = _outputType::STRING;
+    const auto& stringCombos = winningCombos[outputType];
+    for (const auto& combo : stringCombos)
+    {
+        const auto operationType = std::get<2>(combo);
+        const auto addresses = std::vector<int16_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        const auto value = random_string(addresses.size() * 2 + 4);
+
+        const auto registerType = std::get<0>(combo);
+        auto mapping = std::make_shared<wolkabout::StringMapping>("TEST", registerType, addresses, operationType);
+
+        EXPECT_FALSE(mapping->isInitialized());
+        EXPECT_FALSE(mapping->isValid());
+
+        EXPECT_THROW(mapping->writeValue(value), std::logic_error);
     }
 }
