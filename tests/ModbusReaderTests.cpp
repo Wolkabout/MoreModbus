@@ -73,5 +73,3 @@ TEST_F(ModbusReaderTests, ExampleTest)
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
     EXPECT_NO_THROW(reader->stop());
 }
-
-TEST_F(ModbusReaderTests, ProperDeviceTest) {}
