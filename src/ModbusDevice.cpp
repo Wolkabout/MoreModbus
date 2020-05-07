@@ -40,7 +40,7 @@ ModbusDevice::ModbusDevice(const ModbusDevice& device)
 {
     for (const auto& group : device.m_groups)
     {
-        m_groups.emplace_back(std::shared_ptr<RegisterGroup>(group));
+        m_groups.emplace_back(std::make_shared<RegisterGroup>(*group));
     }
 }
 
