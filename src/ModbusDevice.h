@@ -86,7 +86,7 @@ public:
 
     bool getStatus() const;
 
-    const std::shared_ptr<ModbusReader>& getReader() const;
+    const std::weak_ptr<ModbusReader>& getReader() const;
 
     void setReader(const std::shared_ptr<ModbusReader>& reader);
 
@@ -117,7 +117,7 @@ private:
     int8_t m_slaveAddress;
     std::vector<std::shared_ptr<RegisterGroup>> m_groups;
 
-    std::shared_ptr<ModbusReader> m_reader;
+    std::weak_ptr<ModbusReader> m_reader;
 
     std::function<void(const std::shared_ptr<RegisterMapping>&)> m_onMappingValueChange;
     std::function<void(bool)> m_onStatusChange;

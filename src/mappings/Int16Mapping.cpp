@@ -50,7 +50,8 @@ bool Int16Mapping::writeValue(int16_t value)
     std::vector<uint16_t> bytes;
     bytes.emplace_back(DataParsers::int16ToUint16(value));
 
-    bool success = getGroup()->getDevice()->getReader()->writeMapping(*this, bytes);
+    const auto reader = getGroup()->getDevice()->getReader().lock();
+    bool success = reader->writeMapping(*this, bytes);
     if (success)
         m_int16Value = value;
 

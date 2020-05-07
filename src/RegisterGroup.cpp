@@ -91,7 +91,9 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
         if (mapping->getOperationType() == RegisterMapping::OperationType::TAKE_BIT)
         {
             // If we're just adding bits, we don't need to apply same ruling.
-            if (keyExistsInSet(std::to_string(mapping->getStartingAddress())))
+            const auto key = std::to_string(mapping->getStartingAddress()) + GroupUtility::SEPARATOR +
+                             std::to_string(mapping->getBitIndex());
+            if (keyExistsInSet(key))
             {
                 // The address we're targeting is already fully claimed.
                 LOG(WARN) << "RegisterGroup: Mapping " << mapping->getReference()

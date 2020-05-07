@@ -144,7 +144,7 @@ void ModbusDevice::triggerOnStatusChange(bool status)
     m_status = status;
 }
 
-const std::shared_ptr<ModbusReader>& ModbusDevice::getReader() const
+const std::weak_ptr<ModbusReader>& ModbusDevice::getReader() const
 {
     return m_reader;
 }

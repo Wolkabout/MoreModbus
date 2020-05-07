@@ -62,7 +62,8 @@ bool UInt32Mapping::writeValue(uint32_t value)
     else
         throw std::logic_error("UInt32Mapping: Illegal operation type set.");
 
-    bool success = getGroup()->getDevice()->getReader()->writeMapping(*this, bytes);
+    const auto reader = getGroup()->getDevice()->getReader().lock();
+    bool success = reader->writeMapping(*this, bytes);
     if (success)
         m_uint32Value = value;
 

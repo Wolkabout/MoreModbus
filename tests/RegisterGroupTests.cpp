@@ -60,11 +60,17 @@ public:
           std::make_shared<RegisterMappingMock>("B4-2", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 4,
                                                 wolkabout::RegisterMapping::OperationType::TAKE_BIT, 1));
 
+        mappings.emplace_back(
+                  std::make_shared<RegisterMappingMock>("U1610", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 10));
+
         readRestrictedMappings.emplace_back(std::make_shared<RegisterMappingMock>(
           "BMRR1", wolkabout::RegisterMapping::RegisterType::COIL, 0, 0, true));
 
         readRestrictedMappings.emplace_back(std::make_shared<RegisterMappingMock>(
           "BMRR2", wolkabout::RegisterMapping::RegisterType::COIL, 1, 0, true));
+
+        readRestrictedMappings.emplace_back(std::make_shared<RegisterMappingMock>(
+          "BMRR3", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 1, 0, true));
     }
 
     void SetUp() { SetUpMappings(); }
@@ -80,8 +86,17 @@ TEST_F(RegisterGroupTests, InitialExampleTest)
     EXPECT_TRUE(moreGroup->addMapping(mappings[3]));
     EXPECT_TRUE(moreGroup->addMapping(mappings[4]));
     EXPECT_TRUE(moreGroup->addMapping(mappings[5]));
+    // This one is of wrong type
     EXPECT_THROW(moreGroup->addMapping(mappings[1]), std::logic_error);
-    EXPECT_THROW(moreGroup->addMapping(readRestrictedMappings[1]), std::logic_error);
+    // This one is already added
+    EXPECT_FALSE(moreGroup->addMapping(mappings[4]));
+    // This one is too far
+    EXPECT_FALSE(moreGroup->addMapping(mappings[6]));
+    EXPECT_THROW(moreGroup->addMapping(readRestrictedMappings[2]), std::logic_error);
+
+    std::shared_ptr<wolkabout::RegisterGroup> willNotAddBeforeGroup;
+    EXPECT_NO_THROW(moreGroup = std::make_shared<wolkabout::RegisterGroup>(mappings[6], nullptr));
+    EXPECT_FALSE(moreGroup->addMapping(mappings[0]));
 
     const auto& copy = wolkabout::RegisterGroup(*moreGroup);
     EXPECT_EQ(copy.getAddressCount(), moreGroup->getAddressCount());

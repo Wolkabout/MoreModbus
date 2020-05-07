@@ -147,13 +147,13 @@ public:
 
     static std::unique_ptr<ModbusClientMock> modbusClientMock;
     static std::unique_ptr<ModbusDeviceMock> modbusDeviceMock;
-    static std::unique_ptr<ModbusReaderMock> modbusReaderMock;
+    static std::shared_ptr<ModbusReaderMock> modbusReaderMock;
     static std::unique_ptr<RegisterGroupMock> registerGroupMock;
 };
 
 std::unique_ptr<ModbusClientMock> ComplexMappingsTests::modbusClientMock;
 std::unique_ptr<ModbusDeviceMock> ComplexMappingsTests::modbusDeviceMock;
-std::unique_ptr<ModbusReaderMock> ComplexMappingsTests::modbusReaderMock;
+std::shared_ptr<ModbusReaderMock> ComplexMappingsTests::modbusReaderMock;
 std::unique_ptr<RegisterGroupMock> ComplexMappingsTests::registerGroupMock;
 
 TEST_F(ComplexMappingsTests, UInt32MappingsCreation)
@@ -197,9 +197,10 @@ TEST_F(ComplexMappingsTests, UInt32MappingsWriteValue)
           std::make_shared<wolkabout::UInt32Mapping>("TEST", registerType, std::vector<int16_t>{0, 1}, operationType);
         MovePointers();
         mapping->m_group = std::move(registerGroupMock);
+        const auto reader = mapping->m_group->m_device->m_reader.lock();
         if (registerType == _registerType::HOLDING_REGISTER)
         {
-            EXPECT_CALL((ModbusReaderMock&)*(mapping->m_group->m_device->m_reader), writeMapping(_, bytes))
+            EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, bytes))
               .WillOnce(Return(true));
             EXPECT_TRUE(mapping->writeValue(value));
 
@@ -289,9 +290,10 @@ TEST_F(ComplexMappingsTests, Int32MappingsWriteValue)
           std::make_shared<wolkabout::Int32Mapping>("TEST", registerType, std::vector<int16_t>{0, 1}, operationType);
         MovePointers();
         mapping->m_group = std::move(registerGroupMock);
+        const auto reader = mapping->m_group->m_device->m_reader.lock();
         if (registerType == _registerType::HOLDING_REGISTER)
         {
-            EXPECT_CALL((ModbusReaderMock&)*(mapping->m_group->m_device->m_reader), writeMapping(_, bytes))
+            EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, bytes))
               .WillOnce(Return(true));
             EXPECT_TRUE(mapping->writeValue(value));
 
@@ -372,9 +374,10 @@ TEST_F(ComplexMappingsTests, FloatMappingsWriteValue)
         auto mapping = std::make_shared<wolkabout::FloatMapping>("TEST", registerType, std::vector<int16_t>{0, 1});
         MovePointers();
         mapping->m_group = std::move(registerGroupMock);
+        const auto reader = mapping->m_group->m_device->m_reader.lock();
         if (registerType == _registerType::HOLDING_REGISTER)
         {
-            EXPECT_CALL((ModbusReaderMock&)*(mapping->m_group->m_device->m_reader), writeMapping(_, bytes))
+            EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, bytes))
               .WillOnce(Return(true));
             EXPECT_TRUE(mapping->writeValue(value));
 
@@ -485,9 +488,10 @@ TEST_F(ComplexMappingsTests, StringMappingsWriteValue)
         auto mapping = std::make_shared<wolkabout::StringMapping>("TEST", registerType, addresses, operationType);
         MovePointers();
         mapping->m_group = std::move(registerGroupMock);
+        const auto reader = mapping->m_group->m_device->m_reader.lock();
         if (registerType == _registerType::HOLDING_REGISTER)
         {
-            EXPECT_CALL((ModbusReaderMock&)*(mapping->m_group->m_device->m_reader), writeMapping(_, bytes))
+            EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, bytes))
               .WillOnce(Return(true));
             EXPECT_TRUE(mapping->writeValue(value));
 

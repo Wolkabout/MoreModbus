@@ -155,8 +155,6 @@ TEST_F(ProperReadingTest, InitializeReader)
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     EXPECT_ANY_THROW(nonWriteableFloatMapping->writeValue(100.12f));
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-    EXPECT_NO_THROW(reader->m_readerShouldRun = false);
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     EXPECT_NO_THROW(reader->stop());
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 }
