@@ -1,0 +1,20 @@
+*MoreModbus RELEASE NOTES**
+---------------------------------------
+
+*Wolkabout Technology s.r.o.*
+
+Additional Modbus abstraction layer, parsing data from uint16_t registers into more useful types.
+
+**Version 0.2.0** - Unit Tests
+- [FEATURE] Unit Tests - added a big suite of unit tests, meant to test flow of classes and workings of entire library. Implemented using google test library.
+- [IMPROVEMENT] Renamed some members inside parsing functions for endians, where naming isn't non-consistent anymore
+- [BUGFIX] Replaced circular pointers in some classes, where ones are now weak.
+- [BUGFIX] Fixed device reading threads, so that they actually stop working when the main thread also stops.
+- [BUGFIX] Fixed some checks while adding BitMappings in group, where group would before allow bit mapping to take claim of bit even if any other already claims it.
+
+**Version 0.1.0** - Initial Release
+- [BRIEF] MoreModbus allows users to created devices/readers with mappings, that will parse data incoming from Modbus into other types.
+- [FEATURE] Mappings - single user understandable units, resulting in a single value of desired type, which occupies single/multiple Modbus registers.
+- [FEATURE] Groups - multiple mappings being grouped for purpose of quicker reading, since a single Modbus instruction could be used to receive data for all mappings. Data separation/aggregation/parsing is done by the library.
+- [FEATURE] Devices - cluster of mappings/groups meant for a single slave address, also captures status of slave, and captures data change event.
+- [FEATURE] Reader - works with devices to read them periodically, and also handles data write requests.
