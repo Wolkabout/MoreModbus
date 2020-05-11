@@ -47,6 +47,9 @@ bool Int16Mapping::update(const std::vector<uint16_t>& newValues)
 
 bool Int16Mapping::writeValue(int16_t value)
 {
+    if (getGroup()->getDevice()->getReader().expired())
+        return false;
+
     std::vector<uint16_t> bytes;
     bytes.emplace_back(DataParsers::int16ToUint16(value));
 

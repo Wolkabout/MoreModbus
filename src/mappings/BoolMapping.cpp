@@ -45,7 +45,11 @@ BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::Register
 
 bool BoolMapping::writeValue(bool value)
 {
+    if (getGroup()->getDevice()->getReader().expired())
+        return false;
+
     bool success;
+
     const auto reader = getGroup()->getDevice()->getReader().lock();
     if (m_operationType == OperationType::TAKE_BIT)
         success = reader->writeBitMapping(*this, value);

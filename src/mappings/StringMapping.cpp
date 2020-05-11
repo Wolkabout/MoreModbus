@@ -68,6 +68,9 @@ bool StringMapping::writeValue(const std::string& newValue)
     else
         throw std::logic_error("StringMapping: Illegal operation type set.");
 
+    if (getGroup()->getDevice()->getReader().expired())
+        return false;
+
     const auto reader = getGroup()->getDevice()->getReader().lock();
     bool success = reader->writeMapping(*this, bytes);
     if (success)

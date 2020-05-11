@@ -185,6 +185,7 @@ TEST_F(MappingsTests, BoolMappingsWriteValue)
             mapping->m_boolValue = !value;
             MovePointers();
             mapping->m_group = std::move(registerGroupMock);
+            ASSERT_FALSE(mapping->m_group->m_device->m_reader.expired());
             const auto reader = mapping->m_group->m_device->m_reader.lock();
             if (registerType == _registerType::COIL)
             {
@@ -208,6 +209,7 @@ TEST_F(MappingsTests, BoolMappingsWriteValue)
             mapping->m_boolValue = !value;
             MovePointers();
             mapping->m_group = std::move(registerGroupMock);
+            ASSERT_FALSE(mapping->m_group->m_device->m_reader.expired());
             const auto reader = mapping->m_group->m_device->m_reader.lock();
             if (registerType == _registerType::HOLDING_REGISTER)
             {
@@ -260,6 +262,7 @@ TEST_F(MappingsTests, UInt16MappingsWriteValue)
         auto mapping = std::make_shared<wolkabout::UInt16Mapping>("TEST", registerType, 0);
         MovePointers();
         mapping->m_group = std::move(registerGroupMock);
+        ASSERT_FALSE(mapping->m_group->m_device->m_reader.expired());
         const auto reader = mapping->m_group->m_device->m_reader.lock();
         if (registerType == _registerType::HOLDING_REGISTER)
         {
@@ -335,6 +338,7 @@ TEST_F(MappingsTests, Int16MappingsWriteValue)
         auto mapping = std::make_shared<wolkabout::Int16Mapping>("TEST", registerType, 0);
         MovePointers();
         mapping->m_group = std::move(registerGroupMock);
+        ASSERT_FALSE(mapping->m_group->m_device->m_reader.expired());
         const auto reader = mapping->m_group->m_device->m_reader.lock();
         if (registerType == _registerType::HOLDING_REGISTER)
         {

@@ -48,6 +48,9 @@ bool FloatMapping::writeValue(float value)
         throw std::logic_error("FloatMapping: Illegal operation type set.");
     bytes = DataParsers::floatToRegisters(value);
 
+    if (getGroup()->getDevice()->getReader().expired())
+        return false;
+
     const auto reader = getGroup()->getDevice()->getReader().lock();
     bool success = reader->writeMapping(*this, bytes);
     if (success)

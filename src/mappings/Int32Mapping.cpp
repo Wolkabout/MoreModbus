@@ -62,6 +62,9 @@ bool Int32Mapping::writeValue(int32_t value)
     else
         throw std::logic_error("Int32Mapping: Illegal operation type set.");
 
+    if (getGroup()->getDevice()->getReader().expired())
+        return false;
+
     const auto reader = getGroup()->getDevice()->getReader().lock();
     bool success = reader->writeMapping(*this, bytes);
     if (success)
