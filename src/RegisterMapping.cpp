@@ -16,7 +16,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
 #include "RegisterMapping.h"
 
 #include <algorithm>
@@ -76,18 +75,17 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
         // Allow Registers to be INT16, UINT16.
         if (m_outputType != OutputType::INT16 && m_outputType != OutputType::UINT16)
         {
-            throw std::logic_error("RegisterMapping: Single address register mapping can\'t"
-                                   " be anything else than INT16, UINT16.");
+            throw std::logic_error(
+              "RegisterMapping: Single address register mapping can\'t be anything else than INT16, UINT16.");
         }
         break;
     case RegisterType::COIL:
     case RegisterType::INPUT_CONTACT:
         if (m_outputType != OutputType::BOOL)
         {
-            throw std::logic_error("RegisterMapping: Single address discrete register can\'t"
-                                   " be anything else than BOOL.");
+            throw std::logic_error(
+              "RegisterMapping: Single address discrete register can\'t be anything else than BOOL.");
         }
-        break;
     }
 }
 
@@ -150,8 +148,8 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 
         if (m_outputType != OutputType::INT32 && m_outputType != OutputType::UINT32)
         {
-            throw std::logic_error("RegisterMapping: Merge operations (with endians)"
-                                   " output 32bit types (INT32, UINT32).");
+            throw std::logic_error(
+              "RegisterMapping: Merge operations (with endians) output 32bit types (INT32, UINT32).");
         }
     }
     else if (m_operationType == OperationType::MERGE_FLOAT)
@@ -172,6 +170,10 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
         {
             throw std::logic_error("RegisterMapping: Stringify can only return string.");
         }
+    }
+    else
+    {
+        throw std::logic_error("RegisterMapping: You can\'t have an multiple register mapping do that!");
     }
 
     m_byteValues = std::vector<uint16_t>(m_addresses.size());
@@ -253,7 +255,7 @@ bool RegisterMapping::update(const std::vector<uint16_t>& newValues)
     }
 
     bool different = false;
-    uint i = 0;
+    uint32_t i = 0;
     while (!different && i < newValues.size())
     {
         if (m_byteValues[i] != newValues[i])

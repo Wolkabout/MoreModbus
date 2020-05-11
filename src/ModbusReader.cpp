@@ -16,8 +16,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
 #include "ModbusReader.h"
+
 #include "modbus/ModbusGroupReader.h"
 #include "utilities/DataParsers.h"
 #include "utilities/Logger.h"
@@ -40,7 +40,7 @@ void ModbusReader::addDevice(const std::shared_ptr<ModbusDevice>& device)
     LOG(INFO) << "ModbusReader: Successfully added new device " << device->getName();
 }
 
-void ModbusReader::addDevices(const std::vector<std::shared_ptr<ModbusDevice>> &devices)
+void ModbusReader::addDevices(const std::vector<std::shared_ptr<ModbusDevice>>& devices)
 {
     LOG(INFO) << "ModbusReader: Adding " << devices.size() << " devices.";
     for (const auto& device : devices)
@@ -248,7 +248,7 @@ void ModbusReader::run()
             {
                 // Timing logic, increase the time after which we attempt to reconnect.
                 std::this_thread::sleep_for(std::chrono::seconds(m_timeoutDurations[m_timeoutIterator]));
-                if ((uint)m_timeoutIterator < m_timeoutDurations.size() - 1)
+                if ((uint32_t)m_timeoutIterator < m_timeoutDurations.size() - 1)
                 {
                     m_timeoutIterator++;
                 }
@@ -313,7 +313,7 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
 {
     bool connected = true;
 
-    while (true)
+    while (m_readerShouldRun)
     {
         if (connected)
         {

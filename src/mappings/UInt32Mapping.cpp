@@ -16,8 +16,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
 #include "UInt32Mapping.h"
+
 #include "utilities/DataParsers.h"
 
 #include <stdexcept>
@@ -62,7 +62,11 @@ bool UInt32Mapping::writeValue(uint32_t value)
     else
         throw std::logic_error("UInt32Mapping: Illegal operation type set.");
 
-    bool success = getGroup()->getDevice()->getReader()->writeMapping(*this, bytes);
+    if (getGroup()->getDevice()->getReader().expired())
+        return false;
+
+    const auto reader = getGroup()->getDevice()->getReader().lock();
+    bool success = reader->writeMapping(*this, bytes);
     if (success)
         m_uint32Value = value;
 

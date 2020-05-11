@@ -16,8 +16,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
 #include "FloatMapping.h"
+
 #include "utilities/DataParsers.h"
 
 #include <stdexcept>
@@ -48,7 +48,11 @@ bool FloatMapping::writeValue(float value)
         throw std::logic_error("FloatMapping: Illegal operation type set.");
     bytes = DataParsers::floatToRegisters(value);
 
-    bool success = getGroup()->getDevice()->getReader()->writeMapping(*this, bytes);
+    if (getGroup()->getDevice()->getReader().expired())
+        return false;
+
+    const auto reader = getGroup()->getDevice()->getReader().lock();
+    bool success = reader->writeMapping(*this, bytes);
     if (success)
         m_floatValue = value;
 

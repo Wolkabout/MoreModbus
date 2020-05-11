@@ -16,8 +16,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
 #include "RegisterGroup.h"
+
 #include "utilities/Logger.h"
 
 #include <algorithm>
@@ -69,7 +69,7 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
         throw std::logic_error("RegisterGroup: You can\'t add different typed registers in a group.");
     }
 
-    if (mapping->isReadRestricted() && !m_readRestricted)
+    if (mapping->isReadRestricted() != m_readRestricted)
     {
         throw std::logic_error("RegisterGroup: Read restricted mappings have to have groups of their own!");
     }
@@ -91,7 +91,9 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
         if (mapping->getOperationType() == RegisterMapping::OperationType::TAKE_BIT)
         {
             // If we're just adding bits, we don't need to apply same ruling.
-            if (keyExistsInSet(std::to_string(mapping->getStartingAddress())))
+            const auto key = std::to_string(mapping->getStartingAddress()) + GroupUtility::SEPARATOR +
+                             std::to_string(mapping->getBitIndex());
+            if (keyExistsInSet(key))
             {
                 // The address we're targeting is already fully claimed.
                 LOG(WARN) << "RegisterGroup: Mapping " << mapping->getReference()

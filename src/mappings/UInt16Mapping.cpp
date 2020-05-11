@@ -16,7 +16,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
 #include "UInt16Mapping.h"
 
 #include <stdexcept>
@@ -41,10 +40,14 @@ bool UInt16Mapping::update(const std::vector<uint16_t>& newValues)
 
 bool UInt16Mapping::writeValue(uint16_t value)
 {
+    if (getGroup()->getDevice()->getReader().expired())
+        return false;
+
     std::vector<uint16_t> bytes;
     bytes.emplace_back(value);
 
-    bool success = getGroup()->getDevice()->getReader()->writeMapping(*this, bytes);
+    const auto reader = getGroup()->getDevice()->getReader().lock();
+    bool success = reader->writeMapping(*this, bytes);
     if (success)
         m_uint16Value = value;
 

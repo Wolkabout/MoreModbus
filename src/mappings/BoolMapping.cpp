@@ -16,7 +16,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
 #include "BoolMapping.h"
 
 #include <stdexcept>
@@ -46,11 +45,16 @@ BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::Register
 
 bool BoolMapping::writeValue(bool value)
 {
+    if (getGroup()->getDevice()->getReader().expired())
+        return false;
+
     bool success;
+
+    const auto reader = getGroup()->getDevice()->getReader().lock();
     if (m_operationType == OperationType::TAKE_BIT)
-        success = getGroup()->getDevice()->getReader()->writeBitMapping(*this, value);
+        success = reader->writeBitMapping(*this, value);
     else
-        success = getGroup()->getDevice()->getReader()->writeMapping(*this, value);
+        success = reader->writeMapping(*this, value);
 
     if (success)
         m_boolValue = value;

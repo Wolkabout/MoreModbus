@@ -16,8 +16,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
 #include "ModbusClient.h"
+
 #include "utilities/Logger.h"
 
 namespace wolkabout
@@ -221,7 +221,7 @@ bool ModbusClient::writeCoil(int address, bool value)
 
 bool ModbusClient::readInputRegisters(int address, int number, std::vector<uint16_t>& values)
 {
-    std::vector<uint16_t> tmpValues(static_cast<uint>(number));
+    std::vector<uint16_t> tmpValues(static_cast<uint32_t>(number));
 
     if (modbus_read_input_registers(m_modbus, address, number, &tmpValues[0]) == -1)
     {
@@ -240,7 +240,7 @@ bool ModbusClient::readInputRegisters(int address, int number, std::vector<uint1
 bool ModbusClient::readInputContacts(int address, int number, std::vector<bool>& values)
 {
     int size = (number / 8 + (number % 8 != 0));
-    std::vector<std::uint8_t> tmpValues(static_cast<uint>(size));
+    std::vector<std::uint8_t> tmpValues(static_cast<uint32_t>(size));
 
     int bits_read = modbus_read_input_bits(m_modbus, address, number, &tmpValues[0]);
     if (bits_read == -1)
@@ -249,7 +249,7 @@ bool ModbusClient::readInputContacts(int address, int number, std::vector<bool>&
         return false;
     }
 
-    for (uint i = 0; i < static_cast<uint>(bits_read); i++)
+    for (uint32_t i = 0; i < static_cast<uint32_t>(bits_read); i++)
     {
         values.push_back(static_cast<bool>(tmpValues[i]));
     }
@@ -269,7 +269,7 @@ bool ModbusClient::readHoldingRegister(int address, uint16_t& value)
 
 bool ModbusClient::readHoldingRegisters(int address, int number, std::vector<uint16_t>& values)
 {
-    std::vector<uint16_t> tmpValues(static_cast<uint>(number));
+    std::vector<uint16_t> tmpValues(static_cast<uint32_t>(number));
 
     if (modbus_read_registers(m_modbus, address, number, &tmpValues[0]) == -1)
     {
@@ -310,7 +310,7 @@ bool ModbusClient::readCoils(int address, int number, std::vector<bool>& values)
         return false;
     }
 
-    for (uint i = 0; i < static_cast<uint>(bits_read); i++)
+    for (uint32_t i = 0; i < static_cast<uint32_t>(bits_read); i++)
     {
         values.push_back(static_cast<bool>(tmpValues[i]));
     }

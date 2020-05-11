@@ -16,8 +16,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
 #include "ModbusDevice.h"
+
 #include "utilities/Logger.h"
 
 #include <algorithm>
@@ -28,6 +28,20 @@ namespace wolkabout
 ModbusDevice::ModbusDevice(const std::string& name, int8_t slaveAddress)
 : m_name(name), m_status(false), m_slaveAddress(slaveAddress), m_groups()
 {
+}
+
+ModbusDevice::ModbusDevice(const ModbusDevice& device)
+: m_name(device.m_name)
+, m_status(device.m_status)
+, m_groups()
+, m_reader(device.m_reader)
+, m_onMappingValueChange(device.m_onMappingValueChange)
+, m_onStatusChange(device.m_onStatusChange)
+{
+    for (const auto& group : device.m_groups)
+    {
+        m_groups.emplace_back(std::make_shared<RegisterGroup>(*group));
+    }
 }
 
 void ModbusDevice::createGroups(const std::vector<std::shared_ptr<RegisterMapping>>& mappings)
@@ -130,7 +144,7 @@ void ModbusDevice::triggerOnStatusChange(bool status)
     m_status = status;
 }
 
-const std::shared_ptr<ModbusReader>& ModbusDevice::getReader() const
+const std::weak_ptr<ModbusReader>& ModbusDevice::getReader() const
 {
     return m_reader;
 }

@@ -16,7 +16,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
 #ifndef WOLKABOUT_MODBUS_REGISTERMAPPING_H
 #define WOLKABOUT_MODBUS_REGISTERMAPPING_H
 
@@ -78,8 +77,8 @@ public:
 
     /**
      * @brief Default constructor for mapping
-     * @details For registerType COIL/INPUT_CONTACT, the output type is set to BOOL.
-     *         For registerType HOLDING_REGISTER/INPUT_REGISTER, the output type is set to UINT16.
+     * @details For registerTypes COIL/INPUT_CONTACT, the output type is set to BOOL.
+     *         For registerTypes HOLDING_REGISTER/INPUT_REGISTER, the output type is set to UINT16.
      * @param reference of the mapping, unique key for access.
      * @param registerType indicates the modbus register type.
      * @param address of the register
@@ -91,8 +90,8 @@ public:
 
     /**
      * @brief Default constructor for mapping with custom OutputType.
-     * @details For registerType COIL/INPUT_CONTACT, the output type is set to BOOL.
-     *         For registerType HOLDING_REGISTER/INPUT_REGISTER, the output type can be INT16/UINT16.
+     * @details For registerTypes COIL/INPUT_CONTACT, the output type is set to BOOL.
+     *         For registerTypes HOLDING_REGISTER/INPUT_REGISTER, the output type can be INT16/UINT16.
      * @param reference of the mapping, unique key for access.
      * @param registerType indicates the modbus register type.
      * @param address of the register

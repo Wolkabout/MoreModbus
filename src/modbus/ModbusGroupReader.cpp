@@ -1,8 +1,23 @@
-//
-// Created by astrihale on 19.3.20..
-//
+/*
+ * Copyright (C) 2020 WolkAbout Technology s.r.o.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
 
 #include "ModbusGroupReader.h"
+
 #include "ModbusReader.h"
 #include "utilities/DataParsers.h"
 #include "utilities/Logger.h"
@@ -31,7 +46,7 @@ bool ModbusGroupReader::readGroup(wolkabout::ModbusClient& modbusClient, wolkabo
 
 void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vector<bool>& values)
 {
-    uint i = 0;
+    uint32_t i = 0;
     const auto mappingMap = group.getMappingsMap();
     for (const auto& mapping : mappingMap)
     {
@@ -87,7 +102,7 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
     const auto& mappings =
       std::vector<std::pair<std::string, std::shared_ptr<RegisterMapping>>>(mappingsSet.begin(), mappingsSet.end());
 
-    uint skipMappings = 0, valueCounter = 0, mappingCounter = 0;
+    uint32_t skipMappings = 0, valueCounter = 0, mappingCounter = 0;
     for (const auto& mapping : mappings)
     {
         if (skipMappings > 0)
@@ -101,7 +116,7 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
         if (mapping.first.find(GroupUtility::SEPARATOR) != std::string::npos)
         {
             const auto& bits = DataParsers::separateBits(values[valueCounter++]);
-            uint shift = 0;
+            uint32_t shift = 0;
             while (mappingCounter + shift <= group.getMappings().size() - 1 &&
                    address == GroupUtility::getAddressFromString(claims[mappingCounter + shift]))
             {
@@ -117,8 +132,7 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
                     LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '"
                               << bitMapping.second->getReference() << "' Value: '" << bitValue << "'";
 
-                    group.getDevice()
-                      ->triggerOnMappingValueChange(bitMapping.second);
+                    group.getDevice()->triggerOnMappingValueChange(bitMapping.second);
                 }
                 ++shift;
             }
@@ -143,8 +157,7 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
                 LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '" << mapping.second->getReference()
                           << "' Values: " << loggingString;
 
-                group.getDevice()
-                  ->triggerOnMappingValueChange(mapping.second);
+                group.getDevice()->triggerOnMappingValueChange(mapping.second);
             }
         }
 

@@ -16,7 +16,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
 #ifndef WOLKABOUT_MODBUS_MODBUSDEVICE_H
 #define WOLKABOUT_MODBUS_MODBUSDEVICE_H
 
@@ -73,6 +72,11 @@ public:
     ModbusDevice(const std::string& name, int8_t slaveAddress);
 
     /**
+     * @brief Copy constructor for the device, does complete deep copy for device and groups.
+     */
+    ModbusDevice(const ModbusDevice& device);
+
+    /**
      * @brief Create all the RegisterGroup that this device will have by providing all mappings.
      * @param mappings container of all mappings the user wishes this device has.
      */
@@ -82,7 +86,7 @@ public:
 
     bool getStatus() const;
 
-    const std::shared_ptr<ModbusReader>& getReader() const;
+    const std::weak_ptr<ModbusReader>& getReader() const;
 
     void setReader(const std::shared_ptr<ModbusReader>& reader);
 
@@ -113,7 +117,7 @@ private:
     int8_t m_slaveAddress;
     std::vector<std::shared_ptr<RegisterGroup>> m_groups;
 
-    std::shared_ptr<ModbusReader> m_reader;
+    std::weak_ptr<ModbusReader> m_reader;
 
     std::function<void(const std::shared_ptr<RegisterMapping>&)> m_onMappingValueChange;
     std::function<void(bool)> m_onStatusChange;

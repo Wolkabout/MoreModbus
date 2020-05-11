@@ -33,3 +33,4 @@
 
 out/
 .idea/
+*.info

@@ -16,8 +16,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
 #include "Int16Mapping.h"
+
 #include "utilities/DataParsers.h"
 
 #include <stdexcept>
@@ -28,16 +28,18 @@ Int16Mapping::Int16Mapping(const std::string& reference, RegisterMapping::Regist
                            bool readRestricted, int8_t slaveAddress)
 : RegisterMapping(reference, registerType, address, OutputType::INT16, readRestricted, slaveAddress)
 {
-    if (!(registerType == RegisterType::INPUT_REGISTER || registerType == RegisterType::HOLDING_REGISTER))
-    {
-        throw std::logic_error("UInt16Mapping: Illegal register type set.");
-    }
+    // Stood here, but is actually redundant.
+    //    if (!(registerType == RegisterType::INPUT_REGISTER || registerType == RegisterType::HOLDING_REGISTER))
+    //    {
+    //        throw std::logic_error("Int16Mapping: Illegal register type set.");
+    //    }
 }
 
 bool Int16Mapping::update(const std::vector<uint16_t>& newValues)
 {
-    if (m_operationType != OperationType::NONE)
-        throw std::logic_error("Int16Mapping: Illegal operation type set.");
+    // Redundant check
+    //    if (m_operationType != OperationType::NONE)
+    //        throw std::logic_error("Int16Mapping: Illegal operation type set.");
 
     m_int16Value = DataParsers::uint16ToInt16(newValues[0]);
     return RegisterMapping::update(newValues);
@@ -45,10 +47,14 @@ bool Int16Mapping::update(const std::vector<uint16_t>& newValues)
 
 bool Int16Mapping::writeValue(int16_t value)
 {
+    if (getGroup()->getDevice()->getReader().expired())
+        return false;
+
     std::vector<uint16_t> bytes;
     bytes.emplace_back(DataParsers::int16ToUint16(value));
 
-    bool success = getGroup()->getDevice()->getReader()->writeMapping(*this, bytes);
+    const auto reader = getGroup()->getDevice()->getReader().lock();
+    bool success = reader->writeMapping(*this, bytes);
     if (success)
         m_int16Value = value;
 
