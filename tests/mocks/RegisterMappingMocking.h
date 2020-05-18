@@ -32,17 +32,17 @@ using namespace ::testing;
 class RegisterMappingMock : public wolkabout::RegisterMapping
 {
 public:
-    RegisterMappingMock(const std::string& name, RegisterType registerType, int16_t address)
+    RegisterMappingMock(const std::string& name, RegisterType registerType, int32_t address)
     : RegisterMapping(name, registerType, address)
     {
     }
 
-    RegisterMappingMock(const std::string& name, RegisterType registerType, int16_t address, int16_t slaveAddress, bool readRestricted)
+    RegisterMappingMock(const std::string& name, RegisterType registerType, int32_t address, int16_t slaveAddress, bool readRestricted)
       : RegisterMapping(name, registerType, address, readRestricted, slaveAddress)
     {
     }
 
-    RegisterMappingMock(const std::string& name, RegisterType registerType, int16_t address, OutputType outputType)
+    RegisterMappingMock(const std::string& name, RegisterType registerType, int32_t address, OutputType outputType)
     : RegisterMapping(name, registerType, address, outputType)
     {
     }
@@ -53,7 +53,7 @@ public:
     {
     }
 
-    RegisterMappingMock(const std::string& name, RegisterType registerType, int16_t address,
+    RegisterMappingMock(const std::string& name, RegisterType registerType, int32_t address,
                         OperationType operationType, int8_t bitIndex)
     : RegisterMapping(name, registerType, address, operationType, bitIndex)
     {
@@ -66,9 +66,9 @@ public:
     MOCK_METHOD0(getRegisterType, RegisterType());
     MOCK_METHOD0(getAddress, int16_t());
     MOCK_METHOD0(getAddresses, std::vector<int16_t>&());
-    MOCK_METHOD0(getSlaveAddress, int8_t());
+    MOCK_METHOD0(getSlaveAddress, int16_t());
     MOCK_METHOD0(getStartingAddress, int16_t());
-    MOCK_METHOD1(setSlaveAddress, void(int8_t));
+    MOCK_METHOD1(setSlaveAddress, void(int16_t));
     MOCK_METHOD0(getRegisterCount, int16_t());
     MOCK_METHOD0(getOutputType, OutputType());
     MOCK_METHOD0(getOperationType, OperationType());

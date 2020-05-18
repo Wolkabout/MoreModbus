@@ -26,7 +26,7 @@ namespace wolkabout
 {
 StringMapping::StringMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                              const std::vector<int16_t>& addresses, RegisterMapping::OperationType operation,
-                             bool readRestricted, int8_t slaveAddress)
+                             bool readRestricted, int16_t slaveAddress)
 : RegisterMapping(reference, registerType, addresses, OutputType::STRING, operation, readRestricted, slaveAddress)
 {
     if (operation != OperationType::STRINGIFY_ASCII && operation != OperationType::STRINGIFY_UNICODE)

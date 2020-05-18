@@ -60,12 +60,12 @@ bool ModbusReader::isRunning() const
     return m_readerShouldRun;
 }
 
-const std::map<int8_t, std::shared_ptr<ModbusDevice>>& ModbusReader::getDevices() const
+const std::map<int16_t, std::shared_ptr<ModbusDevice>>& ModbusReader::getDevices() const
 {
     return m_devices;
 }
 
-const std::map<int8_t, bool>& ModbusReader::getDeviceStatuses() const
+const std::map<int16_t, bool>& ModbusReader::getDeviceStatuses() const
 {
     return m_deviceActiveStatus;
 }

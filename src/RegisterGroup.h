@@ -113,9 +113,9 @@ public:
 
     uint16_t getAddressCount() const;
 
-    int8_t getSlaveAddress() const;
+    int16_t getSlaveAddress() const;
 
-    void setSlaveAddress(int8_t slaveAddress);
+    void setSlaveAddress(int16_t slaveAddress);
 
     bool isReadRestricted() const;
 
@@ -142,7 +142,7 @@ private:
     bool keyExistsInSet(const std::string& key);
 
     RegisterMapping::RegisterType m_registerType;
-    int8_t m_slaveAddress;
+    int16_t m_slaveAddress;
     bool m_readRestricted;
 
     std::shared_ptr<ModbusDevice> m_device;

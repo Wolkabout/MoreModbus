@@ -24,7 +24,7 @@
 namespace wolkabout
 {
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                                 int16_t address, bool readRestricted, int8_t slaveAddress)
+                                 int32_t address, bool readRestricted, int16_t slaveAddress)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -53,7 +53,7 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 }
 
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                                 int16_t address, OutputType type, bool readRestricted, int8_t slaveAddress)
+                                 int32_t address, OutputType type, bool readRestricted, int16_t slaveAddress)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -90,8 +90,8 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 }
 
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                                 int16_t address, OperationType type, int8_t bitIndex, bool readRestricted,
-                                 int8_t slaveAddress)
+                                 int32_t address, OperationType type, int8_t bitIndex, bool readRestricted,
+                                 int16_t slaveAddress)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -114,7 +114,7 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                                  const std::vector<int16_t>& addresses, OutputType type, OperationType operation,
-                                 bool readRestricted, int8_t slaveAddress)
+                                 bool readRestricted, int16_t slaveAddress)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -204,17 +204,17 @@ const std::vector<int16_t>& RegisterMapping::getAddresses() const
     return m_addresses;
 }
 
-int8_t RegisterMapping::getSlaveAddress() const
+int16_t RegisterMapping::getSlaveAddress() const
 {
     return m_slaveAddress;
 }
 
-void RegisterMapping::setSlaveAddress(int8_t slaveAddress)
+void RegisterMapping::setSlaveAddress(int16_t slaveAddress)
 {
     m_slaveAddress = slaveAddress;
 }
 
-int16_t RegisterMapping::getStartingAddress() const
+int32_t RegisterMapping::getStartingAddress() const
 {
     if (m_address == -1)
     {

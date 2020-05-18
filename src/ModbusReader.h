@@ -89,9 +89,9 @@ public:
      */
     bool isRunning() const;
 
-    const std::map<int8_t, std::shared_ptr<ModbusDevice>>& getDevices() const;
+    const std::map<int16_t, std::shared_ptr<ModbusDevice>>& getDevices() const;
 
-    const std::map<int8_t, bool>& getDeviceStatuses() const;
+    const std::map<int16_t, bool>& getDeviceStatuses() const;
 
     /**
      * @brief Initializes the modbus connection, will also reconnect if it isn't working,
@@ -113,12 +113,12 @@ private:
     // each separate mapping as the mapping requires them.
     void readDevice(const std::shared_ptr<ModbusDevice>& device);
 
-    std::function<void(std::map<int8_t, bool>)> m_onIterationStatuses;
+    std::function<void(std::map<int16_t, bool>)> m_onIterationStatuses;
 
     // Modbus client and device data
     ModbusClient& m_modbusClient;
-    std::map<int8_t, std::shared_ptr<ModbusDevice>> m_devices;
-    std::map<int8_t, bool> m_deviceActiveStatus;
+    std::map<int16_t, std::shared_ptr<ModbusDevice>> m_devices;
+    std::map<int16_t, bool> m_deviceActiveStatus;
 
     // Reconnect logic, modbusClient will after a failed read/connection,
     // try to reconnect in increasing periods of time.
@@ -126,7 +126,7 @@ private:
     const std::vector<int> m_timeoutDurations = {1, 5, 10, 15, 30, 60, 300, 600, 1800, 3600};
     // All devices that experienced an error reading all the registers, will put their
     // slave address in this vector. And they can be reported offline.
-    std::vector<int8_t> m_errorDevices;
+    std::vector<int16_t> m_errorDevices;
     std::atomic_bool m_shouldReconnect{};
 
     // Threading and reader data
@@ -135,7 +135,7 @@ private:
     // Main thread that handles connection and reconnection.
     // Per-device threads, handles modbusClient call per group and parsing of data.
     std::unique_ptr<std::thread> m_mainReaderThread;
-    std::map<int8_t, std::unique_ptr<std::thread>> m_threads;
+    std::map<int16_t, std::unique_ptr<std::thread>> m_threads;
     std::chrono::milliseconds m_readPeriod;
 };
 }    // namespace wolkabout

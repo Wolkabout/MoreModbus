@@ -25,7 +25,7 @@
 
 namespace wolkabout
 {
-ModbusDevice::ModbusDevice(const std::string& name, int8_t slaveAddress)
+ModbusDevice::ModbusDevice(const std::string& name, int16_t slaveAddress)
 : m_name(name), m_status(false), m_slaveAddress(slaveAddress), m_groups()
 {
 }
@@ -109,7 +109,7 @@ bool ModbusDevice::getStatus() const
     return m_status;
 }
 
-int8_t ModbusDevice::getSlaveAddress() const
+int16_t ModbusDevice::getSlaveAddress() const
 {
     return m_slaveAddress;
 }

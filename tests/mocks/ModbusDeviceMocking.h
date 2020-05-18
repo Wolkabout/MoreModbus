@@ -40,7 +40,7 @@ public:
     MOCK_METHOD0(getStatus, bool());
     MOCK_METHOD0(getReader, const std::shared_ptr<wolkabout::ModbusReader>&());
     MOCK_METHOD1(setReader, void(const std::shared_ptr<wolkabout::ModbusReader>&));
-    MOCK_METHOD0(getSlaveAddress, int8_t());
+    MOCK_METHOD0(getSlaveAddress, int16_t());
     MOCK_METHOD0(getGroups, const std::vector<std::shared_ptr<wolkabout::RegisterGroup>>&());
     MOCK_METHOD1(setOnMappingValueChange, void(const std::function<void(const std::shared_ptr<wolkabout::RegisterMapping>&)>&));
     MOCK_METHOD1(setOnStatusChange, void(const std::function<void(bool)>&));

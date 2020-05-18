@@ -216,12 +216,12 @@ uint16_t RegisterGroup::getAddressCount() const
     return static_cast<uint16_t>(mappings.size());
 }
 
-int8_t RegisterGroup::getSlaveAddress() const
+int16_t RegisterGroup::getSlaveAddress() const
 {
     return m_slaveAddress;
 }
 
-void RegisterGroup::setSlaveAddress(int8_t slaveAddress)
+void RegisterGroup::setSlaveAddress(int16_t slaveAddress)
 {
     m_slaveAddress = slaveAddress;
     for (const auto& mapping : m_mappings)

@@ -57,8 +57,8 @@ public:
     MOCK_METHOD1(setDevice, void(const std::shared_ptr<wolkabout::ModbusDevice>&));
     MOCK_METHOD0(getStartingAddress, uint16_t());
     MOCK_METHOD0(getAddressCount, uint16_t());
-    MOCK_METHOD0(getSlaveAddress, int8_t());
-    MOCK_METHOD1(setSlaveAddress, void(int8_t));
+    MOCK_METHOD0(getSlaveAddress, int16_t());
+    MOCK_METHOD1(setSlaveAddress, void(int16_t));
     MOCK_METHOD0(isReadRestricted, bool());
     MOCK_CONST_METHOD0(getMappings, const MappingsMap&());
     MOCK_METHOD0(getMappingsMap, std::map<std::string, std::shared_ptr<wolkabout::RegisterMapping>>());
