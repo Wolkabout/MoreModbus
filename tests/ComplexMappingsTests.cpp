@@ -169,11 +169,11 @@ TEST_F(ComplexMappingsTests, UInt32MappingsCreation)
             if (winning)
             {
                 EXPECT_NO_THROW(
-                  wolkabout::UInt32Mapping("TEST", registerType, std::vector<int16_t>{0, 1}, operationType));
+				  wolkabout::UInt32Mapping("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType));
             }
             else
             {
-                EXPECT_THROW(wolkabout::UInt32Mapping("TEST", registerType, std::vector<int16_t>{0, 1}, operationType),
+				EXPECT_THROW(wolkabout::UInt32Mapping("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType),
                              std::logic_error);
             }
         }
@@ -194,7 +194,7 @@ TEST_F(ComplexMappingsTests, UInt32MappingsWriteValue)
 
         const auto registerType = std::get<0>(combo);
         auto mapping =
-          std::make_shared<wolkabout::UInt32Mapping>("TEST", registerType, std::vector<int16_t>{0, 1}, operationType);
+		  std::make_shared<wolkabout::UInt32Mapping>("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType);
         MovePointers();
         mapping->m_group = std::move(registerGroupMock);
         ASSERT_FALSE(mapping->m_group->m_device->m_reader.expired());
@@ -231,7 +231,7 @@ TEST_F(ComplexMappingsTests, UInt32MappingsInitUpdateValid)
 
         const auto registerType = std::get<0>(combo);
         auto mapping =
-          std::make_shared<wolkabout::UInt32Mapping>("TEST", registerType, std::vector<int16_t>{0, 1}, operationType);
+		  std::make_shared<wolkabout::UInt32Mapping>("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType);
 
         EXPECT_FALSE(mapping->isInitialized());
         EXPECT_FALSE(mapping->isValid());
@@ -263,11 +263,11 @@ TEST_F(ComplexMappingsTests, Int32MappingsCreation)
             if (winning)
             {
                 EXPECT_NO_THROW(
-                  wolkabout::Int32Mapping("TEST", registerType, std::vector<int16_t>{0, 1}, operationType));
+				  wolkabout::Int32Mapping("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType));
             }
             else
             {
-                EXPECT_THROW(wolkabout::Int32Mapping("TEST", registerType, std::vector<int16_t>{0, 1}, operationType),
+				EXPECT_THROW(wolkabout::Int32Mapping("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType),
                              std::logic_error);
             }
         }
@@ -288,7 +288,7 @@ TEST_F(ComplexMappingsTests, Int32MappingsWriteValue)
 
         const auto registerType = std::get<0>(combo);
         auto mapping =
-          std::make_shared<wolkabout::Int32Mapping>("TEST", registerType, std::vector<int16_t>{0, 1}, operationType);
+		  std::make_shared<wolkabout::Int32Mapping>("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType);
         MovePointers();
         mapping->m_group = std::move(registerGroupMock);
         ASSERT_FALSE(mapping->m_group->m_device->m_reader.expired());
@@ -324,7 +324,7 @@ TEST_F(ComplexMappingsTests, Int32MappingsInitUpdateValid)
 
         const auto registerType = std::get<0>(combo);
         auto mapping =
-          std::make_shared<wolkabout::Int32Mapping>("TEST", registerType, std::vector<int16_t>{0, 1}, operationType);
+		  std::make_shared<wolkabout::Int32Mapping>("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType);
 
         EXPECT_FALSE(mapping->isInitialized());
         EXPECT_FALSE(mapping->isValid());
@@ -353,11 +353,11 @@ TEST_F(ComplexMappingsTests, FloatMappingsCreation)
 
         if (winning)
         {
-            EXPECT_NO_THROW(wolkabout::FloatMapping("TEST", registerType, std::vector<int16_t>{0, 1}));
+			EXPECT_NO_THROW(wolkabout::FloatMapping("TEST", registerType, std::vector<std::int32_t>{0, 1}));
         }
         else
         {
-            EXPECT_THROW(wolkabout::FloatMapping("TEST", registerType, std::vector<int16_t>{0, 1}), std::logic_error);
+			EXPECT_THROW(wolkabout::FloatMapping("TEST", registerType, std::vector<std::int32_t>{0, 1}), std::logic_error);
         }
     }
 }
@@ -373,7 +373,7 @@ TEST_F(ComplexMappingsTests, FloatMappingsWriteValue)
         //        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
-        auto mapping = std::make_shared<wolkabout::FloatMapping>("TEST", registerType, std::vector<int16_t>{0, 1});
+		auto mapping = std::make_shared<wolkabout::FloatMapping>("TEST", registerType, std::vector<std::int32_t>{0, 1});
         MovePointers();
         mapping->m_group = std::move(registerGroupMock);
         ASSERT_FALSE(mapping->m_group->m_device->m_reader.expired());
@@ -407,7 +407,7 @@ TEST_F(ComplexMappingsTests, FloatMappingsInitUpdateValid)
         //        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
-        auto mapping = std::make_shared<wolkabout::FloatMapping>("TEST", registerType, std::vector<int16_t>{0, 1});
+		auto mapping = std::make_shared<wolkabout::FloatMapping>("TEST", registerType, std::vector<std::int32_t>{0, 1});
 
         EXPECT_FALSE(mapping->isInitialized());
         EXPECT_FALSE(mapping->isValid());
@@ -438,12 +438,12 @@ TEST_F(ComplexMappingsTests, StringMappingsCreation)
             if (winning)
             {
                 EXPECT_NO_THROW(wolkabout::StringMapping(
-                  "TEST", registerType, std::vector<int16_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, operationType));
+				  "TEST", registerType, std::vector<std::int32_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, operationType));
             }
             else
             {
                 EXPECT_THROW(wolkabout::StringMapping(
-                               "TEST", registerType, std::vector<int16_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, operationType),
+							   "TEST", registerType, std::vector<std::int32_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, operationType),
                              std::logic_error);
             }
         }
@@ -473,7 +473,7 @@ TEST_F(ComplexMappingsTests, StringMappingsWriteValue)
     for (const auto& combo : stringCombos)
     {
         const auto operationType = std::get<2>(combo);
-        const auto addresses = std::vector<int16_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+		const auto addresses = std::vector<std::int32_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
         const auto value = random_string(addresses.size() * 2);
         auto bytes = std::vector<uint16_t>();
         //        std::cout << "Testing with " << value << std::endl;
@@ -518,7 +518,7 @@ TEST_F(ComplexMappingsTests, StringMappingsInitUpdateValid)
     for (const auto& combo : stringCombos)
     {
         const auto operationType = std::get<2>(combo);
-        const auto addresses = std::vector<int16_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+		const auto addresses = std::vector<std::int32_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
         const auto value = random_string(addresses.size() * 2);
         const auto bytes = wolkabout::DataParsers::asciiStringToRegisters(value);
 
@@ -548,7 +548,7 @@ TEST_F(ComplexMappingsTests, StringMappingsUpdateFailCauseSize)
     for (const auto& combo : stringCombos)
     {
         const auto operationType = std::get<2>(combo);
-        const auto addresses = std::vector<int16_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+		const auto addresses = std::vector<std::int32_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
         const auto value = random_string(addresses.size() * 2 + 4);
 
         const auto registerType = std::get<0>(combo);

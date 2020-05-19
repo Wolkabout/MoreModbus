@@ -120,7 +120,7 @@ TEST_F(RegisterMappingTests, ApsurdMappingsTests)
                  std::logic_error);
 
     EXPECT_THROW(
-      std::make_shared<wolkabout::RegisterMapping>("TEST", _registerType::INPUT_REGISTER, std::vector<int16_t>{0, 1, 2},
+	  std::make_shared<wolkabout::RegisterMapping>("TEST", _registerType::INPUT_REGISTER, std::vector<std::int32_t>{0, 1, 2},
                                                    _outputType::STRING, _operationType::STRINGIFY_ASCII, true),
       std::logic_error);
 }
@@ -194,12 +194,12 @@ TEST_F(RegisterMappingTests, IllegalCombosCtorThree)
                 if (winning)
                 {
                     EXPECT_NO_THROW(std::make_shared<wolkabout::RegisterMapping>(
-                      "TEST", registerType, std::vector<int16_t>{0, 1}, outputType, operationType));
+					  "TEST", registerType, std::vector<std::int32_t>{0, 1}, outputType, operationType));
                 }
                 else
                 {
                     EXPECT_THROW(std::make_shared<wolkabout::RegisterMapping>(
-                                   "TEST", registerType, std::vector<int16_t>{0, 1}, outputType, operationType),
+								   "TEST", registerType, std::vector<std::int32_t>{0, 1}, outputType, operationType),
                                  std::logic_error);
                 }
             }

@@ -43,7 +43,7 @@ int main()
 
     // Create a String Mapping
     const auto& stringMapping = std::make_shared<wolkabout::StringMapping>(
-      "STR1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, std::vector<int16_t>{0, 1, 2},
+	  "STR1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, std::vector<std::int32_t>{0, 1, 2},
       wolkabout::RegisterMapping::OperationType::STRINGIFY_ASCII);
 
     // Create some Bit Mappings
