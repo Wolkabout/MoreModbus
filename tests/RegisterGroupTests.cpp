@@ -46,7 +46,7 @@ public:
           std::make_shared<RegisterMappingMock>("BM", wolkabout::RegisterMapping::RegisterType::INPUT_CONTACT, 0));
 
         mappings.emplace_back(std::make_shared<RegisterMappingMock>(
-          "STR1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, std::vector<int16_t>{0, 1, 2},
+		  "STR1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, std::vector<std::int32_t>{0, 1, 2},
           wolkabout::RegisterMapping::OutputType::STRING, wolkabout::RegisterMapping::OperationType::STRINGIFY_ASCII));
 
         mappings.emplace_back(

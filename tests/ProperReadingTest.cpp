@@ -71,12 +71,12 @@ public:
         mappings.emplace_back(std::make_shared<wolkabout::Int16Mapping>("HR4", _registerType::HOLDING_REGISTER, 3));
 
         mappings.emplace_back(std::make_shared<wolkabout::UInt32Mapping>(
-          "IR1", _registerType::INPUT_REGISTER, std::vector<int16_t>{0, 1}, _operationType::MERGE_LITTLE_ENDIAN));
+		  "IR1", _registerType::INPUT_REGISTER, std::vector<std::int32_t>{0, 1}, _operationType::MERGE_LITTLE_ENDIAN));
         mappings.emplace_back(std::make_shared<wolkabout::Int32Mapping>(
-          "IR2", _registerType::INPUT_REGISTER, std::vector<int16_t>{2, 3}, _operationType::MERGE_BIG_ENDIAN));
+		  "IR2", _registerType::INPUT_REGISTER, std::vector<std::int32_t>{2, 3}, _operationType::MERGE_BIG_ENDIAN));
 
         nonWriteableFloatMapping =
-          std::make_shared<wolkabout::FloatMapping>("IR3", _registerType::INPUT_REGISTER, std::vector<int16_t>{4, 5});
+		  std::make_shared<wolkabout::FloatMapping>("IR3", _registerType::INPUT_REGISTER, std::vector<std::int32_t>{4, 5});
         mappings.emplace_back(nonWriteableFloatMapping);
 
         bitMapping = std::make_shared<wolkabout::BoolMapping>("HRB1", _registerType::HOLDING_REGISTER, 4,
@@ -90,7 +90,7 @@ public:
                                                                        _operationType::TAKE_BIT, 6));
 
         stringMapping = std::make_shared<wolkabout::StringMapping>("HRSTR", _registerType::HOLDING_REGISTER,
-                                                                   std::vector<int16_t>{5, 6, 7, 8, 9},
+																   std::vector<std::int32_t>{5, 6, 7, 8, 9},
                                                                    _operationType::STRINGIFY_ASCII);
         mappings.emplace_back(stringMapping);
 
