@@ -45,7 +45,7 @@ struct GroupUtility
      * @param string claim - indicates the data which mapping requires
      * @return the address as int
      */
-    static uint16_t getAddressFromString(const std::string& string);
+    static int32_t getAddressFromString(const std::string& string);
 
     /**
      * @brief Utility method to fetch the bit from claim string
@@ -109,7 +109,7 @@ public:
 
     void setDevice(const std::shared_ptr<ModbusDevice>& device);
 
-    uint16_t getStartingAddress() const;
+    int32_t getStartingAddress() const;
 
     uint16_t getAddressCount() const;
 

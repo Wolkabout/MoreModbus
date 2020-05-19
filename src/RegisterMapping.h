@@ -130,7 +130,7 @@ public:
      * @param readRestricted indicates whether or not the mapping can be read
      * @param slaveAddress of the devices being accessed, leave as default on -1
      */
-    RegisterMapping(const std::string& reference, RegisterType registerType, const std::vector<int16_t>& addresses,
+    RegisterMapping(const std::string& reference, RegisterType registerType, const std::vector<int32_t>& addresses,
                     OutputType type, OperationType operation, bool readRestricted = false, int16_t slaveAddress = -1);
 
     virtual ~RegisterMapping() = default;
@@ -145,9 +145,9 @@ public:
 
     RegisterType getRegisterType() const;
 
-    int16_t getAddress() const;
+    int32_t getAddress() const;
 
-    const std::vector<int16_t>& getAddresses() const;
+    const std::vector<int32_t>& getAddresses() const;
 
     int16_t getSlaveAddress() const;
 
@@ -205,7 +205,7 @@ protected:
     // Modbus registers data
     RegisterType m_registerType;
     int32_t m_address = -1;
-    std::vector<int16_t> m_addresses;
+    std::vector<int32_t> m_addresses;
     int16_t m_slaveAddress = -1;
 
     // Wolkabout output data

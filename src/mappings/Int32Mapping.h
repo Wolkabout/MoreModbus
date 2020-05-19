@@ -39,7 +39,7 @@ public:
      * @param readRestricted Is the Mapping write only?
      * @param slaveAddress Slave address of device, leave to be assigned by device, default is -1.
      */
-    Int32Mapping(const std::string& reference, RegisterType registerType, const std::vector<int16_t>& addresses,
+    Int32Mapping(const std::string& reference, RegisterType registerType, const std::vector<int32_t>& addresses,
                  OperationType operation, bool readRestricted = false, int16_t slaveAddress = -1);
 
     /**

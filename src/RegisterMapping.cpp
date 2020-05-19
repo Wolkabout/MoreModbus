@@ -113,7 +113,7 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 }
 
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                                 const std::vector<int16_t>& addresses, OutputType type, OperationType operation,
+                                 const std::vector<int32_t>& addresses, OutputType type, OperationType operation,
                                  bool readRestricted, int16_t slaveAddress)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
@@ -194,12 +194,12 @@ RegisterMapping::RegisterType RegisterMapping::getRegisterType() const
     return m_registerType;
 }
 
-int16_t RegisterMapping::getAddress() const
+int32_t RegisterMapping::getAddress() const
 {
     return m_address;
 }
 
-const std::vector<int16_t>& RegisterMapping::getAddresses() const
+const std::vector<int32_t>& RegisterMapping::getAddresses() const
 {
     return m_addresses;
 }

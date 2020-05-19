@@ -47,7 +47,7 @@ public:
     {
     }
 
-    RegisterMappingMock(const std::string& name, RegisterType registerType, const std::vector<int16_t>& addresses,
+    RegisterMappingMock(const std::string& name, RegisterType registerType, const std::vector<int32_t>& addresses,
                         OutputType outputType, OperationType operationType)
     : RegisterMapping(name, registerType, addresses, outputType, operationType)
     {
@@ -64,10 +64,10 @@ public:
     MOCK_METHOD0(getReference, const std::string&());
 //    MOCK_METHOD0(isReadRestricted, bool());
     MOCK_METHOD0(getRegisterType, RegisterType());
-    MOCK_METHOD0(getAddress, int16_t());
-    MOCK_METHOD0(getAddresses, std::vector<int16_t>&());
+    MOCK_METHOD0(getAddress, int32_t());
+    MOCK_METHOD0(getAddresses, std::vector<int32_t>&());
     MOCK_METHOD0(getSlaveAddress, int16_t());
-    MOCK_METHOD0(getStartingAddress, int16_t());
+    MOCK_METHOD0(getStartingAddress, int32_t());
     MOCK_METHOD1(setSlaveAddress, void(int16_t));
     MOCK_METHOD0(getRegisterCount, int16_t());
     MOCK_METHOD0(getOutputType, OutputType());

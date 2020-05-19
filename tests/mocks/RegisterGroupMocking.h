@@ -49,13 +49,13 @@ public:
     {
     }
 
-    RegisterGroupMock(const RegisterGroup& instance) : RegisterGroup(instance) {}
+    explicit RegisterGroupMock(const RegisterGroup& instance) : RegisterGroup(instance) {}
 
     MOCK_METHOD1(addMapping, bool(const std::shared_ptr<wolkabout::RegisterMapping>&));
     MOCK_METHOD0(getRegisterType, wolkabout::RegisterMapping::RegisterType());
     MOCK_METHOD0(getDevice, const std::shared_ptr<wolkabout::ModbusDevice>&());
     MOCK_METHOD1(setDevice, void(const std::shared_ptr<wolkabout::ModbusDevice>&));
-    MOCK_METHOD0(getStartingAddress, uint16_t());
+    MOCK_METHOD0(getStartingAddress, int32_t());
     MOCK_METHOD0(getAddressCount, uint16_t());
     MOCK_METHOD0(getSlaveAddress, int16_t());
     MOCK_METHOD1(setSlaveAddress, void(int16_t));
