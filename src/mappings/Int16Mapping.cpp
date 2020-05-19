@@ -24,8 +24,8 @@
 
 namespace wolkabout
 {
-Int16Mapping::Int16Mapping(const std::string& reference, RegisterMapping::RegisterType registerType, int16_t address,
-                           bool readRestricted, int8_t slaveAddress)
+Int16Mapping::Int16Mapping(const std::string& reference, RegisterMapping::RegisterType registerType, int32_t address,
+                           bool readRestricted, int16_t slaveAddress)
 : RegisterMapping(reference, registerType, address, OutputType::INT16, readRestricted, slaveAddress)
 {
     // Stood here, but is actually redundant.

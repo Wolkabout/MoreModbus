@@ -69,7 +69,7 @@ public:
      * @param name unique as identification
      * @param slaveAddress unique to device, and is going to set all groups to this slaveAddress
      */
-    ModbusDevice(const std::string& name, int8_t slaveAddress);
+    ModbusDevice(const std::string& name, int16_t slaveAddress);
 
     /**
      * @brief Copy constructor for the device, does complete deep copy for device and groups.
@@ -90,7 +90,7 @@ public:
 
     void setReader(const std::shared_ptr<ModbusReader>& reader);
 
-    int8_t getSlaveAddress() const;
+    int16_t getSlaveAddress() const;
 
     const std::vector<std::shared_ptr<RegisterGroup>>& getGroups() const;
 
@@ -114,7 +114,7 @@ public:
 private:
     std::string m_name;
     bool m_status;
-    int8_t m_slaveAddress;
+    int16_t m_slaveAddress;
     std::vector<std::shared_ptr<RegisterGroup>> m_groups;
 
     std::weak_ptr<ModbusReader> m_reader;

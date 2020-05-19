@@ -41,8 +41,8 @@ public:
     MOCK_METHOD2(writeMapping, bool(wolkabout::RegisterMapping&, const std::vector<uint16_t>&));
     MOCK_METHOD2(writeBitMapping, bool(wolkabout::RegisterMapping&, bool));
     MOCK_METHOD0(isRunning, bool());
-    MOCK_CONST_METHOD0(getDevices, const std::map<int8_t, std::shared_ptr<wolkabout::ModbusDevice>>&());
-    MOCK_CONST_METHOD0(getDeviceStatuses, const std::map<int8_t, bool>&());
+    MOCK_CONST_METHOD0(getDevices, const std::map<int16_t, std::shared_ptr<wolkabout::ModbusDevice>>&());
+    MOCK_CONST_METHOD0(getDeviceStatuses, const std::map<int16_t, bool>&());
     MOCK_METHOD0(start, void());
     MOCK_METHOD0(stop, void());
 };

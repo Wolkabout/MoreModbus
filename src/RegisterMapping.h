@@ -85,8 +85,8 @@ public:
      * @param readRestricted indicates whether or not the mapping can be read
      * @param slaveAddress of the devices being accessed, leave as default on -1
      */
-    RegisterMapping(const std::string& reference, RegisterType registerType, int16_t address,
-                    bool readRestricted = false, int8_t slaveAddress = -1);
+    RegisterMapping(const std::string& reference, RegisterType registerType, int32_t address,
+                    bool readRestricted = false, int16_t slaveAddress = -1);
 
     /**
      * @brief Default constructor for mapping with custom OutputType.
@@ -99,8 +99,8 @@ public:
      * @param readRestricted indicates whether or not the mapping can be read
      * @param slaveAddress of the devices being accessed, leave as default on -1
      */
-    RegisterMapping(const std::string& reference, RegisterType registerType, int16_t address, OutputType type,
-                    bool readRestricted = false, int8_t slaveAddress = -1);
+    RegisterMapping(const std::string& reference, RegisterType registerType, int32_t address, OutputType type,
+                    bool readRestricted = false, int16_t slaveAddress = -1);
 
     /**
      * @brief Constructor for cases where bit is taken from a 16 bit register.
@@ -113,8 +113,8 @@ public:
      * @param readRestricted indicates whether or not the mapping can be read
      * @param slaveAddress of the devices being accessed, leave as default on -1
      */
-    RegisterMapping(const std::string& reference, RegisterType registerType, int16_t address, OperationType operation,
-                    int8_t bitIndex, bool readRestricted = false, int8_t slaveAddress = -1);
+    RegisterMapping(const std::string& reference, RegisterType registerType, int32_t address, OperationType operation,
+                    int8_t bitIndex, bool readRestricted = false, int16_t slaveAddress = -1);
 
     /**
      * @brief Constructor for cases where there is multiple registers merged into a single output value.
@@ -130,8 +130,8 @@ public:
      * @param readRestricted indicates whether or not the mapping can be read
      * @param slaveAddress of the devices being accessed, leave as default on -1
      */
-    RegisterMapping(const std::string& reference, RegisterType registerType, const std::vector<int16_t>& addresses,
-                    OutputType type, OperationType operation, bool readRestricted = false, int8_t slaveAddress = -1);
+    RegisterMapping(const std::string& reference, RegisterType registerType, const std::vector<int32_t>& addresses,
+                    OutputType type, OperationType operation, bool readRestricted = false, int16_t slaveAddress = -1);
 
     virtual ~RegisterMapping() = default;
 
@@ -145,15 +145,15 @@ public:
 
     RegisterType getRegisterType() const;
 
-    int16_t getAddress() const;
+    int32_t getAddress() const;
 
-    const std::vector<int16_t>& getAddresses() const;
+    const std::vector<int32_t>& getAddresses() const;
 
-    int8_t getSlaveAddress() const;
+    int16_t getSlaveAddress() const;
 
-    int16_t getStartingAddress() const;
+    int32_t getStartingAddress() const;
 
-    void setSlaveAddress(int8_t slaveAddress);
+    void setSlaveAddress(int16_t slaveAddress);
 
     int16_t getRegisterCount() const;
 
@@ -204,9 +204,9 @@ protected:
 
     // Modbus registers data
     RegisterType m_registerType;
-    int16_t m_address = -1;
-    std::vector<int16_t> m_addresses;
-    int8_t m_slaveAddress = -1;
+    int32_t m_address = -1;
+    std::vector<int32_t> m_addresses;
+    int16_t m_slaveAddress = -1;
 
     // Wolkabout output data
     OutputType m_outputType;

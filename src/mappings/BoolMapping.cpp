@@ -22,8 +22,8 @@
 
 namespace wolkabout
 {
-BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::RegisterType registerType, int16_t address,
-                         bool readRestricted, int8_t slaveAddress)
+BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::RegisterType registerType, int32_t address,
+                         bool readRestricted, int16_t slaveAddress)
 : RegisterMapping(reference, registerType, address, readRestricted, slaveAddress)
 {
     if (!(registerType == RegisterType::COIL || registerType == RegisterType::INPUT_CONTACT))
@@ -32,9 +32,9 @@ BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::Register
     }
 }
 
-BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::RegisterType registerType, int16_t address,
+BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::RegisterType registerType, int32_t address,
                          RegisterMapping::OperationType operation, int8_t bitIndex, bool readRestricted,
-                         int8_t slaveAddress)
+                         int16_t slaveAddress)
 : RegisterMapping(reference, registerType, address, operation, bitIndex, readRestricted, slaveAddress)
 {
     if (!(operation == OperationType::TAKE_BIT))

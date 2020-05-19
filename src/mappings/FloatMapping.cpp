@@ -25,7 +25,7 @@
 namespace wolkabout
 {
 FloatMapping::FloatMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                           const std::vector<int16_t>& addresses, bool readRestricted, int8_t slaveAddress)
+                           const std::vector<int32_t>& addresses, bool readRestricted, int16_t slaveAddress)
 : RegisterMapping(reference, registerType, addresses, OutputType::FLOAT, OperationType::MERGE_FLOAT, readRestricted,
                   slaveAddress)
 {

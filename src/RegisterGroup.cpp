@@ -197,7 +197,7 @@ RegisterMapping::RegisterType RegisterGroup::getRegisterType() const
     return m_registerType;
 }
 
-uint16_t RegisterGroup::getStartingAddress() const
+int32_t RegisterGroup::getStartingAddress() const
 {
     return GroupUtility::getAddressFromString(m_mappings.begin()->first);
 }
@@ -216,12 +216,12 @@ uint16_t RegisterGroup::getAddressCount() const
     return static_cast<uint16_t>(mappings.size());
 }
 
-int8_t RegisterGroup::getSlaveAddress() const
+int16_t RegisterGroup::getSlaveAddress() const
 {
     return m_slaveAddress;
 }
 
-void RegisterGroup::setSlaveAddress(int8_t slaveAddress)
+void RegisterGroup::setSlaveAddress(int16_t slaveAddress)
 {
     m_slaveAddress = slaveAddress;
     for (const auto& mapping : m_mappings)
@@ -270,7 +270,7 @@ void RegisterGroup::setDevice(const std::shared_ptr<ModbusDevice>& device)
     m_device = device;
 }
 
-uint16_t GroupUtility::getAddressFromString(const std::string& string)
+int32_t GroupUtility::getAddressFromString(const std::string& string)
 {
     auto firstAddressString = std::string(string);
     auto dotIndex = firstAddressString.find(SEPARATOR);
@@ -278,7 +278,7 @@ uint16_t GroupUtility::getAddressFromString(const std::string& string)
     {
         firstAddressString = firstAddressString.substr(0, dotIndex);
     }
-    return static_cast<uint16_t>(std::stoul(firstAddressString));
+    return static_cast<int32_t>(std::stoul(firstAddressString));
 }
 
 int16_t GroupUtility::getBitFromString(const std::string& string)
