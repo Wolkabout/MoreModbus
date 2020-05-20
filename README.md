@@ -52,16 +52,21 @@ And after that, run the configuration script
 The out directory should be generated, so move in there, and run build
 ```shell script
 cd out
-make
+make -j$(nproc)
 ```
 
-After that, you can run the example, and run the tests
+After that, you can run the example
 ```shell script
-./moreModbusExample
-./moreModbusTests
+./MoreModbusExample
 ```
 
-Also, as bonus, after you ran the tests, you can check their coverage by back to the root directory
+To run tests
+```shell script
+make tests -j$(nproc)
+./MoreModbusTests # if you want to run them again, make will run them once for you.
+```
+
+Also, as bonus, after you ran the tests, you can check their coverage by back to the `tools` directory
 ```shell script
 ./coverage.sh
 ```
