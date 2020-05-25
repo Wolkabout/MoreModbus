@@ -15,7 +15,7 @@ jobs:
       script:
         - ./configure.sh
         - pushd out
-        - make
+        - make -j$(nproc)
     - stage: tests
       dist: bionic
       language: cpp
@@ -29,7 +29,8 @@ jobs:
       script:
         - ./configure.sh
         - pushd out
-        - make
+        - make -j$(nproc)
+        - make tests -j$(nproc)
         - ./MoreModbusTests
     - stage: deploy
       if: branch = master
