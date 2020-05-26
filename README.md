@@ -1,4 +1,4 @@
-#MoreModbus
+#MoreModbus [![Build Status](https://travis-ci.com/Wolkabout/MoreModbus.svg?branch=master)](https://travis-ci.com/Wolkabout/MoreModbus)
 
 This is an abstraction layer over the `libmodbus` library. The functionality added allow creation
 of mappings that create more meaningful data from modbus registers, such as 32 bit types created from
