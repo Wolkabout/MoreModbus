@@ -247,6 +247,27 @@ int8_t RegisterMapping::getBitIndex() const
     return m_bitIndex;
 }
 
+bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues)
+{
+    if (newValues.size() != m_byteValues.size())
+    {
+        throw std::logic_error("RegisterMapping: The value array has to be the same size, it cannot change.");
+    }
+
+    bool different = false;
+    uint32_t i = 0;
+    while (!different && i < newValues.size())
+    {
+        if (m_byteValues[i] != newValues[i])
+        {
+            different = true;
+        }
+        ++i;
+    }
+
+    return different || !m_isInitialized || !m_isValid;
+}
+
 bool RegisterMapping::update(const std::vector<uint16_t>& newValues)
 {
     if (newValues.size() != m_byteValues.size())
@@ -273,6 +294,11 @@ bool RegisterMapping::update(const std::vector<uint16_t>& newValues)
     m_isValid = true;
 
     return !isValueInitialized || different || !isValid;
+}
+
+bool RegisterMapping::doesUpdate(bool newRegisterValue)
+{
+    return m_boolValue != newRegisterValue || !m_isInitialized || !m_isValid;
 }
 
 bool RegisterMapping::update(bool newRegisterValue)

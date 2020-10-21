@@ -120,9 +120,16 @@ const std::vector<std::shared_ptr<RegisterGroup>>& ModbusDevice::getGroups() con
 }
 
 void ModbusDevice::setOnMappingValueChange(
-  const std::function<void(const std::shared_ptr<RegisterMapping>&)>& onMappingValueChange)
+  const std::function<void(const std::shared_ptr<RegisterMapping>&, bool)>& onMappingValueChangeBool)
 {
-    m_onMappingValueChange = onMappingValueChange;
+    m_onMappingValueChangeBool = onMappingValueChangeBool;
+}
+
+void ModbusDevice::setOnMappingValueChange(
+  const std::function<void(const std::shared_ptr<RegisterMapping>&, const std::vector<uint16_t>&)>&
+    onMappingValueChange)
+{
+    m_onMappingValueChangeBytes = onMappingValueChange;
 }
 
 void ModbusDevice::setOnStatusChange(const std::function<void(bool)>& onStatusChange)
@@ -130,10 +137,17 @@ void ModbusDevice::setOnStatusChange(const std::function<void(bool)>& onStatusCh
     m_onStatusChange = onStatusChange;
 }
 
-void ModbusDevice::triggerOnMappingValueChange(const std::shared_ptr<RegisterMapping>& mapping)
+void ModbusDevice::triggerOnMappingValueChange(const std::shared_ptr<RegisterMapping>& mapping,
+                                               const std::vector<uint16_t>& data)
 {
-    if (m_onMappingValueChange != nullptr)
-        m_onMappingValueChange(mapping);
+    if (m_onMappingValueChangeBytes != nullptr)
+        m_onMappingValueChangeBytes(mapping, data);
+}
+
+void ModbusDevice::triggerOnMappingValueChange(const std::shared_ptr<RegisterMapping>& mapping, bool data)
+{
+    if (m_onMappingValueChangeBool != nullptr)
+        m_onMappingValueChangeBool(mapping, data);
 }
 
 void ModbusDevice::triggerOnStatusChange(bool status)

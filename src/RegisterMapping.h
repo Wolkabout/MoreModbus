@@ -164,12 +164,26 @@ public:
     int8_t getBitIndex() const;
 
     /**
+     * @brief The method check whether or not the passed value will update the value inside of the mapping.
+     * @param newValues The value as bytes that will be parsed into the appropriate type.
+     * @return Whether or not the value will update the mapping.
+     */
+    virtual bool doesUpdate(const std::vector<uint16_t>& newValues);
+
+    /**
      * @brief Value watcher method, used for reader to write in new uint16_t values received by the ModbusGroupReader.
      * @details Stores one, two, or however many uint16_t values the mapping requires.
      * @param newValues vector of new uint16_t values.
      * @return whether or not the update operation was successful.
      */
     virtual bool update(const std::vector<uint16_t>& newValues);
+
+    /**
+     * @brief The method check whether or not the passed value will update the value inside of the mapping.
+     * @param newRegisterValue The value as bool.
+     * @return Whether or not the value will update the mapping;
+     */
+    bool doesUpdate(bool newRegisterValue);
 
     /**
      * @brief Value watcher method, used for reader to write in a new value received by the ModbusGroupReader.

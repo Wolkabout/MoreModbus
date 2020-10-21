@@ -25,6 +25,7 @@
 #include "modbus/LibModbusSerialRtuClient.h"
 #include "modbus/LibModbusTcpIpClient.h"
 #include "utilities/ConsoleLogger.h"
+#include "utilities/DataParsers.h"
 
 int main()
 {
@@ -43,7 +44,7 @@ int main()
 
     // Create a String Mapping
     const auto& stringMapping = std::make_shared<wolkabout::StringMapping>(
-	  "STR1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, std::vector<std::int32_t>{0, 1, 2},
+      "STR1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, std::vector<std::int32_t>{0, 1, 2},
       wolkabout::RegisterMapping::OperationType::STRINGIFY_ASCII);
 
     // Create some Bit Mappings
@@ -60,26 +61,30 @@ int main()
     device->createGroups(std::vector<std::shared_ptr<wolkabout::RegisterMapping>>{
       normalRegisterMapping, normalContactMapping, stringMapping, getFirstBitMapping, getSecondBitMapping});
 
-    device->setOnMappingValueChange([](const std::shared_ptr<wolkabout::RegisterMapping>& mapping) {
+    device->setOnMappingValueChange([](const std::shared_ptr<wolkabout::RegisterMapping>& mapping, bool data) {
         // You can do this for all output types.
-        if (mapping->getOutputType() == wolkabout::RegisterMapping::OutputType::BOOL)
-        {
-            const auto& boolean = std::dynamic_pointer_cast<wolkabout::BoolMapping>(mapping);
-            LOG(DEBUG) << "Application: Mapping is bool, value : " << boolean->getBoolValue();
-        }
-        else if (mapping->getOutputType() == wolkabout::RegisterMapping::OutputType::STRING)
-        {
-            const auto& string = std::dynamic_pointer_cast<wolkabout::StringMapping>(mapping);
-            LOG(DEBUG) << "Application: Mapping is string, value : " << string->getStringValue();
-
-            if (string->getStringValue().empty())
-                string->writeValue("Test");
-        }
-        else
-        {
-            LOG(DEBUG) << "Application: Mapping " << mapping->getReference() << " value changed.";
-        }
+        const auto& boolean = std::dynamic_pointer_cast<wolkabout::BoolMapping>(mapping);
+        LOG(DEBUG) << "Application: Mapping is bool, old value was : " << boolean->getBoolValue()
+                   << ", new value is : " << data;
     });
+
+    device->setOnMappingValueChange(
+      [](const std::shared_ptr<wolkabout::RegisterMapping>& mapping, const std::vector<uint16_t>& bytes) {
+          // You can do this for all output types.
+          if (mapping->getOutputType() == wolkabout::RegisterMapping::OutputType::STRING)
+          {
+              const auto& string = std::dynamic_pointer_cast<wolkabout::StringMapping>(mapping);
+              LOG(DEBUG) << "Application: Mapping is string, old value was : '" << string->getStringValue() << "'"
+                         << ", new value is : '" << wolkabout::DataParsers::registersToAsciiString(bytes) << "'.";
+
+              if (string->getStringValue().empty())
+                  string->writeValue("Test");
+          }
+          else
+          {
+              LOG(DEBUG) << "Application: Mapping " << mapping->getReference() << " value changed.";
+          }
+      });
 
     device->setOnStatusChange([&](bool status) {
         LOG(DEBUG) << "Application: Device " << device->getName() << " is now " << (status ? "online" : "offline")
