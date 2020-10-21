@@ -45,7 +45,7 @@ public:
           std::make_shared<RegisterMappingMock>("BM", wolkabout::RegisterMapping::RegisterType::INPUT_CONTACT, 0));
 
         mappings.emplace_back(std::make_shared<RegisterMappingMock>(
-		  "STR1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, std::vector<std::int32_t>{0, 1, 2},
+          "STR1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, std::vector<std::int32_t>{0, 1, 2},
           wolkabout::RegisterMapping::OutputType::STRING, wolkabout::RegisterMapping::OperationType::STRINGIFY_ASCII));
 
         mappings.emplace_back(
@@ -56,11 +56,11 @@ public:
           std::make_shared<RegisterMappingMock>("B4-2", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 4,
                                                 wolkabout::RegisterMapping::OperationType::TAKE_BIT, 1));
 
-        mappings.emplace_back(std::make_shared<RegisterMappingMock>(
-          "BMRR1", wolkabout::RegisterMapping::RegisterType::COIL, 0, 0, true));
+        mappings.emplace_back(
+          std::make_shared<RegisterMappingMock>("BMRR1", wolkabout::RegisterMapping::RegisterType::COIL, 0, 0, true));
 
-        mappings.emplace_back(std::make_shared<RegisterMappingMock>(
-          "BMRR2", wolkabout::RegisterMapping::RegisterType::COIL, 1, 0, true));
+        mappings.emplace_back(
+          std::make_shared<RegisterMappingMock>("BMRR2", wolkabout::RegisterMapping::RegisterType::COIL, 1, 0, true));
     }
 
     void SetUp() { SetUpMappings(); }
@@ -88,7 +88,15 @@ TEST_F(ModbusDeviceTests, InitialExampleTest)
     bool valueChangeSuccess = false;
     bool statusChangeSuccess = false;
 
-    const auto& valueChange = [&](const std::shared_ptr<wolkabout::RegisterMapping>& mapping) {
+    const auto& bytesValueChange = [&](const std::shared_ptr<wolkabout::RegisterMapping>& mapping,
+                                       const std::vector<uint16_t>& value) {
+        if (mapping == nullptr)
+        {
+            valueChangeSuccess = true;
+        }
+    };
+
+    const auto& boolValueChange = [&](const std::shared_ptr<wolkabout::RegisterMapping>& mapping, bool value) {
         if (mapping == nullptr)
         {
             valueChangeSuccess = true;
@@ -96,16 +104,18 @@ TEST_F(ModbusDeviceTests, InitialExampleTest)
     };
 
     const auto& statusChange = [&](bool status) {
-        if (status == true)
+        if (status)
         {
             statusChangeSuccess = true;
         }
     };
 
-    ASSERT_NO_THROW(device->setOnMappingValueChange(valueChange));
+    ASSERT_NO_THROW(device->setOnMappingValueChange(bytesValueChange));
+    ASSERT_NO_THROW(device->setOnMappingValueChange(boolValueChange));
     ASSERT_NO_THROW(device->setOnStatusChange(statusChange));
 
-    ASSERT_NO_THROW(device->triggerOnMappingValueChange(nullptr));
+    ASSERT_NO_THROW(device->triggerOnMappingValueChange(nullptr, std::vector<uint16_t>()));
+    ASSERT_NO_THROW(device->triggerOnMappingValueChange(nullptr, true));
     ASSERT_NO_THROW(device->triggerOnStatusChange(true));
 
     EXPECT_TRUE(valueChangeSuccess);
