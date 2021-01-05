@@ -37,9 +37,10 @@ public:
      * @param address Modbus register address
      * @param readRestricted Is the Mapping write only?
      * @param slaveAddress Slave address of device, leave to be assigned by device, default is -1.
+     * @param deadbandValue indicates a change in value of the register that is insignificant data.
      */
     UInt16Mapping(const std::string& reference, RegisterType registerType, int32_t address, bool readRestricted = false,
-                  int16_t slaveAddress = -1);
+                  int16_t slaveAddress = -1, float deadbandValue = 0.0);
 
     /**
      * @details Override methods will be executed on devices reading thread, so that this parsing can be done

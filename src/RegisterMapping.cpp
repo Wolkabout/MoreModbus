@@ -24,12 +24,13 @@
 namespace wolkabout
 {
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                                 int32_t address, bool readRestricted, int16_t slaveAddress)
+                                 int32_t address, bool readRestricted, int16_t slaveAddress, float deadbandValue)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
 , m_address(address)
 , m_slaveAddress(slaveAddress)
+, m_deadbandValue(deadbandValue)
 , m_operationType(OperationType::NONE)
 , m_byteValues(1)
 {
@@ -53,12 +54,14 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 }
 
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                                 int32_t address, OutputType type, bool readRestricted, int16_t slaveAddress)
+                                 int32_t address, OutputType type, bool readRestricted, int16_t slaveAddress,
+                                 float deadbandValue)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
 , m_address(address)
 , m_slaveAddress(slaveAddress)
+, m_deadbandValue(deadbandValue)
 , m_outputType(type)
 , m_operationType(OperationType::NONE)
 , m_byteValues(1)
@@ -114,11 +117,12 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                                  const std::vector<int32_t>& addresses, OutputType type, OperationType operation,
-                                 bool readRestricted, int16_t slaveAddress)
+                                 bool readRestricted, int16_t slaveAddress, float deadbandValue)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
 , m_addresses(addresses)
+, m_deadbandValue(deadbandValue)
 , m_slaveAddress(slaveAddress)
 , m_outputType(type)
 , m_operationType(operation)
@@ -255,17 +259,23 @@ bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues)
     }
 
     bool different = false;
+    bool significantChange = false;
     uint32_t i = 0;
     while (!different && i < newValues.size())
     {
         if (m_byteValues[i] != newValues[i])
         {
             different = true;
+            if (!significantChange && m_deadbandValue != 0.0)
+            {
+                significantChange = newValues[i] >= m_byteValues[i] + m_deadbandValue ||
+                                    newValues[i] <= m_byteValues[i] - m_deadbandValue;
+            }
         }
         ++i;
     }
 
-    return different || !m_isInitialized || !m_isValid;
+    return (different || !m_isInitialized || !m_isValid) && significantChange;
 }
 
 bool RegisterMapping::update(const std::vector<uint16_t>& newValues)

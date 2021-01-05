@@ -110,8 +110,7 @@ public:
      */
     void setOnStatusChange(const std::function<void(bool)>& onStatusChange);
 
-    void triggerOnMappingValueChange(const std::shared_ptr<RegisterMapping>& mapping,
-                                     bool data);
+    void triggerOnMappingValueChange(const std::shared_ptr<RegisterMapping>& mapping, bool data);
 
     void triggerOnMappingValueChange(const std::shared_ptr<RegisterMapping>& mapping,
                                      const std::vector<uint16_t>& data);
