@@ -24,7 +24,7 @@
 namespace wolkabout
 {
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                                 int32_t address, bool readRestricted, int16_t slaveAddress, float deadbandValue)
+                                 int32_t address, bool readRestricted, int16_t slaveAddress, double deadbandValue)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -55,7 +55,7 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                                  int32_t address, OutputType type, bool readRestricted, int16_t slaveAddress,
-                                 float deadbandValue)
+                                 double deadbandValue)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -117,7 +117,7 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                                  const std::vector<int32_t>& addresses, OutputType type, OperationType operation,
-                                 bool readRestricted, int16_t slaveAddress, float deadbandValue)
+                                 bool readRestricted, int16_t slaveAddress, double deadbandValue)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -266,7 +266,11 @@ bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues)
         if (m_byteValues[i] != newValues[i])
         {
             different = true;
-            if (!significantChange && m_deadbandValue != 0.0)
+            if (m_deadbandValue == 0.0)
+            {
+                significantChange = true;
+            }
+            else
             {
                 significantChange = newValues[i] >= m_byteValues[i] + m_deadbandValue ||
                                     newValues[i] <= m_byteValues[i] - m_deadbandValue;
