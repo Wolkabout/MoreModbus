@@ -172,7 +172,7 @@ public:
      * @param newValues The value as bytes that will be parsed into the appropriate type.
      * @return Whether or not the value will update the mapping.
      */
-    virtual bool doesUpdate(const std::vector<uint16_t>& newValues);
+    virtual bool doesUpdate(const std::vector<uint16_t>& newValues) const;
 
     /**
      * @brief Value watcher method, used for reader to write in new uint16_t values received by the ModbusGroupReader.
@@ -187,7 +187,7 @@ public:
      * @param newRegisterValue The value as bool.
      * @return Whether or not the value will update the mapping;
      */
-    bool doesUpdate(bool newRegisterValue);
+    bool doesUpdate(bool newRegisterValue) const;
 
     /**
      * @brief Value watcher method, used for reader to write in a new value received by the ModbusGroupReader.

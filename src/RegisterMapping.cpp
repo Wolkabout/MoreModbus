@@ -251,7 +251,7 @@ int8_t RegisterMapping::getBitIndex() const
     return m_bitIndex;
 }
 
-bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues)
+bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues) const
 {
     if (newValues.size() != m_byteValues.size())
     {
@@ -269,8 +269,10 @@ bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues)
             if (m_deadbandValue == 0.0)
             {
                 significantChange = true;
+                break;
             }
-            else
+
+            if (significantChange == false)
             {
                 significantChange = newValues[i] >= m_byteValues[i] + m_deadbandValue ||
                                     newValues[i] <= m_byteValues[i] - m_deadbandValue;
@@ -279,7 +281,7 @@ bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues)
         ++i;
     }
 
-    return (different || !m_isInitialized || !m_isValid) && significantChange;
+    return different && significantChange;
 }
 
 bool RegisterMapping::update(const std::vector<uint16_t>& newValues)
@@ -310,7 +312,7 @@ bool RegisterMapping::update(const std::vector<uint16_t>& newValues)
     return !isValueInitialized || different || !isValid;
 }
 
-bool RegisterMapping::doesUpdate(bool newRegisterValue)
+bool RegisterMapping::doesUpdate(bool newRegisterValue) const
 {
     return m_boolValue != newRegisterValue || !m_isInitialized || !m_isValid;
 }

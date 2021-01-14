@@ -141,13 +141,13 @@ void ModbusDevice::setOnStatusChange(const std::function<void(bool)>& onStatusCh
 void ModbusDevice::triggerOnMappingValueChange(const std::shared_ptr<RegisterMapping>& mapping,
                                                const std::vector<uint16_t>& data)
 {
-    if (m_onMappingValueChangeBytes != nullptr)
+    if (m_onMappingValueChangeBytes)
         m_onMappingValueChangeBytes(mapping, data);
 }
 
 void ModbusDevice::triggerOnMappingValueChange(const std::shared_ptr<RegisterMapping>& mapping, bool data)
 {
-    if (m_onMappingValueChangeBool != nullptr)
+    if (m_onMappingValueChangeBool)
         m_onMappingValueChangeBool(mapping, data);
 }
 
