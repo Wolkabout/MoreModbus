@@ -187,7 +187,7 @@ public:
      * @param newRegisterValue The value as bool.
      * @return Whether or not the value will update the mapping;
      */
-    bool doesUpdate(bool newRegisterValue) const;
+    virtual bool doesUpdate(bool newRegisterValue) const;
 
     /**
      * @brief Value watcher method, used for reader to write in a new value received by the ModbusGroupReader.

@@ -425,6 +425,32 @@ TEST_F(ComplexMappingsTests, FloatMappingsInitUpdateValid)
     }
 }
 
+TEST_F(ComplexMappingsTests, FloatMappingsDeadband)
+{
+    const auto& outputType = _outputType::FLOAT;
+    const auto& floatCombos = winningCombos[outputType];
+    for (const auto& combo : floatCombos)
+    {
+        const auto value = static_cast<float>(rand());
+        const auto bytes = wolkabout::DataParsers::floatToRegisters(value);
+        //        std::cout << "Testing with " << value << std::endl;
+
+        const auto registerType = std::get<0>(combo);
+        auto mapping = std::make_shared<wolkabout::FloatMapping>("TEST", registerType, std::vector<std::int32_t>{0, 1}, deadband);
+
+        EXPECT_FALSE(mapping->isInitialized());
+        EXPECT_FALSE(mapping->isValid());
+
+        EXPECT_NO_THROW(mapping->update(bytes));
+        EXPECT_EQ(value, mapping->getFloatValue());
+
+        EXPECT_TRUE(mapping->isInitialized());
+        EXPECT_TRUE(mapping->isValid());
+
+
+    }
+}
+
 TEST_F(ComplexMappingsTests, StringMappingsCreation)
 {
     const auto& outputType = _outputType::STRING;

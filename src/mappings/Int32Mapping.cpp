@@ -26,7 +26,7 @@ namespace wolkabout
 {
 Int32Mapping::Int32Mapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                            const std::vector<int32_t>& addresses, RegisterMapping::OperationType operation,
-                           bool readRestricted, int16_t slaveAddress, float deadbandValue)
+                           bool readRestricted, int16_t slaveAddress, double deadbandValue)
 : RegisterMapping(reference, registerType, addresses, OutputType::INT32, operation, readRestricted, slaveAddress,
                   deadbandValue)
 {

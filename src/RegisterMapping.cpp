@@ -18,6 +18,8 @@
 
 #include "RegisterMapping.h"
 
+#include "utilities/DataParsers.h"
+
 #include <algorithm>
 #include <stdexcept>
 
@@ -259,29 +261,103 @@ bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues) const
     }
 
     bool different = false;
-    bool significantChange = false;
     uint32_t i = 0;
-    while (!different && i < newValues.size())
+    while (i < newValues.size())
     {
         if (m_byteValues[i] != newValues[i])
         {
             different = true;
-            if (m_deadbandValue == 0.0)
-            {
-                significantChange = true;
-                break;
-            }
-
-            if (significantChange == false)
-            {
-                significantChange = newValues[i] >= m_byteValues[i] + m_deadbandValue ||
-                                    newValues[i] <= m_byteValues[i] - m_deadbandValue;
-            }
+            break;
         }
         ++i;
     }
 
-    return different && significantChange;
+    if (m_deadbandValue == 0.0)
+    {
+        return different;
+    }
+
+    if (!different)
+    {
+        return false;
+    }
+
+    bool significantChange = false;
+
+    switch (getOutputType())
+    {
+    case OutputType::UINT16:
+    {
+        uint16_t currentValueUint16 = m_byteValues[0];
+        uint16_t newValueUint16 = newValues[0];
+
+        significantChange = newValueUint16 >= currentValueUint16 + m_deadbandValue ||
+                            newValueUint16 <= currentValueUint16 - m_deadbandValue;
+    }
+    break;
+
+    case OutputType::INT16:
+    {
+        int16_t currentValueInt16 = DataParsers::uint16ToInt16(m_byteValues[0]);
+        int16_t newValueInt16 = DataParsers::uint16ToInt16(newValues[0]);
+
+        significantChange =
+          newValueInt16 >= currentValueInt16 + m_deadbandValue || newValueInt16 <= currentValueInt16 - m_deadbandValue;
+    }
+    break;
+
+    case OutputType::UINT32:
+    {
+        uint32_t currentValueUint32;
+        uint32_t newValueUint32;
+        if (getOperationType() == OperationType::MERGE_BIG_ENDIAN)
+        {
+            currentValueUint32 = DataParsers::registersToUint32(m_byteValues, DataParsers::Endian::BIG);
+            newValueUint32 = DataParsers::registersToUint32(newValues, DataParsers::Endian::BIG);
+        }
+        else
+        {
+            currentValueUint32 = DataParsers::registersToUint32(m_byteValues, DataParsers::Endian::LITTLE);
+            newValueUint32 = DataParsers::registersToUint32(newValues, DataParsers::Endian::LITTLE);
+        }
+
+        significantChange = newValueUint32 >= currentValueUint32 + m_deadbandValue ||
+                            newValueUint32 <= currentValueUint32 - m_deadbandValue;
+    }
+    break;
+
+    case OutputType::INT32:
+    {
+        int32_t currentValueInt32;
+        int32_t newValueInt32;
+        if (getOperationType() == OperationType::MERGE_BIG_ENDIAN)
+        {
+            currentValueInt32 = DataParsers::registersToInt32(m_byteValues, DataParsers::Endian::BIG);
+            newValueInt32 = DataParsers::registersToInt32(newValues, DataParsers::Endian::BIG);
+        }
+        else
+        {
+            currentValueInt32 = DataParsers::registersToInt32(m_byteValues, DataParsers::Endian::LITTLE);
+            newValueInt32 = DataParsers::registersToInt32(newValues, DataParsers::Endian::LITTLE);
+        }
+
+        significantChange =
+          newValueInt32 >= currentValueInt32 + m_deadbandValue || newValueInt32 <= currentValueInt32 - m_deadbandValue;
+    }
+    break;
+
+    case OutputType::FLOAT:
+    {
+        float currentValueFloat = DataParsers::registersToFloat(m_byteValues);
+        float newValueFloat = DataParsers::registersToFloat(newValues);
+
+        significantChange =
+          newValueFloat >= currentValueFloat + m_deadbandValue || newValueFloat <= currentValueFloat - m_deadbandValue;
+    }
+    break;
+    }
+
+    return significantChange;
 }
 
 bool RegisterMapping::update(const std::vector<uint16_t>& newValues)
