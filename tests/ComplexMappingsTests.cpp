@@ -250,6 +250,36 @@ TEST_F(ComplexMappingsTests, UInt32MappingsInitUpdateValid)
     }
 }
 
+TEST_F(ComplexMappingsTests, UInt32MappingsDeadband)
+{
+    const auto& outputType = _outputType::UINT32;
+    const auto& uintCombos = winningCombos[outputType];
+    for (const auto& combo : uintCombos)
+    {
+        const auto operationType = std::get<2>(combo);
+        const auto endian = endianForOperation.at(operationType);
+        const auto value = static_cast<uint32_t>(rand());
+        const auto bytes = wolkabout::DataParsers::uint32ToRegisters(value, endian);
+        double deadbandValue = 2.0;
+
+        const auto registerType = std::get<0>(combo);
+        auto mapping =
+          std::make_shared<wolkabout::UInt32Mapping>("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType, false, -1, deadbandValue);
+
+        EXPECT_FALSE(mapping->isInitialized());
+        EXPECT_FALSE(mapping->isValid());
+
+        EXPECT_NO_THROW(mapping->update(bytes));
+        EXPECT_EQ(value, mapping->getUint32Value());
+
+        EXPECT_TRUE(mapping->isInitialized());
+        EXPECT_TRUE(mapping->isValid());
+
+        EXPECT_FALSE(mapping->doesUpdate(wolkabout::DataParsers::uint32ToRegisters(value + 1, endian)));
+        EXPECT_TRUE(mapping->doesUpdate(wolkabout::DataParsers::uint32ToRegisters(value + 3, endian)));
+    }
+}
+
 TEST_F(ComplexMappingsTests, Int32MappingsCreation)
 {
     const auto& outputType = _outputType::INT32;
@@ -343,6 +373,36 @@ TEST_F(ComplexMappingsTests, Int32MappingsInitUpdateValid)
     }
 }
 
+TEST_F(ComplexMappingsTests, Int32MappingsDeadband)
+{
+    const auto& outputType = _outputType::INT32;
+    const auto& intCombos = winningCombos[outputType];
+    for (const auto& combo : intCombos)
+    {
+        const auto operationType = std::get<2>(combo);
+        const auto endian = endianForOperation.at(operationType);
+        const auto value = static_cast<int32_t>(rand());
+        const auto bytes = wolkabout::DataParsers::int32ToRegisters(value, endian);
+        double deadbandValue = 2.0;
+
+        const auto registerType = std::get<0>(combo);
+        auto mapping =
+          std::make_shared<wolkabout::Int32Mapping>("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType, false, -1, deadbandValue);
+
+        EXPECT_FALSE(mapping->isInitialized());
+        EXPECT_FALSE(mapping->isValid());
+
+        EXPECT_NO_THROW(mapping->update(bytes));
+        EXPECT_EQ(value, mapping->getInt32Value());
+
+        EXPECT_TRUE(mapping->isInitialized());
+        EXPECT_TRUE(mapping->isValid());
+
+        EXPECT_FALSE(mapping->doesUpdate(wolkabout::DataParsers::int32ToRegisters(value + 1, endian)));
+        EXPECT_TRUE(mapping->doesUpdate(wolkabout::DataParsers::int32ToRegisters(value + 3, endian)));
+    }
+}
+
 TEST_F(ComplexMappingsTests, FloatMappingsCreation)
 {
     const auto& outputType = _outputType::FLOAT;
@@ -422,6 +482,33 @@ TEST_F(ComplexMappingsTests, FloatMappingsInitUpdateValid)
 
         EXPECT_THROW(mapping->writeValue(value), std::logic_error);
         EXPECT_THROW(mapping->update(bytes), std::logic_error);
+    }
+}
+
+TEST_F(ComplexMappingsTests, FloatMappingsDeadband)
+{
+    const auto& outputType = _outputType::FLOAT;
+    const auto& floatCombos = winningCombos[outputType];
+    for (const auto& combo : floatCombos)
+    {
+        const auto value = static_cast<float>(15.0);
+        double deadbandValue = 2.0;
+        const auto bytes = wolkabout::DataParsers::floatToRegisters(value);
+
+        const auto registerType = std::get<0>(combo);
+        auto mapping = std::make_shared<wolkabout::FloatMapping>("TEST", registerType, std::vector<std::int32_t>{0, 1}, false, -1, deadbandValue);
+
+        EXPECT_FALSE(mapping->isInitialized());
+        EXPECT_FALSE(mapping->isValid());
+
+        EXPECT_NO_THROW(mapping->update(bytes));
+        EXPECT_EQ(value, mapping->getFloatValue());
+
+        EXPECT_TRUE(mapping->isInitialized());
+        EXPECT_TRUE(mapping->isValid());
+
+        EXPECT_FALSE(mapping->doesUpdate(wolkabout::DataParsers::floatToRegisters(value + 1.0)));
+        EXPECT_TRUE(mapping->doesUpdate(wolkabout::DataParsers::floatToRegisters(value + 3.0)));
     }
 }
 

@@ -23,8 +23,8 @@
 namespace wolkabout
 {
 UInt16Mapping::UInt16Mapping(const std::string& reference, RegisterMapping::RegisterType registerType, int32_t address,
-                             bool readRestricted, int16_t slaveAddress)
-: RegisterMapping(reference, registerType, address, readRestricted, slaveAddress)
+                             bool readRestricted, int16_t slaveAddress, double deadbandValue)
+: RegisterMapping(reference, registerType, address, readRestricted, slaveAddress, deadbandValue)
 {
     if (!(registerType == RegisterType::INPUT_REGISTER || registerType == RegisterType::HOLDING_REGISTER))
     {

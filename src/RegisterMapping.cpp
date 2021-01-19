@@ -18,18 +18,21 @@
 
 #include "RegisterMapping.h"
 
+#include "utilities/DataParsers.h"
+
 #include <algorithm>
 #include <stdexcept>
 
 namespace wolkabout
 {
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                                 int32_t address, bool readRestricted, int16_t slaveAddress)
+                                 int32_t address, bool readRestricted, int16_t slaveAddress, double deadbandValue)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
 , m_address(address)
 , m_slaveAddress(slaveAddress)
+, m_deadbandValue(deadbandValue)
 , m_operationType(OperationType::NONE)
 , m_byteValues(1)
 {
@@ -53,12 +56,14 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 }
 
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                                 int32_t address, OutputType type, bool readRestricted, int16_t slaveAddress)
+                                 int32_t address, OutputType type, bool readRestricted, int16_t slaveAddress,
+                                 double deadbandValue)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
 , m_address(address)
 , m_slaveAddress(slaveAddress)
+, m_deadbandValue(deadbandValue)
 , m_outputType(type)
 , m_operationType(OperationType::NONE)
 , m_byteValues(1)
@@ -114,11 +119,12 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                                  const std::vector<int32_t>& addresses, OutputType type, OperationType operation,
-                                 bool readRestricted, int16_t slaveAddress)
+                                 bool readRestricted, int16_t slaveAddress, double deadbandValue)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
 , m_addresses(addresses)
+, m_deadbandValue(deadbandValue)
 , m_slaveAddress(slaveAddress)
 , m_outputType(type)
 , m_operationType(operation)
@@ -247,6 +253,113 @@ int8_t RegisterMapping::getBitIndex() const
     return m_bitIndex;
 }
 
+bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues) const
+{
+    if (newValues.size() != m_byteValues.size())
+    {
+        throw std::logic_error("RegisterMapping: The value array has to be the same size, it cannot change.");
+    }
+
+    bool different = false;
+    uint32_t i = 0;
+    while (i < newValues.size())
+    {
+        if (m_byteValues[i] != newValues[i])
+        {
+            different = true;
+            break;
+        }
+        ++i;
+    }
+
+    if (m_deadbandValue == 0.0)
+    {
+        return !m_isInitialized || different || !m_isValid;
+    }
+
+    if (!different)
+    {
+        return !m_isInitialized || !m_isValid;
+    }
+
+    bool significantChange = false;
+
+    switch (getOutputType())
+    {
+    case OutputType::UINT16:
+    {
+        uint16_t currentValueUint16 = m_byteValues[0];
+        uint16_t newValueUint16 = newValues[0];
+
+        significantChange = newValueUint16 >= currentValueUint16 + m_deadbandValue ||
+                            newValueUint16 <= currentValueUint16 - m_deadbandValue;
+    }
+    break;
+
+    case OutputType::INT16:
+    {
+        int16_t currentValueInt16 = DataParsers::uint16ToInt16(m_byteValues[0]);
+        int16_t newValueInt16 = DataParsers::uint16ToInt16(newValues[0]);
+
+        significantChange =
+          newValueInt16 >= currentValueInt16 + m_deadbandValue || newValueInt16 <= currentValueInt16 - m_deadbandValue;
+    }
+    break;
+
+    case OutputType::UINT32:
+    {
+        uint32_t currentValueUint32;
+        uint32_t newValueUint32;
+        if (getOperationType() == OperationType::MERGE_BIG_ENDIAN)
+        {
+            currentValueUint32 = DataParsers::registersToUint32(m_byteValues, DataParsers::Endian::BIG);
+            newValueUint32 = DataParsers::registersToUint32(newValues, DataParsers::Endian::BIG);
+        }
+        else
+        {
+            currentValueUint32 = DataParsers::registersToUint32(m_byteValues, DataParsers::Endian::LITTLE);
+            newValueUint32 = DataParsers::registersToUint32(newValues, DataParsers::Endian::LITTLE);
+        }
+
+        significantChange = newValueUint32 >= currentValueUint32 + m_deadbandValue ||
+                            newValueUint32 <= currentValueUint32 - m_deadbandValue;
+    }
+    break;
+
+    case OutputType::INT32:
+    {
+        int32_t currentValueInt32;
+        int32_t newValueInt32;
+        if (getOperationType() == OperationType::MERGE_BIG_ENDIAN)
+        {
+            currentValueInt32 = DataParsers::registersToInt32(m_byteValues, DataParsers::Endian::BIG);
+            newValueInt32 = DataParsers::registersToInt32(newValues, DataParsers::Endian::BIG);
+        }
+        else
+        {
+            currentValueInt32 = DataParsers::registersToInt32(m_byteValues, DataParsers::Endian::LITTLE);
+            newValueInt32 = DataParsers::registersToInt32(newValues, DataParsers::Endian::LITTLE);
+        }
+
+        significantChange =
+          newValueInt32 >= currentValueInt32 + m_deadbandValue || newValueInt32 <= currentValueInt32 - m_deadbandValue;
+    }
+    break;
+
+    case OutputType::FLOAT:
+    {
+        float currentValueFloat = DataParsers::registersToFloat(m_byteValues);
+        float newValueFloat = DataParsers::registersToFloat(newValues);
+
+        significantChange =
+          newValueFloat >= currentValueFloat + m_deadbandValue || newValueFloat <= currentValueFloat - m_deadbandValue;
+    }
+    break;
+    }
+
+    return significantChange || !m_isInitialized || !m_isValid;
+}
+
 bool RegisterMapping::update(const std::vector<uint16_t>& newValues)
 {
     if (newValues.size() != m_byteValues.size())
@@ -273,6 +386,11 @@ bool RegisterMapping::update(const std::vector<uint16_t>& newValues)
     m_isValid = true;
 
     return !isValueInitialized || different || !isValid;
+}
+
+bool RegisterMapping::doesUpdate(bool newRegisterValue) const
+{
+    return m_boolValue != newRegisterValue || !m_isInitialized || !m_isValid;
 }
 
 bool RegisterMapping::update(bool newRegisterValue)

@@ -26,8 +26,9 @@ namespace wolkabout
 {
 UInt32Mapping::UInt32Mapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                              const std::vector<int32_t>& addresses, RegisterMapping::OperationType operation,
-                             bool readRestricted, int16_t slaveAddress)
-: RegisterMapping(reference, registerType, addresses, OutputType::UINT32, operation, readRestricted, slaveAddress)
+                             bool readRestricted, int16_t slaveAddress, double deadbandValue)
+: RegisterMapping(reference, registerType, addresses, OutputType::UINT32, operation, readRestricted, slaveAddress,
+                  deadbandValue)
 {
     if (operation != OperationType::MERGE_BIG_ENDIAN && operation != OperationType::MERGE_LITTLE_ENDIAN)
     {

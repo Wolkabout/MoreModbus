@@ -47,6 +47,11 @@ public:
     {
     }
 
+    RegisterMappingMock(const std::string& name, RegisterType registerType, int32_t address, OutputType outputType, double deadbandValue)
+    : RegisterMapping(name, registerType, address, outputType, deadbandValue)
+    {
+    }
+
     RegisterMappingMock(const std::string& name, RegisterType registerType, const std::vector<int32_t>& addresses,
                         OutputType outputType, OperationType operationType)
     : RegisterMapping(name, registerType, addresses, outputType, operationType)
@@ -74,6 +79,7 @@ public:
     MOCK_METHOD0(getOperationType, OperationType());
     MOCK_METHOD0(getBitIndex, int8_t());
     MOCK_METHOD1(update, bool(const std::vector<uint16_t>&));
+    MOCK_METHOD1(doesUpdate, bool(const std::vector<uint16_t>&));
     MOCK_METHOD1(update, bool(bool));
     MOCK_METHOD0(getBytesValues, std::vector<uint16_t>&());
     MOCK_METHOD0(getBoolValue, bool());

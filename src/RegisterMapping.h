@@ -84,9 +84,10 @@ public:
      * @param address of the register
      * @param readRestricted indicates whether or not the mapping can be read
      * @param slaveAddress of the devices being accessed, leave as default on -1
+     * @param deadbandValue indicates a change in value of the register that is insignificant data
      */
     RegisterMapping(const std::string& reference, RegisterType registerType, int32_t address,
-                    bool readRestricted = false, int16_t slaveAddress = -1);
+                    bool readRestricted = false, int16_t slaveAddress = -1, double deadbandValue = 0.0);
 
     /**
      * @brief Default constructor for mapping with custom OutputType.
@@ -98,9 +99,10 @@ public:
      * @param type of the output wanted by the mapping
      * @param readRestricted indicates whether or not the mapping can be read
      * @param slaveAddress of the devices being accessed, leave as default on -1
+     * @param deadbandValue indicates a change in value of the register that is insignificant data
      */
     RegisterMapping(const std::string& reference, RegisterType registerType, int32_t address, OutputType type,
-                    bool readRestricted = false, int16_t slaveAddress = -1);
+                    bool readRestricted = false, int16_t slaveAddress = -1, double deadbandValue = 0.0);
 
     /**
      * @brief Constructor for cases where bit is taken from a 16 bit register.
@@ -129,9 +131,11 @@ public:
      * @param operation describing what will happen to read data from mappings
      * @param readRestricted indicates whether or not the mapping can be read
      * @param slaveAddress of the devices being accessed, leave as default on -1
+     * @param deadbandValue indicates a change in value of the register that is insignificant data
      */
     RegisterMapping(const std::string& reference, RegisterType registerType, const std::vector<int32_t>& addresses,
-                    OutputType type, OperationType operation, bool readRestricted = false, int16_t slaveAddress = -1);
+                    OutputType type, OperationType operation, bool readRestricted = false, int16_t slaveAddress = -1,
+                    double deadbandValue = 0.0);
 
     virtual ~RegisterMapping() = default;
 
@@ -164,12 +168,26 @@ public:
     int8_t getBitIndex() const;
 
     /**
+     * @brief The method check whether or not the passed value will update the value inside of the mapping.
+     * @param newValues The value as bytes that will be parsed into the appropriate type.
+     * @return Whether or not the value will update the mapping.
+     */
+    virtual bool doesUpdate(const std::vector<uint16_t>& newValues) const;
+
+    /**
      * @brief Value watcher method, used for reader to write in new uint16_t values received by the ModbusGroupReader.
      * @details Stores one, two, or however many uint16_t values the mapping requires.
      * @param newValues vector of new uint16_t values.
      * @return whether or not the update operation was successful.
      */
     virtual bool update(const std::vector<uint16_t>& newValues);
+
+    /**
+     * @brief The method check whether or not the passed value will update the value inside of the mapping.
+     * @param newRegisterValue The value as bool.
+     * @return Whether or not the value will update the mapping;
+     */
+    virtual bool doesUpdate(bool newRegisterValue) const;
 
     /**
      * @brief Value watcher method, used for reader to write in a new value received by the ModbusGroupReader.
@@ -218,6 +236,7 @@ protected:
     std::vector<uint16_t> m_byteValues;
     bool m_isInitialized = false;
     bool m_isValid = false;
+    double m_deadbandValue = 0.0;
 };
 }    // namespace wolkabout
 

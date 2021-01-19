@@ -94,12 +94,15 @@ public:
 
     const std::vector<std::shared_ptr<RegisterGroup>>& getGroups() const;
 
+    void setOnMappingValueChange(
+      const std::function<void(const std::shared_ptr<RegisterMapping>&, bool)>& onMappingValueChangeBool);
+
     /**
      * @brief Event that will trigger when one of the devices mappings value changes.
      * @param onMappingValueChange the callback function for callback, executed on the devices reading thread.
      */
-    void setOnMappingValueChange(
-      const std::function<void(const std::shared_ptr<RegisterMapping>&)>& onMappingValueChange);
+    void setOnMappingValueChange(const std::function<void(const std::shared_ptr<RegisterMapping>&,
+                                                          const std::vector<uint16_t>&)>& onMappingValueChange);
 
     /**
      * @brief Event that will trigger when the devices status changes.
@@ -107,7 +110,10 @@ public:
      */
     void setOnStatusChange(const std::function<void(bool)>& onStatusChange);
 
-    void triggerOnMappingValueChange(const std::shared_ptr<RegisterMapping>& mapping);
+    void triggerOnMappingValueChange(const std::shared_ptr<RegisterMapping>& mapping, bool data);
+
+    void triggerOnMappingValueChange(const std::shared_ptr<RegisterMapping>& mapping,
+                                     const std::vector<uint16_t>& data);
 
     void triggerOnStatusChange(bool status);
 
@@ -119,7 +125,9 @@ private:
 
     std::weak_ptr<ModbusReader> m_reader;
 
-    std::function<void(const std::shared_ptr<RegisterMapping>&)> m_onMappingValueChange;
+    std::function<void(const std::shared_ptr<RegisterMapping>&, bool data)> m_onMappingValueChangeBool;
+    std::function<void(const std::shared_ptr<RegisterMapping>&, const std::vector<uint16_t>& data)>
+      m_onMappingValueChangeBytes;
     std::function<void(bool)> m_onStatusChange;
 };
 }    // namespace wolkabout

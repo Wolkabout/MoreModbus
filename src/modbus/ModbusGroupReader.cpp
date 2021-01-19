@@ -53,12 +53,13 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
         bool newValue = values[i++];
         LOG(TRACE) << "ModbusGroupReader: Old value = " << mapping.second->getBoolValue()
                    << ". New value = " << newValue;
-        if (mapping.second->update(newValue))
+
+        if (mapping.second->doesUpdate(newValue))
         {
+            group.getDevice()->triggerOnMappingValueChange(mapping.second, newValue);
+            mapping.second->update(newValue);
             LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '" << mapping.second->getReference()
                       << "' Value: '" << mapping.second->getBoolValue() << "'";
-
-            group.getDevice()->triggerOnMappingValueChange(mapping.second);
         }
     }
 }
@@ -127,12 +128,13 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
                 const auto bitValue = bits[static_cast<uint16_t>(bitIndex)];
 
                 const auto& bitMapping = mappings.at(mappingCounter + shift);
-                if (bitMapping.second->update(bitValue))
+
+                if (bitMapping.second->doesUpdate(bitValue))
                 {
+                    group.getDevice()->triggerOnMappingValueChange(bitMapping.second, bitValue);
+                    bitMapping.second->update(bitValue);
                     LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '"
                               << bitMapping.second->getReference() << "' Value: '" << bitValue << "'";
-
-                    group.getDevice()->triggerOnMappingValueChange(bitMapping.second);
                 }
                 ++shift;
             }
@@ -152,12 +154,12 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
                 data.emplace_back(values[valueCounter++]);
             }
 
-            if (mapping.second->update(data))
+            if (mapping.second->doesUpdate(data))
             {
+                group.getDevice()->triggerOnMappingValueChange(mapping.second, data);
+                mapping.second->update(data);
                 LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '" << mapping.second->getReference()
                           << "' Values: " << loggingString;
-
-                group.getDevice()->triggerOnMappingValueChange(mapping.second);
             }
         }
 
