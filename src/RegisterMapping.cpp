@@ -274,12 +274,12 @@ bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues) const
 
     if (m_deadbandValue == 0.0)
     {
-        return different;
+        return !m_isInitialized || different || !m_isValid;
     }
 
     if (!different)
     {
-        return false;
+        return !m_isInitialized || !m_isValid;
     }
 
     bool significantChange = false;
@@ -357,7 +357,7 @@ bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues) const
     break;
     }
 
-    return significantChange;
+    return significantChange || !m_isInitialized || !m_isValid;
 }
 
 bool RegisterMapping::update(const std::vector<uint16_t>& newValues)
