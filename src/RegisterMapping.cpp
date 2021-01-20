@@ -21,13 +21,14 @@
 #include "utilities/DataParsers.h"
 
 #include <algorithm>
-#include <stdexcept>
 #include <chrono>
+#include <stdexcept>
 
 namespace wolkabout
 {
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                                 int32_t address, bool readRestricted, int16_t slaveAddress, double deadbandValue, unsigned long long frequencyFilterValue)
+                                 int32_t address, bool readRestricted, int16_t slaveAddress, double deadbandValue,
+                                 unsigned long long frequencyFilterValue)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -59,13 +60,14 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                                  int32_t address, OutputType type, bool readRestricted, int16_t slaveAddress,
-                                 double deadbandValue)
+                                 double deadbandValue, unsigned long long frequencyFilterValue)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
 , m_address(address)
 , m_slaveAddress(slaveAddress)
 , m_deadbandValue(deadbandValue)
+, m_frequencyFilterValue(frequencyFilterValue)
 , m_outputType(type)
 , m_operationType(OperationType::NONE)
 , m_byteValues(1)
@@ -121,12 +123,14 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                                  const std::vector<int32_t>& addresses, OutputType type, OperationType operation,
-                                 bool readRestricted, int16_t slaveAddress, double deadbandValue)
+                                 bool readRestricted, int16_t slaveAddress, double deadbandValue,
+                                 unsigned long long frequencyFilterValue)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
 , m_addresses(addresses)
 , m_deadbandValue(deadbandValue)
+, m_frequencyFilterValue(frequencyFilterValue)
 , m_slaveAddress(slaveAddress)
 , m_outputType(type)
 , m_operationType(operation)
@@ -270,22 +274,22 @@ bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues) const
 
     if (m_lastUpdateTime == 0)
     {
-        return true; // initial value
+        return true;    // initial value
     }
 
     if (m_frequencyFilterValue != 0)
     {
         bool frequentUpdate = currentRtc() < m_lastUpdateTime + m_frequencyFilterValue;
-        
+
         if (m_deadbandValue == 0.0)
         {
-            return !m_isInitialized || !m_isValid || !frequentUpdate; // freq filter
+            return !m_isInitialized || !m_isValid || !frequentUpdate;    // freq filter
         }
         else
         {
             if (frequentUpdate)
             {
-                return false; // both filters, but freq filter caught it
+                return false;    // both filters, but freq filter caught it
             }
         }
     }
@@ -304,7 +308,7 @@ bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues) const
 
     if (m_frequencyFilterValue == 0 && m_deadbandValue == 0.0)
     {
-        return !m_isInitialized || different || !m_isValid; // no data filtering
+        return !m_isInitialized || different || !m_isValid;    // no data filtering
     }
 
     if (!different)

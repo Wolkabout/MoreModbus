@@ -25,8 +25,10 @@
 namespace wolkabout
 {
 Int16Mapping::Int16Mapping(const std::string& reference, RegisterMapping::RegisterType registerType, int32_t address,
-                           bool readRestricted, int16_t slaveAddress, double deadbandValue)
-: RegisterMapping(reference, registerType, address, OutputType::INT16, readRestricted, slaveAddress, deadbandValue)
+                           bool readRestricted, int16_t slaveAddress, double deadbandValue,
+                           unsigned long long frequencyFilterValue)
+: RegisterMapping(reference, registerType, address, OutputType::INT16, readRestricted, slaveAddress, deadbandValue,
+                  frequencyFilterValue)
 {
     // Stood here, but is actually redundant.
     //    if (!(registerType == RegisterType::INPUT_REGISTER || registerType == RegisterType::HOLDING_REGISTER))

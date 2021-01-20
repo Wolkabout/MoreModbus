@@ -102,9 +102,11 @@ public:
      * @param readRestricted indicates whether or not the mapping can be read
      * @param slaveAddress of the devices being accessed, leave as default on -1
      * @param deadbandValue indicates a change in value of the register that is insignificant data
+     * @param frequencyFilterValue changes that occur within the given time (in miliseconds) that will be ignored
      */
     RegisterMapping(const std::string& reference, RegisterType registerType, int32_t address, OutputType type,
-                    bool readRestricted = false, int16_t slaveAddress = -1, double deadbandValue = 0.0);
+                    bool readRestricted = false, int16_t slaveAddress = -1, double deadbandValue = 0.0,
+                    unsigned long long frequencyFilterValue = 0);
 
     /**
      * @brief Constructor for cases where bit is taken from a 16 bit register.
@@ -134,10 +136,11 @@ public:
      * @param readRestricted indicates whether or not the mapping can be read
      * @param slaveAddress of the devices being accessed, leave as default on -1
      * @param deadbandValue indicates a change in value of the register that is insignificant data
+     * @param frequencyFilterValue changes that occur within the given time (in miliseconds) that will be ignored
      */
     RegisterMapping(const std::string& reference, RegisterType registerType, const std::vector<int32_t>& addresses,
                     OutputType type, OperationType operation, bool readRestricted = false, int16_t slaveAddress = -1,
-                    double deadbandValue = 0.0);
+                    double deadbandValue = 0.0, unsigned long long frequencyFilterValue = 0);
 
     virtual ~RegisterMapping() = default;
 
