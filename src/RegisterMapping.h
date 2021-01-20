@@ -85,9 +85,11 @@ public:
      * @param readRestricted indicates whether or not the mapping can be read
      * @param slaveAddress of the devices being accessed, leave as default on -1
      * @param deadbandValue indicates a change in value of the register that is insignificant data
+     * @param frequencyFilterValue changes that occur within the given time (in miliseconds) that will be ignored
      */
     RegisterMapping(const std::string& reference, RegisterType registerType, int32_t address,
-                    bool readRestricted = false, int16_t slaveAddress = -1, double deadbandValue = 0.0);
+                    bool readRestricted = false, int16_t slaveAddress = -1, double deadbandValue = 0.0,
+                    unsigned long long frequencyFilterValue = 0);
 
     /**
      * @brief Default constructor for mapping with custom OutputType.
@@ -138,6 +140,8 @@ public:
                     double deadbandValue = 0.0);
 
     virtual ~RegisterMapping() = default;
+
+    static unsigned long long int currentRtc();
 
     const std::shared_ptr<RegisterGroup>& getGroup() const;
 
@@ -237,6 +241,8 @@ protected:
     bool m_isInitialized = false;
     bool m_isValid = false;
     double m_deadbandValue = 0.0;
+    unsigned long long m_lastUpdateTime = 0;
+    unsigned long long m_frequencyFilterValue = 0;
 };
 }    // namespace wolkabout
 

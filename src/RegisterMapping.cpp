@@ -22,17 +22,19 @@
 
 #include <algorithm>
 #include <stdexcept>
+#include <chrono>
 
 namespace wolkabout
 {
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                                 int32_t address, bool readRestricted, int16_t slaveAddress, double deadbandValue)
+                                 int32_t address, bool readRestricted, int16_t slaveAddress, double deadbandValue, unsigned long long frequencyFilterValue)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
 , m_address(address)
 , m_slaveAddress(slaveAddress)
 , m_deadbandValue(deadbandValue)
+, m_frequencyFilterValue(frequencyFilterValue)
 , m_operationType(OperationType::NONE)
 , m_byteValues(1)
 {
@@ -185,6 +187,12 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
     m_byteValues = std::vector<uint16_t>(m_addresses.size());
 }
 
+unsigned long long RegisterMapping::currentRtc()
+{
+    auto duration = std::chrono::high_resolution_clock::now().time_since_epoch();
+    return static_cast<unsigned long long>(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count());
+}
+
 const std::string& RegisterMapping::getReference() const
 {
     return m_reference;
@@ -260,6 +268,28 @@ bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues) const
         throw std::logic_error("RegisterMapping: The value array has to be the same size, it cannot change.");
     }
 
+    if (m_lastUpdateTime == 0)
+    {
+        return true; // initial value
+    }
+
+    if (m_frequencyFilterValue != 0)
+    {
+        bool frequentUpdate = currentRtc() < m_lastUpdateTime + m_frequencyFilterValue;
+        
+        if (m_deadbandValue == 0.0)
+        {
+            return !m_isInitialized || !m_isValid || !frequentUpdate; // freq filter
+        }
+        else
+        {
+            if (frequentUpdate)
+            {
+                return false; // both filters, but freq filter caught it
+            }
+        }
+    }
+
     bool different = false;
     uint32_t i = 0;
     while (i < newValues.size())
@@ -272,14 +302,14 @@ bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues) const
         ++i;
     }
 
-    if (m_deadbandValue == 0.0)
+    if (m_frequencyFilterValue == 0 && m_deadbandValue == 0.0)
     {
-        return !m_isInitialized || different || !m_isValid;
+        return !m_isInitialized || different || !m_isValid; // no data filtering
     }
 
     if (!different)
     {
-        return !m_isInitialized || !m_isValid;
+        return false;
     }
 
     bool significantChange = false;
@@ -384,6 +414,8 @@ bool RegisterMapping::update(const std::vector<uint16_t>& newValues)
 
     bool isValid = m_isValid;
     m_isValid = true;
+
+    m_lastUpdateTime = currentRtc();
 
     return !isValueInitialized || different || !isValid;
 }
