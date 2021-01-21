@@ -31,6 +31,8 @@
 #include <gtest/gtest.h>
 #include <iostream>
 #include <memory>
+#include <chrono>
+#include <thread>
 
 #define _registerType wolkabout::RegisterMapping::RegisterType
 #define _outputType wolkabout::RegisterMapping::OutputType
@@ -276,6 +278,37 @@ TEST_F(ComplexMappingsTests, UInt32MappingsDeadband)
         EXPECT_TRUE(mapping->isValid());
 
         EXPECT_FALSE(mapping->doesUpdate(wolkabout::DataParsers::uint32ToRegisters(value + 1, endian)));
+        EXPECT_TRUE(mapping->doesUpdate(wolkabout::DataParsers::uint32ToRegisters(value + 3, endian)));
+    }
+}
+
+TEST_F(ComplexMappingsTests, FrequencyFilter)
+{
+    const auto& outputType = _outputType::UINT32;
+    const auto& uintCombos = winningCombos[outputType];
+    for (const auto& combo : uintCombos)
+    {
+        const auto operationType = std::get<2>(combo);
+        const auto endian = endianForOperation.at(operationType);
+        const auto value = static_cast<uint32_t>(rand());
+        const auto bytes = wolkabout::DataParsers::uint32ToRegisters(value, endian);
+        unsigned long long frequencyFilterValue = 100;
+
+        const auto registerType = std::get<0>(combo);
+        auto mapping =
+          std::make_shared<wolkabout::UInt32Mapping>("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType, false, -1, 0.0, frequencyFilterValue);
+
+        EXPECT_FALSE(mapping->isInitialized());
+        EXPECT_FALSE(mapping->isValid());
+
+        EXPECT_NO_THROW(mapping->update(bytes));
+        EXPECT_EQ(value, mapping->getUint32Value());
+
+        EXPECT_TRUE(mapping->isInitialized());
+        EXPECT_TRUE(mapping->isValid());
+
+        EXPECT_FALSE(mapping->doesUpdate(wolkabout::DataParsers::uint32ToRegisters(value + 1, endian)));
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
         EXPECT_TRUE(mapping->doesUpdate(wolkabout::DataParsers::uint32ToRegisters(value + 3, endian)));
     }
 }
