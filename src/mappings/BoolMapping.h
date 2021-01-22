@@ -38,9 +38,10 @@ public:
      * @param address Modbus register address
      * @param readRestricted Is the Mapping write only?
      * @param slaveAddress Slave address of device, leave to be assigned by device, default is -1.
+     * @param frequencyFilterValue changes that occur within the given time (in miliseconds) that will be ignored
      */
     BoolMapping(const std::string& reference, RegisterType registerType, int32_t address, bool readRestricted = false,
-                int16_t slaveAddress = -1);
+                int16_t slaveAddress = -1, unsigned long long frequencyFilterValue = 0);
 
     /**
      * @brief Constructor for TAKE_BIT type of Mappings.
@@ -51,9 +52,11 @@ public:
      * @param bitIndex And bit index, as for which bit will we present out.
      * @param readRestricted Is the Mapping write only?
      * @param slaveAddress Slave address of device, leave to be assigned by device, default is -1.
+     * @param frequencyFilterValue changes that occur within the given time (in miliseconds) that will be ignored
      */
     BoolMapping(const std::string& reference, RegisterType registerType, int32_t address, OperationType operation,
-                int8_t bitIndex, bool readRestricted = false, int16_t slaveAddress = -1);
+                int8_t bitIndex, bool readRestricted = false, int16_t slaveAddress = -1,
+                unsigned long long frequencyFilterValue = 0);
 
     /**
      * @brief Triggers the client to write the value for this register.

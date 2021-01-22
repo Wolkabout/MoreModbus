@@ -100,12 +100,13 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
 
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                                  int32_t address, OperationType type, int8_t bitIndex, bool readRestricted,
-                                 int16_t slaveAddress)
+                                 int16_t slaveAddress, unsigned long long frequencyFilterValue)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
 , m_address(address)
 , m_slaveAddress(slaveAddress)
+, m_frequencyFilterValue(frequencyFilterValue)
 , m_outputType(OutputType::BOOL)
 , m_operationType(OperationType::TAKE_BIT)
 , m_bitIndex(bitIndex)
@@ -426,6 +427,13 @@ bool RegisterMapping::update(const std::vector<uint16_t>& newValues)
 
 bool RegisterMapping::doesUpdate(bool newRegisterValue) const
 {
+    if (m_frequencyFilterValue != 0)
+    {
+        bool frequentUpdate = currentRtc() < m_lastUpdateTime + m_frequencyFilterValue;
+        
+        return !m_isInitialized || !m_isValid || !frequentUpdate;
+    }
+    
     return m_boolValue != newRegisterValue || !m_isInitialized || !m_isValid;
 }
 
@@ -439,6 +447,8 @@ bool RegisterMapping::update(bool newRegisterValue)
 
     bool isValid = m_isValid;
     m_isValid = true;
+
+    m_lastUpdateTime = currentRtc();
 
     return !isValueInitialized || different || !isValid;
 }

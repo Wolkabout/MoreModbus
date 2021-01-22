@@ -118,9 +118,11 @@ public:
      * @param bitIndex which bit to take from the value (0-15)
      * @param readRestricted indicates whether or not the mapping can be read
      * @param slaveAddress of the devices being accessed, leave as default on -1
+     * @param frequencyFilterValue changes that occur within the given time (in miliseconds) that will be ignored
      */
     RegisterMapping(const std::string& reference, RegisterType registerType, int32_t address, OperationType operation,
-                    int8_t bitIndex, bool readRestricted = false, int16_t slaveAddress = -1);
+                    int8_t bitIndex, bool readRestricted = false, int16_t slaveAddress = -1,
+                    unsigned long long frequencyFilterValue = 0);
 
     /**
      * @brief Constructor for cases where there is multiple registers merged into a single output value.
