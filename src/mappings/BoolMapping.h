@@ -41,7 +41,8 @@ public:
      * @param frequencyFilterValue changes that occur within the given time (in miliseconds) that will be ignored
      */
     BoolMapping(const std::string& reference, RegisterType registerType, int32_t address, bool readRestricted = false,
-                int16_t slaveAddress = -1, std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0));
+                int16_t slaveAddress = -1,
+                std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0));
 
     /**
      * @brief Constructor for TAKE_BIT type of Mappings.

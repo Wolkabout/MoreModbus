@@ -143,7 +143,8 @@ public:
      */
     RegisterMapping(const std::string& reference, RegisterType registerType, const std::vector<int32_t>& addresses,
                     OutputType type, OperationType operation, bool readRestricted = false, int16_t slaveAddress = -1,
-                    double deadbandValue = 0.0, std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0));
+                    double deadbandValue = 0.0,
+                    std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0));
 
     virtual ~RegisterMapping() = default;
 

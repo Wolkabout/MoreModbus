@@ -131,8 +131,8 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
 
                 if (bitMapping.second->doesUpdate(bitValue))
                 {
-                    group.getDevice()->triggerOnMappingValueChange(bitMapping.second, bitValue);
                     bitMapping.second->update(bitValue);
+                    group.getDevice()->triggerOnMappingValueChange(bitMapping.second, bitValue);
                     LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '"
                               << bitMapping.second->getReference() << "' Value: '" << bitValue << "'";
                 }
@@ -156,8 +156,8 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
 
             if (mapping.second->doesUpdate(data))
             {
-                group.getDevice()->triggerOnMappingValueChange(mapping.second, data);
                 mapping.second->update(data);
+                group.getDevice()->triggerOnMappingValueChange(mapping.second, data);
                 LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '" << mapping.second->getReference()
                           << "' Values: " << loggingString;
             }

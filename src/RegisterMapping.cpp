@@ -282,8 +282,7 @@ bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues) const
 
     if (m_frequencyFilterValue != std::chrono::milliseconds(0))
     {
-        bool frequentUpdate = std::chrono::high_resolution_clock::now() <
-                              m_lastUpdateTime + m_frequencyFilterValue;
+        bool frequentUpdate = std::chrono::high_resolution_clock::now() < m_lastUpdateTime + m_frequencyFilterValue;
 
         if (m_deadbandValue == 0.0)
         {
@@ -362,8 +361,7 @@ bool RegisterMapping::doesUpdate(bool newRegisterValue) const
 
     if (m_frequencyFilterValue != std::chrono::milliseconds(0))
     {
-        bool frequentUpdate = std::chrono::high_resolution_clock::now() <
-                              m_lastUpdateTime + m_frequencyFilterValue;
+        bool frequentUpdate = std::chrono::high_resolution_clock::now() < m_lastUpdateTime + m_frequencyFilterValue;
 
         return !m_isInitialized || !frequentUpdate;
     }
