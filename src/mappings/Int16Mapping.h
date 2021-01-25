@@ -41,7 +41,8 @@ public:
      * @param frequencyFilterValue changes that occur within the given time (in miliseconds) that will be ignored
      */
     Int16Mapping(const std::string& reference, RegisterType registerType, int32_t address, bool readRestricted = false,
-                 int16_t slaveAddress = -1, double deadbandValue = 0.0, unsigned long long frequencyFilterValue = 0);
+                 int16_t slaveAddress = -1, double deadbandValue = 0.0,
+                 std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0));
 
     /**
      * @details Override methods will be executed on devices reading thread, so that this parsing can be done

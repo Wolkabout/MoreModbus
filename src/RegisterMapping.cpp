@@ -28,7 +28,7 @@ namespace wolkabout
 {
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                                  int32_t address, bool readRestricted, int16_t slaveAddress, double deadbandValue,
-                                 unsigned long long frequencyFilterValue)
+                                 std::chrono::milliseconds frequencyFilterValue)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -56,11 +56,13 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
         m_outputType = OutputType::BOOL;
         break;
     }
+
+    m_lastUpdateTime = std::chrono::high_resolution_clock::now();
 }
 
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                                  int32_t address, OutputType type, bool readRestricted, int16_t slaveAddress,
-                                 double deadbandValue, unsigned long long frequencyFilterValue)
+                                 double deadbandValue, std::chrono::milliseconds frequencyFilterValue)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -96,11 +98,13 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
               "RegisterMapping: Single address discrete register can\'t be anything else than BOOL.");
         }
     }
+
+    m_lastUpdateTime = std::chrono::high_resolution_clock::now();
 }
 
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                                  int32_t address, OperationType type, int8_t bitIndex, bool readRestricted,
-                                 int16_t slaveAddress, unsigned long long frequencyFilterValue)
+                                 int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -120,12 +124,14 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
     {
         throw std::logic_error("RegisterMapping: Take bit can\'t be done over COIL/INPUT_CONTACT.");
     }
+
+    m_lastUpdateTime = std::chrono::high_resolution_clock::now();
 }
 
 RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                                  const std::vector<int32_t>& addresses, OutputType type, OperationType operation,
                                  bool readRestricted, int16_t slaveAddress, double deadbandValue,
-                                 unsigned long long frequencyFilterValue)
+                                 std::chrono::milliseconds frequencyFilterValue)
 : m_reference(reference)
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -190,12 +196,8 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
     }
 
     m_byteValues = std::vector<uint16_t>(m_addresses.size());
-}
 
-unsigned long long RegisterMapping::currentRtc()
-{
-    auto duration = std::chrono::high_resolution_clock::now().time_since_epoch();
-    return static_cast<unsigned long long>(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count());
+    m_lastUpdateTime = std::chrono::high_resolution_clock::now();
 }
 
 const std::string& RegisterMapping::getReference() const
@@ -273,18 +275,19 @@ bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues) const
         throw std::logic_error("RegisterMapping: The value array has to be the same size, it cannot change.");
     }
 
-    if (m_lastUpdateTime == 0)
+    if (!m_isInitialized)
     {
         return true;    // initial value
     }
 
-    if (m_frequencyFilterValue != 0)
+    if (m_frequencyFilterValue != std::chrono::milliseconds(0))
     {
-        bool frequentUpdate = currentRtc() < m_lastUpdateTime + m_frequencyFilterValue;
+        bool frequentUpdate = std::chrono::high_resolution_clock::now() <
+                              m_lastUpdateTime + m_frequencyFilterValue;
 
         if (m_deadbandValue == 0.0)
         {
-            return !m_isInitialized || !m_isValid || !frequentUpdate;    // freq filter
+            return !frequentUpdate;    // freq filter
         }
         else
         {
@@ -307,9 +310,9 @@ bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues) const
         ++i;
     }
 
-    if (m_frequencyFilterValue == 0 && m_deadbandValue == 0.0)
+    if (m_frequencyFilterValue == std::chrono::milliseconds(0) && m_deadbandValue == 0.0)
     {
-        return !m_isInitialized || different || !m_isValid;    // no data filtering
+        return different;    // no data filtering
     }
 
     if (!different)
@@ -317,6 +320,110 @@ bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues) const
         return false;
     }
 
+    return deadbandFilter(newValues);
+}
+
+bool RegisterMapping::update(const std::vector<uint16_t>& newValues)
+{
+    if (newValues.size() != m_byteValues.size())
+    {
+        throw std::logic_error("RegisterMapping: The value array has to be the same size, it cannot change.");
+    }
+
+    bool different = false;
+    uint32_t i = 0;
+    while (!different && i < newValues.size())
+    {
+        if (m_byteValues[i] != newValues[i])
+        {
+            different = true;
+        }
+        ++i;
+    }
+    m_byteValues = newValues;
+
+    bool isValueInitialized = m_isInitialized;
+    m_isInitialized = true;
+
+    bool isValid = m_isValid;
+    m_isValid = true;
+
+    m_lastUpdateTime = std::chrono::high_resolution_clock::now();
+
+    return !isValueInitialized || different || !isValid;
+}
+
+bool RegisterMapping::doesUpdate(bool newRegisterValue) const
+{
+    if (!m_isInitialized)
+    {
+        return true;
+    }
+
+    if (m_frequencyFilterValue != std::chrono::milliseconds(0))
+    {
+        bool frequentUpdate = std::chrono::high_resolution_clock::now() <
+                              m_lastUpdateTime + m_frequencyFilterValue;
+
+        return !m_isInitialized || !frequentUpdate;
+    }
+
+    return m_boolValue != newRegisterValue || !m_isInitialized || !m_isValid;
+}
+
+bool RegisterMapping::update(bool newRegisterValue)
+{
+    bool different = m_boolValue != newRegisterValue;
+    m_boolValue = newRegisterValue;
+
+    bool isValueInitialized = m_isInitialized;
+    m_isInitialized = true;
+
+    bool isValid = m_isValid;
+    m_isValid = true;
+
+    m_lastUpdateTime = std::chrono::high_resolution_clock::now();
+
+    return !isValueInitialized || different || !isValid;
+}
+
+const std::vector<uint16_t>& RegisterMapping::getBytesValues() const
+{
+    return m_byteValues;
+}
+
+bool RegisterMapping::getBoolValue() const
+{
+    return m_boolValue;
+}
+
+bool RegisterMapping::isInitialized() const
+{
+    return m_isInitialized;
+}
+
+bool RegisterMapping::isValid() const
+{
+    return m_isValid;
+}
+
+void RegisterMapping::setValid(bool valid)
+{
+    m_isValid = valid;
+}
+
+const std::shared_ptr<RegisterGroup>& RegisterMapping::getGroup() const
+{
+    return m_group;
+}
+
+void RegisterMapping::setGroup(const std::shared_ptr<RegisterGroup>& group)
+{
+    m_group = group;
+}
+
+bool RegisterMapping::deadbandFilter(const std::vector<uint16_t>& newValues) const
+{
     bool significantChange = false;
 
     switch (getOutputType())
@@ -392,99 +499,6 @@ bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues) const
     break;
     }
 
-    return significantChange || !m_isInitialized || !m_isValid;
-}
-
-bool RegisterMapping::update(const std::vector<uint16_t>& newValues)
-{
-    if (newValues.size() != m_byteValues.size())
-    {
-        throw std::logic_error("RegisterMapping: The value array has to be the same size, it cannot change.");
-    }
-
-    bool different = false;
-    uint32_t i = 0;
-    while (!different && i < newValues.size())
-    {
-        if (m_byteValues[i] != newValues[i])
-        {
-            different = true;
-        }
-        ++i;
-    }
-    m_byteValues = newValues;
-
-    bool isValueInitialized = m_isInitialized;
-    m_isInitialized = true;
-
-    bool isValid = m_isValid;
-    m_isValid = true;
-
-    m_lastUpdateTime = currentRtc();
-
-    return !isValueInitialized || different || !isValid;
-}
-
-bool RegisterMapping::doesUpdate(bool newRegisterValue) const
-{
-    if (m_frequencyFilterValue != 0)
-    {
-        bool frequentUpdate = currentRtc() < m_lastUpdateTime + m_frequencyFilterValue;
-        
-        return !m_isInitialized || !m_isValid || !frequentUpdate;
-    }
-    
-    return m_boolValue != newRegisterValue || !m_isInitialized || !m_isValid;
-}
-
-bool RegisterMapping::update(bool newRegisterValue)
-{
-    bool different = m_boolValue != newRegisterValue;
-    m_boolValue = newRegisterValue;
-
-    bool isValueInitialized = m_isInitialized;
-    m_isInitialized = true;
-
-    bool isValid = m_isValid;
-    m_isValid = true;
-
-    m_lastUpdateTime = currentRtc();
-
-    return !isValueInitialized || different || !isValid;
-}
-
-const std::vector<uint16_t>& RegisterMapping::getBytesValues() const
-{
-    return m_byteValues;
-}
-
-bool RegisterMapping::getBoolValue() const
-{
-    return m_boolValue;
-}
-
-bool RegisterMapping::isInitialized() const
-{
-    return m_isInitialized;
-}
-
-bool RegisterMapping::isValid() const
-{
-    return m_isValid;
-}
-
-void RegisterMapping::setValid(bool valid)
-{
-    m_isValid = valid;
-}
-
-const std::shared_ptr<RegisterGroup>& RegisterMapping::getGroup() const
-{
-    return m_group;
-}
-
-void RegisterMapping::setGroup(const std::shared_ptr<RegisterGroup>& group)
-{
-    m_group = group;
+    return significantChange;
 }
 }    // namespace wolkabout

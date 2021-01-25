@@ -43,7 +43,7 @@ public:
      */
     UInt32Mapping(const std::string& reference, RegisterType registerType, const std::vector<int32_t>& addresses,
                   OperationType operation, bool readRestricted = false, int16_t slaveAddress = -1,
-                  double deadbandValue = 0.0, unsigned long long frequencyFilterValue = 0);
+                  double deadbandValue = 0.0, std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0));
 
     /**
      * @details Override methods will be executed on devices reading thread, so that this parsing can be done

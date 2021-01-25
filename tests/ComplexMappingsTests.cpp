@@ -292,7 +292,7 @@ TEST_F(ComplexMappingsTests, FrequencyFilter)
         const auto endian = endianForOperation.at(operationType);
         const auto value = static_cast<uint32_t>(rand());
         const auto bytes = wolkabout::DataParsers::uint32ToRegisters(value, endian);
-        unsigned long long frequencyFilterValue = 100;
+        std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(100);
 
         const auto registerType = std::get<0>(combo);
         auto mapping =
@@ -674,7 +674,7 @@ TEST_F(ComplexMappingsTests, StringMappingsFrequencyFilter)
         auto bytes = wolkabout::DataParsers::asciiStringToRegisters(value);
 
         const auto registerType = std::get<0>(combo);
-        auto mapping = std::make_shared<wolkabout::StringMapping>("TEST", registerType, addresses, operationType, false, -1, 100);
+        auto mapping = std::make_shared<wolkabout::StringMapping>("TEST", registerType, addresses, operationType, false, -1, std::chrono::milliseconds(100));
 
         EXPECT_FALSE(mapping->isInitialized());
         EXPECT_FALSE(mapping->isValid());

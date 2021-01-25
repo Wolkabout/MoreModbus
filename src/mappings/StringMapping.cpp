@@ -26,7 +26,7 @@ namespace wolkabout
 {
 StringMapping::StringMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                              const std::vector<int32_t>& addresses, RegisterMapping::OperationType operation,
-                             bool readRestricted, int16_t slaveAddress, unsigned long long frequencyFilterValue)
+                             bool readRestricted, int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue)
 : RegisterMapping(reference, registerType, addresses, OutputType::STRING, operation, readRestricted, slaveAddress, 0.0,
                   frequencyFilterValue)
 {

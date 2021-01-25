@@ -23,7 +23,7 @@
 namespace wolkabout
 {
 BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::RegisterType registerType, int32_t address,
-                         bool readRestricted, int16_t slaveAddress, unsigned long long frequencyFilterValue)
+                         bool readRestricted, int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue)
 : RegisterMapping(reference, registerType, address, readRestricted, slaveAddress, 0.0, frequencyFilterValue)
 {
     if (!(registerType == RegisterType::COIL || registerType == RegisterType::INPUT_CONTACT))
@@ -34,7 +34,7 @@ BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::Register
 
 BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::RegisterType registerType, int32_t address,
                          RegisterMapping::OperationType operation, int8_t bitIndex, bool readRestricted,
-                         int16_t slaveAddress, unsigned long long frequencyFilterValue)
+                         int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue)
 : RegisterMapping(reference, registerType, address, operation, bitIndex, readRestricted, slaveAddress,
                   frequencyFilterValue)
 {
