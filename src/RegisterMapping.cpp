@@ -275,26 +275,9 @@ bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues) const
         throw std::logic_error("RegisterMapping: The value array has to be the same size, it cannot change.");
     }
 
-    if (!m_isInitialized)
+    if (!m_isInitialized || !m_isValid)
     {
         return true;    // initial value
-    }
-
-    if (m_frequencyFilterValue != std::chrono::milliseconds(0))
-    {
-        bool frequentUpdate = std::chrono::high_resolution_clock::now() < m_lastUpdateTime + m_frequencyFilterValue;
-
-        if (m_deadbandValue == 0.0)
-        {
-            return !frequentUpdate;    // freq filter
-        }
-        else
-        {
-            if (frequentUpdate)
-            {
-                return false;    // both filters, but freq filter caught it
-            }
-        }
     }
 
     bool different = false;
@@ -317,6 +300,23 @@ bool RegisterMapping::doesUpdate(const std::vector<uint16_t>& newValues) const
     if (!different)
     {
         return false;
+    }
+
+    if (m_frequencyFilterValue != std::chrono::milliseconds(0))
+    {
+        bool frequentUpdate = std::chrono::high_resolution_clock::now() < m_lastUpdateTime + m_frequencyFilterValue;
+
+        if (m_deadbandValue == 0.0)
+        {
+            return !frequentUpdate;    // freq filter
+        }
+        else
+        {
+            if (frequentUpdate)
+            {
+                return false;    // both filters, but freq filter caught it
+            }
+        }
     }
 
     return deadbandFilter(newValues);
