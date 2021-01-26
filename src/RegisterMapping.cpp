@@ -354,7 +354,7 @@ bool RegisterMapping::update(const std::vector<uint16_t>& newValues)
 
 bool RegisterMapping::doesUpdate(bool newRegisterValue) const
 {
-    if (!m_isInitialized)
+    if (!m_isInitialized || !m_isValid)
     {
         return true;
     }
