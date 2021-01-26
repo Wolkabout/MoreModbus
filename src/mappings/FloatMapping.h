@@ -38,9 +38,11 @@ public:
      * @param readRestricted Is the Mapping write only?
      * @param slaveAddress Slave address of device, leave to be assigned by device, default is -1.
      * @param deadbandValue indicates a change in value of the register that is insignificant data.
+     * @param frequencyFilterValue changes that occur within the given time (in miliseconds) that will be ignored
      */
     FloatMapping(const std::string& reference, RegisterType registerType, const std::vector<int32_t>& addresses,
-                 bool readRestricted = false, int16_t slaveAddress = -1, double deadbandValue = 0.0);
+                 bool readRestricted = false, int16_t slaveAddress = -1, double deadbandValue = 0.0,
+                 std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0));
 
     /**
      * @details Override methods will be executed on devices reading thread, so that this parsing can be done
