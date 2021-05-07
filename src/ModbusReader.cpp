@@ -20,9 +20,9 @@
 
 #include "modbus/ModbusGroupReader.h"
 #include "utilities/DataParsers.h"
-#include "utilities/Logger.h"
 
 #include <algorithm>
+#include <iostream>
 
 namespace wolkabout
 {
@@ -37,17 +37,17 @@ void ModbusReader::addDevice(const std::shared_ptr<ModbusDevice>& device)
     m_deviceActiveStatus.emplace(device->getSlaveAddress(), false);
     m_threads.emplace(device->getSlaveAddress(), nullptr);
     device->setReader(shared_from_this());
-    LOG(INFO) << "ModbusReader: Successfully added new device " << device->getName();
+    std::cout << "ModbusReader: Successfully added new device " << device->getName() << std::endl;
 }
 
 void ModbusReader::addDevices(const std::vector<std::shared_ptr<ModbusDevice>>& devices)
 {
-    LOG(INFO) << "ModbusReader: Adding " << devices.size() << " devices.";
+    std::cout << "ModbusReader: Adding " << devices.size() << " devices." << std::endl;
     for (const auto& device : devices)
     {
         addDevice(device);
     }
-    LOG(INFO) << "ModbusReader: Successfully added " << devices.size() << " devices.";
+    std::cout << "ModbusReader: Successfully added " << devices.size() << " devices." << std::endl;
 }
 
 ModbusReader::~ModbusReader()
@@ -91,8 +91,8 @@ bool ModbusReader::writeMapping(RegisterMapping& mapping, const std::vector<uint
     if (!m_modbusClient.writeHoldingRegisters(mapping.getSlaveAddress(), mapping.getStartingAddress(),
                                               const_cast<std::vector<uint16_t>&>(values)))
     {
-        LOG(WARN) << "ModbusReader: Unable to write holding register values - Register address : "
-                  << mapping.getStartingAddress() << " Registers : " << values.size();
+        std::cout << "ModbusReader: Unable to write holding register values - Register address : "
+                  << mapping.getStartingAddress() << " Registers : " << values.size() << std::endl;
         mapping.setValid(false);
         return false;
     }
@@ -115,8 +115,8 @@ bool ModbusReader::writeMapping(RegisterMapping& mapping, bool value)
 
     if (!m_modbusClient.writeCoil(mapping.getSlaveAddress(), mapping.getStartingAddress(), value))
     {
-        LOG(WARN) << "ModbusReader: Unable to write coil value - Register address : " << mapping.getStartingAddress()
-                  << " Value : " << value;
+        std::cout << "ModbusReader: Unable to write coil value - Register address : " << mapping.getStartingAddress()
+                  << " Value : " << value << std::endl;
         mapping.setValid(false);
         return false;
     }
@@ -146,8 +146,8 @@ bool ModbusReader::writeBitMapping(RegisterMapping& mapping, bool value)
     uint16_t registerValue;
     if (!m_modbusClient.readHoldingRegister(mapping.getSlaveAddress(), mapping.getStartingAddress(), registerValue))
     {
-        LOG(WARN) << "ModbusReader: Unable to read holding register value - Register address : "
-                  << mapping.getStartingAddress() << " for purpose of writing a bit into it.";
+        std::cout << "ModbusReader: Unable to read holding register value - Register address : "
+                  << mapping.getStartingAddress() << " for purpose of writing a bit into it." << std::endl;
         mapping.setValid(false);
         return false;
     }
@@ -168,8 +168,8 @@ bool ModbusReader::writeBitMapping(RegisterMapping& mapping, bool value)
     {
         if (!m_modbusClient.writeHoldingRegister(mapping.getSlaveAddress(), mapping.getStartingAddress(), newValue))
         {
-            LOG(WARN) << "ModbusReader: Unable to write holding register bit - Register address : "
-                      << mapping.getStartingAddress() << " Value : " << newValue;
+            std::cout << "ModbusReader: Unable to write holding register bit - Register address : "
+                      << mapping.getStartingAddress() << " Value : " << newValue << std::endl;
             mapping.setValid(false);
             return false;
         }
@@ -184,7 +184,7 @@ void ModbusReader::start()
     if (m_readerShouldRun)
         return;
 
-    LOG(DEBUG) << "ModbusReader: Starting ModbusReader.";
+    std::cout << "ModbusReader: Starting ModbusReader." << std::endl;
     // Attempt the first establishment of connection, and start the main thread.
     m_readerShouldRun = true;
 
@@ -194,7 +194,7 @@ void ModbusReader::start()
     }
 
     m_mainReaderThread = std::unique_ptr<std::thread>(new std::thread(&ModbusReader::run, this));
-    LOG(DEBUG) << "ModbusReader: Started ModbusReader.";
+    std::cout << "ModbusReader: Started ModbusReader." << std::endl;
 }
 
 void ModbusReader::stop()
@@ -202,7 +202,7 @@ void ModbusReader::stop()
     if (!m_readerShouldRun)
         return;
 
-    LOG(DEBUG) << "ModbusReader: Stopping ModbusReader.";
+    std::cout << "ModbusReader: Stopping ModbusReader." << std::endl;
     // Disconnect the modbus devices, and stop the main thread.
     m_readerShouldRun = false;
 
@@ -221,7 +221,7 @@ void ModbusReader::stop()
     {
         m_mainReaderThread->join();
     }
-    LOG(DEBUG) << "ModbusReader: Stopped ModbusReader.";
+    std::cout << "ModbusReader: Stopped ModbusReader." << std::endl;
 }
 
 void ModbusReader::run()
@@ -235,7 +235,7 @@ void ModbusReader::run()
             // Reconnect logic, the thread will be stuck in this if-case until
             // the modbus connection is reestablished.
             // Report all devices as non-active.
-            LOG(TRACE) << "ModbusReader: Attempting to reconnect.";
+            std::cout << "ModbusReader: Attempting to reconnect." << std::endl;
             m_shouldReconnect = false;
             for (auto& device : m_deviceActiveStatus)
             {
@@ -243,7 +243,7 @@ void ModbusReader::run()
             }
             m_modbusClient.disconnect();
 
-            LOG(INFO) << "ModbusReader: Attempting to connect";
+            std::cout << "ModbusReader: Attempting to connect" << std::endl;
             while (!m_modbusClient.connect())
             {
                 // Timing logic, increase the time after which we attempt to reconnect.
@@ -266,7 +266,7 @@ void ModbusReader::run()
         {
             if (m_modbusClient.isConnected())
             {
-                LOG(DEBUG) << "ModbusReader: Reading devices.";
+                std::cout << "ModbusReader: Reading devices." << std::endl;
                 // Start thread foreach device, wait the readPeriod for the threads to execute, and
                 // join them back in. Process if some of them reported errors, if all, go to reconnect,
                 // if just some are, report them as non-active.
@@ -295,7 +295,7 @@ void ModbusReader::run()
 
                 if (!deviceRead)
                 {
-                    LOG(WARN) << "ModbusReader: No devices have been read successfully. Reconnecting...";
+                    std::cout << "ModbusReader: No devices have been read successfully. Reconnecting..." << std::endl;
                     m_shouldReconnect = true;
                 }
             }
@@ -321,11 +321,11 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
 
             if (device->getGroups().empty())
             {
-                LOG(WARN) << "ModbusReader: Device " << device->getName() << " has no mappings.";
+                std::cout << "ModbusReader: Device " << device->getName() << " has no mappings." << std::endl;
                 return;
             }
 
-            LOG(TRACE) << "ModbusReader: Reading device : " << device->getName();
+            std::cout << "ModbusReader: Reading device : " << device->getName() << std::endl;
 
             // Work on this logic, read all groups and do it properly.
             // Also, parse types and values as necessary.
@@ -336,8 +336,8 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
             {
                 if (!ModbusGroupReader::readGroup(m_modbusClient, *group))
                 {
-                    LOG(WARN) << "ModbusReader: Group starting at : " << group->getStartingAddress() << " on slave "
-                              << group->getSlaveAddress() << " had error while reading.";
+                    std::cout << "ModbusReader: Group starting at : " << group->getStartingAddress() << " on slave "
+                              << group->getSlaveAddress() << " had error while reading." << std::endl;
                     unreadGroups++;
                 }
             }
@@ -360,9 +360,10 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
 
             if (duration.count() >= m_readPeriod.count())
             {
-                LOG(WARN) << "ModbusReader: Thread read device " << device->getName()
+                std::cout << "ModbusReader: Thread read device " << device->getName()
                           << " for more than read period."
-                             " Skipping sleep. Consider increasing the read period.";
+                             " Skipping sleep. Consider increasing the read period."
+                          << std::endl;
             }
             else
             {

@@ -19,10 +19,10 @@
 #include "LibModbusTcpIpClient.h"
 
 #include "ModbusClient.h"
-#include "utilities/Logger.h"
 
 #include <cerrno>
 #include <chrono>
+#include <iostream>
 #include <mutex>
 #include <string>
 #include <utility>
@@ -41,12 +41,12 @@ LibModbusTcpIpClient::~LibModbusTcpIpClient()
 
 bool LibModbusTcpIpClient::createContext()
 {
-    LOG(INFO) << "LibModbusClient: Connecting to " << m_ipAddress << ":" << m_port;
+    std::cout << "LibModbusClient: Connecting to " << m_ipAddress << ":" << m_port << std::endl;
 
     m_modbus = modbus_new_tcp(m_ipAddress.c_str(), m_port);
     if (m_modbus == nullptr)
     {
-        LOG(ERROR) << "LibModbusClient: Unable to create modbus context - " << modbus_strerror(errno);
+        std::cout << "LibModbusClient: Unable to create modbus context - " << modbus_strerror(errno) << std::endl;
         return false;
     }
 
@@ -58,7 +58,7 @@ bool LibModbusTcpIpClient::destroyContext()
 {
     if (m_modbus)
     {
-        LOG(INFO) << "LibModbusClient: Disconnecting from " << m_ipAddress << ":" << m_port;
+        std::cout << "LibModbusClient: Disconnecting from " << m_ipAddress << ":" << m_port << std::endl;
 
         std::lock_guard<decltype(m_modbusMutex)> l(m_modbusMutex);
         disconnect();

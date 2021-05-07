@@ -18,7 +18,7 @@
 
 #include "ModbusClient.h"
 
-#include "utilities/Logger.h"
+#include <iostream>
 
 namespace wolkabout
 {
@@ -42,17 +42,17 @@ bool ModbusClient::connect()
 
     if (modbus_set_response_timeout(m_modbus, 2, 0) == -1)
     {
-        LOG(ERROR) << "LibModbusClient: Unable to set response timeout - " << modbus_strerror(errno);
+        std::cout << "LibModbusClient: Unable to set response timeout - " << modbus_strerror(errno) << std::endl;
         destroyContext();
         return false;
     }
 
     if (modbus_connect(m_modbus) == -1)
     {
-        LOG(ERROR) << "LibModbusClient: Unable to connect - " << modbus_strerror(errno);
+        std::cout << "LibModbusClient: Unable to connect - " << modbus_strerror(errno) << std::endl;
         return false;
     }
-    LOG(INFO) << "LibModbusClient: Connected successfully.";
+    std::cout << "LibModbusClient: Connected successfully." << std::endl;
     m_connected = true;
 
     auto responseTimeOutSeconds = std::chrono::duration_cast<std::chrono::seconds>(m_responseTimeout);
@@ -62,7 +62,7 @@ bool ModbusClient::connect()
     if (modbus_set_response_timeout(m_modbus, static_cast<uint32_t>(responseTimeOutSeconds.count()),
                                     static_cast<uint32_t>(responseTimeOutMicrosecondsResidue.count())) == -1)
     {
-        LOG(ERROR) << "LibModbusClient: Unable to set response timeout - " << modbus_strerror(errno);
+        std::cout << "LibModbusClient: Unable to set response timeout - " << modbus_strerror(errno) << std::endl;
         destroyContext();
         return false;
     }
@@ -190,7 +190,7 @@ bool ModbusClient::writeHoldingRegister(int address, uint16_t value)
 {
     if (modbus_write_register(m_modbus, address, value) == -1)
     {
-        LOG(DEBUG) << "LibModbusClient: Unable to write holding register - " << modbus_strerror(errno);
+        std::cout << "LibModbusClient: Unable to write holding register - " << modbus_strerror(errno) << std::endl;
         return false;
     }
 
@@ -201,7 +201,7 @@ bool ModbusClient::writeHoldingRegisters(int address, std::vector<uint16_t>& val
 {
     if (modbus_write_registers(m_modbus, address, static_cast<int>(values.size()), values.data()) == -1)
     {
-        LOG(DEBUG) << "LibModbusClient: Unable to write holding registers - " << modbus_strerror(errno);
+        std::cout << "LibModbusClient: Unable to write holding registers - " << modbus_strerror(errno) << std::endl;
         return false;
     }
 
@@ -212,7 +212,7 @@ bool ModbusClient::writeCoil(int address, bool value)
 {
     if (modbus_write_bit(m_modbus, address, value ? TRUE : FALSE) == -1)
     {
-        LOG(DEBUG) << "LibModbusClient: Unable to write coil - " << modbus_strerror(errno);
+        std::cout << "LibModbusClient: Unable to write coil - " << modbus_strerror(errno) << std::endl;
         return false;
     }
 
@@ -225,7 +225,7 @@ bool ModbusClient::readInputRegisters(int address, int number, std::vector<uint1
 
     if (modbus_read_input_registers(m_modbus, address, number, &tmpValues[0]) == -1)
     {
-        LOG(DEBUG) << "LibModbusClient: Unable to read input registers - " << modbus_strerror(errno);
+        std::cout << "LibModbusClient: Unable to read input registers - " << modbus_strerror(errno) << std::endl;
         return false;
     }
 
@@ -245,7 +245,7 @@ bool ModbusClient::readInputContacts(int address, int number, std::vector<bool>&
     int bits_read = modbus_read_input_bits(m_modbus, address, number, &tmpValues[0]);
     if (bits_read == -1)
     {
-        LOG(DEBUG) << "LibModbusClient: Unable to read input contacts - " << modbus_strerror(errno);
+        std::cout << "LibModbusClient: Unable to read input contacts - " << modbus_strerror(errno) << std::endl;
         return false;
     }
 
@@ -260,7 +260,7 @@ bool ModbusClient::readHoldingRegister(int address, uint16_t& value)
 {
     if (modbus_read_registers(m_modbus, address, 1, &value) == -1)
     {
-        LOG(DEBUG) << "LibModbusClient: Unable to read holding register - " << modbus_strerror(errno);
+        std::cout << "LibModbusClient: Unable to read holding register - " << modbus_strerror(errno) << std::endl;
         return false;
     }
 
@@ -273,7 +273,7 @@ bool ModbusClient::readHoldingRegisters(int address, int number, std::vector<uin
 
     if (modbus_read_registers(m_modbus, address, number, &tmpValues[0]) == -1)
     {
-        LOG(DEBUG) << "LibModbusClient: Unable to read holding registers - " << modbus_strerror(errno);
+        std::cout << "LibModbusClient: Unable to read holding registers - " << modbus_strerror(errno) << std::endl;
         return false;
     }
 
@@ -291,7 +291,7 @@ bool ModbusClient::readCoil(int address, bool& value)
 
     if (modbus_read_bits(m_modbus, address, 1, &tmpValue) == -1)
     {
-        LOG(DEBUG) << "LibModbusClient: Unable to read coil - " << modbus_strerror(errno);
+        std::cout << "LibModbusClient: Unable to read coil - " << modbus_strerror(errno) << std::endl;
         return false;
     }
 
@@ -306,7 +306,7 @@ bool ModbusClient::readCoils(int address, int number, std::vector<bool>& values)
     bits_read = modbus_read_bits(m_modbus, address, number, &tmpValues[0]);
     if (bits_read == -1)
     {
-        LOG(DEBUG) << "LibModbusClient: Unable to read coils - " << modbus_strerror(errno);
+        std::cout << "LibModbusClient: Unable to read coils - " << modbus_strerror(errno) << std::endl;
         return false;
     }
 
@@ -321,7 +321,7 @@ bool ModbusClient::changeSlaveAddress(int address)
 {
     if (modbus_set_slave(m_modbus, address) == -1)
     {
-        LOG(DEBUG) << "LibModbusClient: Unable to set slave address - " << modbus_strerror(errno);
+        std::cout << "LibModbusClient: Unable to set slave address - " << modbus_strerror(errno) << std::endl;
         return false;
     }
 

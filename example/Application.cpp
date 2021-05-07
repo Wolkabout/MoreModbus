@@ -24,16 +24,12 @@
 #include "mappings/UInt16Mapping.h"
 #include "modbus/LibModbusSerialRtuClient.h"
 #include "modbus/LibModbusTcpIpClient.h"
-#include "utilities/ConsoleLogger.h"
 #include "utilities/DataParsers.h"
+
+#include <iostream>
 
 int main()
 {
-    // Setup logger
-    auto logger = std::unique_ptr<wolkabout::ConsoleLogger>(new wolkabout::ConsoleLogger());
-    logger->setLogLevel(wolkabout::LogLevel::DEBUG);
-    wolkabout::Logger::setInstance(std::move(logger));
-
     // Create a regular Register Mapping
     const auto& normalRegisterMapping =
       std::make_shared<wolkabout::UInt16Mapping>("U16M", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 0);
@@ -61,35 +57,41 @@ int main()
     device->createGroups(std::vector<std::shared_ptr<wolkabout::RegisterMapping>>{
       normalRegisterMapping, normalContactMapping, stringMapping, getFirstBitMapping, getSecondBitMapping});
 
-    device->setOnMappingValueChange([](const std::shared_ptr<wolkabout::RegisterMapping>& mapping, bool data) {
-        // You can do this for all output types.
-        const auto& boolean = std::dynamic_pointer_cast<wolkabout::BoolMapping>(mapping);
-        LOG(DEBUG) << "Application: Mapping is bool, old value was : " << boolean->getBoolValue()
-                   << ", new value is : " << data;
-    });
+    device->setOnMappingValueChange(
+      [](const std::shared_ptr<wolkabout::RegisterMapping>& mapping, bool data)
+      {
+          // You can do this for all output types.
+          const auto& boolean = std::dynamic_pointer_cast<wolkabout::BoolMapping>(mapping);
+          std::cout << "Application: Mapping is bool, old value was : " << boolean->getBoolValue()
+                    << ", new value is : " << data << std::endl;
+      });
 
     device->setOnMappingValueChange(
-      [](const std::shared_ptr<wolkabout::RegisterMapping>& mapping, const std::vector<uint16_t>& bytes) {
+      [](const std::shared_ptr<wolkabout::RegisterMapping>& mapping, const std::vector<uint16_t>& bytes)
+      {
           // You can do this for all output types.
           if (mapping->getOutputType() == wolkabout::RegisterMapping::OutputType::STRING)
           {
               const auto& string = std::dynamic_pointer_cast<wolkabout::StringMapping>(mapping);
-              LOG(DEBUG) << "Application: Mapping is string, old value was : '" << string->getStringValue() << "'"
-                         << ", new value is : '" << wolkabout::DataParsers::registersToAsciiString(bytes) << "'.";
+              std::cout << "Application: Mapping is string, old value was : '" << string->getStringValue() << "'"
+                        << ", new value is : '" << wolkabout::DataParsers::registersToAsciiString(bytes) << "'."
+                        << std::endl;
 
               if (string->getStringValue().empty())
                   string->writeValue("Test");
           }
           else
           {
-              LOG(DEBUG) << "Application: Mapping " << mapping->getReference() << " value changed.";
+              std::cout << "Application: Mapping " << mapping->getReference() << " value changed." << std::endl;
           }
       });
 
-    device->setOnStatusChange([&](bool status) {
-        LOG(DEBUG) << "Application: Device " << device->getName() << " is now " << (status ? "online" : "offline")
-                   << ".";
-    });
+    device->setOnStatusChange(
+      [&](bool status)
+      {
+          std::cout << "Application: Device " << device->getName() << " is now " << (status ? "online" : "offline")
+                    << "." << std::endl;
+      });
 
     // Serial RTU client
     //    const auto& modbusClient = std::make_shared<wolkabout::LibModbusSerialRtuClient>(

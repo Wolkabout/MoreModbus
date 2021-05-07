@@ -17,10 +17,10 @@
  */
 
 #include "ModbusGroupReader.h"
-
 #include "ModbusReader.h"
 #include "utilities/DataParsers.h"
-#include "utilities/Logger.h"
+
+#include <iostream>
 
 namespace wolkabout
 {
@@ -51,15 +51,15 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
     for (const auto& mapping : mappingMap)
     {
         bool newValue = values[i++];
-        LOG(TRACE) << "ModbusGroupReader: Old value = " << mapping.second->getBoolValue()
-                   << ". New value = " << newValue;
+        std::cout << "ModbusGroupReader: Old value = " << mapping.second->getBoolValue() << ". New value = " << newValue
+                  << std::endl;
 
         if (mapping.second->doesUpdate(newValue))
         {
             group.getDevice()->triggerOnMappingValueChange(mapping.second, newValue);
             mapping.second->update(newValue);
-            LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '" << mapping.second->getReference()
-                      << "' Value: '" << mapping.second->getBoolValue() << "'";
+            std::cout << "ModbusGroupReader: Mapping value changed - Reference: '" << mapping.second->getReference()
+                      << "' Value: '" << mapping.second->getBoolValue() << "'" << std::endl;
         }
     }
 }
@@ -70,9 +70,9 @@ bool ModbusGroupReader::readCoilGroup(ModbusClient& modbusClient, RegisterGroup&
     if (!modbusClient.readCoils(group.getSlaveAddress(), group.getStartingAddress(), group.getAddressCount(),
                                 boolValues))
     {
-        LOG(WARN) << "ModbusGroupReader: Unable to read coil group on device " << group.getSlaveAddress()
+        std::cout << "ModbusGroupReader: Unable to read coil group on device " << group.getSlaveAddress()
                   << ", starting on " << group.getStartingAddress() << " counting " << group.getAddressCount()
-                  << " addresses.";
+                  << " addresses." << std::endl;
         return false;
     }
 
@@ -86,9 +86,9 @@ bool ModbusGroupReader::readDiscreteInputGroup(ModbusClient& modbusClient, Regis
     if (!modbusClient.readInputContacts(group.getSlaveAddress(), group.getStartingAddress(), group.getAddressCount(),
                                         boolValues))
     {
-        LOG(WARN) << "ModbusGroupReader: Unable to read discrete input group on device " << group.getSlaveAddress()
+        std::cout << "ModbusGroupReader: Unable to read discrete input group on device " << group.getSlaveAddress()
                   << ", starting on " << group.getStartingAddress() << " counting " << group.getAddressCount()
-                  << " addresses.";
+                  << " addresses." << std::endl;
         return false;
     }
 
@@ -133,8 +133,8 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
                 {
                     bitMapping.second->update(bitValue);
                     group.getDevice()->triggerOnMappingValueChange(bitMapping.second, bitValue);
-                    LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '"
-                              << bitMapping.second->getReference() << "' Value: '" << bitValue << "'";
+                    std::cout << "ModbusGroupReader: Mapping value changed - Reference: '"
+                              << bitMapping.second->getReference() << "' Value: '" << bitValue << "'" << std::endl;
                 }
                 ++shift;
             }
@@ -158,8 +158,8 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
             {
                 mapping.second->update(data);
                 group.getDevice()->triggerOnMappingValueChange(mapping.second, data);
-                LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '" << mapping.second->getReference()
-                          << "' Values: " << loggingString;
+                std::cout << "ModbusGroupReader: Mapping value changed - Reference: '" << mapping.second->getReference()
+                          << "' Values: " << loggingString << std::endl;
             }
         }
 
@@ -173,9 +173,9 @@ bool ModbusGroupReader::readHoldingRegisterGroup(ModbusClient& modbusClient, Reg
     if (!modbusClient.readHoldingRegisters(group.getSlaveAddress(), group.getStartingAddress(), group.getAddressCount(),
                                            registerValues))
     {
-        LOG(WARN) << "ModbusGroupReader: Unable to read holding register group on device " << group.getSlaveAddress()
+        std::cout << "ModbusGroupReader: Unable to read holding register group on device " << group.getSlaveAddress()
                   << ", starting on " << group.getStartingAddress() << " counting " << group.getAddressCount()
-                  << " addresses.";
+                  << " addresses." << std::endl;
         return false;
     }
 
@@ -189,9 +189,9 @@ bool ModbusGroupReader::readInputRegisterGroup(ModbusClient& modbusClient, Regis
     if (!modbusClient.readInputRegisters(group.getSlaveAddress(), group.getStartingAddress(), group.getAddressCount(),
                                          registerValues))
     {
-        LOG(WARN) << "ModbusGroupReader: Unable to read input register group on device " << group.getSlaveAddress()
+        std::cout << "ModbusGroupReader: Unable to read input register group on device " << group.getSlaveAddress()
                   << ", starting on " << group.getStartingAddress() << " counting " << group.getAddressCount()
-                  << " addresses.";
+                  << " addresses." << std::endl;
         return false;
     }
 

@@ -18,11 +18,10 @@
 
 #include "LibModbusSerialRtuClient.h"
 
-#include "utilities/Logger.h"
-
 #include <cerrno>
 #include <chrono>
 #include <cstdint>
+#include <iostream>
 #include <string>
 #include <thread>
 #include <utility>
@@ -60,12 +59,12 @@ LibModbusSerialRtuClient::~LibModbusSerialRtuClient()
 
 bool LibModbusSerialRtuClient::createContext()
 {
-    LOG(INFO) << "LibModbusClient: Opening serial port '" << m_serialPort << "'  Baud: " << m_baudRate;
+    std::cout << "LibModbusClient: Opening serial port '" << m_serialPort << "'  Baud: " << m_baudRate << std::endl;
 
     m_modbus = modbus_new_rtu(m_serialPort.c_str(), m_baudRate, m_bitParity, m_dataBits, m_stopBits);
     if (m_modbus == nullptr)
     {
-        LOG(ERROR) << "LibModbusClient: Unable to create modbus context - " << modbus_strerror(errno);
+        std::cout << "LibModbusClient: Unable to create modbus context - " << modbus_strerror(errno) << std::endl;
         return false;
     }
 
@@ -77,7 +76,7 @@ bool LibModbusSerialRtuClient::destroyContext()
 {
     if (m_modbus)
     {
-        LOG(INFO) << "LibModbusClient: Closing serial port '" << m_serialPort << "'";
+        std::cout << "LibModbusClient: Closing serial port '" << m_serialPort << "'" << std::endl;
         disconnect();
         modbus_free(m_modbus);
         m_modbus = nullptr;

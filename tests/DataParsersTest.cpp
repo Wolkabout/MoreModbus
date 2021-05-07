@@ -28,7 +28,7 @@
 #include <gtest/gtest.h>
 
 #include "utilities/ConsoleLogger.h"
-#include "utilities/Logger.h"
+
 
 namespace
 {

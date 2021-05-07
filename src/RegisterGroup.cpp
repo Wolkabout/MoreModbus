@@ -18,9 +18,8 @@
 
 #include "RegisterGroup.h"
 
-#include "utilities/Logger.h"
-
 #include <algorithm>
+#include <iostream>
 
 namespace wolkabout
 {
@@ -96,9 +95,8 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
             if (keyExistsInSet(key))
             {
                 // The address we're targeting is already fully claimed.
-                LOG(WARN) << "RegisterGroup: Mapping " << mapping->getReference()
-                          << " can\'t take a bit. Other register"
-                             "is already taking the full value.";
+                std::cout << "RegisterGroup: Mapping " << mapping->getReference()
+                          << " can\'t take a bit. Other register is already taking the full value." << std::endl;
                 return false;
             }
 
@@ -109,9 +107,8 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
                 if (diff != 1)
                 {
                     // It must be exactly one address before.
-                    LOG(WARN) << "RegisterGroup: Mapping " << mapping->getReference()
-                              << " is ahead of the group by more than 1 "
-                                 " address.";
+                    std::cout << "RegisterGroup: Mapping " << mapping->getReference()
+                              << " is ahead of the group by more than 1 address." << std::endl;
                     return false;
                 }
             }
@@ -121,8 +118,8 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
                 if (diff != 1)
                 {
                     // It must be exactly one address after.
-                    LOG(WARN) << "RegisterGroup: Mapping " << mapping->getReference()
-                              << " is after the group by more than 1 address.";
+                    std::cout << "RegisterGroup: Mapping " << mapping->getReference()
+                              << " is after the group by more than 1 address." << std::endl;
                     return false;
                 }
             }
@@ -140,10 +137,10 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
                 if (diff != 0)
                 {
                     // They're going to have a gap in between. That's not allowed in a group.
-                    LOG(WARN) << "RegisterGroup: Mapping " << mapping->getReference() << "("
+                    std::cout << "RegisterGroup: Mapping " << mapping->getReference() << "("
                               << mapping->getStartingAddress() << ") does not fit in the group (" << firstMappingAddress
                               << " with " << mappingAddressCount << " address(es) ... " << firstGroupAddress
-                              << ", address gap is " << diff << ")";
+                              << ", address gap is " << diff << ")" << std::endl;
                     return false;
                 }
             }
@@ -154,10 +151,10 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
                 if (diff != 0)
                 {
                     // They're also going to have a gap in between.
-                    LOG(WARN) << "RegisterGroup: Mapping " << mapping->getReference() << "("
+                    std::cout << "RegisterGroup: Mapping " << mapping->getReference() << "("
                               << mapping->getStartingAddress() << ") does not fit in the group (" << firstGroupAddress
                               << " -> " << (firstGroupAddress + groupAddressCount - 1) << " ... " << firstMappingAddress
-                              << ", address gap is " << diff << ")";
+                              << ", address gap is " << diff << ")" << std::endl;
                     return false;
                 }
             }
@@ -175,8 +172,8 @@ bool RegisterGroup::appendMapping(const std::shared_ptr<RegisterMapping>& mappin
                          std::to_string(mapping->getBitIndex());
         if (keyExistsInSet(std::to_string(mapping->getStartingAddress())))
         {
-            LOG(WARN) << "RegisterGroup: Mapping " << mapping->getReference() << "(" << mapping->getStartingAddress()
-                      << ") requests a bit that is already occupied.";
+            std::cout << "RegisterGroup: Mapping " << mapping->getReference() << "(" << mapping->getStartingAddress()
+                      << ") requests a bit that is already occupied." << std::endl;
             return false;
         }
         m_mappings.emplace(key, mapping);

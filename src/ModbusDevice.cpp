@@ -18,9 +18,8 @@
 
 #include "ModbusDevice.h"
 
-#include "utilities/Logger.h"
-
 #include <algorithm>
+#include <iostream>
 #include <set>
 
 namespace wolkabout
@@ -97,7 +96,7 @@ void ModbusDevice::createGroups(const std::vector<std::shared_ptr<RegisterMappin
         }
     }
 
-    LOG(DEBUG) << "ModbusDevice: Created " << m_groups.size() << " groups for device " << m_name << ".";
+    std::cout << "ModbusDevice: Created " << m_groups.size() << " groups for device " << m_name << "." << std::endl;
 }
 
 const std::string& ModbusDevice::getName() const
