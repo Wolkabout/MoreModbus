@@ -28,7 +28,7 @@ set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fprofile-arcs -ftes
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS}    -Wall -Wextra -pedantic                                                    \
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}    -Wall -Wextra -pedantic                                                    \
                                             -pedantic-errors -Wcast-align                                              \
                                             -Wcast-qual -Wconversion                                                   \
                                             -Wdisabled-optimization                                                    \
@@ -46,25 +46,36 @@ set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS}    -Wall -Wextra -pedantic             
                                             -fprofile-arcs -ftest-coverage -g")
 
 # library output
-if(NOT DEFINED CMAKE_LIBRARY_OUTPUT_DIRECTORY)
+if (NOT DEFINED CMAKE_LIBRARY_OUTPUT_DIRECTORY)
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-endif()
+endif ()
 
-if(NOT DEFINED CMAKE_PREFIX_PATH)
+if (NOT DEFINED CMAKE_PREFIX_PATH)
     set(CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR}/build)
-endif()
+endif ()
 
-if(NOT DEFINED CMAKE_LIBRARY_INCLUDE_DIRECTORY)
+if (NOT DEFINED CMAKE_LIBRARY_INCLUDE_DIRECTORY)
     set(CMAKE_LIBRARY_INCLUDE_DIRECTORY ${CMAKE_PREFIX_PATH}/include)
-endif()
+endif ()
 
-if(NOT DEFINED CMAKE_RUNTIME_OUTPUT_DIRECTORY)
+if (NOT DEFINED CMAKE_RUNTIME_OUTPUT_DIRECTORY)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-endif()
+endif ()
 
-link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+# Import the dependencies
+set(CMAKE_INSTALL_PREFIX ${CMAKE_PREFIX_PATH})
+set(BUILD_CONNECTIVITY OFF CACHE BOOL "Build the library with Paho MQTT and allow MQTT connection to the platform.")
+set(BUILD_POCO OFF CACHE BOOL "Build the library with Poco.")
+set(BUILD_GTEST ON CACHE BOOL "Build the library with GTest.")
+set(BUILD_AWS_LOG_UPLOADER OFF CACHE BOOL "Build the library with AwsLogUploader.")
+
+if (NOT TARGET WolkAboutCoreUtility)
+    add_subdirectory(WolkSDK-Cpp)
+endif ()
 
 add_subdirectory(dependencies)
+
+link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
 # required dependency
 find_package(Threads REQUIRED)
@@ -76,7 +87,7 @@ file(GLOB_RECURSE HEADER_FILES src/*.h src/*.hpp)
 file(GLOB_RECURSE SOURCE_FILES src/*.c src/*.cpp)
 
 add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME} modbus pthread)
+target_link_libraries(${PROJECT_NAME} WolkAboutCoreUtility modbus pthread)
 set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "$ORIGIN")
 add_dependencies(${PROJECT_NAME} libmodbus libgtest)
 

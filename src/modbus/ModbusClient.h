@@ -19,12 +19,13 @@
 #ifndef MODBUSCLIENT_H
 #define MODBUSCLIENT_H
 
-#include "modbus/libmodbus/modbus.h"
-
 #include <chrono>
 #include <mutex>
 #include <string>
 #include <vector>
+
+struct _modbus;
+typedef struct _modbus modbus_t;
 
 namespace wolkabout
 {

@@ -19,20 +19,18 @@
 #include "ModbusDevice.h"
 #include "ModbusReader.h"
 #include "RegisterGroup.h"
+#include "core/utilities/Logger.h"
 #include "mappings/BoolMapping.h"
 #include "mappings/StringMapping.h"
 #include "mappings/UInt16Mapping.h"
 #include "modbus/LibModbusSerialRtuClient.h"
 #include "modbus/LibModbusTcpIpClient.h"
-#include "utilities/ConsoleLogger.h"
 #include "utilities/DataParsers.h"
 
 int main()
 {
     // Setup logger
-    auto logger = std::unique_ptr<wolkabout::ConsoleLogger>(new wolkabout::ConsoleLogger());
-    logger->setLogLevel(wolkabout::LogLevel::DEBUG);
-    wolkabout::Logger::setInstance(std::move(logger));
+    wolkabout::Logger::init(wolkabout::LogLevel::TRACE, wolkabout::Logger::Type::CONSOLE);
 
     // Create a regular Register Mapping
     const auto& normalRegisterMapping =
