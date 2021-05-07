@@ -19,7 +19,8 @@
 #include "LibModbusTcpIpClient.h"
 
 #include "ModbusClient.h"
-#include "utilities/Logger.h"
+#include "core/utilities/Logger.h"
+#include "modbus/libmodbus/modbus.h"
 
 #include <cerrno>
 #include <chrono>

@@ -18,9 +18,9 @@
 
 #include "ModbusReader.h"
 
+#include "core/utilities/Logger.h"
 #include "modbus/ModbusGroupReader.h"
 #include "utilities/DataParsers.h"
-#include "utilities/Logger.h"
 
 #include <algorithm>
 

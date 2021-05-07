@@ -28,8 +28,7 @@
 
 #include <gtest/gtest.h>
 
-#include "utilities/ConsoleLogger.h"
-#include "utilities/Logger.h"
+#include "core/utilities/Logger.h"
 
 namespace
 {
@@ -83,9 +82,7 @@ public:
 
     void SetUp()
     {
-        auto logger = std::unique_ptr<wolkabout::ConsoleLogger>(new wolkabout::ConsoleLogger());
-        logger->setLogLevel(wolkabout::LogLevel::WARN);
-        wolkabout::Logger::setInstance(std::move(logger));
+        wolkabout::Logger::init(wolkabout::LogLevel::TRACE, wolkabout::Logger::Type::CONSOLE);
         LOG(DEBUG) << "Started tests " << ::testing::UnitTest::GetInstance()->current_test_info()->name() << ".";
 
         SetUpRegisterTypes();

@@ -34,7 +34,7 @@
 #define _makeCombo(x, y, z) _combination(_registerType::x, _outputType::y, _operationType::z)
 #define _makeComboPure(x, y, z) _combination(x, y, z)
 
-#include "utilities/ConsoleLogger.h"
+#include "core/utilities/Logger.h"
 
 #include "mappings/BoolMapping.h"
 #include "mappings/Int16Mapping.h"
@@ -71,12 +71,12 @@ public:
         mappings.emplace_back(std::make_shared<wolkabout::Int16Mapping>("HR4", _registerType::HOLDING_REGISTER, 3));
 
         mappings.emplace_back(std::make_shared<wolkabout::UInt32Mapping>(
-		  "IR1", _registerType::INPUT_REGISTER, std::vector<std::int32_t>{0, 1}, _operationType::MERGE_LITTLE_ENDIAN));
+          "IR1", _registerType::INPUT_REGISTER, std::vector<std::int32_t>{0, 1}, _operationType::MERGE_LITTLE_ENDIAN));
         mappings.emplace_back(std::make_shared<wolkabout::Int32Mapping>(
-		  "IR2", _registerType::INPUT_REGISTER, std::vector<std::int32_t>{2, 3}, _operationType::MERGE_BIG_ENDIAN));
+          "IR2", _registerType::INPUT_REGISTER, std::vector<std::int32_t>{2, 3}, _operationType::MERGE_BIG_ENDIAN));
 
-        nonWriteableFloatMapping =
-		  std::make_shared<wolkabout::FloatMapping>("IR3", _registerType::INPUT_REGISTER, std::vector<std::int32_t>{4, 5});
+        nonWriteableFloatMapping = std::make_shared<wolkabout::FloatMapping>("IR3", _registerType::INPUT_REGISTER,
+                                                                             std::vector<std::int32_t>{4, 5});
         mappings.emplace_back(nonWriteableFloatMapping);
 
         bitMapping = std::make_shared<wolkabout::BoolMapping>("HRB1", _registerType::HOLDING_REGISTER, 4,
@@ -90,7 +90,7 @@ public:
                                                                        _operationType::TAKE_BIT, 6));
 
         stringMapping = std::make_shared<wolkabout::StringMapping>("HRSTR", _registerType::HOLDING_REGISTER,
-																   std::vector<std::int32_t>{5, 6, 7, 8, 9},
+                                                                   std::vector<std::int32_t>{5, 6, 7, 8, 9},
                                                                    _operationType::STRINGIFY_ASCII);
         mappings.emplace_back(stringMapping);
 
@@ -108,9 +108,7 @@ public:
 
     void SetUp()
     {
-        auto logger = std::unique_ptr<wolkabout::ConsoleLogger>(new wolkabout::ConsoleLogger());
-        logger->setLogLevel(wolkabout::LogLevel::WARN);
-        wolkabout::Logger::setInstance(std::move(logger));
+        wolkabout::Logger::init(wolkabout::LogLevel::TRACE, wolkabout::Logger::Type::CONSOLE);
 
         modbusClientMock = std::make_shared<ModbusClientMock>();
         SetUpMappings();
