@@ -27,9 +27,6 @@
 
 #include <gtest/gtest.h>
 
-#include "utilities/ConsoleLogger.h"
-
-
 namespace
 {
 class DataParsersTest : public ::testing::Test
@@ -127,11 +124,6 @@ public:
 
     void SetUp()
     {
-        auto logger = std::unique_ptr<wolkabout::ConsoleLogger>(new wolkabout::ConsoleLogger());
-        logger->setLogLevel(wolkabout::LogLevel::WARN);
-        wolkabout::Logger::setInstance(std::move(logger));
-        LOG(DEBUG) << "Started tests " << ::testing::UnitTest::GetInstance()->current_test_info()->name() << ".";
-
         SetUpBitValues();
         SetUpStringValues();
         SetUpUInt32Values();
@@ -145,15 +137,15 @@ TEST_F(DataParsersTest, TestSeparateBits)
 {
     if (bitValues.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : bitValues)
     {
         const auto calculatedBits = wolkabout::DataParsers::separateBits(kvp.first);
 
-        LOG(DEBUG) << kvp.first;
+        std::cout << kvp.first << std::endl;
         for (uint i = 0; i < 16; i++)
         {
             EXPECT_EQ(kvp.second[i], calculatedBits[15 - i]);
@@ -165,8 +157,8 @@ TEST_F(DataParsersTest, TestBytesToStringASCII)
 {
     if (stringValues.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : stringValues)
@@ -178,7 +170,7 @@ TEST_F(DataParsersTest, TestBytesToStringASCII)
             string.pop_back();
         }
 
-        LOG(DEBUG) << kvp.first;
+        std::cout << kvp.first << std::endl;
         EXPECT_EQ(kvp.first.length(), string.length());
         EXPECT_EQ(kvp.first, string);
     }
@@ -188,8 +180,8 @@ TEST_F(DataParsersTest, TestBytesToStringUnicode)
 {
     if (stringValues.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : stringValues)
@@ -201,7 +193,7 @@ TEST_F(DataParsersTest, TestBytesToStringUnicode)
             string.pop_back();
         }
 
-        LOG(DEBUG) << kvp.first;
+        std::cout << kvp.first << std::endl;
         EXPECT_EQ(kvp.first.length(), string.length());
         EXPECT_EQ(kvp.first, string);
     }
@@ -211,15 +203,15 @@ TEST_F(DataParsersTest, TestStringToBytesASCII)
 {
     if (stringValues.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : stringValues)
     {
         const auto bytes = wolkabout::DataParsers::asciiStringToRegisters(kvp.first);
 
-        LOG(DEBUG) << kvp.first;
+        std::cout << kvp.first << std::endl;
         ASSERT_EQ(kvp.second.size(), bytes.size());
 
         for (uint i = 0; i < bytes.size(); i++)
@@ -233,15 +225,15 @@ TEST_F(DataParsersTest, TestStringToBytesUnicode)
 {
     if (stringValues.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : stringValues)
     {
         const auto bytes = wolkabout::DataParsers::unicodeStringToRegisters(kvp.first);
 
-        LOG(DEBUG) << kvp.first;
+        std::cout << kvp.first << std::endl;
         ASSERT_EQ(kvp.second.size(), bytes.size());
 
         for (uint i = 0; i < bytes.size(); i++)
@@ -255,15 +247,15 @@ TEST_F(DataParsersTest, TestUInt32ToBytesBigEndian)
 {
     if (uint32ValuesBigEndian.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : uint32ValuesBigEndian)
     {
         const auto bytes = wolkabout::DataParsers::uint32ToRegisters(kvp.first, wolkabout::DataParsers::Endian::BIG);
 
-        LOG(DEBUG) << kvp.first;
+        std::cout << kvp.first << std::endl;
         ASSERT_EQ(kvp.second.size(), bytes.size());
 
         for (uint i = 0; i < bytes.size(); i++)
@@ -277,15 +269,15 @@ TEST_F(DataParsersTest, TestRegistersToUInt32BigEndian)
 {
     if (uint32ValuesBigEndian.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : uint32ValuesBigEndian)
     {
         const auto value = wolkabout::DataParsers::registersToUint32(kvp.second, wolkabout::DataParsers::Endian::BIG);
 
-        LOG(DEBUG) << kvp.first;
+        std::cout << kvp.first << std::endl;
         EXPECT_EQ(kvp.first, value);
     }
 }
@@ -294,15 +286,15 @@ TEST_F(DataParsersTest, TestUInt32ToBytesLittleEndian)
 {
     if (uint32ValuesLittleEndian.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : uint32ValuesLittleEndian)
     {
         const auto bytes = wolkabout::DataParsers::uint32ToRegisters(kvp.first, wolkabout::DataParsers::Endian::LITTLE);
 
-        LOG(DEBUG) << kvp.first;
+        std::cout << kvp.first << std::endl;
         ASSERT_EQ(kvp.second.size(), bytes.size());
 
         for (uint i = 0; i < bytes.size(); i++)
@@ -316,8 +308,8 @@ TEST_F(DataParsersTest, TestRegistersToUInt32LittleEndian)
 {
     if (uint32ValuesLittleEndian.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : uint32ValuesLittleEndian)
@@ -325,7 +317,7 @@ TEST_F(DataParsersTest, TestRegistersToUInt32LittleEndian)
         const auto value =
           wolkabout::DataParsers::registersToUint32(kvp.second, wolkabout::DataParsers::Endian::LITTLE);
 
-        LOG(DEBUG) << kvp.first;
+        std::cout << kvp.first << std::endl;
         EXPECT_EQ(kvp.first, value);
     }
 }
@@ -334,13 +326,13 @@ TEST_F(DataParsersTest, TestInvalidUint32Values)
 {
     if (invalidUInt32.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : invalidUInt32)
     {
-        LOG(DEBUG) << kvp.first;
+        std::cout << kvp.first << std::endl;
         EXPECT_THROW(wolkabout::DataParsers::registersToUint32(kvp.second, wolkabout::DataParsers::Endian::BIG),
                      std::logic_error);
     }
@@ -350,15 +342,15 @@ TEST_F(DataParsersTest, TestInt32ToBytesBigEndian)
 {
     if (int32ValuesBigEndian.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : int32ValuesBigEndian)
     {
         const auto bytes = wolkabout::DataParsers::int32ToRegisters(kvp.first, wolkabout::DataParsers::Endian::BIG);
 
-        LOG(DEBUG) << kvp.first;
+        std::cout << kvp.first << std::endl;
         ASSERT_EQ(kvp.second.size(), bytes.size());
 
         for (uint i = 0; i < bytes.size(); i++)
@@ -372,15 +364,15 @@ TEST_F(DataParsersTest, TestRegistersToInt32BigEndian)
 {
     if (int32ValuesBigEndian.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : int32ValuesBigEndian)
     {
         const auto value = wolkabout::DataParsers::registersToInt32(kvp.second, wolkabout::DataParsers::Endian::BIG);
 
-        LOG(DEBUG) << kvp.first;
+        std::cout << kvp.first << std::endl;
         EXPECT_EQ(kvp.first, value);
     }
 }
@@ -389,15 +381,15 @@ TEST_F(DataParsersTest, TestInt32ToBytesLittleEndian)
 {
     if (int32ValuesLittleEndian.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : int32ValuesLittleEndian)
     {
         const auto bytes = wolkabout::DataParsers::int32ToRegisters(kvp.first, wolkabout::DataParsers::Endian::LITTLE);
 
-        LOG(DEBUG) << kvp.first;
+        std::cout << kvp.first << std::endl;
         ASSERT_EQ(kvp.second.size(), bytes.size());
 
         for (uint i = 0; i < bytes.size(); i++)
@@ -411,15 +403,15 @@ TEST_F(DataParsersTest, TestRegistersToInt32LittleEndian)
 {
     if (int32ValuesLittleEndian.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : int32ValuesLittleEndian)
     {
         const auto value = wolkabout::DataParsers::registersToInt32(kvp.second, wolkabout::DataParsers::Endian::LITTLE);
 
-        LOG(DEBUG) << kvp.first;
+        std::cout << kvp.first << std::endl;
         EXPECT_EQ(kvp.first, value);
     }
 }
@@ -428,13 +420,13 @@ TEST_F(DataParsersTest, TestInvalidInt32Values)
 {
     if (invalidInt32.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : invalidInt32)
     {
-        LOG(DEBUG) << kvp.first;
+        std::cout << kvp.first << std::endl;
         EXPECT_THROW(wolkabout::DataParsers::registersToInt32(kvp.second, wolkabout::DataParsers::Endian::BIG),
                      std::logic_error);
     }
@@ -444,15 +436,15 @@ TEST_F(DataParsersTest, TestFloatToBytes)
 {
     if (floatValues.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : floatValues)
     {
         const auto bytes = wolkabout::DataParsers::floatToRegisters(kvp.first);
 
-        LOG(DEBUG) << kvp.first;
+        std::cout << kvp.first << std::endl;
         ASSERT_EQ(kvp.second.size(), bytes.size());
 
         for (uint i = 0; i < bytes.size(); i++)
@@ -466,15 +458,15 @@ TEST_F(DataParsersTest, TestBytesToFloat)
 {
     if (floatValues.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : floatValues)
     {
         const auto value = wolkabout::DataParsers::registersToFloat(kvp.second);
 
-        LOG(DEBUG) << kvp.first;
+        std::cout << kvp.first << std::endl;
         EXPECT_EQ(kvp.first, value);
     }
 }
@@ -483,8 +475,8 @@ TEST_F(DataParsersTest, InvalidFloatTest)
 {
     if (invalidFloatValues.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : invalidFloatValues)
@@ -497,15 +489,15 @@ TEST_F(DataParsersTest, UInt16ToInt16Test)
 {
     if (uintToInt.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : uintToInt)
     {
         const auto value = wolkabout::DataParsers::uint16ToInt16(kvp.first);
 
-        LOG(DEBUG) << kvp.first;
+        std::cout << kvp.first << std::endl;
         EXPECT_EQ(kvp.second, value);
     }
 }
@@ -514,15 +506,15 @@ TEST_F(DataParsersTest, Int16ToUInt16Test)
 {
     if (uintToInt.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : uintToInt)
     {
         const auto value = wolkabout::DataParsers::int16ToUint16(kvp.second);
 
-        LOG(DEBUG) << kvp.second;
+        std::cout << kvp.second << std::endl;
         EXPECT_EQ(kvp.first, value);
     }
 }

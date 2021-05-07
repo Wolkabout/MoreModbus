@@ -28,9 +28,6 @@
 
 #include <gtest/gtest.h>
 
-#include "utilities/ConsoleLogger.h"
-
-
 namespace
 {
 class DeserializersTest : public ::testing::Test
@@ -83,11 +80,6 @@ public:
 
     void SetUp()
     {
-        auto logger = std::unique_ptr<wolkabout::ConsoleLogger>(new wolkabout::ConsoleLogger());
-        logger->setLogLevel(wolkabout::LogLevel::WARN);
-        wolkabout::Logger::setInstance(std::move(logger));
-        LOG(DEBUG) << "Started tests " << ::testing::UnitTest::GetInstance()->current_test_info()->name() << ".";
-
         SetUpRegisterTypes();
         SetUpDataTypes();
         SetUpOperationTypes();
@@ -98,8 +90,8 @@ TEST_F(DeserializersTest, TestRegisterTypeDeserialization)
 {
     if (registerTypes.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : registerTypes)
@@ -114,8 +106,8 @@ TEST_F(DeserializersTest, TestInvalidRegisterTypes)
 {
     if (invalidRegisterTypes.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& value : invalidRegisterTypes)
@@ -128,8 +120,8 @@ TEST_F(DeserializersTest, TestDataTypeDeserialization)
 {
     if (dataTypes.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : dataTypes)
@@ -144,8 +136,8 @@ TEST_F(DeserializersTest, TestInvalidDataTypes)
 {
     if (invalidDataTypes.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& value : invalidDataTypes)
@@ -158,8 +150,8 @@ TEST_F(DeserializersTest, TestOperationTypeDeserialization)
 {
     if (operationTypes.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& kvp : operationTypes)
@@ -174,8 +166,8 @@ TEST_F(DeserializersTest, TestInvalidOperationTypes)
 {
     if (invalidOperationTypes.empty())
     {
-        LOG(WARN) << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
-                  << " has no data to test with.";
+        std::cout << "DataParsersTest: " << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+                  << " has no data to test with." << std::endl;
     }
 
     for (const auto& value : invalidOperationTypes)
