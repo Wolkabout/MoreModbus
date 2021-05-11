@@ -77,6 +77,9 @@ bool StringMapping::writeValue(const std::string& newValue)
     else
         throw std::logic_error("StringMapping: Illegal operation type set.");
 
+    while (bytes.size() < this->m_addresses.size())
+        bytes.emplace_back(0);
+
     if (getGroup()->getDevice()->getReader().expired())
         return false;
 
