@@ -63,19 +63,14 @@ bool StringMapping::writeValue(const std::string& newValue)
 
     std::vector<uint16_t> bytes;
     if (m_operationType == OperationType::STRINGIFY_ASCII)
-    {
         bytes = DataParsers::asciiStringToRegisters(newValue);
-        while (bytes.size() < this->m_addresses.size())
-            bytes.emplace_back(0);
-    }
     else if (m_operationType == OperationType::STRINGIFY_UNICODE)
-    {
         bytes = DataParsers::unicodeStringToRegisters(newValue);
-        while (bytes.size() < this->m_addresses.size())
-            bytes.emplace_back(0);
-    }
     else
         throw std::logic_error("StringMapping: Illegal operation type set.");
+
+    while (bytes.size() < this->m_addresses.size())
+        bytes.emplace_back(0);
 
     if (getGroup()->getDevice()->getReader().expired())
         return false;
