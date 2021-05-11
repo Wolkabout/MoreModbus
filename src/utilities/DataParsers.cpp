@@ -84,7 +84,8 @@ std::string DataParsers::registersToAsciiString(const std::vector<uint16_t>& val
     {
         char firstByte = static_cast<char>(twoBytes & MAX_UINT8);
         char secondByte = static_cast<char>(static_cast<uint8_t>(twoBytes >> SHIFT_UINT8) & MAX_UINT8);
-        stream << secondByte << firstByte;
+        stream << (secondByte == '\0' ? "" : std::string(1, secondByte))
+               << (firstByte == '\0' ? "" : std::string(1, firstByte));
     }
     return stream.str();
 }
@@ -96,7 +97,8 @@ std::string DataParsers::registersToUnicodeString(const std::vector<uint16_t>& v
     {
         uint8_t firstByte = twoBytes & MAX_UINT8;
         uint8_t secondByte = static_cast<uint8_t>(twoBytes >> SHIFT_UINT8) & MAX_UINT8;
-        stream << secondByte << firstByte;
+        stream << (secondByte == '\0' ? "" : std::string(1, secondByte))
+               << (firstByte == '\0' ? "" : std::string(1, firstByte));
     }
     return stream.str();
 }
