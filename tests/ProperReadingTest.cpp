@@ -18,14 +18,9 @@
 
 #define private public
 #define protected public
-#include "ModbusReader.h"
+#include "more_modbus/ModbusReader.h"
 #undef private
 #undef protected
-
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
-#include <memory>
-#include <iostream>
 
 #define _registerType wolkabout::RegisterMapping::RegisterType
 #define _outputType wolkabout::RegisterMapping::OutputType
@@ -35,17 +30,20 @@
 #define _makeComboPure(x, y, z) _combination(x, y, z)
 
 #include "core/utilities/Logger.h"
-
-#include "mappings/BoolMapping.h"
-#include "mappings/Int16Mapping.h"
-#include "mappings/Int32Mapping.h"
-#include "mappings/FloatMapping.h"
-#include "mappings/UInt16Mapping.h"
-#include "mappings/UInt32Mapping.h"
-#include "mappings/StringMapping.h"
-
 #include "mocks/ModbusClientMocking.h"
 #include "mocks/RegisterMappingMocking.h"
+#include "more_modbus/mappings/BoolMapping.h"
+#include "more_modbus/mappings/Int16Mapping.h"
+#include "more_modbus/mappings/Int32Mapping.h"
+#include "more_modbus/mappings/FloatMapping.h"
+#include "more_modbus/mappings/UInt16Mapping.h"
+#include "more_modbus/mappings/UInt32Mapping.h"
+#include "more_modbus/mappings/StringMapping.h"
+
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+#include <memory>
+#include <iostream>
 
 class ProperReadingTest : public ::testing::Test
 {

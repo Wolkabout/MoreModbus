@@ -18,24 +18,23 @@
 
 #define private public
 #define protected public
-#include "RegisterGroup.h"
+#include "more_modbus/RegisterGroup.h"
 #undef private
 #undef protected
+
+#include "mocks/ModbusDeviceMocking.h"
+#include "mocks/RegisterMappingMocking.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <iostream>
 #include <memory>
 
-#include "mocks/ModbusDeviceMocking.h"
-#include "mocks/RegisterMappingMocking.h"
-
 class RegisterGroupTests : public ::testing::Test
 {
 public:
     std::vector<std::shared_ptr<wolkabout::RegisterMapping>> mappings;
     std::vector<std::shared_ptr<wolkabout::RegisterMapping>> readRestrictedMappings;
-
 
     void SetUpMappings()
     {
@@ -46,7 +45,7 @@ public:
           std::make_shared<RegisterMappingMock>("BM", wolkabout::RegisterMapping::RegisterType::INPUT_CONTACT, 0));
 
         mappings.emplace_back(std::make_shared<RegisterMappingMock>(
-		  "STR1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, std::vector<std::int32_t>{0, 1, 2},
+          "STR1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, std::vector<std::int32_t>{0, 1, 2},
           wolkabout::RegisterMapping::OutputType::STRING, wolkabout::RegisterMapping::OperationType::STRINGIFY_ASCII));
 
         mappings.emplace_back(
@@ -60,14 +59,14 @@ public:
           std::make_shared<RegisterMappingMock>("B4-2", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 4,
                                                 wolkabout::RegisterMapping::OperationType::TAKE_BIT, 1));
 
-        mappings.emplace_back(
-                  std::make_shared<RegisterMappingMock>("U1610", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 10));
+        mappings.emplace_back(std::make_shared<RegisterMappingMock>(
+          "U1610", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 10));
 
-        readRestrictedMappings.emplace_back(std::make_shared<RegisterMappingMock>(
-          "BMRR1", wolkabout::RegisterMapping::RegisterType::COIL, 0, 0, true));
+        readRestrictedMappings.emplace_back(
+          std::make_shared<RegisterMappingMock>("BMRR1", wolkabout::RegisterMapping::RegisterType::COIL, 0, 0, true));
 
-        readRestrictedMappings.emplace_back(std::make_shared<RegisterMappingMock>(
-          "BMRR2", wolkabout::RegisterMapping::RegisterType::COIL, 1, 0, true));
+        readRestrictedMappings.emplace_back(
+          std::make_shared<RegisterMappingMock>("BMRR2", wolkabout::RegisterMapping::RegisterType::COIL, 1, 0, true));
 
         readRestrictedMappings.emplace_back(std::make_shared<RegisterMappingMock>(
           "BMRR3", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 1, 0, true));

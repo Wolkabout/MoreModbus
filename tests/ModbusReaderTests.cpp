@@ -18,17 +18,17 @@
 
 #define private public
 #define protected public
-#include "ModbusReader.h"
+#include "more_modbus/ModbusReader.h"
 #undef private
 #undef protected
+
+#include "mocks/ModbusClientMocking.h"
+#include "mocks/ModbusDeviceMocking.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <iostream>
 #include <memory>
-
-#include "mocks/ModbusClientMocking.h"
-#include "mocks/ModbusDeviceMocking.h"
 
 class ModbusReaderTests : public ::testing::Test
 {

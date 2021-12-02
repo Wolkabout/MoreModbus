@@ -18,21 +18,14 @@
 
 #define private public
 #define protected public
-#include "mappings/FloatMapping.h"
-#include "mappings/Int32Mapping.h"
-#include "mappings/StringMapping.h"
-#include "mappings/UInt32Mapping.h"
-#include "modbus/LibModbusTcpIpClient.h"
-#include "modbus/LibModbusSerialRtuClient.h"
+#include "more_modbus/mappings/FloatMapping.h"
+#include "more_modbus/mappings/Int32Mapping.h"
+#include "more_modbus/mappings/StringMapping.h"
+#include "more_modbus/mappings/UInt32Mapping.h"
+#include "more_modbus/modbus/LibModbusTcpIpClient.h"
+#include "more_modbus/modbus/LibModbusSerialRtuClient.h"
 #undef private
 #undef protected
-
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
-#include <iostream>
-#include <memory>
-#include <chrono>
-#include <thread>
 
 #define _registerType wolkabout::RegisterMapping::RegisterType
 #define _outputType wolkabout::RegisterMapping::OutputType
@@ -42,11 +35,18 @@
 #define _makeCombo(x, y, z) _combination(_registerType::x, _outputType::y, _operationType::z)
 #define _makeComboPure(x, y, z) _combination(x, y, z)
 
-#include "utilities/DataParsers.h"
 #include "mocks/ModbusClientMocking.h"
 #include "mocks/ModbusDeviceMocking.h"
 #include "mocks/ModbusReaderMocking.h"
 #include "mocks/RegisterGroupMocking.h"
+#include "more_modbus/utilities/DataParsers.h"
+
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+#include <iostream>
+#include <memory>
+#include <chrono>
+#include <thread>
 
 class ComplexMappingsTests : public ::testing::Test
 {
@@ -171,12 +171,13 @@ TEST_F(ComplexMappingsTests, UInt32MappingsCreation)
             if (winning)
             {
                 EXPECT_NO_THROW(
-				  wolkabout::UInt32Mapping("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType));
+                  wolkabout::UInt32Mapping("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType));
             }
             else
             {
-				EXPECT_THROW(wolkabout::UInt32Mapping("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType),
-                             std::logic_error);
+                EXPECT_THROW(
+                  wolkabout::UInt32Mapping("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType),
+                  std::logic_error);
             }
         }
     }
@@ -195,16 +196,15 @@ TEST_F(ComplexMappingsTests, UInt32MappingsWriteValue)
         //        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
-        auto mapping =
-		  std::make_shared<wolkabout::UInt32Mapping>("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType);
+        auto mapping = std::make_shared<wolkabout::UInt32Mapping>("TEST", registerType, std::vector<std::int32_t>{0, 1},
+                                                                  operationType);
         MovePointers();
         mapping->m_group = std::move(registerGroupMock);
         ASSERT_FALSE(mapping->m_group->m_device->m_reader.expired());
         const auto reader = mapping->m_group->m_device->m_reader.lock();
         if (registerType == _registerType::HOLDING_REGISTER)
         {
-            EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, bytes))
-              .WillOnce(Return(true));
+            EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, bytes)).WillOnce(Return(true));
             EXPECT_TRUE(mapping->writeValue(value));
 
             EXPECT_EQ(value, mapping->getUint32Value());
@@ -232,8 +232,8 @@ TEST_F(ComplexMappingsTests, UInt32MappingsInitUpdateValid)
         //        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
-        auto mapping =
-		  std::make_shared<wolkabout::UInt32Mapping>("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType);
+        auto mapping = std::make_shared<wolkabout::UInt32Mapping>("TEST", registerType, std::vector<std::int32_t>{0, 1},
+                                                                  operationType);
 
         EXPECT_FALSE(mapping->isInitialized());
         EXPECT_FALSE(mapping->isValid());
@@ -265,8 +265,8 @@ TEST_F(ComplexMappingsTests, UInt32MappingsDeadband)
         double deadbandValue = 2.0;
 
         const auto registerType = std::get<0>(combo);
-        auto mapping =
-          std::make_shared<wolkabout::UInt32Mapping>("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType, false, -1, deadbandValue);
+        auto mapping = std::make_shared<wolkabout::UInt32Mapping>("TEST", registerType, std::vector<std::int32_t>{0, 1},
+                                                                  operationType, false, -1, deadbandValue);
 
         EXPECT_FALSE(mapping->isInitialized());
         EXPECT_FALSE(mapping->isValid());
@@ -295,8 +295,8 @@ TEST_F(ComplexMappingsTests, FrequencyFilter)
         std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(100);
 
         const auto registerType = std::get<0>(combo);
-        auto mapping =
-          std::make_shared<wolkabout::UInt32Mapping>("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType, false, -1, 0.0, frequencyFilterValue);
+        auto mapping = std::make_shared<wolkabout::UInt32Mapping>("TEST", registerType, std::vector<std::int32_t>{0, 1},
+                                                                  operationType, false, -1, 0.0, frequencyFilterValue);
 
         EXPECT_FALSE(mapping->isInitialized());
         EXPECT_FALSE(mapping->isValid());
@@ -326,12 +326,13 @@ TEST_F(ComplexMappingsTests, Int32MappingsCreation)
             if (winning)
             {
                 EXPECT_NO_THROW(
-				  wolkabout::Int32Mapping("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType));
+                  wolkabout::Int32Mapping("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType));
             }
             else
             {
-				EXPECT_THROW(wolkabout::Int32Mapping("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType),
-                             std::logic_error);
+                EXPECT_THROW(
+                  wolkabout::Int32Mapping("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType),
+                  std::logic_error);
             }
         }
     }
@@ -350,16 +351,15 @@ TEST_F(ComplexMappingsTests, Int32MappingsWriteValue)
         //        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
-        auto mapping =
-		  std::make_shared<wolkabout::Int32Mapping>("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType);
+        auto mapping = std::make_shared<wolkabout::Int32Mapping>("TEST", registerType, std::vector<std::int32_t>{0, 1},
+                                                                 operationType);
         MovePointers();
         mapping->m_group = std::move(registerGroupMock);
         ASSERT_FALSE(mapping->m_group->m_device->m_reader.expired());
         const auto reader = mapping->m_group->m_device->m_reader.lock();
         if (registerType == _registerType::HOLDING_REGISTER)
         {
-            EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, bytes))
-              .WillOnce(Return(true));
+            EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, bytes)).WillOnce(Return(true));
             EXPECT_TRUE(mapping->writeValue(value));
 
             EXPECT_EQ(value, mapping->getInt32Value());
@@ -386,8 +386,8 @@ TEST_F(ComplexMappingsTests, Int32MappingsInitUpdateValid)
         const auto bytes = wolkabout::DataParsers::int32ToRegisters(value, endian);
 
         const auto registerType = std::get<0>(combo);
-        auto mapping =
-		  std::make_shared<wolkabout::Int32Mapping>("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType);
+        auto mapping = std::make_shared<wolkabout::Int32Mapping>("TEST", registerType, std::vector<std::int32_t>{0, 1},
+                                                                 operationType);
 
         EXPECT_FALSE(mapping->isInitialized());
         EXPECT_FALSE(mapping->isValid());
@@ -419,8 +419,8 @@ TEST_F(ComplexMappingsTests, Int32MappingsDeadband)
         double deadbandValue = 2.0;
 
         const auto registerType = std::get<0>(combo);
-        auto mapping =
-          std::make_shared<wolkabout::Int32Mapping>("TEST", registerType, std::vector<std::int32_t>{0, 1}, operationType, false, -1, deadbandValue);
+        auto mapping = std::make_shared<wolkabout::Int32Mapping>("TEST", registerType, std::vector<std::int32_t>{0, 1},
+                                                                 operationType, false, -1, deadbandValue);
 
         EXPECT_FALSE(mapping->isInitialized());
         EXPECT_FALSE(mapping->isValid());
@@ -446,11 +446,12 @@ TEST_F(ComplexMappingsTests, FloatMappingsCreation)
 
         if (winning)
         {
-			EXPECT_NO_THROW(wolkabout::FloatMapping("TEST", registerType, std::vector<std::int32_t>{0, 1}));
+            EXPECT_NO_THROW(wolkabout::FloatMapping("TEST", registerType, std::vector<std::int32_t>{0, 1}));
         }
         else
         {
-			EXPECT_THROW(wolkabout::FloatMapping("TEST", registerType, std::vector<std::int32_t>{0, 1}), std::logic_error);
+            EXPECT_THROW(wolkabout::FloatMapping("TEST", registerType, std::vector<std::int32_t>{0, 1}),
+                         std::logic_error);
         }
     }
 }
@@ -466,15 +467,14 @@ TEST_F(ComplexMappingsTests, FloatMappingsWriteValue)
         //        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
-		auto mapping = std::make_shared<wolkabout::FloatMapping>("TEST", registerType, std::vector<std::int32_t>{0, 1});
+        auto mapping = std::make_shared<wolkabout::FloatMapping>("TEST", registerType, std::vector<std::int32_t>{0, 1});
         MovePointers();
         mapping->m_group = std::move(registerGroupMock);
         ASSERT_FALSE(mapping->m_group->m_device->m_reader.expired());
         const auto reader = mapping->m_group->m_device->m_reader.lock();
         if (registerType == _registerType::HOLDING_REGISTER)
         {
-            EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, bytes))
-              .WillOnce(Return(true));
+            EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, bytes)).WillOnce(Return(true));
             EXPECT_TRUE(mapping->writeValue(value));
 
             EXPECT_EQ(value, mapping->getFloatValue());
@@ -500,7 +500,7 @@ TEST_F(ComplexMappingsTests, FloatMappingsInitUpdateValid)
         //        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
-		auto mapping = std::make_shared<wolkabout::FloatMapping>("TEST", registerType, std::vector<std::int32_t>{0, 1});
+        auto mapping = std::make_shared<wolkabout::FloatMapping>("TEST", registerType, std::vector<std::int32_t>{0, 1});
 
         EXPECT_FALSE(mapping->isInitialized());
         EXPECT_FALSE(mapping->isValid());
@@ -529,7 +529,8 @@ TEST_F(ComplexMappingsTests, FloatMappingsDeadband)
         const auto bytes = wolkabout::DataParsers::floatToRegisters(value);
 
         const auto registerType = std::get<0>(combo);
-        auto mapping = std::make_shared<wolkabout::FloatMapping>("TEST", registerType, std::vector<std::int32_t>{0, 1}, false, -1, deadbandValue);
+        auto mapping = std::make_shared<wolkabout::FloatMapping>("TEST", registerType, std::vector<std::int32_t>{0, 1},
+                                                                 false, -1, deadbandValue);
 
         EXPECT_FALSE(mapping->isInitialized());
         EXPECT_FALSE(mapping->isValid());
@@ -558,31 +559,31 @@ TEST_F(ComplexMappingsTests, StringMappingsCreation)
             if (winning)
             {
                 EXPECT_NO_THROW(wolkabout::StringMapping(
-				  "TEST", registerType, std::vector<std::int32_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, operationType));
+                  "TEST", registerType, std::vector<std::int32_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, operationType));
             }
             else
             {
-                EXPECT_THROW(wolkabout::StringMapping(
-							   "TEST", registerType, std::vector<std::int32_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, operationType),
-                             std::logic_error);
+                EXPECT_THROW(
+                  wolkabout::StringMapping("TEST", registerType,
+                                           std::vector<std::int32_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, operationType),
+                  std::logic_error);
             }
         }
     }
 }
 
-std::string random_string( size_t length )
+std::string random_string(size_t length)
 {
     auto randchar = []() -> char
     {
-        const char charset[] =
-          "0123456789"
-          "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-          "abcdefghijklmnopqrstuvwxyz";
+        const char charset[] = "0123456789"
+                               "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                               "abcdefghijklmnopqrstuvwxyz";
         const size_t max_index = (sizeof(charset) - 1);
-        return charset[ rand() % max_index ];
+        return charset[rand() % max_index];
     };
-    std::string str(length,0);
-    std::generate_n( str.begin(), length, randchar );
+    std::string str(length, 0);
+    std::generate_n(str.begin(), length, randchar);
     return str;
 }
 
@@ -593,7 +594,7 @@ TEST_F(ComplexMappingsTests, StringMappingsWriteValue)
     for (const auto& combo : stringCombos)
     {
         const auto operationType = std::get<2>(combo);
-		const auto addresses = std::vector<std::int32_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        const auto addresses = std::vector<std::int32_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
         const auto value = random_string(addresses.size() * 2);
         auto bytes = std::vector<uint16_t>();
         //        std::cout << "Testing with " << value << std::endl;
@@ -615,8 +616,7 @@ TEST_F(ComplexMappingsTests, StringMappingsWriteValue)
         const auto reader = mapping->m_group->m_device->m_reader.lock();
         if (registerType == _registerType::HOLDING_REGISTER)
         {
-            EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, bytes))
-              .WillOnce(Return(true));
+            EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, bytes)).WillOnce(Return(true));
             EXPECT_TRUE(mapping->writeValue(value));
 
             EXPECT_EQ(value, mapping->getStringValue());
@@ -638,7 +638,7 @@ TEST_F(ComplexMappingsTests, StringMappingsInitUpdateValid)
     for (const auto& combo : stringCombos)
     {
         const auto operationType = std::get<2>(combo);
-		const auto addresses = std::vector<std::int32_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        const auto addresses = std::vector<std::int32_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
         const auto value = random_string(addresses.size() * 2);
         const auto bytes = wolkabout::DataParsers::asciiStringToRegisters(value);
 
@@ -663,7 +663,6 @@ TEST_F(ComplexMappingsTests, StringMappingsInitUpdateValid)
 
 TEST_F(ComplexMappingsTests, StringMappingsFrequencyFilter)
 {
-
     const auto& outputType = _outputType::STRING;
     const auto& stringCombos = winningCombos[outputType];
     for (const auto& combo : stringCombos)
@@ -674,7 +673,8 @@ TEST_F(ComplexMappingsTests, StringMappingsFrequencyFilter)
         auto bytes = wolkabout::DataParsers::asciiStringToRegisters(value);
 
         const auto registerType = std::get<0>(combo);
-        auto mapping = std::make_shared<wolkabout::StringMapping>("TEST", registerType, addresses, operationType, false, -1, std::chrono::milliseconds(100));
+        auto mapping = std::make_shared<wolkabout::StringMapping>("TEST", registerType, addresses, operationType, false,
+                                                                  -1, std::chrono::milliseconds(100));
 
         EXPECT_FALSE(mapping->isInitialized());
         EXPECT_FALSE(mapping->isValid());
@@ -703,7 +703,7 @@ TEST_F(ComplexMappingsTests, StringMappingsUpdateFailCauseSize)
     for (const auto& combo : stringCombos)
     {
         const auto operationType = std::get<2>(combo);
-		const auto addresses = std::vector<std::int32_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        const auto addresses = std::vector<std::int32_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
         const auto value = random_string(addresses.size() * 2 + 4);
 
         const auto registerType = std::get<0>(combo);

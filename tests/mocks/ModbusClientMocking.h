@@ -21,7 +21,7 @@
 
 #define private public
 #define protected public
-#include "modbus/ModbusClient.h"
+#include "more_modbus/modbus/ModbusClient.h"
 #undef private
 #undef protected
 

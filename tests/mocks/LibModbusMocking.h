@@ -19,14 +19,13 @@
 #ifndef MOREMODBUS_LIBMODBUSMOCKING_H
 #define MOREMODBUS_LIBMODBUSMOCKING_H
 
-#include "modbus/libmodbus/modbus.h"
-#include "modbus/libmodbus/modbus-rtu.h"
-#include "modbus/libmodbus/modbus-tcp.h"
-
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <iostream>
 #include <memory>
+#include <modbus/modbus.h>
+#include <modbus/modbus-rtu.h>
+#include <modbus/modbus-tcp.h>
 
 using namespace ::testing;
 

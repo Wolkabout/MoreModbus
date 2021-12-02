@@ -18,7 +18,7 @@
 
 #define private public
 #define protected public
-#include "utilities/Deserializers.h"
+#include "more_modbus/utilities/Deserializers.h"
 #undef private
 #undef protected
 
@@ -26,9 +26,9 @@
 #define OutputType wolkabout::RegisterMapping::OutputType
 #define OperationType wolkabout::RegisterMapping::OperationType
 
-#include <gtest/gtest.h>
-
 #include "core/utilities/Logger.h"
+
+#include <gtest/gtest.h>
 
 namespace
 {

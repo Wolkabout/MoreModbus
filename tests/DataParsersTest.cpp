@@ -18,16 +18,16 @@
 
 #define private public
 #define protected public
-#include "utilities/DataParsers.h"
+#include "more_modbus/utilities/DataParsers.h"
 #undef private
 #undef protected
 
 #define _bits std::vector<bool>
 #define _registers std::vector<uint16_t>
 
-#include <gtest/gtest.h>
-
 #include "core/utilities/Logger.h"
+
+#include <gtest/gtest.h>
 
 namespace
 {

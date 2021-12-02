@@ -16,19 +16,13 @@
 # Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 
-
 cmake_minimum_required(VERSION 3.5)
 project(MoreModbus C CXX)
 
 set_property(GLOBAL PROPERTY ALLOW_DUPLICATE_CUSTOM_TARGETS 1)
-set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-
-set(CTEST_COVERAGE_COMMAND "/usr/bin/gcov")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fprofile-arcs -ftest-coverage -lgcov")
 
 set(CMAKE_CXX_STANDARD 11)
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}    -Wall -Wextra -pedantic                                                    \
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}     -Wall -Wextra -pedantic                                                    \
                                             -pedantic-errors -Wcast-align                                              \
                                             -Wcast-qual -Wconversion                                                   \
                                             -Wdisabled-optimization                                                    \
@@ -42,80 +36,150 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}    -Wall -Wextra -pedantic              
                                             -Wstrict-aliasing=2                                                        \
                                             -Werror=unreachable-code -Wno-unused                                       \
                                             -Wvariadic-macros                                                          \
-                                            -Wwrite-strings -Werror=non-virtual-dtor                                   \
-                                            -fprofile-arcs -ftest-coverage -g")
+                                            -Wwrite-strings -Werror=non-virtual-dtor")
 
-# library output
-if (NOT DEFINED CMAKE_LIBRARY_OUTPUT_DIRECTORY)
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+# Setup the options for tests
+OPTION(BUILD_GTEST "Build the library with gtest" ON)
+OPTION(BUILD_TESTS "Build the unit tests for the library" ON)
+if (${BUILD_TESTS})
+    if (NOT ${BUILD_GTEST})
+        message(FATAL "Cannot Build Tests with BUILD_GTEST set to false.")
+    endif ()
+
+    # Setup test coverage if it is necessary
+    OPTION(TEST_COVERAGE "Build the library for test coverage" ON)
+    if (${TEST_COVERAGE})
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage -g")
+    endif ()
 endif ()
 
-if (NOT DEFINED CMAKE_PREFIX_PATH)
-    set(CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR}/build)
+# Setup the options for the examples
+OPTION(BUILD_EXAMPLES "Build the examples/runtimes for testing" ON)
+
+# Check if the paths for output are set, if not, we can set them ourselves
+if (NOT DEFINED CMAKE_LIBRARY_OUTPUT_DIRECTORY)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 endif ()
 
 if (NOT DEFINED CMAKE_LIBRARY_INCLUDE_DIRECTORY)
-    set(CMAKE_LIBRARY_INCLUDE_DIRECTORY ${CMAKE_PREFIX_PATH}/include)
+    set(CMAKE_LIBRARY_INCLUDE_DIRECTORY "${CMAKE_BINARY_DIR}/include")
 endif ()
 
 if (NOT DEFINED CMAKE_RUNTIME_OUTPUT_DIRECTORY)
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+endif ()
+
+if (NOT DEFINED CMAKE_PREFIX_PATH)
+    set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_BINARY_DIR}/build")
 endif ()
 
 # Import the dependencies
-set(CMAKE_INSTALL_PREFIX ${CMAKE_PREFIX_PATH})
 set(BUILD_CONNECTIVITY OFF CACHE BOOL "Build the library with Paho MQTT and allow MQTT connection to the platform.")
 set(BUILD_POCO OFF CACHE BOOL "Build the library with Poco.")
-set(BUILD_GTEST ON CACHE BOOL "Build the library with GTest.")
+set(BUILD_GTEST ${BUILD_TESTS} CACHE BOOL "Build the library with GTest.")
 set(BUILD_AWS_LOG_UPLOADER OFF CACHE BOOL "Build the library with AwsLogUploader.")
 
+# This is how we're importing the WolkAboutCoreUtility
 if (NOT TARGET WolkAboutCoreUtility)
     add_subdirectory(WolkSDK-Cpp)
 endif ()
 
+# And this is how we're importing the libmodbus
 add_subdirectory(dependencies)
 
-link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
-
-# required dependency
+# Add the pthread dependency too
 find_package(Threads REQUIRED)
 
-# include files
-include_directories("src")
+# Set up the paths from where we're going to link the libraries
+link_directories(${CMAKE_PREFIX_PATH}/lib)
+link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+include_directories(SYSTEM "${CMAKE_PREFIX_PATH}/include")
 
-file(GLOB_RECURSE HEADER_FILES src/*.h src/*.hpp)
-file(GLOB_RECURSE SOURCE_FILES src/*.c src/*.cpp)
+# Set up the library
+set(SOURCE_FILES more_modbus/mappings/BoolMapping.cpp
+        more_modbus/mappings/FloatMapping.cpp
+        more_modbus/mappings/Int16Mapping.cpp
+        more_modbus/mappings/Int32Mapping.cpp
+        more_modbus/mappings/StringMapping.cpp
+        more_modbus/mappings/UInt16Mapping.cpp
+        more_modbus/mappings/UInt32Mapping.cpp
+        more_modbus/modbus/LibModbusSerialRtuClient.cpp
+        more_modbus/modbus/LibModbusTcpIpClient.cpp
+        more_modbus/modbus/ModbusClient.cpp
+        more_modbus/modbus/ModbusGroupReader.cpp
+        more_modbus/utilities/DataParsers.cpp
+        more_modbus/utilities/Deserializers.cpp
+        more_modbus/ModbusDevice.cpp
+        more_modbus/ModbusReader.cpp
+        more_modbus/RegisterGroup.cpp
+        more_modbus/RegisterMapping.cpp)
+set(HEADER_FILES more_modbus/mappings/BoolMapping.h
+        more_modbus/mappings/FloatMapping.h
+        more_modbus/mappings/Int16Mapping.h
+        more_modbus/mappings/Int32Mapping.h
+        more_modbus/mappings/StringMapping.h
+        more_modbus/mappings/UInt16Mapping.h
+        more_modbus/mappings/UInt32Mapping.h
+        more_modbus/modbus/LibModbusSerialRtuClient.h
+        more_modbus/modbus/LibModbusTcpIpClient.h
+        more_modbus/modbus/ModbusClient.h
+        more_modbus/modbus/ModbusGroupReader.h
+        more_modbus/utilities/DataParsers.h
+        more_modbus/utilities/Deserializers.h
+        more_modbus/ModbusDevice.h
+        more_modbus/ModbusReader.h
+        more_modbus/RegisterGroup.h
+        more_modbus/RegisterMapping.h)
 
-add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
+file(COPY more_modbus/ DESTINATION ${CMAKE_LIBRARY_INCLUDE_DIRECTORY} PATTERN *.cpp EXCLUDE)
+
+add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES} ${HEADER_FILES})
 target_link_libraries(${PROJECT_NAME} WolkAboutCoreUtility modbus pthread)
+target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR})
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_LIBRARY_INCLUDE_DIRECTORY})
 set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "$ORIGIN")
 add_dependencies(${PROJECT_NAME} libmodbus libgtest)
 
-target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_LIST_DIR}/src")
-
 # Tests
-include_directories("tests")
+if (${BUILD_TESTS})
+    set(TEST_SOURCE_FILES tests/ComplexMappingsTests.cpp
+            tests/DataParsersTest.cpp
+            tests/DeserializersTest.cpp
+            tests/MappingsTests.cpp
+            tests/ModbusClientTests.cpp
+            tests/ModbusDeviceTests.cpp
+            tests/ModbusReaderTests.cpp
+            tests/ProperReadingTest.cpp
+            tests/RegisterGroupTests.cpp
+            tests/RegisterMappingTests.cpp)
+    set(TEST_HEADER_FILES tests/mocks/LibModbusMocking.h
+            tests/mocks/ModbusClientMocking.h
+            tests/mocks/ModbusDeviceMocking.h
+            tests/mocks/ModbusReaderMocking.h
+            tests/mocks/RegisterGroupMocking.h
+            tests/mocks/RegisterMappingMocking.h)
 
-file(GLOB_RECURSE TEST_HEADER_FILES "tests/*.h" "tests/*.hpp")
-file(GLOB_RECURSE TEST_SOURCE_FILES "tests/*.c" "tests/*.cpp")
+    add_executable(${PROJECT_NAME}Tests ${TEST_SOURCE_FILES} ${TEST_HEADER_FILES})
+    target_link_libraries(${PROJECT_NAME}Tests ${PROJECT_NAME} gtest_main gtest gmock_main gmock)
+    target_include_directories(${PROJECT_NAME}Tests PRIVATE ${PROJECT_SOURCE_DIR})
+    target_include_directories(${PROJECT_NAME}Tests PUBLIC ${CMAKE_LIBRARY_INCLUDE_DIRECTORY})
+    set_target_properties(${PROJECT_NAME}Tests PROPERTIES INSTALL_RPATH "$ORIGIN/../lib")
+    set_target_properties(${PROJECT_NAME}Tests PROPERTIES EXCLUDE_FROM_ALL TRUE)
 
-add_executable(${PROJECT_NAME}Tests ${TEST_SOURCE_FILES} ${TEST_HEADER_FILES})
-target_link_libraries(${PROJECT_NAME}Tests ${PROJECT_NAME} gtest_main gtest gmock_main gmock)
-target_include_directories(${PROJECT_NAME}Tests PUBLIC ${CMAKE_LIBRARY_INCLUDE_DIRECTORY})
-set_target_properties(${PROJECT_NAME}Tests PROPERTIES INSTALL_RPATH "$ORIGIN/lib")
-set_target_properties(${PROJECT_NAME}Tests PROPERTIES EXCLUDE_FROM_ALL TRUE)
-
-add_custom_target(tests ${PROJECT_NAME}Tests)
-add_test(gtest ${PROJECT_NAME}Tests)
+    add_custom_target(tests ${PROJECT_NAME}Tests)
+endif ()
 
 # Example
-include_directories("example")
+if (${BUILD_EXAMPLES})
+    set(EXAMPLE_SOURCE_FILES example/Application.cpp)
 
-file(GLOB_RECURSE EXAMPLE_HEADER_FILES "example/*.h" "example/*.hpp")
-file(GLOB_RECURSE EXAMPLE_SOURCE_FILES "example/*.c" "example/*.cpp")
+    add_executable(${PROJECT_NAME}Example ${EXAMPLE_SOURCE_FILES})
+    target_link_libraries(${PROJECT_NAME}Example ${PROJECT_NAME})
+    target_include_directories(${PROJECT_NAME}Example PRIVATE ${PROJECT_SOURCE_DIR})
+    target_include_directories(${PROJECT_NAME}Example PUBLIC ${CMAKE_LIBRARY_INCLUDE_DIRECTORY})
+    set_target_properties(${PROJECT_NAME}Example PROPERTIES INSTALL_RPATH "$ORIGIN/../lib")
+    set_target_properties(${PROJECT_NAME}Example PROPERTIES EXCLUDE_FROM_ALL TRUE)
+endif ()
 
-add_executable(${PROJECT_NAME}Example ${EXAMPLE_SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME}Example ${PROJECT_NAME})
-set_target_properties(${PROJECT_NAME}Example PROPERTIES INSTALL_RPATH "$ORIGIN/lib")
-
+# Add the format target
 add_subdirectory(cmake)
