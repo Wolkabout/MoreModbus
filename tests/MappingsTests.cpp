@@ -18,13 +18,18 @@
 
 #define private public
 #define protected public
-#include "mappings/BoolMapping.h"
-#include "mappings/Int16Mapping.h"
-#include "mappings/UInt16Mapping.h"
-#include "modbus/LibModbusTcpIpClient.h"
-#include "modbus/LibModbusSerialRtuClient.h"
+#include "more_modbus/mappings/BoolMapping.h"
+#include "more_modbus/mappings/Int16Mapping.h"
+#include "more_modbus/mappings/UInt16Mapping.h"
+#include "more_modbus/modbus/LibModbusTcpIpClient.h"
+#include "more_modbus/modbus/LibModbusSerialRtuClient.h"
 #undef private
 #undef protected
+
+#include "mocks/ModbusClientMocking.h"
+#include "mocks/ModbusDeviceMocking.h"
+#include "mocks/ModbusReaderMocking.h"
+#include "mocks/RegisterGroupMocking.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -37,11 +42,6 @@
 #define _combination std::tuple<_registerType, _outputType, _operationType>
 #define _makeCombo(x, y, z) _combination(_registerType::x, _outputType::y, _operationType::z)
 #define _makeComboPure(x, y, z) _combination(x, y, z)
-
-#include "mocks/ModbusClientMocking.h"
-#include "mocks/ModbusDeviceMocking.h"
-#include "mocks/ModbusReaderMocking.h"
-#include "mocks/RegisterGroupMocking.h"
 
 class MappingsTests : public ::testing::Test
 {
@@ -107,7 +107,7 @@ public:
                                                                              _makeCombo(INPUT_REGISTER, UINT16, NONE)});
 
         winningCombos.emplace(_outputType::INT16, std::vector<_combination>{_makeCombo(HOLDING_REGISTER, INT16, NONE),
-                                                                             _makeCombo(INPUT_REGISTER, INT16, NONE)});
+                                                                            _makeCombo(INPUT_REGISTER, INT16, NONE)});
     }
 
     bool IsWinningCombo(_outputType outputType, _combination combo)
@@ -175,7 +175,7 @@ TEST_F(MappingsTests, BoolMappingsWriteValue)
     for (const auto& combo : boolCombos)
     {
         bool value = rand() % 2;
-//        std::cout << "Testing with " << value << std::endl;
+        //        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
         const auto operationType = std::get<2>(combo);
@@ -189,8 +189,7 @@ TEST_F(MappingsTests, BoolMappingsWriteValue)
             const auto reader = mapping->m_group->m_device->m_reader.lock();
             if (registerType == _registerType::COIL)
             {
-                EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, value))
-                  .WillOnce(Return(true));
+                EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, value)).WillOnce(Return(true));
                 EXPECT_TRUE(mapping->writeValue(value));
 
                 EXPECT_EQ(value, mapping->getBoolValue());
@@ -213,8 +212,7 @@ TEST_F(MappingsTests, BoolMappingsWriteValue)
             const auto reader = mapping->m_group->m_device->m_reader.lock();
             if (registerType == _registerType::HOLDING_REGISTER)
             {
-                EXPECT_CALL((ModbusReaderMock&)*reader, writeBitMapping)
-                  .WillOnce(Return(true));
+                EXPECT_CALL((ModbusReaderMock&)*reader, writeBitMapping).WillOnce(Return(true));
                 EXPECT_TRUE(mapping->writeValue(value));
                 EXPECT_TRUE(mapping->update(value));
 
@@ -256,7 +254,7 @@ TEST_F(MappingsTests, UInt16MappingsWriteValue)
     for (const auto& combo : boolCombos)
     {
         const auto value = static_cast<uint16_t>(rand());
-//        std::cout << "Testing with " << value << std::endl;
+        //        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
         auto mapping = std::make_shared<wolkabout::UInt16Mapping>("TEST", registerType, 0);
@@ -266,8 +264,7 @@ TEST_F(MappingsTests, UInt16MappingsWriteValue)
         const auto reader = mapping->m_group->m_device->m_reader.lock();
         if (registerType == _registerType::HOLDING_REGISTER)
         {
-            EXPECT_CALL((ModbusReaderMock&)*reader,
-                        writeMapping(_, std::vector<uint16_t>{value}))
+            EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, std::vector<uint16_t>{value}))
               .WillOnce(Return(true));
             EXPECT_TRUE(mapping->writeValue(value));
 
@@ -290,7 +287,7 @@ TEST_F(MappingsTests, UInt16MappingsInitUpdateValid)
     for (const auto& combo : boolCombos)
     {
         const auto value = static_cast<uint16_t>(rand());
-//        std::cout << "Testing with " << value << std::endl;
+        //        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
         auto mapping = std::make_shared<wolkabout::UInt16Mapping>("TEST", registerType, 0);
@@ -332,7 +329,7 @@ TEST_F(MappingsTests, Int16MappingsWriteValue)
     for (const auto& combo : boolCombos)
     {
         const auto value = static_cast<int16_t>(rand());
-//        std::cout << "Testing with " << value << std::endl;
+        //        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
         auto mapping = std::make_shared<wolkabout::Int16Mapping>("TEST", registerType, 0);
@@ -366,7 +363,7 @@ TEST_F(MappingsTests, Int16MappingsInitUpdateValid)
     for (const auto& combo : boolCombos)
     {
         const auto value = static_cast<int16_t>(rand());
-//        std::cout << "Testing with " << value << std::endl;
+        //        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
         auto mapping = std::make_shared<wolkabout::Int16Mapping>("TEST", registerType, 0);

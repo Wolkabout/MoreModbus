@@ -19,7 +19,7 @@
 #ifndef MOREMODBUS_MODBUSDEVICEMOCKING_H
 #define MOREMODBUS_MODBUSDEVICEMOCKING_H
 
-#include "ModbusDevice.h"
+#include "more_modbus/ModbusDevice.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -32,8 +32,9 @@ using namespace ::testing;
 class ModbusDeviceMock : public wolkabout::ModbusDevice
 {
     std::string name = "MOCK";
+
 public:
-    ModbusDeviceMock() : ModbusDevice("TEST", 0) { }
+    ModbusDeviceMock() : ModbusDevice("TEST", 0) {}
 
     MOCK_METHOD1(createGroups, void(const std::vector<std::shared_ptr<wolkabout::RegisterMapping>>&));
     MOCK_CONST_METHOD0(getName, const std::string&());
@@ -42,7 +43,8 @@ public:
     MOCK_METHOD1(setReader, void(const std::shared_ptr<wolkabout::ModbusReader>&));
     MOCK_METHOD0(getSlaveAddress, int16_t());
     MOCK_METHOD0(getGroups, const std::vector<std::shared_ptr<wolkabout::RegisterGroup>>&());
-    MOCK_METHOD1(setOnMappingValueChange, void(const std::function<void(const std::shared_ptr<wolkabout::RegisterMapping>&)>&));
+    MOCK_METHOD1(setOnMappingValueChange,
+                 void(const std::function<void(const std::shared_ptr<wolkabout::RegisterMapping>&)>&));
     MOCK_METHOD1(setOnStatusChange, void(const std::function<void(bool)>&));
     MOCK_METHOD1(triggerOnMappingValueChange, void(const std::shared_ptr<wolkabout::RegisterMapping>&));
     MOCK_METHOD1(triggerOnStatusChange, void(bool));

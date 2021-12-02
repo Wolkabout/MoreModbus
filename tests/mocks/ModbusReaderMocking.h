@@ -19,7 +19,7 @@
 #ifndef MOREMODBUS_GROUPREADERMOCK_H
 #define MOREMODBUS_GROUPREADERMOCK_H
 
-#include "ModbusReader.h"
+#include "more_modbus/ModbusReader.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -32,6 +32,7 @@ using namespace ::testing;
 class ModbusReaderMock : public wolkabout::ModbusReader
 {
     std::string name = "MOCK";
+
 public:
     ModbusReaderMock(wolkabout::ModbusClient& client) : ModbusReader(client, std::chrono::milliseconds(500)) {}
 

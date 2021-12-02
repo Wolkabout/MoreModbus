@@ -18,14 +18,9 @@
 
 #define private public
 #define protected public
-#include "RegisterMapping.h"
+#include "more_modbus/RegisterMapping.h"
 #undef private
 #undef protected
-
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
-#include <iostream>
-#include <memory>
 
 #define _registerType wolkabout::RegisterMapping::RegisterType
 #define _outputType wolkabout::RegisterMapping::OutputType
@@ -33,6 +28,11 @@
 #define _combination std::tuple<_registerType, _outputType, _operationType>
 #define _makeCombo(x, y, z) _combination(_registerType::x, _outputType::y, _operationType::z)
 #define _makeComboPure(x, y, z) _combination(x, y, z)
+
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+#include <iostream>
+#include <memory>
 
 class RegisterMappingTests : public ::testing::Test
 {
@@ -119,10 +119,10 @@ TEST_F(RegisterMappingTests, ApsurdMappingsTests)
                                                               _operationType::TAKE_BIT, 0, true),
                  std::logic_error);
 
-    EXPECT_THROW(
-	  std::make_shared<wolkabout::RegisterMapping>("TEST", _registerType::INPUT_REGISTER, std::vector<std::int32_t>{0, 1, 2},
-                                                   _outputType::STRING, _operationType::STRINGIFY_ASCII, true),
-      std::logic_error);
+    EXPECT_THROW(std::make_shared<wolkabout::RegisterMapping>("TEST", _registerType::INPUT_REGISTER,
+                                                              std::vector<std::int32_t>{0, 1, 2}, _outputType::STRING,
+                                                              _operationType::STRINGIFY_ASCII, true),
+                 std::logic_error);
 }
 
 TEST_F(RegisterMappingTests, IllegalCombosCtorZero)
@@ -189,17 +189,18 @@ TEST_F(RegisterMappingTests, IllegalCombosCtorThree)
                 const auto combo = _makeComboPure(registerType, outputType, operationType);
                 const auto winning = IsWinningCombo(3, combo);
 
-//                std::cout << (int32_t)registerType << ", " << (int32_t)outputType << ", " << (int32_t)operationType << std::endl;
+                //                std::cout << (int32_t)registerType << ", " << (int32_t)outputType << ", " <<
+                //                (int32_t)operationType << std::endl;
 
                 if (winning)
                 {
                     EXPECT_NO_THROW(std::make_shared<wolkabout::RegisterMapping>(
-					  "TEST", registerType, std::vector<std::int32_t>{0, 1}, outputType, operationType));
+                      "TEST", registerType, std::vector<std::int32_t>{0, 1}, outputType, operationType));
                 }
                 else
                 {
                     EXPECT_THROW(std::make_shared<wolkabout::RegisterMapping>(
-								   "TEST", registerType, std::vector<std::int32_t>{0, 1}, outputType, operationType),
+                                   "TEST", registerType, std::vector<std::int32_t>{0, 1}, outputType, operationType),
                                  std::logic_error);
                 }
             }

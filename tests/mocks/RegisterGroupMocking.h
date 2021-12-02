@@ -19,7 +19,7 @@
 #ifndef MOREMODBUS_REGISTERGROUPMOCKING_H
 #define MOREMODBUS_REGISTERGROUPMOCKING_H
 
-#include "RegisterGroup.h"
+#include "more_modbus/RegisterGroup.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -35,6 +35,7 @@ typedef std::set<std::pair<std::string, std::shared_ptr<wolkabout::RegisterMappi
 class RegisterGroupMock : public wolkabout::RegisterGroup
 {
     std::string name = "MOCK";
+
 public:
     RegisterGroupMock()
     : RegisterGroup{

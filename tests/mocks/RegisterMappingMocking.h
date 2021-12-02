@@ -19,7 +19,7 @@
 #ifndef MOREMODBUS_REGISTERMAPPINGMOCKING_H
 #define MOREMODBUS_REGISTERMAPPINGMOCKING_H
 
-#include "RegisterMapping.h"
+#include "more_modbus/RegisterMapping.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -37,8 +37,9 @@ public:
     {
     }
 
-    RegisterMappingMock(const std::string& name, RegisterType registerType, int32_t address, int16_t slaveAddress, bool readRestricted)
-      : RegisterMapping(name, registerType, address, readRestricted, slaveAddress)
+    RegisterMappingMock(const std::string& name, RegisterType registerType, int32_t address, int16_t slaveAddress,
+                        bool readRestricted)
+    : RegisterMapping(name, registerType, address, readRestricted, slaveAddress)
     {
     }
 
@@ -47,7 +48,8 @@ public:
     {
     }
 
-    RegisterMappingMock(const std::string& name, RegisterType registerType, int32_t address, OutputType outputType, double deadbandValue)
+    RegisterMappingMock(const std::string& name, RegisterType registerType, int32_t address, OutputType outputType,
+                        double deadbandValue)
     : RegisterMapping(name, registerType, address, outputType, deadbandValue)
     {
     }
@@ -67,7 +69,7 @@ public:
     MOCK_METHOD0(getGroup, const std::shared_ptr<wolkabout::RegisterGroup>&());
     MOCK_METHOD0(setGroup, const std::shared_ptr<wolkabout::RegisterGroup>&());
     MOCK_METHOD0(getReference, const std::string&());
-//    MOCK_METHOD0(isReadRestricted, bool());
+    //    MOCK_METHOD0(isReadRestricted, bool());
     MOCK_METHOD0(getRegisterType, RegisterType());
     MOCK_METHOD0(getAddress, int32_t());
     MOCK_METHOD0(getAddresses, std::vector<int32_t>&());
