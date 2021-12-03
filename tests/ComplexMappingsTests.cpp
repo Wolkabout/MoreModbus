@@ -22,8 +22,8 @@
 #include "more_modbus/mappings/Int32Mapping.h"
 #include "more_modbus/mappings/StringMapping.h"
 #include "more_modbus/mappings/UInt32Mapping.h"
-#include "more_modbus/modbus/LibModbusTcpIpClient.h"
 #include "more_modbus/modbus/LibModbusSerialRtuClient.h"
+#include "more_modbus/modbus/LibModbusTcpIpClient.h"
 #undef private
 #undef protected
 
@@ -43,9 +43,10 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+
+#include <chrono>
 #include <iostream>
 #include <memory>
-#include <chrono>
 #include <thread>
 
 class ComplexMappingsTests : public ::testing::Test
@@ -574,8 +575,7 @@ TEST_F(ComplexMappingsTests, StringMappingsCreation)
 
 std::string random_string(size_t length)
 {
-    auto randchar = []() -> char
-    {
+    auto randchar = []() -> char {
         const char charset[] = "0123456789"
                                "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                "abcdefghijklmnopqrstuvwxyz";

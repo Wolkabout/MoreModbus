@@ -21,8 +21,8 @@
 #include "more_modbus/mappings/BoolMapping.h"
 #include "more_modbus/mappings/Int16Mapping.h"
 #include "more_modbus/mappings/UInt16Mapping.h"
-#include "more_modbus/modbus/LibModbusTcpIpClient.h"
 #include "more_modbus/modbus/LibModbusSerialRtuClient.h"
+#include "more_modbus/modbus/LibModbusTcpIpClient.h"
 #undef private
 #undef protected
 
@@ -33,6 +33,7 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+
 #include <iostream>
 #include <memory>
 

@@ -33,17 +33,18 @@
 #include "mocks/ModbusClientMocking.h"
 #include "mocks/RegisterMappingMocking.h"
 #include "more_modbus/mappings/BoolMapping.h"
+#include "more_modbus/mappings/FloatMapping.h"
 #include "more_modbus/mappings/Int16Mapping.h"
 #include "more_modbus/mappings/Int32Mapping.h"
-#include "more_modbus/mappings/FloatMapping.h"
+#include "more_modbus/mappings/StringMapping.h"
 #include "more_modbus/mappings/UInt16Mapping.h"
 #include "more_modbus/mappings/UInt32Mapping.h"
-#include "more_modbus/mappings/StringMapping.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <memory>
+
 #include <iostream>
+#include <memory>
 
 class ProperReadingTest : public ::testing::Test
 {

@@ -21,11 +21,12 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+
 #include <iostream>
 #include <memory>
-#include <modbus/modbus.h>
 #include <modbus/modbus-rtu.h>
 #include <modbus/modbus-tcp.h>
+#include <modbus/modbus.h>
 
 using namespace ::testing;
 
