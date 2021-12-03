@@ -23,8 +23,8 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <iostream>
 
+#include <iostream>
 #include <memory>
 
 using namespace ::testing;

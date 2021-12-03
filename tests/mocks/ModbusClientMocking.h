@@ -27,16 +27,16 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+
 #include <iostream>
 #include <memory>
 
 class ModbusClientMock : public wolkabout::ModbusClient
 {
     std::string name = "MOCK";
+
 public:
-    ModbusClientMock() : ModbusClient(std::chrono::milliseconds(500))
-    {
-    }
+    ModbusClientMock() : ModbusClient(std::chrono::milliseconds(500)) {}
 
     bool createContext() override { return true; }
     bool destroyContext() override { return true; }

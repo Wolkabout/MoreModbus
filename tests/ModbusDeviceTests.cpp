@@ -28,6 +28,7 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+
 #include <iostream>
 #include <memory>
 
@@ -88,25 +89,22 @@ TEST_F(ModbusDeviceTests, InitialExampleTest)
     bool valueChangeSuccess = false;
     bool statusChangeSuccess = false;
 
-    const auto& bytesValueChange =
-      [&](const std::shared_ptr<wolkabout::RegisterMapping>& mapping, const std::vector<uint16_t>& value)
-    {
+    const auto& bytesValueChange = [&](const std::shared_ptr<wolkabout::RegisterMapping>& mapping,
+                                       const std::vector<uint16_t>& value) {
         if (mapping == nullptr)
         {
             valueChangeSuccess = true;
         }
     };
 
-    const auto& boolValueChange = [&](const std::shared_ptr<wolkabout::RegisterMapping>& mapping, bool value)
-    {
+    const auto& boolValueChange = [&](const std::shared_ptr<wolkabout::RegisterMapping>& mapping, bool value) {
         if (mapping == nullptr)
         {
             valueChangeSuccess = true;
         }
     };
 
-    const auto& statusChange = [&](bool status)
-    {
+    const auto& statusChange = [&](bool status) {
         if (status)
         {
             statusChangeSuccess = true;
