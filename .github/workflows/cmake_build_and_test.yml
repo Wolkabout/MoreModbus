@@ -54,3 +54,8 @@ jobs:
         working-directory: ${{runner.workspace}}/out
         shell: bash
         run: make tests -j$(nproc) && ctest .
+
+      - name: Check Format
+        uses: jidicula/clang-format-action@v3.5.0
+        with:
+          clang-format-version: 10
