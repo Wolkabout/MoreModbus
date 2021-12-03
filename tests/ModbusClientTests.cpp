@@ -104,7 +104,7 @@ int modbus_write_bit(modbus_t* ctx, int coil_addr, int status)
     return libModbusMock->modbus_write_bit(ctx, coil_addr, status);
 }
 
-int modbus_write_register(modbus_t* ctx, int reg_addr, int value)
+int modbus_write_register(modbus_t* ctx, int reg_addr, const uint16_t value)
 {
     return libModbusMock->modbus_write_register(ctx, reg_addr, value);
 }
