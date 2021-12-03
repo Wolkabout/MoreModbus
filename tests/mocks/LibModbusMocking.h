@@ -49,7 +49,7 @@ public:
     MOCK_METHOD4(modbus_read_registers, int(modbus_t*, int, int, uint16_t*));
     MOCK_METHOD4(modbus_read_input_registers, int(modbus_t*, int, int, uint16_t*));
     MOCK_METHOD3(modbus_write_bit, int(modbus_t*, int, int));
-    MOCK_METHOD3(modbus_write_register, int(modbus_t*, int, int));
+    MOCK_METHOD3(modbus_write_register, int(modbus_t*, int, const uint16_t));
     MOCK_METHOD4(modbus_write_bits, int(modbus_t*, int, int, const uint8_t*));
     MOCK_METHOD4(modbus_write_registers, int(modbus_t*, int, int, const uint16_t*));
 
