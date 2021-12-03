@@ -16,8 +16,9 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/utilities/Logger.h"
 #include "more_modbus/modbus/ModbusClient.h"
+
+#include "core/utilities/Logger.h"
 
 #include <modbus/modbus.h>
 

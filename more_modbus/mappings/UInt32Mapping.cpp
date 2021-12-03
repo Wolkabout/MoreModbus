@@ -17,6 +17,7 @@
  */
 
 #include "more_modbus/mappings/UInt32Mapping.h"
+
 #include "more_modbus/utilities/DataParsers.h"
 
 #include <stdexcept>

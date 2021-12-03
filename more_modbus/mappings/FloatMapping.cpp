@@ -17,6 +17,7 @@
  */
 
 #include "more_modbus/mappings/FloatMapping.h"
+
 #include "more_modbus/utilities/DataParsers.h"
 
 #include <stdexcept>

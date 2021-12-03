@@ -16,9 +16,10 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include "more_modbus/modbus/ModbusGroupReader.h"
+
 #include "core/utilities/Logger.h"
 #include "more_modbus/ModbusReader.h"
-#include "more_modbus/modbus/ModbusGroupReader.h"
 #include "more_modbus/utilities/DataParsers.h"
 
 namespace wolkabout

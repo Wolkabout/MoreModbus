@@ -17,6 +17,7 @@
  */
 
 #include "more_modbus/RegisterMapping.h"
+
 #include "more_modbus/utilities/DataParsers.h"
 
 #include <chrono>
