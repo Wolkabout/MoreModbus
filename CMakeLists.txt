@@ -182,4 +182,9 @@ if (${BUILD_EXAMPLES})
 endif ()
 
 # Add the format target
-add_subdirectory(cmake)
+add_custom_target(format
+        COMMAND "clang-format" -i -sort-includes -style=file ${HEADER_FILES} ${SOURCE_FILES}
+        ${TESTS_HEADER_FILES} ${TESTS_SOURCE_FILES} ${EXAMPLE_SOURCE_FILES}
+        WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
+        COMMENT "[Formatting source code]"
+        VERBATIM)

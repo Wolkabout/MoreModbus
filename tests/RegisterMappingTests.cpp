@@ -99,7 +99,7 @@ public:
         return false;
     }
 
-    void SetUp()
+    void SetUp() override
     {
         SetUpDefaultValues();
         SetUpWinningCombinations();

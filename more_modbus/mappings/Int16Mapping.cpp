@@ -17,6 +17,7 @@
  */
 
 #include "more_modbus/mappings/Int16Mapping.h"
+
 #include "more_modbus/utilities/DataParsers.h"
 
 #include <stdexcept>
