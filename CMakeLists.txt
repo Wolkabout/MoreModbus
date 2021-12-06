@@ -131,7 +131,7 @@ set(HEADER_FILES more_modbus/mappings/BoolMapping.h
         more_modbus/RegisterGroup.h
         more_modbus/RegisterMapping.h)
 
-file(COPY more_modbus/ DESTINATION ${CMAKE_LIBRARY_INCLUDE_DIRECTORY} PATTERN *.cpp EXCLUDE)
+file(COPY more_modbus/ DESTINATION ${CMAKE_LIBRARY_INCLUDE_DIRECTORY}/more_modbus PATTERN *.cpp EXCLUDE)
 
 add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES} ${HEADER_FILES})
 target_link_libraries(${PROJECT_NAME} WolkAboutCoreUtility modbus pthread)
