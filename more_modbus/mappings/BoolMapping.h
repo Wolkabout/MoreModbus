@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2020 WolkAbout Technology s.r.o.
+/**
+ * Copyright (C) 2021 WolkAbout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,11 +38,15 @@ public:
      * @param address Modbus register address
      * @param readRestricted Is the Mapping write only?
      * @param slaveAddress Slave address of device, leave to be assigned by device, default is -1.
-     * @param frequencyFilterValue changes that occur within the given time (in miliseconds) that will be ignored
+     * @param frequencyFilterValue changes that occur within the given time (in milliseconds) that will be ignored
+     * @param repeatedWrite The minimal time between two writes for a mapping.
+     * @param defaultValue The default value for the mapping.
      */
     BoolMapping(const std::string& reference, RegisterType registerType, int32_t address, bool readRestricted = false,
                 int16_t slaveAddress = -1,
-                std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0));
+                std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0),
+                std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0},
+                const bool* defaultValue = nullptr);
 
     /**
      * @brief Constructor for TAKE_BIT type of Mappings.
@@ -53,11 +57,15 @@ public:
      * @param bitIndex And bit index, as for which bit will we present out.
      * @param readRestricted Is the Mapping write only?
      * @param slaveAddress Slave address of device, leave to be assigned by device, default is -1.
-     * @param frequencyFilterValue changes that occur within the given time (in miliseconds) that will be ignored
+     * @param frequencyFilterValue changes that occur within the given time (in milliseconds) that will be ignored
+     * @param repeatedWrite The minimal time between two writes for a mapping.
+     * @param defaultValue The default value for the mapping.
      */
     BoolMapping(const std::string& reference, RegisterType registerType, int32_t address, OperationType operation,
                 int8_t bitIndex, bool readRestricted = false, int16_t slaveAddress = -1,
-                std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0));
+                std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0),
+                std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0},
+                const bool* defaultValue = nullptr);
 
     /**
      * @brief Triggers the client to write the value for this register.

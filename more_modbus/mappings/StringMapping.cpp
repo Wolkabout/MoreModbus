@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2020 WolkAbout Technology s.r.o.
+/**
+ * Copyright (C) 2021 WolkAbout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,13 +26,23 @@ namespace wolkabout
 {
 StringMapping::StringMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                              const std::vector<int32_t>& addresses, RegisterMapping::OperationType operation,
-                             bool readRestricted, int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue)
+                             bool readRestricted, int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue,
+                             std::chrono::milliseconds repeatedWrite, const std::string& defaultValue)
 : RegisterMapping(reference, registerType, addresses, OutputType::STRING, operation, readRestricted, slaveAddress, 0.0,
-                  frequencyFilterValue)
+                  frequencyFilterValue, repeatedWrite)
 {
     if (operation != OperationType::STRINGIFY_ASCII && operation != OperationType::STRINGIFY_UNICODE)
     {
         throw std::logic_error("StringMapping: Illegal operation type set.");
+    }
+
+    if (!defaultValue.empty() && (defaultValue.size() <= static_cast<uint16_t>(getRegisterCount() * 2)))
+    {
+        m_stringValue = defaultValue;
+        if (operation == RegisterMapping::OperationType::STRINGIFY_ASCII)
+            m_byteValues = DataParsers::asciiStringToRegisters(defaultValue);
+        else
+            m_byteValues = DataParsers::unicodeStringToRegisters(defaultValue);
     }
 }
 

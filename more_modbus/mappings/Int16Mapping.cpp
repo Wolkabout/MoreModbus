@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2020 WolkAbout Technology s.r.o.
+/**
+ * Copyright (C) 2021 WolkAbout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,23 +26,20 @@ namespace wolkabout
 {
 Int16Mapping::Int16Mapping(const std::string& reference, RegisterMapping::RegisterType registerType, int32_t address,
                            bool readRestricted, int16_t slaveAddress, double deadbandValue,
-                           std::chrono::milliseconds frequencyFilterValue)
+                           std::chrono::milliseconds frequencyFilterValue, std::chrono::milliseconds repeatedWrite,
+                           const std::int16_t* defaultValue)
 : RegisterMapping(reference, registerType, address, OutputType::INT16, readRestricted, slaveAddress, deadbandValue,
-                  frequencyFilterValue)
+                  frequencyFilterValue, repeatedWrite)
 {
-    // Stood here, but is actually redundant.
-    //    if (!(registerType == RegisterType::INPUT_REGISTER || registerType == RegisterType::HOLDING_REGISTER))
-    //    {
-    //        throw std::logic_error("Int16Mapping: Illegal register type set.");
-    //    }
+    if (defaultValue != nullptr)
+    {
+        m_int16Value = *defaultValue;
+        m_byteValues = {DataParsers::int16ToUint16(m_int16Value)};
+    }
 }
 
 bool Int16Mapping::update(const std::vector<uint16_t>& newValues)
 {
-    // Redundant check
-    //    if (m_operationType != OperationType::NONE)
-    //        throw std::logic_error("Int16Mapping: Illegal operation type set.");
-
     m_int16Value = DataParsers::uint16ToInt16(newValues[0]);
     return RegisterMapping::update(newValues);
 }

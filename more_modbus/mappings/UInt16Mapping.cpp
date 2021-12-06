@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2020 WolkAbout Technology s.r.o.
+/**
+ * Copyright (C) 2021 WolkAbout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,12 +24,20 @@ namespace wolkabout
 {
 UInt16Mapping::UInt16Mapping(const std::string& reference, RegisterMapping::RegisterType registerType, int32_t address,
                              bool readRestricted, int16_t slaveAddress, double deadbandValue,
-                             std::chrono::milliseconds frequencyFilterValue)
-: RegisterMapping(reference, registerType, address, readRestricted, slaveAddress, deadbandValue, frequencyFilterValue)
+                             std::chrono::milliseconds frequencyFilterValue, std::chrono::milliseconds repeatedWrite,
+                             const std::uint16_t* defaultValue)
+: RegisterMapping(reference, registerType, address, readRestricted, slaveAddress, deadbandValue, frequencyFilterValue,
+                  repeatedWrite)
 {
     if (!(registerType == RegisterType::INPUT_REGISTER || registerType == RegisterType::HOLDING_REGISTER))
     {
         throw std::logic_error("UInt16Mapping: Illegal register type set.");
+    }
+
+    if (defaultValue != nullptr)
+    {
+        m_uint16Value = *defaultValue;
+        m_byteValues = {*defaultValue};
     }
 }
 

@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2020 WolkAbout Technology s.r.o.
+/**
+ * Copyright (C) 2021 WolkAbout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -53,6 +53,10 @@ void ModbusDevice::createGroups(const std::vector<std::shared_ptr<RegisterMappin
     std::shared_ptr<RegisterGroup> previousGroup = nullptr;
     for (const auto& mapping : set)
     {
+        // Add the mapping to rewrite vector if it needs to be rewritten
+        if (mapping->getRepeatedWrite().count() > 0)
+            m_rewrite.emplace_back(mapping);
+
         if (mapping->isReadRestricted())
         {
             // Add the mapping to the readRestricted group for specific type.
@@ -118,6 +122,11 @@ int16_t ModbusDevice::getSlaveAddress() const
 const std::vector<std::shared_ptr<RegisterGroup>>& ModbusDevice::getGroups() const
 {
     return m_groups;
+}
+
+const std::vector<std::shared_ptr<RegisterMapping>>& ModbusDevice::getRewritable() const
+{
+    return m_rewrite;
 }
 
 void ModbusDevice::setOnMappingValueChange(

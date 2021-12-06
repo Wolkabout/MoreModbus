@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2020 WolkAbout Technology s.r.o.
+/**
+ * Copyright (C) 2021 WolkAbout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,10 +26,16 @@ namespace wolkabout
 {
 FloatMapping::FloatMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                            const std::vector<int32_t>& addresses, bool readRestricted, int16_t slaveAddress,
-                           double deadbandValue, std::chrono::milliseconds frequencyFilterValue)
+                           double deadbandValue, std::chrono::milliseconds frequencyFilterValue,
+                           std::chrono::milliseconds repeatedWrite, const float* defaultValue)
 : RegisterMapping(reference, registerType, addresses, OutputType::FLOAT, OperationType::MERGE_FLOAT, readRestricted,
-                  slaveAddress, deadbandValue, frequencyFilterValue)
+                  slaveAddress, deadbandValue, frequencyFilterValue, repeatedWrite)
 {
+    if (defaultValue != nullptr)
+    {
+        m_floatValue = *defaultValue;
+        m_byteValues = DataParsers::floatToRegisters(m_floatValue);
+    }
 }
 
 bool FloatMapping::update(const std::vector<uint16_t>& newValues)

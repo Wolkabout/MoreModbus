@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2020 WolkAbout Technology s.r.o.
+/**
+ * Copyright (C) 2021 WolkAbout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@
 #ifndef WOLKABOUT_MODBUS_MODBUSREADER_H
 #define WOLKABOUT_MODBUS_MODBUSREADER_H
 
+#include "core/utilities/Timer.h"
 #include "more_modbus/ModbusDevice.h"
 #include "more_modbus/modbus/ModbusClient.h"
 
@@ -113,6 +114,9 @@ private:
     // each separate mapping as the mapping requires them.
     void readDevice(const std::shared_ptr<ModbusDevice>& device);
 
+    // Does the logic of writing the values into mappings if they happen to be not written into for a while
+    void rewriteDevice(const std::shared_ptr<ModbusDevice>& device);
+
     std::function<void(std::map<int16_t, bool>)> m_onIterationStatuses;
 
     // Modbus client and device data
@@ -130,12 +134,13 @@ private:
     std::atomic_bool m_shouldReconnect{};
 
     // Threading and reader data
-    // Thread killswitch
+    // Thread kill switch
     std::atomic_bool m_readerShouldRun{};
     // Main thread that handles connection and reconnection.
     // Per-device threads, handles modbusClient call per group and parsing of data.
     std::unique_ptr<std::thread> m_mainReaderThread;
     std::map<int16_t, std::unique_ptr<std::thread>> m_threads;
+    std::map<int16_t, std::unique_ptr<std::thread>> m_rewriteThreads;
     std::chrono::milliseconds m_readPeriod;
 };
 }    // namespace wolkabout

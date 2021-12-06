@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2020 WolkAbout Technology s.r.o.
+/**
+ * Copyright (C) 2021 WolkAbout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,13 +27,22 @@ namespace wolkabout
 Int32Mapping::Int32Mapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                            const std::vector<int32_t>& addresses, RegisterMapping::OperationType operation,
                            bool readRestricted, int16_t slaveAddress, double deadbandValue,
-                           std::chrono::milliseconds frequencyFilterValue)
+                           std::chrono::milliseconds frequencyFilterValue, std::chrono::milliseconds repeatedWrite,
+                           const std::int32_t* defaultValue)
 : RegisterMapping(reference, registerType, addresses, OutputType::INT32, operation, readRestricted, slaveAddress,
-                  deadbandValue, frequencyFilterValue)
+                  deadbandValue, frequencyFilterValue, repeatedWrite)
 {
     if (operation != OperationType::MERGE_BIG_ENDIAN && operation != OperationType::MERGE_LITTLE_ENDIAN)
     {
         throw std::logic_error("Int32Mapping: Illegal operation type set.");
+    }
+
+    if (defaultValue != nullptr)
+    {
+        m_int32Value = *defaultValue;
+        m_byteValues = DataParsers::int32ToRegisters(m_int32Value, operation == OperationType::MERGE_BIG_ENDIAN ?
+                                                                     DataParsers::Endian::BIG :
+                                                                     DataParsers::Endian::LITTLE);
     }
 }
 

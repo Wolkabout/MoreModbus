@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2020 WolkAbout Technology s.r.o.
+/**
+ * Copyright (C) 2021 WolkAbout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,16 +16,16 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "ModbusDevice.h"
-#include "ModbusReader.h"
-#include "RegisterGroup.h"
 #include "core/utilities/Logger.h"
-#include "mappings/BoolMapping.h"
-#include "mappings/StringMapping.h"
-#include "mappings/UInt16Mapping.h"
-#include "modbus/LibModbusSerialRtuClient.h"
-#include "modbus/LibModbusTcpIpClient.h"
-#include "utilities/DataParsers.h"
+#include "more_modbus/ModbusDevice.h"
+#include "more_modbus/ModbusReader.h"
+#include "more_modbus/RegisterGroup.h"
+#include "more_modbus/mappings/BoolMapping.h"
+#include "more_modbus/mappings/StringMapping.h"
+#include "more_modbus/mappings/UInt16Mapping.h"
+#include "more_modbus/modbus/LibModbusSerialRtuClient.h"
+#include "more_modbus/modbus/LibModbusTcpIpClient.h"
+#include "more_modbus/utilities/DataParsers.h"
 
 int main()
 {
@@ -43,7 +43,8 @@ int main()
     // Create a String Mapping
     const auto& stringMapping = std::make_shared<wolkabout::StringMapping>(
       "STR1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, std::vector<std::int32_t>{0, 1, 2},
-      wolkabout::RegisterMapping::OperationType::STRINGIFY_ASCII);
+      wolkabout::RegisterMapping::OperationType::STRINGIFY_ASCII, false, -1, std::chrono::milliseconds{0},
+      std::chrono::milliseconds{3000}, "Hello!");
 
     // Create some Bit Mappings
     const auto& getFirstBitMapping =
@@ -59,15 +60,18 @@ int main()
     device->createGroups(std::vector<std::shared_ptr<wolkabout::RegisterMapping>>{
       normalRegisterMapping, normalContactMapping, stringMapping, getFirstBitMapping, getSecondBitMapping});
 
-    device->setOnMappingValueChange([](const std::shared_ptr<wolkabout::RegisterMapping>& mapping, bool data) {
-        // You can do this for all output types.
-        const auto& boolean = std::dynamic_pointer_cast<wolkabout::BoolMapping>(mapping);
-        LOG(DEBUG) << "Application: Mapping is bool, old value was : " << boolean->getBoolValue()
-                   << ", new value is : " << data;
-    });
+    device->setOnMappingValueChange(
+      [](const std::shared_ptr<wolkabout::RegisterMapping>& mapping, bool data)
+      {
+          // You can do this for all output types.
+          const auto& boolean = std::dynamic_pointer_cast<wolkabout::BoolMapping>(mapping);
+          LOG(DEBUG) << "Application: Mapping is bool, old value was : " << boolean->getBoolValue()
+                     << ", new value is : " << data;
+      });
 
     device->setOnMappingValueChange(
-      [](const std::shared_ptr<wolkabout::RegisterMapping>& mapping, const std::vector<uint16_t>& bytes) {
+      [](const std::shared_ptr<wolkabout::RegisterMapping>& mapping, const std::vector<uint16_t>& bytes)
+      {
           // You can do this for all output types.
           if (mapping->getOutputType() == wolkabout::RegisterMapping::OutputType::STRING)
           {
@@ -84,10 +88,11 @@ int main()
           }
       });
 
-    device->setOnStatusChange([&](bool status) {
-        LOG(DEBUG) << "Application: Device " << device->getName() << " is now " << (status ? "online" : "offline")
-                   << ".";
-    });
+    device->setOnStatusChange(
+      [&](bool status) {
+          LOG(DEBUG) << "Application: Device " << device->getName() << " is now " << (status ? "online" : "offline")
+                     << ".";
+      });
 
     // Serial RTU client
     //    const auto& modbusClient = std::make_shared<wolkabout::LibModbusSerialRtuClient>(

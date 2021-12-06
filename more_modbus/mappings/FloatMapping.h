@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2020 WolkAbout Technology s.r.o.
+/**
+ * Copyright (C) 2021 WolkAbout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,11 +38,15 @@ public:
      * @param readRestricted Is the Mapping write only?
      * @param slaveAddress Slave address of device, leave to be assigned by device, default is -1.
      * @param deadbandValue indicates a change in value of the register that is insignificant data.
-     * @param frequencyFilterValue changes that occur within the given time (in miliseconds) that will be ignored
+     * @param frequencyFilterValue changes that occur within the given time (in milliseconds) that will be ignored
+     * @param repeatedWrite The minimal time between two writes for a mapping.
+     * @param defaultValue The default value for the mapping.
      */
     FloatMapping(const std::string& reference, RegisterType registerType, const std::vector<int32_t>& addresses,
                  bool readRestricted = false, int16_t slaveAddress = -1, double deadbandValue = 0.0,
-                 std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0));
+                 std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0),
+                 std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0},
+                 const float* defaultValue = nullptr);
 
     /**
      * @details Override methods will be executed on devices reading thread, so that this parsing can be done
