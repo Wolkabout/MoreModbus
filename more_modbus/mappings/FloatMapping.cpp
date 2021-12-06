@@ -31,6 +31,15 @@ FloatMapping::FloatMapping(const std::string& reference, RegisterMapping::Regist
 : RegisterMapping(reference, registerType, addresses, OutputType::FLOAT, OperationType::MERGE_FLOAT, readRestricted,
                   slaveAddress, deadbandValue, frequencyFilterValue, repeatedWrite)
 {
+    if (repeatedWrite.count() > 0 && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    {
+        throw std::logic_error("FloatMapping: Can not set a repeated write value for a read-only register.");
+    }
+    if (defaultValue != nullptr && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    {
+        throw std::logic_error("FloatMapping: Can not set a default value for a read-only register.");
+    }
+
     if (defaultValue != nullptr)
     {
         m_floatValue = *defaultValue;

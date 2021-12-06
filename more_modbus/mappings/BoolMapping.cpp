@@ -32,6 +32,14 @@ BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::Register
     {
         throw std::logic_error("BoolMapping: Illegal register type set.");
     }
+    if (repeatedWrite.count() > 0 && registerType == RegisterMapping::RegisterType::INPUT_CONTACT)
+    {
+        throw std::logic_error("BoolMapping: Can not set a repeated write value for a read-only register.");
+    }
+    if (defaultValue != nullptr && registerType == RegisterMapping::RegisterType::INPUT_CONTACT)
+    {
+        throw std::logic_error("BoolMapping: Can not set a default value for a read-only register.");
+    }
 
     if (defaultValue != nullptr)
         m_boolValue = defaultValue;
@@ -49,6 +57,14 @@ BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::Register
     if (operation != OperationType::TAKE_BIT)
     {
         throw std::logic_error("BoolMapping: Illegal operation type set.");
+    }
+    if (repeatedWrite.count() > 0 && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    {
+        throw std::logic_error("BoolMapping: Can not set a repeated write value for a read-only register.");
+    }
+    if (defaultValue != nullptr && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    {
+        throw std::logic_error("BoolMapping: Can not set a default value for a read-only register.");
     }
 
     if (defaultValue != nullptr)
