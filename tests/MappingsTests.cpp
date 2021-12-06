@@ -30,6 +30,10 @@
 #include "mocks/ModbusDeviceMocking.h"
 #include "mocks/ModbusReaderMocking.h"
 #include "mocks/RegisterGroupMocking.h"
+#include "more_modbus/mappings/FloatMapping.h"
+#include "more_modbus/mappings/Int32Mapping.h"
+#include "more_modbus/mappings/StringMapping.h"
+#include "more_modbus/mappings/UInt32Mapping.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -378,4 +382,96 @@ TEST_F(MappingsTests, Int16MappingsInitUpdateValid)
         EXPECT_TRUE(mapping->isInitialized());
         EXPECT_TRUE(mapping->isValid());
     }
+}
+
+TEST_F(MappingsTests, BoolMappingRepeatAndDefaultButReadOnly)
+{
+    auto testValue = false;
+    EXPECT_THROW(wolkabout::BoolMapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_CONTACT, 0, false, 0,
+                                        std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
+                 std::logic_error);
+    EXPECT_THROW(wolkabout::BoolMapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_CONTACT, 0, false, 0,
+                                        std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, &testValue),
+                 std::logic_error);
+    EXPECT_THROW(wolkabout::BoolMapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, 0,
+                                        wolkabout::RegisterMapping::OperationType::TAKE_BIT, 0, false, 0,
+                                        std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
+                 std::logic_error);
+    EXPECT_THROW(wolkabout::BoolMapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, 0,
+                                        wolkabout::RegisterMapping::OperationType::TAKE_BIT, 0, false, 0,
+                                        std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, &testValue),
+                 std::logic_error);
+}
+
+TEST_F(MappingsTests, FloatMappingRepeatAndDefaultButReadOnly)
+{
+    auto testValue = 1.0f;
+    EXPECT_THROW(wolkabout::FloatMapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, {0, 1},
+                                         false, 0, 0.0, std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
+                 std::logic_error);
+    EXPECT_THROW(
+      wolkabout::FloatMapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, {0, 1}, false, 0, 0.0,
+                              std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, &testValue),
+      std::logic_error);
+}
+
+TEST_F(MappingsTests, Int16MappingRepeatAndDefaultButReadOnly)
+{
+    auto testValue = std::int16_t{10};
+    EXPECT_THROW(wolkabout::Int16Mapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, 0, false, 0,
+                                         0.0, std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
+                 std::logic_error);
+    EXPECT_THROW(wolkabout::Int16Mapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, 0, false, 0,
+                                         0.0, std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, &testValue),
+                 std::logic_error);
+}
+
+TEST_F(MappingsTests, Int32MappingRepeatAndDefaultButReadOnly)
+{
+    auto testValue = std::int32_t{10};
+    EXPECT_THROW(wolkabout::Int32Mapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, {0, 1},
+                                         wolkabout::RegisterMapping::OperationType::MERGE_BIG_ENDIAN, false, 0, 0.0,
+                                         std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
+                 std::logic_error);
+    EXPECT_THROW(wolkabout::Int32Mapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, {0, 1},
+                                         wolkabout::RegisterMapping::OperationType::MERGE_BIG_ENDIAN, false, 0, 0.0,
+                                         std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, &testValue),
+                 std::logic_error);
+}
+
+TEST_F(MappingsTests, StringMappingRepeatAndDefaultButReadOnly)
+{
+    auto testValue = std::string("Test");
+    EXPECT_THROW(wolkabout::StringMapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, {0, 1},
+                                          wolkabout::RegisterMapping::OperationType::STRINGIFY_ASCII, false, 0,
+                                          std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
+                 std::logic_error);
+    EXPECT_THROW(wolkabout::StringMapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, {0, 1},
+                                          wolkabout::RegisterMapping::OperationType::STRINGIFY_ASCII, false, 0,
+                                          std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, testValue),
+                 std::logic_error);
+}
+
+TEST_F(MappingsTests, UInt16MappingRepeatAndDefaultButReadOnly)
+{
+    auto testValue = std::uint16_t{10};
+    EXPECT_THROW(wolkabout::UInt16Mapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, 0, false, 0,
+                                          0.0, std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
+                 std::logic_error);
+    EXPECT_THROW(wolkabout::UInt16Mapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, 0, false, 0,
+                                          0.0, std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, &testValue),
+                 std::logic_error);
+}
+
+TEST_F(MappingsTests, UInt32MappingRepeatAndDefaultButReadOnly)
+{
+    auto testValue = std::uint32_t{10};
+    EXPECT_THROW(wolkabout::UInt32Mapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, {0, 1},
+                                          wolkabout::RegisterMapping::OperationType::MERGE_BIG_ENDIAN, false, 0, 0.0,
+                                          std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
+                 std::logic_error);
+    EXPECT_THROW(wolkabout::UInt32Mapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, {0, 1},
+                                          wolkabout::RegisterMapping::OperationType::MERGE_BIG_ENDIAN, false, 0, 0.0,
+                                          std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, &testValue),
+                 std::logic_error);
 }

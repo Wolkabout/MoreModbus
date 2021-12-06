@@ -33,6 +33,14 @@ UInt16Mapping::UInt16Mapping(const std::string& reference, RegisterMapping::Regi
     {
         throw std::logic_error("UInt16Mapping: Illegal register type set.");
     }
+    if (repeatedWrite.count() > 0 && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    {
+        throw std::logic_error("UInt16Mapping: Can not set a repeated write value for a read-only register.");
+    }
+    if (defaultValue != nullptr && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    {
+        throw std::logic_error("UInt16Mapping: Can not set a default value for a read-only register.");
+    }
 
     if (defaultValue != nullptr)
     {

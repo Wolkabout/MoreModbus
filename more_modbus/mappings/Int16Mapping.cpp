@@ -31,6 +31,15 @@ Int16Mapping::Int16Mapping(const std::string& reference, RegisterMapping::Regist
 : RegisterMapping(reference, registerType, address, OutputType::INT16, readRestricted, slaveAddress, deadbandValue,
                   frequencyFilterValue, repeatedWrite)
 {
+    if (repeatedWrite.count() > 0 && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    {
+        throw std::logic_error("Int16Mapping: Can not set a repeated write value for a read-only register.");
+    }
+    if (defaultValue != nullptr && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    {
+        throw std::logic_error("Int16Mapping: Can not set a default value for a read-only register.");
+    }
+
     if (defaultValue != nullptr)
     {
         m_int16Value = *defaultValue;
