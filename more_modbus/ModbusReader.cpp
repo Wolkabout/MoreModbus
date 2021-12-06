@@ -36,6 +36,7 @@ void ModbusReader::addDevice(const std::shared_ptr<ModbusDevice>& device)
     m_devices.emplace(device->getSlaveAddress(), device);
     m_deviceActiveStatus.emplace(device->getSlaveAddress(), false);
     m_threads.emplace(device->getSlaveAddress(), nullptr);
+    m_rewriteThreads.emplace(device->getSlaveAddress(), nullptr);
     device->setReader(shared_from_this());
     LOG(INFO) << "ModbusReader: Successfully added new device " << device->getName();
 }
@@ -212,6 +213,11 @@ void ModbusReader::stop()
     }
 
     for (const auto& thread : m_threads)
+    {
+        if (thread.second != nullptr && thread.second->joinable())
+            thread.second->join();
+    }
+    for (const auto& thread : m_rewriteThreads)
     {
         if (thread.second != nullptr && thread.second->joinable())
             thread.second->join();
