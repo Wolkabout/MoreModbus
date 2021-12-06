@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #
-# Copyright (C) 2020 WolkAbout Technology s.r.o.
+# Copyright (C) 2021 WolkAbout Technology s.r.o.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public

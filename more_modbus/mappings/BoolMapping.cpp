@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2020 WolkAbout Technology s.r.o.
+/**
+ * Copyright (C) 2021 WolkAbout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,25 +23,38 @@
 namespace wolkabout
 {
 BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::RegisterType registerType, int32_t address,
-                         bool readRestricted, int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue)
-: RegisterMapping(reference, registerType, address, readRestricted, slaveAddress, 0.0, frequencyFilterValue)
+                         bool readRestricted, int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue,
+                         std::chrono::milliseconds repeatedWrite, const bool* defaultValue)
+: RegisterMapping(reference, registerType, address, readRestricted, slaveAddress, 0.0, frequencyFilterValue,
+                  repeatedWrite)
 {
     if (!(registerType == RegisterType::COIL || registerType == RegisterType::INPUT_CONTACT))
     {
         throw std::logic_error("BoolMapping: Illegal register type set.");
     }
+
+    if (defaultValue != nullptr)
+        m_boolValue = defaultValue;
+    else
+        m_boolValue = false;
 }
 
 BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::RegisterType registerType, int32_t address,
                          RegisterMapping::OperationType operation, int8_t bitIndex, bool readRestricted,
-                         int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue)
+                         int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue,
+                         std::chrono::milliseconds repeatedWrite, const bool* defaultValue)
 : RegisterMapping(reference, registerType, address, operation, bitIndex, readRestricted, slaveAddress,
-                  frequencyFilterValue)
+                  frequencyFilterValue, repeatedWrite)
 {
-    if (!(operation == OperationType::TAKE_BIT))
+    if (operation != OperationType::TAKE_BIT)
     {
         throw std::logic_error("BoolMapping: Illegal operation type set.");
     }
+
+    if (defaultValue != nullptr)
+        m_boolValue = defaultValue;
+    else
+        m_boolValue = false;
 }
 
 bool BoolMapping::writeValue(bool value)

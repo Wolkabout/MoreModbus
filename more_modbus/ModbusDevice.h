@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2020 WolkAbout Technology s.r.o.
+/**
+ * Copyright (C) 2021 WolkAbout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -94,6 +94,8 @@ public:
 
     const std::vector<std::shared_ptr<RegisterGroup>>& getGroups() const;
 
+    const std::vector<std::shared_ptr<RegisterMapping>>& getRewritable() const;
+
     void setOnMappingValueChange(
       const std::function<void(const std::shared_ptr<RegisterMapping>&, bool)>& onMappingValueChangeBool);
 
@@ -122,6 +124,7 @@ private:
     bool m_status;
     int16_t m_slaveAddress;
     std::vector<std::shared_ptr<RegisterGroup>> m_groups;
+    std::vector<std::shared_ptr<RegisterMapping>> m_rewrite;
 
     std::weak_ptr<ModbusReader> m_reader;
 

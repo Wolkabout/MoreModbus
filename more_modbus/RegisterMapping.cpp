@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2020 WolkAbout Technology s.r.o.
+/**
+ * Copyright (C) 2021 WolkAbout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,21 +22,24 @@
 
 #include <chrono>
 #include <stdexcept>
+#include <utility>
 
 namespace wolkabout
 {
-RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                                 int32_t address, bool readRestricted, int16_t slaveAddress, double deadbandValue,
-                                 std::chrono::milliseconds frequencyFilterValue)
-: m_reference(reference)
+RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::RegisterType registerType, int32_t address,
+                                 bool readRestricted, int16_t slaveAddress, double deadbandValue,
+                                 std::chrono::milliseconds frequencyFilterValue,
+                                 std::chrono::milliseconds repeatedWrite)
+: m_reference(std::move(reference))
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
 , m_address(address)
 , m_slaveAddress(slaveAddress)
-, m_deadbandValue(deadbandValue)
-, m_frequencyFilterValue(frequencyFilterValue)
 , m_operationType(OperationType::NONE)
 , m_byteValues(1)
+, m_repeatedWrite(repeatedWrite)
+, m_deadbandValue(deadbandValue)
+, m_frequencyFilterValue(frequencyFilterValue)
 {
     if (readRestricted && (static_cast<uint16_t>(registerType) % 2 == 1))
     {
@@ -55,23 +58,23 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
         m_outputType = OutputType::BOOL;
         break;
     }
-
-    m_lastUpdateTime = std::chrono::high_resolution_clock::now();
 }
 
-RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                                 int32_t address, OutputType type, bool readRestricted, int16_t slaveAddress,
-                                 double deadbandValue, std::chrono::milliseconds frequencyFilterValue)
-: m_reference(reference)
+RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::RegisterType registerType, int32_t address,
+                                 OutputType type, bool readRestricted, int16_t slaveAddress, double deadbandValue,
+                                 std::chrono::milliseconds frequencyFilterValue,
+                                 std::chrono::milliseconds repeatedWrite)
+: m_reference(std::move(reference))
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
 , m_address(address)
 , m_slaveAddress(slaveAddress)
-, m_deadbandValue(deadbandValue)
-, m_frequencyFilterValue(frequencyFilterValue)
 , m_outputType(type)
 , m_operationType(OperationType::NONE)
 , m_byteValues(1)
+, m_repeatedWrite(repeatedWrite)
+, m_deadbandValue(deadbandValue)
+, m_frequencyFilterValue(frequencyFilterValue)
 {
     if (readRestricted && (static_cast<uint16_t>(registerType) % 2 == 1))
     {
@@ -97,22 +100,22 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
               "RegisterMapping: Single address discrete register can\'t be anything else than BOOL.");
         }
     }
-
-    m_lastUpdateTime = std::chrono::high_resolution_clock::now();
 }
 
-RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                                 int32_t address, OperationType type, int8_t bitIndex, bool readRestricted,
-                                 int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue)
-: m_reference(reference)
+RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::RegisterType registerType, int32_t address,
+                                 OperationType type, int8_t bitIndex, bool readRestricted, int16_t slaveAddress,
+                                 std::chrono::milliseconds frequencyFilterValue,
+                                 std::chrono::milliseconds repeatedWrite)
+: m_reference(std::move(reference))
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
 , m_address(address)
 , m_slaveAddress(slaveAddress)
-, m_frequencyFilterValue(frequencyFilterValue)
 , m_outputType(OutputType::BOOL)
 , m_operationType(OperationType::TAKE_BIT)
 , m_bitIndex(bitIndex)
+, m_repeatedWrite(repeatedWrite)
+, m_frequencyFilterValue(frequencyFilterValue)
 {
     if (readRestricted && (static_cast<uint16_t>(registerType) % 2 == 1))
     {
@@ -123,23 +126,22 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
     {
         throw std::logic_error("RegisterMapping: Take bit can\'t be done over COIL/INPUT_CONTACT.");
     }
-
-    m_lastUpdateTime = std::chrono::high_resolution_clock::now();
 }
 
-RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                                 const std::vector<int32_t>& addresses, OutputType type, OperationType operation,
-                                 bool readRestricted, int16_t slaveAddress, double deadbandValue,
-                                 std::chrono::milliseconds frequencyFilterValue)
-: m_reference(reference)
+RegisterMapping::RegisterMapping(std::string reference, RegisterType registerType, std::vector<int32_t> addresses,
+                                 OutputType type, OperationType operation, bool readRestricted, int16_t slaveAddress,
+                                 double deadbandValue, std::chrono::milliseconds frequencyFilterValue,
+                                 std::chrono::milliseconds repeatedWrite)
+: m_reference(std::move(reference))
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
-, m_addresses(addresses)
-, m_deadbandValue(deadbandValue)
-, m_frequencyFilterValue(frequencyFilterValue)
+, m_addresses(std::move(addresses))
 , m_slaveAddress(slaveAddress)
 , m_outputType(type)
 , m_operationType(operation)
+, m_repeatedWrite(repeatedWrite)
+, m_deadbandValue(deadbandValue)
+, m_frequencyFilterValue(frequencyFilterValue)
 {
     if (readRestricted && (static_cast<uint16_t>(registerType) % 2 == 1))
     {
@@ -195,8 +197,6 @@ RegisterMapping::RegisterMapping(const std::string& reference, RegisterMapping::
     }
 
     m_byteValues = std::vector<uint16_t>(m_addresses.size());
-
-    m_lastUpdateTime = std::chrono::high_resolution_clock::now();
 }
 
 const std::string& RegisterMapping::getReference() const
@@ -417,6 +417,16 @@ const std::shared_ptr<RegisterGroup>& RegisterMapping::getGroup() const
 void RegisterMapping::setGroup(const std::shared_ptr<RegisterGroup>& group)
 {
     m_group = group;
+}
+
+const std::chrono::milliseconds& RegisterMapping::getRepeatedWrite() const
+{
+    return m_repeatedWrite;
+}
+
+const std::chrono::high_resolution_clock::time_point& RegisterMapping::getLastUpdateTime() const
+{
+    return m_lastUpdateTime;
 }
 
 bool RegisterMapping::deadbandFilter(const std::vector<uint16_t>& newValues) const
