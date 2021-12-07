@@ -6,7 +6,7 @@
 Additional Modbus abstraction layer, parsing data from uint16_t registers into more useful types.
 
 **Version 0.3.2** - Added `repeat` and `defaultValue`
-    - [IMPROVEMENT] - The mappings now have `repeat` and `defaultValue` parameters. These allow a mapping to be written every `repeat` milliseconds, even if it hasn't been externally.
+    - [IMPROVEMENT] - The mappings now have `repeat` and `defaultValue` parameters. These allow a mapping to be written every `repeat` milliseconds, even if it hasn't been changed externally.
 
 **Version 0.3.1** - Fixed strings
     - [BUGFIX] - Fixed all strings to be read without a bunch of null characters. All null characters are replaced by empty strings, inbound or outbound.

@@ -66,8 +66,9 @@ const std::map<int16_t, std::shared_ptr<ModbusDevice>>& ModbusReader::getDevices
     return m_devices;
 }
 
-const std::map<int16_t, bool>& ModbusReader::getDeviceStatuses() const
+const std::map<int16_t, bool>& ModbusReader::getDeviceStatuses()
 {
+    std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
     return m_deviceActiveStatus;
 }
 
@@ -292,12 +293,20 @@ void ModbusReader::run()
                 std::this_thread::sleep_for(m_readPeriod);
 
                 auto deviceRead = false;
-                for (const auto& device : m_deviceActiveStatus)
                 {
-                    if (device.second)
+                    auto map = std::map<int16_t, bool>{};
                     {
-                        deviceRead = true;
-                        break;
+                        std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
+                        map = m_deviceActiveStatus;
+                    }
+
+                    for (const auto& device : map)
+                    {
+                        if (device.second)
+                        {
+                            deviceRead = true;
+                            break;
+                        }
                     }
                 }
 
@@ -351,15 +360,27 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
             }
 
             // If all the groups had error while reading, report the device as having errors.
-            if (unreadGroups == device->getGroups().size())
+            auto lastStatus = bool();
             {
-                m_deviceActiveStatus[device->getSlaveAddress()] = false;
+                std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
+                lastStatus = m_deviceActiveStatus[device->getSlaveAddress()];
+            }
+
+            if (unreadGroups == device->getGroups().size() && lastStatus)
+            {
+                {
+                    std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
+                    m_deviceActiveStatus[device->getSlaveAddress()] = false;
+                }
                 device->triggerOnStatusChange(false);
                 connected = false;
             }
-            else
+            else if (!lastStatus)
             {
-                m_deviceActiveStatus[device->getSlaveAddress()] = true;
+                {
+                    std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
+                    m_deviceActiveStatus[device->getSlaveAddress()] = true;
+                }
                 device->triggerOnStatusChange(true);
             }
 
@@ -379,8 +400,11 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
         }
         else
         {
-            if (m_deviceActiveStatus[device->getSlaveAddress()])
-                connected = true;
+            {
+                std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
+                if (m_deviceActiveStatus[device->getSlaveAddress()])
+                    connected = true;
+            }
 
             std::this_thread::sleep_for(m_readPeriod);
         }
@@ -471,27 +495,38 @@ void ModbusReader::rewriteDevice(const std::shared_ptr<ModbusDevice>& device)
             }
 
             // If all the groups had error while reading, report the device as having errors.
-            if (requiredMappings > 0 && succeededMappings == 0)
+            auto lastStatus = bool();
             {
-                m_deviceActiveStatus[device->getSlaveAddress()] = false;
+                std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
+                lastStatus = m_deviceActiveStatus[device->getSlaveAddress()];
+            }
+
+            if (requiredMappings > 0 && succeededMappings == 0 && lastStatus)
+            {
+                {
+                    std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
+                    m_deviceActiveStatus[device->getSlaveAddress()] = false;
+                }
                 device->triggerOnStatusChange(false);
                 connected = false;
             }
-            else
+            else if (!lastStatus)
             {
-                m_deviceActiveStatus[device->getSlaveAddress()] = true;
+                {
+                    std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
+                    m_deviceActiveStatus[device->getSlaveAddress()] = true;
+                }
                 device->triggerOnStatusChange(true);
             }
-
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
         else
         {
+            std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
             if (m_deviceActiveStatus[device->getSlaveAddress()])
                 connected = true;
-
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 }
 }    // namespace wolkabout
