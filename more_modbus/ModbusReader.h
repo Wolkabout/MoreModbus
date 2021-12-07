@@ -92,7 +92,7 @@ public:
 
     const std::map<int16_t, std::shared_ptr<ModbusDevice>>& getDevices() const;
 
-    const std::map<int16_t, bool>& getDeviceStatuses() const;
+    const std::map<int16_t, bool>& getDeviceStatuses();
 
     /**
      * @brief Initializes the modbus connection, will also reconnect if it isn't working,
@@ -122,6 +122,7 @@ private:
     // Modbus client and device data
     ModbusClient& m_modbusClient;
     std::map<int16_t, std::shared_ptr<ModbusDevice>> m_devices;
+    std::mutex m_deviceActiveMutex;
     std::map<int16_t, bool> m_deviceActiveStatus;
 
     // Reconnect logic, modbusClient will after a failed read/connection,
