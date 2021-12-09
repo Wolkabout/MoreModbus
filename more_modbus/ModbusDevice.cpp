@@ -162,9 +162,6 @@ void ModbusDevice::triggerOnMappingValueChange(const std::shared_ptr<RegisterMap
 
 void ModbusDevice::triggerOnStatusChange(bool status)
 {
-    if (m_status == status)
-        return;
-
     if (m_onStatusChange != nullptr && m_status != status)
         m_onStatusChange(status);
 

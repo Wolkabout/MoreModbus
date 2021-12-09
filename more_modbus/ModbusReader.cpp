@@ -66,7 +66,7 @@ const std::map<int16_t, std::shared_ptr<ModbusDevice>>& ModbusReader::getDevices
     return m_devices;
 }
 
-const std::map<int16_t, bool>& ModbusReader::getDeviceStatuses()
+const std::map<int16_t, bool>& ModbusReader::getDeviceStatuses() const
 {
     std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
     return m_deviceActiveStatus;
