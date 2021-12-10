@@ -95,7 +95,7 @@ public:
 
     const std::vector<std::shared_ptr<RegisterGroup>>& getGroups() const;
 
-    const std::vector<std::shared_ptr<RegisterMapping>>& getRewritable() const;
+    std::vector<std::shared_ptr<RegisterMapping>> getRewritable() const;
 
     void addRewritable(const std::shared_ptr<RegisterMapping>& mapping);
 

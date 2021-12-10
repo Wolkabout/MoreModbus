@@ -124,7 +124,7 @@ const std::vector<std::shared_ptr<RegisterGroup>>& ModbusDevice::getGroups() con
     return m_groups;
 }
 
-const std::vector<std::shared_ptr<RegisterMapping>>& ModbusDevice::getRewritable() const
+std::vector<std::shared_ptr<RegisterMapping>> ModbusDevice::getRewritable() const
 {
     std::lock_guard<std::mutex> lockGuard{m_rewriteMutex};
 

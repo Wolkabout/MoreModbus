@@ -103,9 +103,9 @@ public:
 
     /**
      * @brief Internal getter for the device that owns this groups
-     * @return shared pointer to that device
+     * @return weak pointer to that device
      */
-    const std::shared_ptr<ModbusDevice>& getDevice() const;
+    std::weak_ptr<ModbusDevice> getDevice() const;
 
     void setDevice(const std::shared_ptr<ModbusDevice>& device);
 
@@ -145,7 +145,7 @@ private:
     int16_t m_slaveAddress;
     bool m_readRestricted;
 
-    std::shared_ptr<ModbusDevice> m_device;
+    std::weak_ptr<ModbusDevice> m_device;
 
     MappingsMap m_mappings;
 

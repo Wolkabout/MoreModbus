@@ -56,8 +56,9 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
 
         if (mapping.second->doesUpdate(newValue))
         {
-            group.getDevice()->triggerOnMappingValueChange(mapping.second, newValue);
             mapping.second->update(newValue);
+            if (!group.getDevice().expired())
+                group.getDevice().lock()->triggerOnMappingValueChange(mapping.second, newValue);
             LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '" << mapping.second->getReference()
                       << "' Value: '" << mapping.second->getBoolValue() << "'";
         }
@@ -132,7 +133,8 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
                 if (bitMapping.second->doesUpdate(bitValue))
                 {
                     bitMapping.second->update(bitValue);
-                    group.getDevice()->triggerOnMappingValueChange(bitMapping.second, bitValue);
+                    if (!group.getDevice().expired())
+                        group.getDevice().lock()->triggerOnMappingValueChange(bitMapping.second, bitValue);
                     LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '"
                               << bitMapping.second->getReference() << "' Value: '" << bitValue << "'";
                 }
@@ -157,7 +159,8 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
             if (mapping.second->doesUpdate(data))
             {
                 mapping.second->update(data);
-                group.getDevice()->triggerOnMappingValueChange(mapping.second, data);
+                if (!group.getDevice().expired())
+                    group.getDevice().lock()->triggerOnMappingValueChange(mapping.second, data);
                 LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '" << mapping.second->getReference()
                           << "' Values: " << loggingString;
             }

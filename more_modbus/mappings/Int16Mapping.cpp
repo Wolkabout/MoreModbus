@@ -56,13 +56,19 @@ bool Int16Mapping::update(const std::vector<uint16_t>& newValues)
 
 bool Int16Mapping::writeValue(int16_t value)
 {
-    if (getGroup()->getDevice()->getReader().expired())
+    if (getGroup().expired())
         return false;
+    const auto group = getGroup().lock();
+    if (group->getDevice().expired())
+        return false;
+    const auto device = group->getDevice().lock();
+    if (device->getReader().expired())
+        return false;
+    const auto reader = device->getReader().lock();
 
     std::vector<uint16_t> bytes;
     bytes.emplace_back(DataParsers::int16ToUint16(value));
 
-    const auto reader = getGroup()->getDevice()->getReader().lock();
     bool success = reader->writeMapping(*this, bytes);
     if (success)
         m_int16Value = value;
