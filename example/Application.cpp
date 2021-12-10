@@ -62,18 +62,15 @@ int main()
     device->createGroups(std::vector<std::shared_ptr<wolkabout::RegisterMapping>>{
       normalRegisterMapping, normalContactMapping, stringMapping, getFirstBitMapping, getSecondBitMapping});
 
-    device->setOnMappingValueChange(
-      [](const std::shared_ptr<wolkabout::RegisterMapping>& mapping, bool data)
-      {
-          // You can do this for all output types.
-          const auto& boolean = std::dynamic_pointer_cast<wolkabout::BoolMapping>(mapping);
-          LOG(DEBUG) << "Application: Mapping is bool, old value was : " << boolean->getBoolValue()
-                     << ", new value is : " << data;
-      });
+    device->setOnMappingValueChange([](const std::shared_ptr<wolkabout::RegisterMapping>& mapping, bool data) {
+        // You can do this for all output types.
+        const auto& boolean = std::dynamic_pointer_cast<wolkabout::BoolMapping>(mapping);
+        LOG(DEBUG) << "Application: Mapping is bool, old value was : " << boolean->getBoolValue()
+                   << ", new value is : " << data;
+    });
 
     device->setOnMappingValueChange(
-      [](const std::shared_ptr<wolkabout::RegisterMapping>& mapping, const std::vector<uint16_t>& bytes)
-      {
+      [](const std::shared_ptr<wolkabout::RegisterMapping>& mapping, const std::vector<uint16_t>& bytes) {
           // You can do this for all output types.
           if (mapping->getOutputType() == wolkabout::RegisterMapping::OutputType::STRING)
           {
@@ -90,11 +87,10 @@ int main()
           }
       });
 
-    device->setOnStatusChange(
-      [&](bool status) {
-          LOG(DEBUG) << "Application: Device " << device->getName() << " is now " << (status ? "online" : "offline")
-                     << ".";
-      });
+    device->setOnStatusChange([&](bool status) {
+        LOG(DEBUG) << "Application: Device " << device->getName() << " is now " << (status ? "online" : "offline")
+                   << ".";
+    });
 
     // Serial RTU client
     //    const auto& modbusClient = std::make_shared<wolkabout::LibModbusSerialRtuClient>(
