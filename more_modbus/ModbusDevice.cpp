@@ -126,7 +126,26 @@ const std::vector<std::shared_ptr<RegisterGroup>>& ModbusDevice::getGroups() con
 
 const std::vector<std::shared_ptr<RegisterMapping>>& ModbusDevice::getRewritable() const
 {
+    std::lock_guard<std::mutex> lockGuard{m_rewriteMutex};
+
     return m_rewrite;
+}
+
+void ModbusDevice::addRewritable(const std::shared_ptr<RegisterMapping>& mapping)
+{
+    std::lock_guard<std::mutex> lockGuard{m_rewriteMutex};
+
+    if (std::find(m_rewrite.cbegin(), m_rewrite.cend(), mapping) == m_rewrite.cend())
+        m_rewrite.emplace_back(mapping);
+}
+
+void ModbusDevice::removeRewritable(const std::shared_ptr<RegisterMapping>& mapping)
+{
+    std::lock_guard<std::mutex> lockGuard{m_rewriteMutex};
+
+    const auto it = std::find(m_rewrite.cbegin(), m_rewrite.cend(), mapping);
+    if (it != m_rewrite.cend())
+        m_rewrite.erase(it);
 }
 
 void ModbusDevice::setOnMappingValueChange(

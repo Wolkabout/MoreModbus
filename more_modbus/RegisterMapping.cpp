@@ -16,8 +16,9 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include "more_modbus/ModbusDevice.h"
+#include "more_modbus/RegisterGroup.h"
 #include "more_modbus/RegisterMapping.h"
-
 #include "more_modbus/utilities/DataParsers.h"
 
 #include <chrono>
@@ -426,6 +427,18 @@ const std::chrono::milliseconds& RegisterMapping::getRepeatedWrite() const
 
 void RegisterMapping::setRepeatedWrite(const std::chrono::milliseconds& repeatedWrite)
 {
+    // Check if the repeated write needs to be added now into the device's list
+    if (m_repeatedWrite.count() == 0 && repeatedWrite.count() > 0 &&
+        (m_group != nullptr && m_group->getDevice() != nullptr))
+    {
+        m_group->m_device->addRewritable(shared_from_this());
+    }
+    if (m_repeatedWrite.count() > 0 && repeatedWrite.count() == 0 &&
+        (m_group != nullptr && m_group->getDevice() != nullptr))
+    {
+        m_group->m_device->removeRewritable(shared_from_this());
+    }
+
     m_repeatedWrite = repeatedWrite;
 }
 
