@@ -16,9 +16,10 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include "more_modbus/RegisterMapping.h"
+
 #include "more_modbus/ModbusDevice.h"
 #include "more_modbus/RegisterGroup.h"
-#include "more_modbus/RegisterMapping.h"
 #include "more_modbus/utilities/DataParsers.h"
 
 #include <chrono>
