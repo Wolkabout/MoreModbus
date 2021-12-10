@@ -148,6 +148,8 @@ private:
     std::shared_ptr<ModbusDevice> m_device;
 
     MappingsMap m_mappings;
+
+    friend class RegisterMapping;
 };
 }    // namespace wolkabout
 

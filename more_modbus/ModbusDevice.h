@@ -96,6 +96,10 @@ public:
 
     const std::vector<std::shared_ptr<RegisterMapping>>& getRewritable() const;
 
+    void addRewritable(const std::shared_ptr<RegisterMapping>& mapping);
+
+    void removeRewritable(const std::shared_ptr<RegisterMapping>& mapping);
+
     void setOnMappingValueChange(
       const std::function<void(const std::shared_ptr<RegisterMapping>&, bool)>& onMappingValueChangeBool);
 
@@ -124,6 +128,8 @@ private:
     bool m_status;
     int16_t m_slaveAddress;
     std::vector<std::shared_ptr<RegisterGroup>> m_groups;
+
+    std::mutex m_rewriteMutex;
     std::vector<std::shared_ptr<RegisterMapping>> m_rewrite;
 
     std::weak_ptr<ModbusReader> m_reader;

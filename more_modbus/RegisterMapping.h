@@ -34,7 +34,7 @@ class RegisterGroup;
  * @details As definition, it takes in the RegisterType and other parameters, in which there is an OutputType,
  *         and parameters to indicate how to read values.
  */
-class RegisterMapping
+class RegisterMapping : public std::enable_shared_from_this<RegisterMapping>
 {
 public:
     /**
