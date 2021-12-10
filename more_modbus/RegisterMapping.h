@@ -240,11 +240,12 @@ public:
     const std::chrono::milliseconds& getRepeatedWrite() const;
 
     /**
-     * This is the default getter for the default value of the mapping.
+     * This is the default setter for the period after which the mapping value should be rewritten.
+     * If the value is 0, the value does not need to be rewritten.
      *
-     * @return The default value as a string.
+     * @param repeatedWrite The new rewrite period in milliseconds.
      */
-    const std::string& getDefaultValue() const;
+    void setRepeatedWrite(const std::chrono::milliseconds& repeatedWrite);
 
     /**
      * This is the default getter for the time when the value was last updated.
