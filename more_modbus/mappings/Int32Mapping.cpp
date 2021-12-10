@@ -91,7 +91,7 @@ bool Int32Mapping::writeValue(int32_t value)
         bytes = DataParsers::int32ToRegisters(value, DataParsers::Endian::LITTLE);
     else
         throw std::logic_error("Int32Mapping: Illegal operation type set.");
-    
+
     bool success = reader->writeMapping(*this, bytes);
     if (success)
         m_int32Value = value;

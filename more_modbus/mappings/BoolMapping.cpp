@@ -91,7 +91,7 @@ bool BoolMapping::writeValue(bool value)
     const auto reader = device->getReader().lock();
 
     bool success;
-    
+
     if (m_operationType == OperationType::TAKE_BIT)
         success = reader->writeBitMapping(*this, value);
     else
