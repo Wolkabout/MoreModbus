@@ -88,11 +88,13 @@ public:
      * @param deadbandValue indicates a change in value of the register that is insignificant data
      * @param frequencyFilterValue changes that occur within the given time (in milliseconds) that will be ignored
      * @param repeatedWrite The minimal time between two writes for a mapping.
+     * @param defaultValue The default value of the register.
      */
     RegisterMapping(std::string reference, RegisterType registerType, int32_t address, bool readRestricted = false,
                     int16_t slaveAddress = -1, double deadbandValue = 0.0,
                     std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0),
-                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0});
+                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0},
+                    std::string defaultValue = "");
 
     /**
      * @brief Default constructor for mapping with custom OutputType.
@@ -107,11 +109,13 @@ public:
      * @param deadbandValue indicates a change in value of the register that is insignificant data
      * @param frequencyFilterValue changes that occur within the given time (in milliseconds) that will be ignored
      * @param repeatedWrite The minimal time between two writes for a mapping.
+     * @param defaultValue The default value of the register.
      */
     RegisterMapping(std::string reference, RegisterType registerType, int32_t address, OutputType type,
                     bool readRestricted = false, int16_t slaveAddress = -1, double deadbandValue = 0.0,
                     std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0),
-                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0});
+                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0},
+                    std::string defaultValue = "");
 
     /**
      * @brief Constructor for cases where bit is taken from a 16 bit register.
@@ -125,11 +129,13 @@ public:
      * @param slaveAddress of the devices being accessed, leave as default on -1
      * @param frequencyFilterValue changes that occur within the given time (in milliseconds) that will be ignored
      * @param repeatedWrite The minimal time between two writes for a mapping.
+     * @param defaultValue The default value of the register.
      */
     RegisterMapping(std::string reference, RegisterType registerType, int32_t address, OperationType operation,
                     int8_t bitIndex, bool readRestricted = false, int16_t slaveAddress = -1,
                     std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0),
-                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0});
+                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0},
+                    std::string defaultValue = "");
 
     /**
      * @brief Constructor for cases where there is multiple registers merged into a single output value.
@@ -147,12 +153,14 @@ public:
      * @param deadbandValue indicates a change in value of the register that is insignificant data
      * @param frequencyFilterValue changes that occur within the given time (in milliseconds) that will be ignored
      * @param repeatedWrite The minimal time between two writes for a mapping.
+     * @param defaultValue The default value of the register.
      */
     RegisterMapping(std::string reference, RegisterType registerType, std::vector<int32_t> addresses, OutputType type,
                     OperationType operation, bool readRestricted = false, int16_t slaveAddress = -1,
                     double deadbandValue = 0.0,
                     std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0),
-                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0});
+                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0},
+                    std::string defaultValue = "");
 
     virtual ~RegisterMapping() = default;
 
@@ -248,6 +256,13 @@ public:
     void setRepeatedWrite(const std::chrono::milliseconds& repeatedWrite);
 
     /**
+     * This is the default getter for the default value of this mapping.
+     *
+     * @return The default value of the mapping.
+     */
+    const std::string& getDefaultValue() const;
+
+    /**
      * This is the default getter for the time when the value was last updated.
      *
      * @return The last updated time as a time_point.
@@ -279,6 +294,7 @@ protected:
 
     // Repeated writing logic
     std::chrono::milliseconds m_repeatedWrite;
+    std::string m_defaultValue;
 
     // Frequency filter data
     double m_deadbandValue = 0.0;

@@ -51,6 +51,7 @@ StringMapping::StringMapping(const std::string& reference, RegisterMapping::Regi
             m_byteValues = DataParsers::asciiStringToRegisters(defaultValue);
         else
             m_byteValues = DataParsers::unicodeStringToRegisters(defaultValue);
+        m_defaultValue = m_stringValue;
     }
 }
 

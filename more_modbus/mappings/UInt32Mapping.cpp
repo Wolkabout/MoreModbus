@@ -51,6 +51,7 @@ UInt32Mapping::UInt32Mapping(const std::string& reference, RegisterMapping::Regi
         m_byteValues = DataParsers::uint32ToRegisters(
           m_uint32Value, (operation == RegisterMapping::OperationType::MERGE_BIG_ENDIAN ? DataParsers::Endian::BIG :
                                                                                           DataParsers::Endian::LITTLE));
+        m_defaultValue = std::to_string(m_uint32Value);
     }
 }
 
