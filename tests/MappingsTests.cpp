@@ -59,10 +59,10 @@ public:
 
     virtual void SetUp()
     {
-        modbusClientMock.reset(new ::testing::NiceMock<ModbusClientMock>());
-        registerGroupMock.reset(new ::testing::NiceMock<RegisterGroupMock>());
-        modbusDeviceMock.reset(new ::testing::NiceMock<ModbusDeviceMock>());
-        modbusReaderMock.reset(new ::testing::NiceMock<ModbusReaderMock>(*modbusClientMock));
+        modbusClientMock = std::make_shared<::testing::NiceMock<ModbusClientMock>>();
+        registerGroupMock = std::make_shared<::testing::NiceMock<RegisterGroupMock>>();
+        modbusDeviceMock = std::make_shared<::testing::NiceMock<ModbusDeviceMock>>();
+        modbusReaderMock = std::make_shared<::testing::NiceMock<ModbusReaderMock>>(*modbusClientMock);
 
         SetUpDefaultValues();
         SetUpWinningCombinations();
@@ -78,15 +78,15 @@ public:
 
     void MovePointers()
     {
-        modbusDeviceMock->m_reader = std::move(modbusReaderMock);
-        registerGroupMock->m_device = std::move(modbusDeviceMock);
+        modbusDeviceMock->m_reader = modbusReaderMock;
+        registerGroupMock->m_device = modbusDeviceMock;
     }
 
     void MoveBackPointers()
     {
-        registerGroupMock.reset(new ::testing::NiceMock<RegisterGroupMock>());
-        modbusDeviceMock.reset(new ::testing::NiceMock<ModbusDeviceMock>());
-        modbusReaderMock.reset(new ::testing::NiceMock<ModbusReaderMock>(*modbusClientMock));
+        registerGroupMock = std::make_shared<::testing::NiceMock<RegisterGroupMock>>();
+        modbusDeviceMock = std::make_shared<::testing::NiceMock<ModbusDeviceMock>>();
+        modbusReaderMock = std::make_shared<::testing::NiceMock<ModbusReaderMock>>(*modbusClientMock);
     }
 
     void SetUpDefaultValues()
@@ -127,16 +127,16 @@ public:
         return false;
     }
 
-    static std::unique_ptr<ModbusClientMock> modbusClientMock;
-    static std::unique_ptr<ModbusDeviceMock> modbusDeviceMock;
+    static std::shared_ptr<ModbusClientMock> modbusClientMock;
+    static std::shared_ptr<ModbusDeviceMock> modbusDeviceMock;
     static std::shared_ptr<ModbusReaderMock> modbusReaderMock;
-    static std::unique_ptr<RegisterGroupMock> registerGroupMock;
+    static std::shared_ptr<RegisterGroupMock> registerGroupMock;
 };
 
-std::unique_ptr<ModbusClientMock> MappingsTests::modbusClientMock;
-std::unique_ptr<ModbusDeviceMock> MappingsTests::modbusDeviceMock;
+std::shared_ptr<ModbusClientMock> MappingsTests::modbusClientMock;
+std::shared_ptr<ModbusDeviceMock> MappingsTests::modbusDeviceMock;
 std::shared_ptr<ModbusReaderMock> MappingsTests::modbusReaderMock;
-std::unique_ptr<RegisterGroupMock> MappingsTests::registerGroupMock;
+std::shared_ptr<RegisterGroupMock> MappingsTests::registerGroupMock;
 
 TEST_F(MappingsTests, BoolMappingCreation)
 {
@@ -190,8 +190,10 @@ TEST_F(MappingsTests, BoolMappingsWriteValue)
             mapping->m_boolValue = !value;
             MovePointers();
             mapping->m_group = std::move(registerGroupMock);
-            ASSERT_FALSE(mapping->m_group->m_device->m_reader.expired());
-            const auto reader = mapping->m_group->m_device->m_reader.lock();
+            ASSERT_FALSE(mapping->m_group.expired());
+            ASSERT_FALSE(mapping->m_group.lock()->m_device.expired());
+            ASSERT_FALSE(mapping->m_group.lock()->m_device.lock()->m_reader.expired());
+            const auto reader = mapping->m_group.lock()->m_device.lock()->m_reader.lock();
             if (registerType == _registerType::COIL)
             {
                 EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, value)).WillOnce(Return(true));
@@ -213,8 +215,10 @@ TEST_F(MappingsTests, BoolMappingsWriteValue)
             mapping->m_boolValue = !value;
             MovePointers();
             mapping->m_group = std::move(registerGroupMock);
-            ASSERT_FALSE(mapping->m_group->m_device->m_reader.expired());
-            const auto reader = mapping->m_group->m_device->m_reader.lock();
+            ASSERT_FALSE(mapping->m_group.expired());
+            ASSERT_FALSE(mapping->m_group.lock()->m_device.expired());
+            ASSERT_FALSE(mapping->m_group.lock()->m_device.lock()->m_reader.expired());
+            const auto reader = mapping->m_group.lock()->m_device.lock()->m_reader.lock();
             if (registerType == _registerType::HOLDING_REGISTER)
             {
                 EXPECT_CALL((ModbusReaderMock&)*reader, writeBitMapping).WillOnce(Return(true));
@@ -265,8 +269,10 @@ TEST_F(MappingsTests, UInt16MappingsWriteValue)
         auto mapping = std::make_shared<wolkabout::UInt16Mapping>("TEST", registerType, 0);
         MovePointers();
         mapping->m_group = std::move(registerGroupMock);
-        ASSERT_FALSE(mapping->m_group->m_device->m_reader.expired());
-        const auto reader = mapping->m_group->m_device->m_reader.lock();
+        ASSERT_FALSE(mapping->m_group.expired());
+        ASSERT_FALSE(mapping->m_group.lock()->m_device.expired());
+        ASSERT_FALSE(mapping->m_group.lock()->m_device.lock()->m_reader.expired());
+        const auto reader = mapping->m_group.lock()->m_device.lock()->m_reader.lock();
         if (registerType == _registerType::HOLDING_REGISTER)
         {
             EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, std::vector<uint16_t>{value}))
@@ -340,8 +346,10 @@ TEST_F(MappingsTests, Int16MappingsWriteValue)
         auto mapping = std::make_shared<wolkabout::Int16Mapping>("TEST", registerType, 0);
         MovePointers();
         mapping->m_group = std::move(registerGroupMock);
-        ASSERT_FALSE(mapping->m_group->m_device->m_reader.expired());
-        const auto reader = mapping->m_group->m_device->m_reader.lock();
+        ASSERT_FALSE(mapping->m_group.expired());
+        ASSERT_FALSE(mapping->m_group.lock()->m_device.expired());
+        ASSERT_FALSE(mapping->m_group.lock()->m_device.lock()->m_reader.expired());
+        const auto reader = mapping->m_group.lock()->m_device.lock()->m_reader.lock();
         if (registerType == _registerType::HOLDING_REGISTER)
         {
             EXPECT_CALL((ModbusReaderMock&)*reader,

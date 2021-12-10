@@ -74,6 +74,14 @@ bool Int32Mapping::update(const std::vector<uint16_t>& newValues)
 
 bool Int32Mapping::writeValue(int32_t value)
 {
+    std::vector<uint16_t> bytes;
+    if (m_operationType == OperationType::MERGE_BIG_ENDIAN)
+        bytes = DataParsers::int32ToRegisters(value, DataParsers::Endian::BIG);
+    else if (m_operationType == OperationType::MERGE_LITTLE_ENDIAN)
+        bytes = DataParsers::int32ToRegisters(value, DataParsers::Endian::LITTLE);
+    else
+        throw std::logic_error("Int32Mapping: Illegal operation type set.");
+
     if (getGroup().expired())
         return false;
     const auto group = getGroup().lock();
@@ -83,14 +91,6 @@ bool Int32Mapping::writeValue(int32_t value)
     if (device->getReader().expired())
         return false;
     const auto reader = device->getReader().lock();
-
-    std::vector<uint16_t> bytes;
-    if (m_operationType == OperationType::MERGE_BIG_ENDIAN)
-        bytes = DataParsers::int32ToRegisters(value, DataParsers::Endian::BIG);
-    else if (m_operationType == OperationType::MERGE_LITTLE_ENDIAN)
-        bytes = DataParsers::int32ToRegisters(value, DataParsers::Endian::LITTLE);
-    else
-        throw std::logic_error("Int32Mapping: Illegal operation type set.");
 
     bool success = reader->writeMapping(*this, bytes);
     if (success)

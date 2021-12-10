@@ -62,10 +62,10 @@ public:
 
     virtual void SetUp()
     {
-        modbusClientMock.reset(new ::testing::NiceMock<ModbusClientMock>());
-        registerGroupMock.reset(new ::testing::NiceMock<RegisterGroupMock>());
-        modbusDeviceMock.reset(new ::testing::NiceMock<ModbusDeviceMock>());
-        modbusReaderMock.reset(new ::testing::NiceMock<ModbusReaderMock>(*modbusClientMock));
+        modbusClientMock = std::make_shared<::testing::NiceMock<ModbusClientMock>>();
+        registerGroupMock = std::make_shared<::testing::NiceMock<RegisterGroupMock>>();
+        modbusDeviceMock = std::make_shared<::testing::NiceMock<ModbusDeviceMock>>();
+        modbusReaderMock = std::make_shared<::testing::NiceMock<ModbusReaderMock>>(*modbusClientMock);
 
         SetUpDefaultValues();
         SetUpWinningCombinations();
@@ -83,15 +83,15 @@ public:
 
     void MovePointers()
     {
-        modbusDeviceMock->m_reader = std::move(modbusReaderMock);
-        registerGroupMock->m_device = std::move(modbusDeviceMock);
+        modbusDeviceMock->m_reader = modbusReaderMock;
+        registerGroupMock->m_device = modbusDeviceMock;
     }
 
     void MoveBackPointers()
     {
-        registerGroupMock.reset(new ::testing::NiceMock<RegisterGroupMock>());
-        modbusDeviceMock.reset(new ::testing::NiceMock<ModbusDeviceMock>());
-        modbusReaderMock.reset(new ::testing::NiceMock<ModbusReaderMock>(*modbusClientMock));
+        registerGroupMock = std::make_shared<::testing::NiceMock<RegisterGroupMock>>();
+        modbusDeviceMock = std::make_shared<::testing::NiceMock<ModbusDeviceMock>>();
+        modbusReaderMock = std::make_shared<::testing::NiceMock<ModbusReaderMock>>(*modbusClientMock);
     }
 
     void SetUpDefaultValues()
@@ -148,16 +148,16 @@ public:
         return false;
     }
 
-    static std::unique_ptr<ModbusClientMock> modbusClientMock;
-    static std::unique_ptr<ModbusDeviceMock> modbusDeviceMock;
+    static std::shared_ptr<ModbusClientMock> modbusClientMock;
+    static std::shared_ptr<ModbusDeviceMock> modbusDeviceMock;
     static std::shared_ptr<ModbusReaderMock> modbusReaderMock;
-    static std::unique_ptr<RegisterGroupMock> registerGroupMock;
+    static std::shared_ptr<RegisterGroupMock> registerGroupMock;
 };
 
-std::unique_ptr<ModbusClientMock> ComplexMappingsTests::modbusClientMock;
-std::unique_ptr<ModbusDeviceMock> ComplexMappingsTests::modbusDeviceMock;
+std::shared_ptr<ModbusClientMock> ComplexMappingsTests::modbusClientMock;
+std::shared_ptr<ModbusDeviceMock> ComplexMappingsTests::modbusDeviceMock;
 std::shared_ptr<ModbusReaderMock> ComplexMappingsTests::modbusReaderMock;
-std::unique_ptr<RegisterGroupMock> ComplexMappingsTests::registerGroupMock;
+std::shared_ptr<RegisterGroupMock> ComplexMappingsTests::registerGroupMock;
 
 TEST_F(ComplexMappingsTests, UInt32MappingsCreation)
 {
@@ -201,8 +201,10 @@ TEST_F(ComplexMappingsTests, UInt32MappingsWriteValue)
                                                                   operationType);
         MovePointers();
         mapping->m_group = std::move(registerGroupMock);
-        ASSERT_FALSE(mapping->m_group->m_device->m_reader.expired());
-        const auto reader = mapping->m_group->m_device->m_reader.lock();
+        ASSERT_FALSE(mapping->m_group.expired());
+        ASSERT_FALSE(mapping->m_group.lock()->m_device.expired());
+        ASSERT_FALSE(mapping->m_group.lock()->m_device.lock()->m_reader.expired());
+        const auto reader = mapping->m_group.lock()->m_device.lock()->m_reader.lock();
         if (registerType == _registerType::HOLDING_REGISTER)
         {
             EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, bytes)).WillOnce(Return(true));
@@ -356,8 +358,10 @@ TEST_F(ComplexMappingsTests, Int32MappingsWriteValue)
                                                                  operationType);
         MovePointers();
         mapping->m_group = std::move(registerGroupMock);
-        ASSERT_FALSE(mapping->m_group->m_device->m_reader.expired());
-        const auto reader = mapping->m_group->m_device->m_reader.lock();
+        ASSERT_FALSE(mapping->m_group.expired());
+        ASSERT_FALSE(mapping->m_group.lock()->m_device.expired());
+        ASSERT_FALSE(mapping->m_group.lock()->m_device.lock()->m_reader.expired());
+        const auto reader = mapping->m_group.lock()->m_device.lock()->m_reader.lock();
         if (registerType == _registerType::HOLDING_REGISTER)
         {
             EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, bytes)).WillOnce(Return(true));
@@ -471,8 +475,10 @@ TEST_F(ComplexMappingsTests, FloatMappingsWriteValue)
         auto mapping = std::make_shared<wolkabout::FloatMapping>("TEST", registerType, std::vector<std::int32_t>{0, 1});
         MovePointers();
         mapping->m_group = std::move(registerGroupMock);
-        ASSERT_FALSE(mapping->m_group->m_device->m_reader.expired());
-        const auto reader = mapping->m_group->m_device->m_reader.lock();
+        ASSERT_FALSE(mapping->m_group.expired());
+        ASSERT_FALSE(mapping->m_group.lock()->m_device.expired());
+        ASSERT_FALSE(mapping->m_group.lock()->m_device.lock()->m_reader.expired());
+        const auto reader = mapping->m_group.lock()->m_device.lock()->m_reader.lock();
         if (registerType == _registerType::HOLDING_REGISTER)
         {
             EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, bytes)).WillOnce(Return(true));
@@ -575,7 +581,8 @@ TEST_F(ComplexMappingsTests, StringMappingsCreation)
 
 std::string random_string(size_t length)
 {
-    auto randchar = []() -> char {
+    auto randchar = []() -> char
+    {
         const char charset[] = "0123456789"
                                "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                "abcdefghijklmnopqrstuvwxyz";
@@ -612,8 +619,10 @@ TEST_F(ComplexMappingsTests, StringMappingsWriteValue)
         auto mapping = std::make_shared<wolkabout::StringMapping>("TEST", registerType, addresses, operationType);
         MovePointers();
         mapping->m_group = std::move(registerGroupMock);
-        ASSERT_FALSE(mapping->m_group->m_device->m_reader.expired());
-        const auto reader = mapping->m_group->m_device->m_reader.lock();
+        ASSERT_FALSE(mapping->m_group.expired());
+        ASSERT_FALSE(mapping->m_group.lock()->m_device.expired());
+        ASSERT_FALSE(mapping->m_group.lock()->m_device.lock()->m_reader.expired());
+        const auto reader = mapping->m_group.lock()->m_device.lock()->m_reader.lock();
         if (registerType == _registerType::HOLDING_REGISTER)
         {
             EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, bytes)).WillOnce(Return(true));
