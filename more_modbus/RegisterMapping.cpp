@@ -31,7 +31,7 @@ namespace wolkabout
 RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::RegisterType registerType, int32_t address,
                                  bool readRestricted, int16_t slaveAddress, double deadbandValue,
                                  std::chrono::milliseconds frequencyFilterValue,
-                                 std::chrono::milliseconds repeatedWrite, std::string defaultValue)
+                                 std::chrono::milliseconds repeatedWrite)
 : m_reference(std::move(reference))
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -40,7 +40,6 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::Registe
 , m_operationType(OperationType::NONE)
 , m_byteValues(1)
 , m_repeatedWrite(repeatedWrite)
-, m_defaultValue(std::move(defaultValue))
 , m_deadbandValue(deadbandValue)
 , m_frequencyFilterValue(frequencyFilterValue)
 {
@@ -66,7 +65,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::Registe
 RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::RegisterType registerType, int32_t address,
                                  OutputType type, bool readRestricted, int16_t slaveAddress, double deadbandValue,
                                  std::chrono::milliseconds frequencyFilterValue,
-                                 std::chrono::milliseconds repeatedWrite, std::string defaultValue)
+                                 std::chrono::milliseconds repeatedWrite)
 : m_reference(std::move(reference))
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -76,7 +75,6 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::Registe
 , m_operationType(OperationType::NONE)
 , m_byteValues(1)
 , m_repeatedWrite(repeatedWrite)
-, m_defaultValue(std::move(defaultValue))
 , m_deadbandValue(deadbandValue)
 , m_frequencyFilterValue(frequencyFilterValue)
 {
@@ -109,7 +107,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::Registe
 RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::RegisterType registerType, int32_t address,
                                  OperationType type, int8_t bitIndex, bool readRestricted, int16_t slaveAddress,
                                  std::chrono::milliseconds frequencyFilterValue,
-                                 std::chrono::milliseconds repeatedWrite, std::string defaultValue)
+                                 std::chrono::milliseconds repeatedWrite)
 : m_reference(std::move(reference))
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -119,7 +117,6 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::Registe
 , m_operationType(OperationType::TAKE_BIT)
 , m_bitIndex(bitIndex)
 , m_repeatedWrite(repeatedWrite)
-, m_defaultValue(std::move(defaultValue))
 , m_frequencyFilterValue(frequencyFilterValue)
 {
     if (readRestricted && (static_cast<uint16_t>(registerType) % 2 == 1))
@@ -136,7 +133,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::Registe
 RegisterMapping::RegisterMapping(std::string reference, RegisterType registerType, std::vector<int32_t> addresses,
                                  OutputType type, OperationType operation, bool readRestricted, int16_t slaveAddress,
                                  double deadbandValue, std::chrono::milliseconds frequencyFilterValue,
-                                 std::chrono::milliseconds repeatedWrite, std::string defaultValue)
+                                 std::chrono::milliseconds repeatedWrite)
 : m_reference(std::move(reference))
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -145,7 +142,6 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterType registerTyp
 , m_outputType(type)
 , m_operationType(operation)
 , m_repeatedWrite(repeatedWrite)
-, m_defaultValue(std::move(defaultValue))
 , m_deadbandValue(deadbandValue)
 , m_frequencyFilterValue(frequencyFilterValue)
 {
@@ -415,7 +411,7 @@ void RegisterMapping::setValid(bool valid)
     m_isValid = valid;
 }
 
-const std::shared_ptr<RegisterGroup>& RegisterMapping::getGroup() const
+std::weak_ptr<RegisterGroup> RegisterMapping::getGroup() const
 {
     return m_group;
 }
@@ -433,15 +429,25 @@ const std::chrono::milliseconds& RegisterMapping::getRepeatedWrite() const
 void RegisterMapping::setRepeatedWrite(const std::chrono::milliseconds& repeatedWrite)
 {
     // Check if the repeated write needs to be added now into the device's list
-    if (m_repeatedWrite.count() == 0 && repeatedWrite.count() > 0 &&
-        (m_group != nullptr && m_group->getDevice() != nullptr))
+    if ((m_repeatedWrite.count() == 0 && repeatedWrite.count() > 0) ||
+        (m_repeatedWrite.count() > 0 && repeatedWrite.count() == 0))
     {
-        m_group->m_device->addRewritable(shared_from_this());
-    }
-    if (m_repeatedWrite.count() > 0 && repeatedWrite.count() == 0 &&
-        (m_group != nullptr && m_group->getDevice() != nullptr))
-    {
-        m_group->m_device->removeRewritable(shared_from_this());
+        if (!m_group.expired())
+        {
+            auto group = m_group.lock();
+            if (!group->getDevice().expired())
+            {
+                auto device = group->getDevice().lock();
+                if (m_repeatedWrite.count() == 0 && repeatedWrite.count() > 0)
+                {
+                    device->addRewritable(shared_from_this());
+                }
+                else if (m_repeatedWrite.count() > 0 && repeatedWrite.count() == 0)
+                {
+                    device->removeRewritable(shared_from_this());
+                }
+            }
+        }
     }
 
     m_repeatedWrite = repeatedWrite;

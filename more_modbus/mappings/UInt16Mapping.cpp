@@ -58,13 +58,19 @@ bool UInt16Mapping::update(const std::vector<uint16_t>& newValues)
 
 bool UInt16Mapping::writeValue(uint16_t value)
 {
-    if (getGroup()->getDevice()->getReader().expired())
+    if (getGroup().expired())
         return false;
+    const auto group = getGroup().lock();
+    if (group->getDevice().expired())
+        return false;
+    const auto device = group->getDevice().lock();
+    if (device->getReader().expired())
+        return false;
+    const auto reader = device->getReader().lock();
 
     std::vector<uint16_t> bytes;
     bytes.emplace_back(value);
 
-    const auto reader = getGroup()->getDevice()->getReader().lock();
     bool success = reader->writeMapping(*this, bytes);
     if (success)
         m_uint16Value = value;

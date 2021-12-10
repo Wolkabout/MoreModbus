@@ -260,7 +260,7 @@ const MappingsMap& RegisterGroup::getMappings() const
     return m_mappings;
 }
 
-const std::shared_ptr<ModbusDevice>& RegisterGroup::getDevice() const
+std::weak_ptr<ModbusDevice> RegisterGroup::getDevice() const
 {
     return m_device;
 }

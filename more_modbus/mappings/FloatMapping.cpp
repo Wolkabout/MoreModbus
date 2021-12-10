@@ -59,16 +59,22 @@ bool FloatMapping::update(const std::vector<uint16_t>& newValues)
 
 bool FloatMapping::writeValue(float value)
 {
+    if (getGroup().expired())
+        return false;
+    const auto group = getGroup().lock();
+    if (group->getDevice().expired())
+        return false;
+    const auto device = group->getDevice().lock();
+    if (device->getReader().expired())
+        return false;
+    const auto reader = device->getReader().lock();
+
     std::vector<uint16_t> bytes;
 
     if (m_operationType != OperationType::MERGE_FLOAT)
         throw std::logic_error("FloatMapping: Illegal operation type set.");
     bytes = DataParsers::floatToRegisters(value);
 
-    if (getGroup()->getDevice()->getReader().expired())
-        return false;
-
-    const auto reader = getGroup()->getDevice()->getReader().lock();
     bool success = reader->writeMapping(*this, bytes);
     if (success)
         m_floatValue = value;

@@ -88,13 +88,11 @@ public:
      * @param deadbandValue indicates a change in value of the register that is insignificant data
      * @param frequencyFilterValue changes that occur within the given time (in milliseconds) that will be ignored
      * @param repeatedWrite The minimal time between two writes for a mapping.
-     * @param defaultValue The default value of the register.
      */
     RegisterMapping(std::string reference, RegisterType registerType, int32_t address, bool readRestricted = false,
                     int16_t slaveAddress = -1, double deadbandValue = 0.0,
                     std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0),
-                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0},
-                    std::string defaultValue = "");
+                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0});
 
     /**
      * @brief Default constructor for mapping with custom OutputType.
@@ -109,13 +107,11 @@ public:
      * @param deadbandValue indicates a change in value of the register that is insignificant data
      * @param frequencyFilterValue changes that occur within the given time (in milliseconds) that will be ignored
      * @param repeatedWrite The minimal time between two writes for a mapping.
-     * @param defaultValue The default value of the register.
      */
     RegisterMapping(std::string reference, RegisterType registerType, int32_t address, OutputType type,
                     bool readRestricted = false, int16_t slaveAddress = -1, double deadbandValue = 0.0,
                     std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0),
-                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0},
-                    std::string defaultValue = "");
+                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0});
 
     /**
      * @brief Constructor for cases where bit is taken from a 16 bit register.
@@ -129,13 +125,11 @@ public:
      * @param slaveAddress of the devices being accessed, leave as default on -1
      * @param frequencyFilterValue changes that occur within the given time (in milliseconds) that will be ignored
      * @param repeatedWrite The minimal time between two writes for a mapping.
-     * @param defaultValue The default value of the register.
      */
     RegisterMapping(std::string reference, RegisterType registerType, int32_t address, OperationType operation,
                     int8_t bitIndex, bool readRestricted = false, int16_t slaveAddress = -1,
                     std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0),
-                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0},
-                    std::string defaultValue = "");
+                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0});
 
     /**
      * @brief Constructor for cases where there is multiple registers merged into a single output value.
@@ -153,18 +147,16 @@ public:
      * @param deadbandValue indicates a change in value of the register that is insignificant data
      * @param frequencyFilterValue changes that occur within the given time (in milliseconds) that will be ignored
      * @param repeatedWrite The minimal time between two writes for a mapping.
-     * @param defaultValue The default value of the register.
      */
     RegisterMapping(std::string reference, RegisterType registerType, std::vector<int32_t> addresses, OutputType type,
                     OperationType operation, bool readRestricted = false, int16_t slaveAddress = -1,
                     double deadbandValue = 0.0,
                     std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0),
-                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0},
-                    std::string defaultValue = "");
+                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0});
 
     virtual ~RegisterMapping() = default;
 
-    const std::shared_ptr<RegisterGroup>& getGroup() const;
+    std::weak_ptr<RegisterGroup> getGroup() const;
 
     void setGroup(const std::shared_ptr<RegisterGroup>& group);
 
@@ -273,7 +265,7 @@ protected:
     // General mapping data
     std::string m_reference;
     bool m_readRestricted;
-    std::shared_ptr<RegisterGroup> m_group;
+    std::weak_ptr<RegisterGroup> m_group;
 
     // Modbus registers data
     RegisterType m_registerType;

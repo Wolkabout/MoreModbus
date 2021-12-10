@@ -80,12 +80,18 @@ BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::Register
 
 bool BoolMapping::writeValue(bool value)
 {
-    if (getGroup()->getDevice()->getReader().expired())
+    if (getGroup().expired())
         return false;
+    const auto group = getGroup().lock();
+    if (group->getDevice().expired())
+        return false;
+    const auto device = group->getDevice().lock();
+    if (device->getReader().expired())
+        return false;
+    const auto reader = device->getReader().lock();
 
     bool success;
-
-    const auto reader = getGroup()->getDevice()->getReader().lock();
+    
     if (m_operationType == OperationType::TAKE_BIT)
         success = reader->writeBitMapping(*this, value);
     else

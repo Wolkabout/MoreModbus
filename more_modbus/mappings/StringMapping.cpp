@@ -99,10 +99,16 @@ bool StringMapping::writeValue(const std::string& newValue)
     while (bytes.size() < this->m_addresses.size())
         bytes.emplace_back(0);
 
-    if (getGroup()->getDevice()->getReader().expired())
+    if (getGroup().expired())
         return false;
+    const auto group = getGroup().lock();
+    if (group->getDevice().expired())
+        return false;
+    const auto device = group->getDevice().lock();
+    if (device->getReader().expired())
+        return false;
+    const auto reader = device->getReader().lock();
 
-    const auto reader = getGroup()->getDevice()->getReader().lock();
     bool success = reader->writeMapping(*this, bytes);
     if (success)
         m_stringValue = newValue;
