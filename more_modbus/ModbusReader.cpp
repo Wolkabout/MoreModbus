@@ -432,7 +432,14 @@ void ModbusReader::rewriteDevice(const std::shared_ptr<ModbusDevice>& device)
             // Read through all the rewritable mappings.
             for (const auto& rewritable : device->getRewritable())
             {
-                const auto nextUpdateTime = rewritable->getLastUpdateTime() + rewritable->getRepeatedWrite();
+                // Check that the value is not
+                const auto repeatedWriteTime = rewritable->getRepeatedWrite();
+                if (repeatedWriteTime.count() == 0)
+                {
+                    continue;
+                }
+
+                const auto nextUpdateTime = rewritable->getLastUpdateTime() + repeatedWriteTime;
                 const auto diff = (std::chrono::duration_cast<std::chrono::milliseconds>(
                                      std::chrono::high_resolution_clock::now() - nextUpdateTime))
                                     .count();

@@ -424,6 +424,11 @@ const std::chrono::milliseconds& RegisterMapping::getRepeatedWrite() const
     return m_repeatedWrite;
 }
 
+void RegisterMapping::setRepeatedWrite(const std::chrono::milliseconds& repeatedWrite)
+{
+    m_repeatedWrite = repeatedWrite;
+}
+
 const std::chrono::high_resolution_clock::time_point& RegisterMapping::getLastUpdateTime() const
 {
     return m_lastUpdateTime;
