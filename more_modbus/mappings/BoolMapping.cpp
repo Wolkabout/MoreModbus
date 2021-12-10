@@ -42,9 +42,14 @@ BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::Register
     }
 
     if (defaultValue != nullptr)
-        m_boolValue = defaultValue;
+    {
+        m_boolValue = *defaultValue;
+        m_defaultValue = m_boolValue ? "true" : "false";
+    }
     else
+    {
         m_boolValue = false;
+    }
 }
 
 BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::RegisterType registerType, int32_t address,

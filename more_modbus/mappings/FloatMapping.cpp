@@ -44,6 +44,7 @@ FloatMapping::FloatMapping(const std::string& reference, RegisterMapping::Regist
     {
         m_floatValue = *defaultValue;
         m_byteValues = DataParsers::floatToRegisters(m_floatValue);
+        m_defaultValue = std::to_string(m_floatValue);
     }
 }
 

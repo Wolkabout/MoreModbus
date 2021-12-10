@@ -46,6 +46,7 @@ UInt16Mapping::UInt16Mapping(const std::string& reference, RegisterMapping::Regi
     {
         m_uint16Value = *defaultValue;
         m_byteValues = {*defaultValue};
+        m_defaultValue = std::to_string(m_uint16Value);
     }
 }
 

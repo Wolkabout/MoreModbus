@@ -30,7 +30,7 @@ namespace wolkabout
 RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::RegisterType registerType, int32_t address,
                                  bool readRestricted, int16_t slaveAddress, double deadbandValue,
                                  std::chrono::milliseconds frequencyFilterValue,
-                                 std::chrono::milliseconds repeatedWrite)
+                                 std::chrono::milliseconds repeatedWrite, std::string defaultValue)
 : m_reference(std::move(reference))
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -39,6 +39,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::Registe
 , m_operationType(OperationType::NONE)
 , m_byteValues(1)
 , m_repeatedWrite(repeatedWrite)
+, m_defaultValue(std::move(defaultValue))
 , m_deadbandValue(deadbandValue)
 , m_frequencyFilterValue(frequencyFilterValue)
 {
@@ -64,7 +65,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::Registe
 RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::RegisterType registerType, int32_t address,
                                  OutputType type, bool readRestricted, int16_t slaveAddress, double deadbandValue,
                                  std::chrono::milliseconds frequencyFilterValue,
-                                 std::chrono::milliseconds repeatedWrite)
+                                 std::chrono::milliseconds repeatedWrite, std::string defaultValue)
 : m_reference(std::move(reference))
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -74,6 +75,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::Registe
 , m_operationType(OperationType::NONE)
 , m_byteValues(1)
 , m_repeatedWrite(repeatedWrite)
+, m_defaultValue(std::move(defaultValue))
 , m_deadbandValue(deadbandValue)
 , m_frequencyFilterValue(frequencyFilterValue)
 {
@@ -106,7 +108,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::Registe
 RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::RegisterType registerType, int32_t address,
                                  OperationType type, int8_t bitIndex, bool readRestricted, int16_t slaveAddress,
                                  std::chrono::milliseconds frequencyFilterValue,
-                                 std::chrono::milliseconds repeatedWrite)
+                                 std::chrono::milliseconds repeatedWrite, std::string defaultValue)
 : m_reference(std::move(reference))
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -116,6 +118,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::Registe
 , m_operationType(OperationType::TAKE_BIT)
 , m_bitIndex(bitIndex)
 , m_repeatedWrite(repeatedWrite)
+, m_defaultValue(std::move(defaultValue))
 , m_frequencyFilterValue(frequencyFilterValue)
 {
     if (readRestricted && (static_cast<uint16_t>(registerType) % 2 == 1))
@@ -132,7 +135,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::Registe
 RegisterMapping::RegisterMapping(std::string reference, RegisterType registerType, std::vector<int32_t> addresses,
                                  OutputType type, OperationType operation, bool readRestricted, int16_t slaveAddress,
                                  double deadbandValue, std::chrono::milliseconds frequencyFilterValue,
-                                 std::chrono::milliseconds repeatedWrite)
+                                 std::chrono::milliseconds repeatedWrite, std::string defaultValue)
 : m_reference(std::move(reference))
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -141,6 +144,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterType registerTyp
 , m_outputType(type)
 , m_operationType(operation)
 , m_repeatedWrite(repeatedWrite)
+, m_defaultValue(std::move(defaultValue))
 , m_deadbandValue(deadbandValue)
 , m_frequencyFilterValue(frequencyFilterValue)
 {
@@ -440,6 +444,11 @@ void RegisterMapping::setRepeatedWrite(const std::chrono::milliseconds& repeated
     }
 
     m_repeatedWrite = repeatedWrite;
+}
+
+const std::string& RegisterMapping::getDefaultValue() const
+{
+    return m_defaultValue;
 }
 
 const std::chrono::high_resolution_clock::time_point& RegisterMapping::getLastUpdateTime() const
