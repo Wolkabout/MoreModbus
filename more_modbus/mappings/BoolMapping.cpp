@@ -83,12 +83,14 @@ bool BoolMapping::writeValue(bool value)
     if (getGroup().expired())
         return false;
     const auto group = getGroup().lock();
-    if (group->getDevice().expired())
+    if (group == nullptr || group->getDevice().expired())
         return false;
     const auto device = group->getDevice().lock();
-    if (device->getReader().expired())
+    if (device == nullptr || device->getReader().expired())
         return false;
     const auto reader = device->getReader().lock();
+    if (reader == nullptr)
+        return false;
 
     bool success;
 
