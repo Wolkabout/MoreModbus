@@ -432,20 +432,14 @@ void RegisterMapping::setRepeatedWrite(const std::chrono::milliseconds& repeated
     if ((m_repeatedWrite.count() == 0 && repeatedWrite.count() > 0) ||
         (m_repeatedWrite.count() > 0 && repeatedWrite.count() == 0))
     {
-        if (!m_group.expired())
+        if (auto group = m_group.lock())
         {
-            auto group = m_group.lock();
-            if (!group->getDevice().expired())
+            if (auto device = group->getDevice().lock())
             {
-                auto device = group->getDevice().lock();
                 if (m_repeatedWrite.count() == 0 && repeatedWrite.count() > 0)
-                {
                     device->addRewritable(shared_from_this());
-                }
                 else if (m_repeatedWrite.count() > 0 && repeatedWrite.count() == 0)
-                {
                     device->removeRewritable(shared_from_this());
-                }
             }
         }
     }
