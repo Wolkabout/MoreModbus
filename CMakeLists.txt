@@ -151,9 +151,9 @@ if (${BUILD_TESTS})
     target_include_directories(${PROJECT_NAME}Tests PRIVATE ${PROJECT_SOURCE_DIR})
     target_include_directories(${PROJECT_NAME}Tests PUBLIC ${CMAKE_LIBRARY_INCLUDE_DIRECTORY})
     set_target_properties(${PROJECT_NAME}Tests PROPERTIES INSTALL_RPATH "$ORIGIN/../lib")
-    set_target_properties(${PROJECT_NAME}Tests PROPERTIES EXCLUDE_FROM_ALL TRUE)
 
-    add_custom_target(tests ${PROJECT_NAME}Tests)
+    enable_testing()
+    add_test(NAME "MoreModbus_Tests" COMMAND ${PROJECT_NAME}Tests)
 endif ()
 
 # Example
@@ -167,11 +167,3 @@ if (${BUILD_EXAMPLES})
     set_target_properties(${PROJECT_NAME}Example PROPERTIES INSTALL_RPATH "$ORIGIN/../lib")
     set_target_properties(${PROJECT_NAME}Example PROPERTIES EXCLUDE_FROM_ALL TRUE)
 endif ()
-
-# Add the format target
-add_custom_target(format
-        COMMAND "clang-format" -i -sort-includes -style=file ${HEADER_FILES} ${SOURCE_FILES}
-        ${TEST_HEADER_FILES} ${TEST_SOURCE_FILES} ${EXAMPLE_SOURCE_FILES}
-        WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
-        COMMENT "[Formatting source code]"
-        VERBATIM)
