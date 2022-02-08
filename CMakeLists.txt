@@ -125,7 +125,10 @@ target_link_libraries(${PROJECT_NAME} WolkAboutCoreUtility modbus pthread)
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_LIBRARY_INCLUDE_DIRECTORY})
 set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "$ORIGIN")
-add_dependencies(${PROJECT_NAME} libmodbus WolkSDK-Cpp)
+add_dependencies(${PROJECT_NAME} libmodbus)
+if (TARGET WolkSDK-Cpp)
+    add_dependencies(${PROJECT_NAME} WolkSDK-Cpp)
+endif ()
 
 # Tests
 if (${BUILD_TESTS})
