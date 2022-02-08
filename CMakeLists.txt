@@ -19,8 +19,6 @@
 cmake_minimum_required(VERSION 3.5)
 project(MoreModbus C CXX)
 
-set_property(GLOBAL PROPERTY ALLOW_DUPLICATE_CUSTOM_TARGETS 1)
-
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}     -Wall -Wextra -pedantic                                                    \
                                             -pedantic-errors -Wcast-align                                              \
@@ -73,18 +71,7 @@ if (NOT DEFINED CMAKE_PREFIX_PATH)
     set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_BINARY_DIR}/build")
 endif ()
 
-# Import the dependencies
-set(BUILD_CONNECTIVITY OFF CACHE BOOL "Build the library with Paho MQTT and allow MQTT connection to the platform.")
-set(BUILD_POCO OFF CACHE BOOL "Build the library with Poco.")
-set(BUILD_GTEST ${BUILD_TESTS} CACHE BOOL "Build the library with GTest.")
-set(BUILD_AWS_LOG_UPLOADER OFF CACHE BOOL "Build the library with AwsLogUploader.")
-
-# This is how we're importing the WolkAboutCoreUtility
-if (NOT TARGET WolkAboutCoreUtility)
-    add_subdirectory(WolkSDK-Cpp)
-endif ()
-
-# And this is how we're importing the libmodbus
+# And this is how we're importing the submodules
 add_subdirectory(dependencies)
 
 # Add the pthread dependency too
@@ -138,7 +125,7 @@ target_link_libraries(${PROJECT_NAME} WolkAboutCoreUtility modbus pthread)
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_LIBRARY_INCLUDE_DIRECTORY})
 set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "$ORIGIN")
-add_dependencies(${PROJECT_NAME} libmodbus libgtest)
+add_dependencies(${PROJECT_NAME} libmodbus WolkSDK-Cpp)
 
 # Tests
 if (${BUILD_TESTS})
