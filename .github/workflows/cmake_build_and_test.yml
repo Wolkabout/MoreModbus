@@ -51,6 +51,6 @@ jobs:
         run: make test -j$(nproc)
 
       - name: Check Format
-        uses: jidicula/clang-format-action@v3.5.0
+        uses: jidicula/clang-format-action@v3.5.2
         with:
           clang-format-version: 10
