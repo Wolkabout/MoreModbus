@@ -24,6 +24,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 FloatMapping::FloatMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                            const std::vector<int32_t>& addresses, bool readRestricted, int16_t slaveAddress,
                            double deadbandValue, std::chrono::milliseconds frequencyFilterValue,
@@ -88,4 +90,5 @@ float FloatMapping::getFloatValue() const
 {
     return m_floatValue;
 }
+}    // namespace more_modbus
 }    // namespace wolkabout

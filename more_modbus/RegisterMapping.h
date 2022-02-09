@@ -27,6 +27,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 class RegisterGroup;
 
 /**
@@ -296,6 +298,7 @@ protected:
 private:
     bool deadbandFilter(const std::vector<uint16_t>& newValues) const;
 };
+}    // namespace more_modbus
 }    // namespace wolkabout
 
 #endif    // WOLKABOUT_MODBUS_REGISTERMAPPING_H

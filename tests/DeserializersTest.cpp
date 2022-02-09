@@ -22,9 +22,9 @@
 #undef private
 #undef protected
 
-#define RegisterType wolkabout::RegisterMapping::RegisterType
-#define OutputType wolkabout::RegisterMapping::OutputType
-#define OperationType wolkabout::RegisterMapping::OperationType
+#define RegisterType wolkabout::more_modbus::RegisterMapping::RegisterType
+#define OutputType wolkabout::more_modbus::RegisterMapping::OutputType
+#define OperationType wolkabout::more_modbus::RegisterMapping::OperationType
 
 #include "core/utilities/Logger.h"
 
@@ -101,7 +101,7 @@ TEST_F(DeserializersTest, TestRegisterTypeDeserialization)
 
     for (const auto& kvp : registerTypes)
     {
-        const auto type = wolkabout::Deserializers::deserializeRegisterType(kvp.second);
+        const auto type = wolkabout::more_modbus::Deserializers::deserializeRegisterType(kvp.second);
 
         EXPECT_EQ(kvp.first, type);
     }
@@ -117,7 +117,7 @@ TEST_F(DeserializersTest, TestInvalidRegisterTypes)
 
     for (const auto& value : invalidRegisterTypes)
     {
-        EXPECT_THROW(wolkabout::Deserializers::deserializeRegisterType(value), std::logic_error);
+        EXPECT_THROW(wolkabout::more_modbus::Deserializers::deserializeRegisterType(value), std::logic_error);
     }
 }
 
@@ -131,7 +131,7 @@ TEST_F(DeserializersTest, TestDataTypeDeserialization)
 
     for (const auto& kvp : dataTypes)
     {
-        const auto type = wolkabout::Deserializers::deserializeDataType(kvp.second);
+        const auto type = wolkabout::more_modbus::Deserializers::deserializeDataType(kvp.second);
 
         EXPECT_EQ(kvp.first, type);
     }
@@ -147,7 +147,7 @@ TEST_F(DeserializersTest, TestInvalidDataTypes)
 
     for (const auto& value : invalidDataTypes)
     {
-        EXPECT_THROW(wolkabout::Deserializers::deserializeDataType(value), std::logic_error);
+        EXPECT_THROW(wolkabout::more_modbus::Deserializers::deserializeDataType(value), std::logic_error);
     }
 }
 
@@ -161,7 +161,7 @@ TEST_F(DeserializersTest, TestOperationTypeDeserialization)
 
     for (const auto& kvp : operationTypes)
     {
-        const auto type = wolkabout::Deserializers::deserializeOperationType(kvp.second);
+        const auto type = wolkabout::more_modbus::Deserializers::deserializeOperationType(kvp.second);
 
         EXPECT_EQ(kvp.first, type);
     }
@@ -177,7 +177,7 @@ TEST_F(DeserializersTest, TestInvalidOperationTypes)
 
     for (const auto& value : invalidOperationTypes)
     {
-        EXPECT_THROW(wolkabout::Deserializers::deserializeOperationType(value), std::logic_error);
+        EXPECT_THROW(wolkabout::more_modbus::Deserializers::deserializeOperationType(value), std::logic_error);
     }
 }
 }    // namespace

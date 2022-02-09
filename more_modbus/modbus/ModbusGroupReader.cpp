@@ -24,7 +24,9 @@
 
 namespace wolkabout
 {
-bool ModbusGroupReader::readGroup(wolkabout::ModbusClient& modbusClient, wolkabout::RegisterGroup& group)
+namespace more_modbus
+{
+bool ModbusGroupReader::readGroup(ModbusClient& modbusClient, RegisterGroup& group)
 {
     if (group.isReadRestricted())
         return true;
@@ -201,4 +203,5 @@ bool ModbusGroupReader::readInputRegisterGroup(ModbusClient& modbusClient, Regis
     passValuesToGroup(group, registerValues);
     return true;
 }
+}    // namespace more_modbus
 }    // namespace wolkabout

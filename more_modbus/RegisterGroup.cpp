@@ -24,6 +24,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 const char GroupUtility::SEPARATOR = '.';
 
 bool RegisterGroup::keyExistsInSet(const std::string& key)
@@ -291,4 +293,5 @@ int16_t GroupUtility::getBitFromString(const std::string& string)
     }
     return static_cast<int16_t>(std::stoi(firstAddressString.substr(dotIndex + 1)));
 }
+}    // namespace more_modbus
 }    // namespace wolkabout

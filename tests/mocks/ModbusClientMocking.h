@@ -31,7 +31,7 @@
 #include <iostream>
 #include <memory>
 
-class ModbusClientMock : public wolkabout::ModbusClient
+class ModbusClientMock : public wolkabout::more_modbus::ModbusClient
 {
     std::string name = "MOCK";
 

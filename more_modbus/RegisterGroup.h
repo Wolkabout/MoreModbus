@@ -27,6 +27,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 class ModbusDevice;
 
 /**
@@ -151,6 +153,7 @@ private:
 
     friend class RegisterMapping;
 };
+}    // namespace more_modbus
 }    // namespace wolkabout
 
 #endif    // WOLKABOUT_MODBUS_REGISTERGROUP_H

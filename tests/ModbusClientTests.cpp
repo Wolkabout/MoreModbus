@@ -143,8 +143,8 @@ void modbus_free(modbus_t* ctx)
  */
 TEST_F(ModbusTCPClientTest, NewTCPReturnsNull)
 {
-    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
-      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    const auto& modbusClient = std::unique_ptr<wolkabout::more_modbus::LibModbusTcpIpClient>(
+      new wolkabout::more_modbus::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_new_tcp).Times(1).WillOnce(Return(nullptr));
 
     ASSERT_FALSE(modbusClient->connect());
@@ -153,8 +153,8 @@ TEST_F(ModbusTCPClientTest, NewTCPReturnsNull)
 
 TEST_F(ModbusTCPClientTest, FirstTimeoutReturnsBad)
 {
-    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
-      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    const auto& modbusClient = std::unique_ptr<wolkabout::more_modbus::LibModbusTcpIpClient>(
+      new wolkabout::more_modbus::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_new_tcp).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
     EXPECT_CALL(*libModbusMock, modbus_set_response_timeout).WillOnce(Return(-1));
     EXPECT_CALL(*libModbusMock, modbus_free).WillOnce(Return());
@@ -167,8 +167,8 @@ TEST_F(ModbusTCPClientTest, FirstTimeoutReturnsBad)
 
 TEST_F(ModbusTCPClientTest, SecondTimeoutReturnsBad)
 {
-    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
-      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    const auto& modbusClient = std::unique_ptr<wolkabout::more_modbus::LibModbusTcpIpClient>(
+      new wolkabout::more_modbus::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_new_tcp).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
     EXPECT_CALL(*libModbusMock, modbus_set_response_timeout).WillOnce(Return(1)).WillOnce(Return(-1));
     EXPECT_CALL(*libModbusMock, modbus_connect).WillOnce(Return(1));
@@ -182,8 +182,8 @@ TEST_F(ModbusTCPClientTest, SecondTimeoutReturnsBad)
 
 TEST_F(ModbusTCPClientTest, ModbusConnectFails)
 {
-    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
-      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    const auto& modbusClient = std::unique_ptr<wolkabout::more_modbus::LibModbusTcpIpClient>(
+      new wolkabout::more_modbus::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_new_tcp).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
     EXPECT_CALL(*libModbusMock, modbus_set_response_timeout).WillOnce(Return(1));
     EXPECT_CALL(*libModbusMock, modbus_connect).WillOnce(Return(-1));
@@ -197,8 +197,8 @@ TEST_F(ModbusTCPClientTest, ModbusConnectFails)
 
 TEST_F(ModbusTCPClientTest, AlreadyConnected)
 {
-    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
-      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    const auto& modbusClient = std::unique_ptr<wolkabout::more_modbus::LibModbusTcpIpClient>(
+      new wolkabout::more_modbus::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
     modbusClient->m_connected = true;
 
     ASSERT_TRUE(modbusClient->connect());
@@ -207,8 +207,8 @@ TEST_F(ModbusTCPClientTest, AlreadyConnected)
 
 TEST_F(ModbusTCPClientTest, HappyFlow)
 {
-    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
-      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    const auto& modbusClient = std::unique_ptr<wolkabout::more_modbus::LibModbusTcpIpClient>(
+      new wolkabout::more_modbus::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_new_tcp).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
     EXPECT_CALL(*libModbusMock, modbus_set_response_timeout).WillRepeatedly(Return(1));
     EXPECT_CALL(*libModbusMock, modbus_connect).WillOnce(Return(1));
@@ -223,8 +223,8 @@ TEST_F(ModbusTCPClientTest, HappyFlow)
 
 TEST_F(ModbusTCPClientTest, SetSlaveBad)
 {
-    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
-      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    const auto& modbusClient = std::unique_ptr<wolkabout::more_modbus::LibModbusTcpIpClient>(
+      new wolkabout::more_modbus::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1));
 
     ASSERT_FALSE(modbusClient->changeSlaveAddress(128));
@@ -232,8 +232,8 @@ TEST_F(ModbusTCPClientTest, SetSlaveBad)
 
 TEST_F(ModbusTCPClientTest, SetSlaveGood)
 {
-    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
-      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    const auto& modbusClient = std::unique_ptr<wolkabout::more_modbus::LibModbusTcpIpClient>(
+      new wolkabout::more_modbus::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(1));
 
     ASSERT_TRUE(modbusClient->changeSlaveAddress(128));
@@ -241,8 +241,8 @@ TEST_F(ModbusTCPClientTest, SetSlaveGood)
 
 TEST_F(ModbusTCPClientTest, WriteHoldingRegister)
 {
-    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
-      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    const auto& modbusClient = std::unique_ptr<wolkabout::more_modbus::LibModbusTcpIpClient>(
+      new wolkabout::more_modbus::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
     EXPECT_CALL(*libModbusMock, modbus_write_register).WillOnce(Return(-1)).WillOnce(Return(1));
     const auto booleans = std::vector<bool>{false, false, true};
@@ -253,8 +253,8 @@ TEST_F(ModbusTCPClientTest, WriteHoldingRegister)
 
 TEST_F(ModbusTCPClientTest, WriteHoldingRegisters)
 {
-    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
-      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    const auto& modbusClient = std::unique_ptr<wolkabout::more_modbus::LibModbusTcpIpClient>(
+      new wolkabout::more_modbus::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
     EXPECT_CALL(*libModbusMock, modbus_write_registers).WillOnce(Return(-1)).WillRepeatedly(Return(1));
     const auto booleans = std::vector<bool>{false, false, true};
@@ -268,8 +268,8 @@ TEST_F(ModbusTCPClientTest, WriteHoldingRegisters)
 
 TEST_F(ModbusTCPClientTest, WriteCoil)
 {
-    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
-      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    const auto& modbusClient = std::unique_ptr<wolkabout::more_modbus::LibModbusTcpIpClient>(
+      new wolkabout::more_modbus::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
     EXPECT_CALL(*libModbusMock, modbus_write_bit).WillOnce(Return(-1)).WillOnce(Return(1));
     const auto booleans = std::vector<bool>{false, false, true};
@@ -283,8 +283,8 @@ TEST_F(ModbusTCPClientTest, WriteCoil)
 
 TEST_F(ModbusTCPClientTest, ReadInputContacts)
 {
-    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
-      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    const auto& modbusClient = std::unique_ptr<wolkabout::more_modbus::LibModbusTcpIpClient>(
+      new wolkabout::more_modbus::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
     EXPECT_CALL(*libModbusMock, modbus_read_input_bits).WillOnce(Return(-1)).WillOnce(Return(1));
     const auto booleans = std::vector<bool>{false, false, true};
@@ -298,8 +298,8 @@ TEST_F(ModbusTCPClientTest, ReadInputContacts)
 
 TEST_F(ModbusTCPClientTest, ReadCoil)
 {
-    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
-      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    const auto& modbusClient = std::unique_ptr<wolkabout::more_modbus::LibModbusTcpIpClient>(
+      new wolkabout::more_modbus::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
     EXPECT_CALL(*libModbusMock, modbus_read_bits).WillOnce(Return(-1)).WillOnce(Return(1));
     const auto booleans = std::vector<bool>{false, false, true};
@@ -313,8 +313,8 @@ TEST_F(ModbusTCPClientTest, ReadCoil)
 
 TEST_F(ModbusTCPClientTest, ReadCoils)
 {
-    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
-      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    const auto& modbusClient = std::unique_ptr<wolkabout::more_modbus::LibModbusTcpIpClient>(
+      new wolkabout::more_modbus::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
     EXPECT_CALL(*libModbusMock, modbus_read_bits).WillOnce(Return(-1)).WillOnce(Return(1));
     const auto booleans = std::vector<bool>{false, false, true};
@@ -328,8 +328,8 @@ TEST_F(ModbusTCPClientTest, ReadCoils)
 
 TEST_F(ModbusTCPClientTest, ReadInputRegisters)
 {
-    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
-      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    const auto& modbusClient = std::unique_ptr<wolkabout::more_modbus::LibModbusTcpIpClient>(
+      new wolkabout::more_modbus::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
     EXPECT_CALL(*libModbusMock, modbus_read_input_registers).WillOnce(Return(-1)).WillOnce(Return(1));
     const auto booleans = std::vector<bool>{false, false, true};
@@ -343,8 +343,8 @@ TEST_F(ModbusTCPClientTest, ReadInputRegisters)
 
 TEST_F(ModbusTCPClientTest, ReadHoldingRegister)
 {
-    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
-      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    const auto& modbusClient = std::unique_ptr<wolkabout::more_modbus::LibModbusTcpIpClient>(
+      new wolkabout::more_modbus::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
     EXPECT_CALL(*libModbusMock, modbus_read_registers).WillOnce(Return(-1)).WillOnce(Return(1));
     const auto booleans = std::vector<bool>{false, false, true};
@@ -358,8 +358,8 @@ TEST_F(ModbusTCPClientTest, ReadHoldingRegister)
 
 TEST_F(ModbusTCPClientTest, ReadHoldingRegisters)
 {
-    const auto& modbusClient = std::unique_ptr<wolkabout::LibModbusTcpIpClient>(
-      new wolkabout::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
+    const auto& modbusClient = std::unique_ptr<wolkabout::more_modbus::LibModbusTcpIpClient>(
+      new wolkabout::more_modbus::LibModbusTcpIpClient("TEST IP ADDRESS", 551, std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
     EXPECT_CALL(*libModbusMock, modbus_read_registers).WillOnce(Return(-1)).WillOnce(Return(1));
     const auto booleans = std::vector<bool>{false, false, true};
@@ -374,8 +374,8 @@ TEST_F(ModbusTCPClientTest, ReadHoldingRegisters)
 TEST_F(ModbusSerialRTUClientTest, NewRTUReturnsNull)
 {
     const auto& modbusClient =
-      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
-        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+      std::unique_ptr<wolkabout::more_modbus::LibModbusSerialRtuClient>(new wolkabout::more_modbus::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::more_modbus::LibModbusSerialRtuClient::BitParity::NONE,
         std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_new_rtu).WillOnce(Return(nullptr));
 
@@ -386,8 +386,8 @@ TEST_F(ModbusSerialRTUClientTest, NewRTUReturnsNull)
 TEST_F(ModbusSerialRTUClientTest, FirstTimeoutReturnsBad)
 {
     const auto& modbusClient =
-      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
-        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+      std::unique_ptr<wolkabout::more_modbus::LibModbusSerialRtuClient>(new wolkabout::more_modbus::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::more_modbus::LibModbusSerialRtuClient::BitParity::NONE,
         std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_new_rtu).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
     EXPECT_CALL(*libModbusMock, modbus_set_response_timeout).WillOnce(Return(-1));
@@ -402,8 +402,8 @@ TEST_F(ModbusSerialRTUClientTest, FirstTimeoutReturnsBad)
 TEST_F(ModbusSerialRTUClientTest, SecondTimeoutReturnsBad)
 {
     const auto& modbusClient =
-      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
-        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+      std::unique_ptr<wolkabout::more_modbus::LibModbusSerialRtuClient>(new wolkabout::more_modbus::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::more_modbus::LibModbusSerialRtuClient::BitParity::NONE,
         std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_new_rtu).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
     EXPECT_CALL(*libModbusMock, modbus_set_response_timeout).WillOnce(Return(1)).WillOnce(Return(-1));
@@ -419,8 +419,8 @@ TEST_F(ModbusSerialRTUClientTest, SecondTimeoutReturnsBad)
 TEST_F(ModbusSerialRTUClientTest, ModbusConnectFails)
 {
     const auto& modbusClient =
-      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
-        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+      std::unique_ptr<wolkabout::more_modbus::LibModbusSerialRtuClient>(new wolkabout::more_modbus::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::more_modbus::LibModbusSerialRtuClient::BitParity::NONE,
         std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_new_rtu).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
     EXPECT_CALL(*libModbusMock, modbus_set_response_timeout).WillOnce(Return(1));
@@ -436,8 +436,8 @@ TEST_F(ModbusSerialRTUClientTest, ModbusConnectFails)
 TEST_F(ModbusSerialRTUClientTest, AlreadyConnected)
 {
     const auto& modbusClient =
-      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
-        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+      std::unique_ptr<wolkabout::more_modbus::LibModbusSerialRtuClient>(new wolkabout::more_modbus::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::more_modbus::LibModbusSerialRtuClient::BitParity::NONE,
         std::chrono::milliseconds(500)));
     modbusClient->m_connected = true;
 
@@ -448,8 +448,8 @@ TEST_F(ModbusSerialRTUClientTest, AlreadyConnected)
 TEST_F(ModbusSerialRTUClientTest, HappyFlowBitNone)
 {
     const auto& modbusClient =
-      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
-        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+      std::unique_ptr<wolkabout::more_modbus::LibModbusSerialRtuClient>(new wolkabout::more_modbus::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::more_modbus::LibModbusSerialRtuClient::BitParity::NONE,
         std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_new_rtu).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
     EXPECT_CALL(*libModbusMock, modbus_set_response_timeout).WillRepeatedly(Return(1));
@@ -466,8 +466,8 @@ TEST_F(ModbusSerialRTUClientTest, HappyFlowBitNone)
 TEST_F(ModbusSerialRTUClientTest, HappyFlowBitEven)
 {
     const auto& modbusClient =
-      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
-        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::EVEN,
+      std::unique_ptr<wolkabout::more_modbus::LibModbusSerialRtuClient>(new wolkabout::more_modbus::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::more_modbus::LibModbusSerialRtuClient::BitParity::EVEN,
         std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_new_rtu).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
     EXPECT_CALL(*libModbusMock, modbus_set_response_timeout).WillRepeatedly(Return(1));
@@ -484,8 +484,8 @@ TEST_F(ModbusSerialRTUClientTest, HappyFlowBitEven)
 TEST_F(ModbusSerialRTUClientTest, HappyFlowBitOdd)
 {
     const auto& modbusClient =
-      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
-        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::ODD,
+      std::unique_ptr<wolkabout::more_modbus::LibModbusSerialRtuClient>(new wolkabout::more_modbus::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::more_modbus::LibModbusSerialRtuClient::BitParity::ODD,
         std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_new_rtu).WillOnce(Return(reinterpret_cast<modbus_t*>(0x1)));
     EXPECT_CALL(*libModbusMock, modbus_set_response_timeout).WillRepeatedly(Return(1));
@@ -502,8 +502,8 @@ TEST_F(ModbusSerialRTUClientTest, HappyFlowBitOdd)
 TEST_F(ModbusSerialRTUClientTest, SetSlaveBad)
 {
     const auto& modbusClient =
-      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
-        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+      std::unique_ptr<wolkabout::more_modbus::LibModbusSerialRtuClient>(new wolkabout::more_modbus::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::more_modbus::LibModbusSerialRtuClient::BitParity::NONE,
         std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1));
 
@@ -513,8 +513,8 @@ TEST_F(ModbusSerialRTUClientTest, SetSlaveBad)
 TEST_F(ModbusSerialRTUClientTest, SetSlaveGood)
 {
     const auto& modbusClient =
-      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
-        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+      std::unique_ptr<wolkabout::more_modbus::LibModbusSerialRtuClient>(new wolkabout::more_modbus::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::more_modbus::LibModbusSerialRtuClient::BitParity::NONE,
         std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(1));
 
@@ -523,9 +523,9 @@ TEST_F(ModbusSerialRTUClientTest, SetSlaveGood)
 
 TEST_F(ModbusSerialRTUClientTest, WriteHoldingRegister)
 {
-    const std::unique_ptr<wolkabout::ModbusClient>& modbusClient =
-      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
-        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+    const std::unique_ptr<wolkabout::more_modbus::ModbusClient>& modbusClient =
+      std::unique_ptr<wolkabout::more_modbus::LibModbusSerialRtuClient>(new wolkabout::more_modbus::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::more_modbus::LibModbusSerialRtuClient::BitParity::NONE,
         std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
     EXPECT_CALL(*libModbusMock, modbus_write_register).WillOnce(Return(-1)).WillRepeatedly(Return(1));
@@ -539,9 +539,9 @@ TEST_F(ModbusSerialRTUClientTest, WriteHoldingRegister)
 
 TEST_F(ModbusSerialRTUClientTest, WriteHoldingRegisters)
 {
-    const std::unique_ptr<wolkabout::ModbusClient>& modbusClient =
-      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
-        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+    const std::unique_ptr<wolkabout::more_modbus::ModbusClient>& modbusClient =
+      std::unique_ptr<wolkabout::more_modbus::LibModbusSerialRtuClient>(new wolkabout::more_modbus::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::more_modbus::LibModbusSerialRtuClient::BitParity::NONE,
         std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
     EXPECT_CALL(*libModbusMock, modbus_write_registers).WillOnce(Return(-1)).WillOnce(Return(1));
@@ -556,9 +556,9 @@ TEST_F(ModbusSerialRTUClientTest, WriteHoldingRegisters)
 
 TEST_F(ModbusSerialRTUClientTest, WriteCoil)
 {
-    const std::unique_ptr<wolkabout::ModbusClient>& modbusClient =
-      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
-        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+    const std::unique_ptr<wolkabout::more_modbus::ModbusClient>& modbusClient =
+      std::unique_ptr<wolkabout::more_modbus::LibModbusSerialRtuClient>(new wolkabout::more_modbus::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::more_modbus::LibModbusSerialRtuClient::BitParity::NONE,
         std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
     EXPECT_CALL(*libModbusMock, modbus_write_bit).WillOnce(Return(-1)).WillOnce(Return(1));
@@ -573,9 +573,9 @@ TEST_F(ModbusSerialRTUClientTest, WriteCoil)
 
 TEST_F(ModbusSerialRTUClientTest, ReadInputContacts)
 {
-    const std::unique_ptr<wolkabout::ModbusClient>& modbusClient =
-      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
-        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+    const std::unique_ptr<wolkabout::more_modbus::ModbusClient>& modbusClient =
+      std::unique_ptr<wolkabout::more_modbus::LibModbusSerialRtuClient>(new wolkabout::more_modbus::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::more_modbus::LibModbusSerialRtuClient::BitParity::NONE,
         std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
     EXPECT_CALL(*libModbusMock, modbus_read_input_bits).WillOnce(Return(-1)).WillOnce(Return(1));
@@ -590,9 +590,9 @@ TEST_F(ModbusSerialRTUClientTest, ReadInputContacts)
 
 TEST_F(ModbusSerialRTUClientTest, ReadCoil)
 {
-    const std::unique_ptr<wolkabout::ModbusClient>& modbusClient =
-      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
-        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+    const std::unique_ptr<wolkabout::more_modbus::ModbusClient>& modbusClient =
+      std::unique_ptr<wolkabout::more_modbus::LibModbusSerialRtuClient>(new wolkabout::more_modbus::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::more_modbus::LibModbusSerialRtuClient::BitParity::NONE,
         std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
     EXPECT_CALL(*libModbusMock, modbus_read_bits).WillOnce(Return(-1)).WillOnce(Return(1));
@@ -607,9 +607,9 @@ TEST_F(ModbusSerialRTUClientTest, ReadCoil)
 
 TEST_F(ModbusSerialRTUClientTest, ReadCoils)
 {
-    const std::unique_ptr<wolkabout::ModbusClient>& modbusClient =
-      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
-        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+    const std::unique_ptr<wolkabout::more_modbus::ModbusClient>& modbusClient =
+      std::unique_ptr<wolkabout::more_modbus::LibModbusSerialRtuClient>(new wolkabout::more_modbus::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::more_modbus::LibModbusSerialRtuClient::BitParity::NONE,
         std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
     EXPECT_CALL(*libModbusMock, modbus_read_bits).WillOnce(Return(-1)).WillOnce(Return(1));
@@ -624,9 +624,9 @@ TEST_F(ModbusSerialRTUClientTest, ReadCoils)
 
 TEST_F(ModbusSerialRTUClientTest, ReadInputRegisters)
 {
-    const std::unique_ptr<wolkabout::ModbusClient>& modbusClient =
-      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
-        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+    const std::unique_ptr<wolkabout::more_modbus::ModbusClient>& modbusClient =
+      std::unique_ptr<wolkabout::more_modbus::LibModbusSerialRtuClient>(new wolkabout::more_modbus::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::more_modbus::LibModbusSerialRtuClient::BitParity::NONE,
         std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
     EXPECT_CALL(*libModbusMock, modbus_read_input_registers).WillOnce(Return(-1)).WillOnce(Return(1));
@@ -641,9 +641,9 @@ TEST_F(ModbusSerialRTUClientTest, ReadInputRegisters)
 
 TEST_F(ModbusSerialRTUClientTest, ReadHoldingRegister)
 {
-    const std::unique_ptr<wolkabout::ModbusClient>& modbusClient =
-      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
-        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+    const std::unique_ptr<wolkabout::more_modbus::ModbusClient>& modbusClient =
+      std::unique_ptr<wolkabout::more_modbus::LibModbusSerialRtuClient>(new wolkabout::more_modbus::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::more_modbus::LibModbusSerialRtuClient::BitParity::NONE,
         std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
     EXPECT_CALL(*libModbusMock, modbus_read_registers).WillOnce(Return(-1)).WillOnce(Return(1));
@@ -658,9 +658,9 @@ TEST_F(ModbusSerialRTUClientTest, ReadHoldingRegister)
 
 TEST_F(ModbusSerialRTUClientTest, ReadHoldingRegisters)
 {
-    const std::unique_ptr<wolkabout::ModbusClient>& modbusClient =
-      std::unique_ptr<wolkabout::LibModbusSerialRtuClient>(new wolkabout::LibModbusSerialRtuClient(
-        "/dev/testSerial", 115200, 8, 1, wolkabout::LibModbusSerialRtuClient::BitParity::NONE,
+    const std::unique_ptr<wolkabout::more_modbus::ModbusClient>& modbusClient =
+      std::unique_ptr<wolkabout::more_modbus::LibModbusSerialRtuClient>(new wolkabout::more_modbus::LibModbusSerialRtuClient(
+        "/dev/testSerial", 115200, 8, 1, wolkabout::more_modbus::LibModbusSerialRtuClient::BitParity::NONE,
         std::chrono::milliseconds(500)));
     EXPECT_CALL(*libModbusMock, modbus_set_slave).WillOnce(Return(-1)).WillRepeatedly(Return(1));
     EXPECT_CALL(*libModbusMock, modbus_read_registers).WillOnce(Return(-1)).WillOnce(Return(1));

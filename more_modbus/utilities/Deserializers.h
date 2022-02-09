@@ -25,6 +25,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 /**
  * @brief Utility methods for Deserialization of various enumerations.
  * @details These are generally useful if you have to input data of this type as string
@@ -59,6 +61,7 @@ public:
      */
     static RegisterMapping::OperationType deserializeOperationType(const std::string& dataType);
 };
+}    // namespace more_modbus
 }    // namespace wolkabout
 
 #endif    // WOLKMODBUS_DESERIALIZERS_H

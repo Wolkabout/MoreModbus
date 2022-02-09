@@ -28,6 +28,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::RegisterType registerType, int32_t address,
                                  bool readRestricted, int16_t slaveAddress, double deadbandValue,
                                  std::chrono::milliseconds frequencyFilterValue,
@@ -536,4 +538,5 @@ bool RegisterMapping::deadbandFilter(const std::vector<uint16_t>& newValues) con
 
     return significantChange;
 }
+}    // namespace more_modbus
 }    // namespace wolkabout

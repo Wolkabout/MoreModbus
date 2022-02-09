@@ -29,20 +29,20 @@
 
 using namespace ::testing;
 
-class ModbusReaderMock : public wolkabout::ModbusReader
+class ModbusReaderMock : public wolkabout::more_modbus::ModbusReader
 {
     std::string name = "MOCK";
 
 public:
-    ModbusReaderMock(wolkabout::ModbusClient& client) : ModbusReader(client, std::chrono::milliseconds(500)) {}
+    ModbusReaderMock(wolkabout::more_modbus::ModbusClient& client) : ModbusReader(client, std::chrono::milliseconds(500)) {}
 
-    MOCK_METHOD1(addDevice, void(const std::shared_ptr<wolkabout::ModbusDevice>&));
-    MOCK_METHOD1(addDevices, void(const std::vector<std::shared_ptr<wolkabout::ModbusDevice>>&));
-    MOCK_METHOD2(writeMapping, bool(wolkabout::RegisterMapping&, bool));
-    MOCK_METHOD2(writeMapping, bool(wolkabout::RegisterMapping&, const std::vector<uint16_t>&));
-    MOCK_METHOD2(writeBitMapping, bool(wolkabout::RegisterMapping&, bool));
+    MOCK_METHOD1(addDevice, void(const std::shared_ptr<wolkabout::more_modbus::ModbusDevice>&));
+    MOCK_METHOD1(addDevices, void(const std::vector<std::shared_ptr<wolkabout::more_modbus::ModbusDevice>>&));
+    MOCK_METHOD2(writeMapping, bool(wolkabout::more_modbus::RegisterMapping&, bool));
+    MOCK_METHOD2(writeMapping, bool(wolkabout::more_modbus::RegisterMapping&, const std::vector<uint16_t>&));
+    MOCK_METHOD2(writeBitMapping, bool(wolkabout::more_modbus::RegisterMapping&, bool));
     MOCK_METHOD0(isRunning, bool());
-    MOCK_CONST_METHOD0(getDevices, const std::map<int16_t, std::shared_ptr<wolkabout::ModbusDevice>>&());
+    MOCK_CONST_METHOD0(getDevices, const std::map<int16_t, std::shared_ptr<wolkabout::more_modbus::ModbusDevice>>&());
     MOCK_CONST_METHOD0(getDeviceStatuses, const std::map<int16_t, bool>&());
     MOCK_METHOD0(start, void());
     MOCK_METHOD0(stop, void());

@@ -22,6 +22,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::RegisterType registerType, int32_t address,
                          bool readRestricted, int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue,
                          std::chrono::milliseconds repeatedWrite, const bool* defaultValue)
@@ -104,4 +106,5 @@ bool BoolMapping::writeValue(bool value)
 
     return success;
 }
+}    // namespace more_modbus
 }    // namespace wolkabout

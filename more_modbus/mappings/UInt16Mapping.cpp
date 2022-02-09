@@ -22,6 +22,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 UInt16Mapping::UInt16Mapping(const std::string& reference, RegisterMapping::RegisterType registerType, int32_t address,
                              bool readRestricted, int16_t slaveAddress, double deadbandValue,
                              std::chrono::milliseconds frequencyFilterValue, std::chrono::milliseconds repeatedWrite,
@@ -84,4 +86,5 @@ uint16_t UInt16Mapping::getUint16Value() const
 {
     return m_uint16Value;
 }
+}    // namespace more_modbus
 }    // namespace wolkabout

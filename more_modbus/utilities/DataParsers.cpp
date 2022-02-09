@@ -25,6 +25,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 uint8_t DataParsers::MAX_UINT8 = 255;
 uint8_t DataParsers::SHIFT_UINT8 = 8;
 uint16_t DataParsers::MAX_UINT16 = 65535;
@@ -148,4 +150,5 @@ std::bitset<sizeof(uint16_t) * 8> DataParsers::separateBits(uint16_t value)
 {
     return {value};
 }
+}    // namespace more_modbus
 }    // namespace wolkabout

@@ -24,6 +24,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 Int32Mapping::Int32Mapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                            const std::vector<int32_t>& addresses, RegisterMapping::OperationType operation,
                            bool readRestricted, int16_t slaveAddress, double deadbandValue,
@@ -105,4 +107,5 @@ int32_t Int32Mapping::getInt32Value() const
 {
     return m_int32Value;
 }
+}    // namespace more_modbus
 }    // namespace wolkabout

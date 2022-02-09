@@ -26,6 +26,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 ModbusReader::ModbusReader(ModbusClient& modbusClient, const std::chrono::milliseconds& readPeriod)
 : m_modbusClient(modbusClient), m_devices(), m_readerShouldRun(false), m_threads(), m_readPeriod(readPeriod)
 {
@@ -536,4 +538,5 @@ void ModbusReader::rewriteDevice(const std::shared_ptr<ModbusDevice>& device)
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 }
+}    // namespace more_modbus
 }    // namespace wolkabout

@@ -30,6 +30,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 LibModbusSerialRtuClient::LibModbusSerialRtuClient(std::string serialPort, int baudRate, char dataBits, char stopBits,
                                                    BitParity bitParity, std::chrono::milliseconds responseTimeout)
 : ModbusClient(std::move(responseTimeout))
@@ -156,4 +158,5 @@ void LibModbusSerialRtuClient::sleepBetweenModbusMessages() const
 {
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
 }
+}    // namespace more_modbus
 }    // namespace wolkabout

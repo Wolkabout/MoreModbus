@@ -22,6 +22,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 RegisterMapping::RegisterType Deserializers::deserializeRegisterType(const std::string& registerType)
 {
     if (registerType == "INPUT_REGISTER")
@@ -75,4 +77,5 @@ RegisterMapping::OperationType Deserializers::deserializeOperationType(const std
 
     throw std::logic_error("Deserializers: Unknown operation type: " + dataType);
 }
+}    // namespace more_modbus
 }    // namespace wolkabout

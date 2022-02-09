@@ -24,6 +24,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 StringMapping::StringMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
                              const std::vector<int32_t>& addresses, RegisterMapping::OperationType operation,
                              bool readRestricted, int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue,
@@ -55,7 +57,7 @@ StringMapping::StringMapping(const std::string& reference, RegisterMapping::Regi
     }
 }
 
-bool wolkabout::StringMapping::update(const std::vector<uint16_t>& newValues)
+bool StringMapping::update(const std::vector<uint16_t>& newValues)
 {
     switch (m_operationType)
     {
@@ -122,4 +124,5 @@ const std::string& StringMapping::getStringValue() const
 {
     return m_stringValue;
 }
+}    // namespace more_modbus
 }    // namespace wolkabout

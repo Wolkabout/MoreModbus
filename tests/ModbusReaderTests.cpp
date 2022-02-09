@@ -52,16 +52,16 @@ public:
 
 TEST_F(ModbusReaderTests, ExampleTest)
 {
-    const auto& reader = std::make_shared<wolkabout::ModbusReader>(*modbusClientMock, std::chrono::milliseconds(500));
+    const auto& reader = std::make_shared<wolkabout::more_modbus::ModbusReader>(*modbusClientMock, std::chrono::milliseconds(500));
 
     EXPECT_CALL(*modbusClientMock, connect).WillRepeatedly(Return(true));
     EXPECT_CALL(*modbusClientMock, isConnected).WillRepeatedly(Return(true));
 
-    EXPECT_NO_THROW(reader->addDevice((const std::shared_ptr<wolkabout::ModbusDevice>&)modbusDeviceMock));
+    EXPECT_NO_THROW(reader->addDevice((const std::shared_ptr<wolkabout::more_modbus::ModbusDevice>&)modbusDeviceMock));
     reader->m_devices.clear();
 
-    EXPECT_NO_THROW(reader->addDevices(std::vector<std::shared_ptr<wolkabout::ModbusDevice>>{
-      (const std::shared_ptr<wolkabout::ModbusDevice>&)modbusDeviceMock}));
+    EXPECT_NO_THROW(reader->addDevices(std::vector<std::shared_ptr<wolkabout::more_modbus::ModbusDevice>>{
+      (const std::shared_ptr<wolkabout::more_modbus::ModbusDevice>&)modbusDeviceMock}));
 
     EXPECT_EQ(reader->getDevices().size(), 1);
     for (const auto& kvp : reader->getDeviceStatuses())

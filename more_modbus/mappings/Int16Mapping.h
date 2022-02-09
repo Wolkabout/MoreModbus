@@ -23,6 +23,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 /**
  * @brief Class describing a RegisterMapping with output type INT16
  * @details This Mapping just converts a single uint16_t into a int16_t.
@@ -69,6 +71,7 @@ public:
 private:
     int16_t m_int16Value{};
 };
+}    // namespace more_modbus
 }    // namespace wolkabout
 
 #endif    // WOLKABOUT_MODBUS_INT16MAPPING_H
