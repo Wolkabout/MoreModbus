@@ -24,7 +24,7 @@ namespace wolkabout
 {
 namespace more_modbus
 {
-UInt16Mapping::UInt16Mapping(const std::string& reference, RegisterMapping::RegisterType registerType, int32_t address,
+UInt16Mapping::UInt16Mapping(const std::string& reference, RegisterType registerType, int32_t address,
                              bool readRestricted, int16_t slaveAddress, double deadbandValue,
                              std::chrono::milliseconds frequencyFilterValue, std::chrono::milliseconds repeatedWrite,
                              const std::uint16_t* defaultValue)
@@ -35,11 +35,11 @@ UInt16Mapping::UInt16Mapping(const std::string& reference, RegisterMapping::Regi
     {
         throw std::logic_error("UInt16Mapping: Illegal register type set.");
     }
-    if (repeatedWrite.count() > 0 && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    if (repeatedWrite.count() > 0 && registerType == RegisterType::INPUT_REGISTER)
     {
         throw std::logic_error("UInt16Mapping: Can not set a repeated write value for a read-only register.");
     }
-    if (defaultValue != nullptr && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    if (defaultValue != nullptr && registerType == RegisterType::INPUT_REGISTER)
     {
         throw std::logic_error("UInt16Mapping: Can not set a default value for a read-only register.");
     }

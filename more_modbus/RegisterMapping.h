@@ -32,6 +32,72 @@ namespace more_modbus
 class RegisterGroup;
 
 /**
+ * @brief Indicates the modbus register type defined by the protocol.
+ */
+enum class RegisterType
+{
+    COIL = 0,
+    INPUT_CONTACT,
+    HOLDING_REGISTER,
+    INPUT_REGISTER
+};
+
+/**
+ * Helper method that converts a string value into a RegisterType enum value.
+ * Will throw exception if the string value is not valid.
+ *
+ * @param value The string value.
+ * @return The parsed RegisterType value.
+ */
+RegisterType registerTypeFromString(std::string value);
+
+/**
+ * @brief Indicates the output type for mapping.
+ */
+enum class OutputType
+{
+    BOOL = 0,
+    UINT16,
+    INT16,
+    UINT32,
+    INT32,
+    FLOAT,
+    STRING
+};
+
+/**
+ * Helper method that converts a string value into an OutputType enum value.
+ * Will throw exception if the string value is not valid.
+ *
+ * @param value The string value.
+ * @return The parsed OutputType value.
+ */
+OutputType outputTypeFromString(std::string value);
+
+/**
+ * @brief Indicates the operation type for mapping data, when it is read/written to registers.
+ */
+enum class OperationType
+{
+    NONE = 0,
+    MERGE_BIG_ENDIAN,
+    MERGE_LITTLE_ENDIAN,
+    MERGE_FLOAT,
+    STRINGIFY_ASCII,
+    STRINGIFY_UNICODE,
+    TAKE_BIT
+};
+
+/**
+ * Helper method that converts a string value into an OperationType enum value.
+ * Will throw exception if the string value is not valid.
+ *
+ * @param value The string value.
+ * @return The parsed OperationType value.
+ */
+OperationType operationTypeFromString(std::string value);
+
+/**
  * @brief Indicates a logical unit, resulting in one value, involving one/multiple/part of Modbus register(s).
  * @details As definition, it takes in the RegisterType and other parameters, in which there is an OutputType,
  *         and parameters to indicate how to read values.
@@ -39,45 +105,6 @@ class RegisterGroup;
 class RegisterMapping : public std::enable_shared_from_this<RegisterMapping>
 {
 public:
-    /**
-     * @brief Indicates the modbus register type defined by the protocol.
-     */
-    enum class RegisterType
-    {
-        COIL = 0,
-        INPUT_CONTACT,
-        HOLDING_REGISTER,
-        INPUT_REGISTER
-    };
-
-    /**
-     * @brief Indicates the output type for mapping.
-     */
-    enum class OutputType
-    {
-        BOOL = 0,
-        UINT16,
-        INT16,
-        UINT32,
-        INT32,
-        FLOAT,
-        STRING
-    };
-
-    /**
-     * @brief Indicates the operation type for mapping data, when it is read/written to registers.
-     */
-    enum class OperationType
-    {
-        NONE = 0,
-        MERGE_BIG_ENDIAN,
-        MERGE_LITTLE_ENDIAN,
-        MERGE_FLOAT,
-        STRINGIFY_ASCII,
-        STRINGIFY_UNICODE,
-        TAKE_BIT
-    };
-
     /**
      * @brief Default constructor for mapping
      * @details For registerTypes COIL/INPUT_CONTACT, the output type is set to BOOL.

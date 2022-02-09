@@ -25,13 +25,68 @@
 #include <chrono>
 #include <stdexcept>
 #include <utility>
+#include <algorithm>
 
 namespace wolkabout
 {
 namespace more_modbus
 {
-RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::RegisterType registerType, int32_t address,
-                                 bool readRestricted, int16_t slaveAddress, double deadbandValue,
+RegisterType registerTypeFromString(std::string value)
+{
+    std::transform(value.cbegin(), value.cend(), value.begin(), ::toupper);
+    if (value == "COIL")
+        return RegisterType::COIL;
+    else if (value == "INPUT_CONTACT")
+        return RegisterType::INPUT_CONTACT;
+    else if (value == "HOLDING_REGISTER")
+        return RegisterType::HOLDING_REGISTER;
+    else if (value == "INPUT_REGISTER")
+        return RegisterType::INPUT_REGISTER;
+    throw std::runtime_error("Received value is not a valid `RegisterType` value.");
+}
+
+OutputType outputTypeFromString(std::string value)
+{
+    std::transform(value.cbegin(), value.cend(), value.begin(), ::toupper);
+    if (value == "BOOL")
+        return OutputType::BOOL;
+    else if (value == "UINT16")
+        return OutputType::UINT16;
+    else if (value == "INT16")
+        return OutputType::INT16;
+    else if (value == "UINT32")
+        return OutputType::UINT32;
+    else if (value == "INT32")
+        return OutputType::INT32;
+    else if (value == "FLOAT")
+        return OutputType::FLOAT;
+    else if (value == "STRING")
+        return OutputType::STRING;
+    throw std::runtime_error("Received value is not a valid 'OutputType' value.");
+}
+
+OperationType operationTypeFromString(std::string value)
+{
+    std::transform(value.cbegin(), value.cend(), value.begin(), ::toupper);
+    if (value.empty() || value == "NONE")
+        return OperationType::NONE;
+    else if (value == "MERGE_BIG_ENDIAN")
+        return OperationType::MERGE_BIG_ENDIAN;
+    else if (value == "MERGE_LITTLE_ENDIAN")
+        return OperationType::MERGE_LITTLE_ENDIAN;
+    else if (value == "MERGE_FLOAT")
+        return OperationType::MERGE_FLOAT;
+    else if (value == "STRINGIFY_ASCII")
+        return OperationType::STRINGIFY_ASCII;
+    else if (value == "STRINGIFY_UNICODE")
+        return OperationType::STRINGIFY_UNICODE;
+    else if (value == "TAKE_BIT")
+        return OperationType::TAKE_BIT;
+    throw std::runtime_error("Received value is not a valid 'OperationType' value.");
+}
+
+RegisterMapping::RegisterMapping(std::string reference, RegisterType registerType, int32_t address, bool readRestricted,
+                                 int16_t slaveAddress, double deadbandValue,
                                  std::chrono::milliseconds frequencyFilterValue,
                                  std::chrono::milliseconds repeatedWrite)
 : m_reference(std::move(reference))
@@ -64,8 +119,8 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::Registe
     }
 }
 
-RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::RegisterType registerType, int32_t address,
-                                 OutputType type, bool readRestricted, int16_t slaveAddress, double deadbandValue,
+RegisterMapping::RegisterMapping(std::string reference, RegisterType registerType, int32_t address, OutputType type,
+                                 bool readRestricted, int16_t slaveAddress, double deadbandValue,
                                  std::chrono::milliseconds frequencyFilterValue,
                                  std::chrono::milliseconds repeatedWrite)
 : m_reference(std::move(reference))
@@ -106,8 +161,8 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::Registe
     }
 }
 
-RegisterMapping::RegisterMapping(std::string reference, RegisterMapping::RegisterType registerType, int32_t address,
-                                 OperationType type, int8_t bitIndex, bool readRestricted, int16_t slaveAddress,
+RegisterMapping::RegisterMapping(std::string reference, RegisterType registerType, int32_t address, OperationType type,
+                                 int8_t bitIndex, bool readRestricted, int16_t slaveAddress,
                                  std::chrono::milliseconds frequencyFilterValue,
                                  std::chrono::milliseconds repeatedWrite)
 : m_reference(std::move(reference))
@@ -213,7 +268,7 @@ bool RegisterMapping::isReadRestricted() const
     return m_readRestricted;
 }
 
-RegisterMapping::RegisterType RegisterMapping::getRegisterType() const
+RegisterType RegisterMapping::getRegisterType() const
 {
     return m_registerType;
 }
@@ -256,12 +311,12 @@ int16_t RegisterMapping::getRegisterCount() const
     return 1;
 }
 
-RegisterMapping::OutputType RegisterMapping::getOutputType() const
+OutputType RegisterMapping::getOutputType() const
 {
     return m_outputType;
 }
 
-RegisterMapping::OperationType RegisterMapping::getOperationType() const
+OperationType RegisterMapping::getOperationType() const
 {
     return m_operationType;
 }

@@ -26,18 +26,18 @@ namespace wolkabout
 {
 namespace more_modbus
 {
-FloatMapping::FloatMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
+FloatMapping::FloatMapping(const std::string& reference, RegisterType registerType,
                            const std::vector<int32_t>& addresses, bool readRestricted, int16_t slaveAddress,
                            double deadbandValue, std::chrono::milliseconds frequencyFilterValue,
                            std::chrono::milliseconds repeatedWrite, const float* defaultValue)
 : RegisterMapping(reference, registerType, addresses, OutputType::FLOAT, OperationType::MERGE_FLOAT, readRestricted,
                   slaveAddress, deadbandValue, frequencyFilterValue, repeatedWrite)
 {
-    if (repeatedWrite.count() > 0 && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    if (repeatedWrite.count() > 0 && registerType == RegisterType::INPUT_REGISTER)
     {
         throw std::logic_error("FloatMapping: Can not set a repeated write value for a read-only register.");
     }
-    if (defaultValue != nullptr && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    if (defaultValue != nullptr && registerType == RegisterType::INPUT_REGISTER)
     {
         throw std::logic_error("FloatMapping: Can not set a default value for a read-only register.");
     }

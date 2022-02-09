@@ -26,8 +26,8 @@ namespace wolkabout
 {
 namespace more_modbus
 {
-StringMapping::StringMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                             const std::vector<int32_t>& addresses, RegisterMapping::OperationType operation,
+StringMapping::StringMapping(const std::string& reference, RegisterType registerType,
+                             const std::vector<int32_t>& addresses, OperationType operation,
                              bool readRestricted, int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue,
                              std::chrono::milliseconds repeatedWrite, const std::string& defaultValue)
 : RegisterMapping(reference, registerType, addresses, OutputType::STRING, operation, readRestricted, slaveAddress, 0.0,
@@ -37,11 +37,11 @@ StringMapping::StringMapping(const std::string& reference, RegisterMapping::Regi
     {
         throw std::logic_error("StringMapping: Illegal operation type set.");
     }
-    if (repeatedWrite.count() > 0 && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    if (repeatedWrite.count() > 0 && registerType == RegisterType::INPUT_REGISTER)
     {
         throw std::logic_error("StringMapping: Can not set a repeated write value for a read-only register.");
     }
-    if (!defaultValue.empty() && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    if (!defaultValue.empty() && registerType == RegisterType::INPUT_REGISTER)
     {
         throw std::logic_error("StringMapping: Can not set a default value for a read-only register.");
     }
@@ -49,7 +49,7 @@ StringMapping::StringMapping(const std::string& reference, RegisterMapping::Regi
     if (!defaultValue.empty() && (defaultValue.size() <= static_cast<uint16_t>(getRegisterCount() * 2)))
     {
         m_stringValue = defaultValue;
-        if (operation == RegisterMapping::OperationType::STRINGIFY_ASCII)
+        if (operation == OperationType::STRINGIFY_ASCII)
             m_byteValues = DataParsers::asciiStringToRegisters(defaultValue);
         else
             m_byteValues = DataParsers::unicodeStringToRegisters(defaultValue);

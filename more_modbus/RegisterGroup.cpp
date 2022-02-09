@@ -90,7 +90,7 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
         const auto firstMappingAddress = mapping->getStartingAddress();
         const auto mappingAddressCount = mapping->getRegisterCount();
 
-        if (mapping->getOperationType() == RegisterMapping::OperationType::TAKE_BIT)
+        if (mapping->getOperationType() == OperationType::TAKE_BIT)
         {
             // If we're just adding bits, we don't need to apply same ruling.
             const auto key = std::to_string(mapping->getStartingAddress()) + GroupUtility::SEPARATOR +
@@ -171,7 +171,7 @@ bool RegisterGroup::addMapping(const std::shared_ptr<RegisterMapping>& mapping)
 
 bool RegisterGroup::appendMapping(const std::shared_ptr<RegisterMapping>& mapping)
 {
-    if (mapping->getOperationType() == RegisterMapping::OperationType::TAKE_BIT)
+    if (mapping->getOperationType() == OperationType::TAKE_BIT)
     {
         const auto key = std::to_string(mapping->getStartingAddress()) + GroupUtility::SEPARATOR +
                          std::to_string(mapping->getBitIndex());
@@ -194,7 +194,7 @@ bool RegisterGroup::appendMapping(const std::shared_ptr<RegisterMapping>& mappin
     }
 }
 
-RegisterMapping::RegisterType RegisterGroup::getRegisterType() const
+RegisterType RegisterGroup::getRegisterType() const
 {
     return m_registerType;
 }

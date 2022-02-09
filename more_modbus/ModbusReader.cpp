@@ -76,7 +76,7 @@ const std::map<int16_t, bool>& ModbusReader::getDeviceStatuses() const
 
 bool ModbusReader::writeMapping(RegisterMapping& mapping, const std::vector<uint16_t>& values)
 {
-    if (mapping.getRegisterType() != RegisterMapping::RegisterType::HOLDING_REGISTER)
+    if (mapping.getRegisterType() != RegisterType::HOLDING_REGISTER)
     {
         throw std::logic_error("ModbusReader: You can\'t write bytes to anything other than HOLDING_REGISTER mapping.");
     }
@@ -107,7 +107,7 @@ bool ModbusReader::writeMapping(RegisterMapping& mapping, const std::vector<uint
 
 bool ModbusReader::writeMapping(RegisterMapping& mapping, bool value)
 {
-    if (mapping.getRegisterType() != RegisterMapping::RegisterType::COIL)
+    if (mapping.getRegisterType() != RegisterType::COIL)
     {
         throw std::logic_error("ModbusReader: You can\'t write bool to anything other than COIL mapping.");
     }
@@ -131,12 +131,12 @@ bool ModbusReader::writeMapping(RegisterMapping& mapping, bool value)
 
 bool ModbusReader::writeBitMapping(RegisterMapping& mapping, bool value)
 {
-    if (mapping.getRegisterType() != RegisterMapping::RegisterType::HOLDING_REGISTER)
+    if (mapping.getRegisterType() != RegisterType::HOLDING_REGISTER)
     {
         throw std::logic_error("ModbusReader: You can\'t write bit to anything other than HOLDING_REGISTER mapping.");
     }
 
-    if (mapping.getOperationType() != RegisterMapping::OperationType::TAKE_BIT)
+    if (mapping.getOperationType() != OperationType::TAKE_BIT)
     {
         throw std::logic_error("ModbusReader: You can\'t write bit to mapping that isn\'t TAKE_BIT.");
     }
@@ -450,7 +450,7 @@ void ModbusReader::rewriteDevice(const std::shared_ptr<ModbusDevice>& device)
                     ++requiredMappings;
 
                     // Write the current value in
-                    if (rewritable->getRegisterType() == RegisterMapping::RegisterType::COIL)
+                    if (rewritable->getRegisterType() == RegisterType::COIL)
                     {
                         if (m_modbusClient.writeCoil(rewritable->getSlaveAddress(), rewritable->getStartingAddress(),
                                                      rewritable->getBoolValue()))

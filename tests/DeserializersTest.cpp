@@ -22,9 +22,9 @@
 #undef private
 #undef protected
 
-#define RegisterType wolkabout::more_modbus::RegisterMapping::RegisterType
-#define OutputType wolkabout::more_modbus::RegisterMapping::OutputType
-#define OperationType wolkabout::more_modbus::RegisterMapping::OperationType
+#define RegisterType wolkabout::more_modbus::RegisterType
+#define OutputType wolkabout::more_modbus::OutputType
+#define OperationType wolkabout::more_modbus::OperationType
 
 #include "core/utilities/Logger.h"
 

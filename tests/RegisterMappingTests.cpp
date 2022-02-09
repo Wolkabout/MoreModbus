@@ -22,9 +22,9 @@
 #undef private
 #undef protected
 
-#define _registerType wolkabout::more_modbus::RegisterMapping::RegisterType
-#define _outputType wolkabout::more_modbus::RegisterMapping::OutputType
-#define _operationType wolkabout::more_modbus::RegisterMapping::OperationType
+#define _registerType wolkabout::more_modbus::RegisterType
+#define _outputType wolkabout::more_modbus::OutputType
+#define _operationType wolkabout::more_modbus::OperationType
 #define _combination std::tuple<_registerType, _outputType, _operationType>
 #define _makeCombo(x, y, z) _combination(_registerType::x, _outputType::y, _operationType::z)
 #define _makeComboPure(x, y, z) _combination(x, y, z)

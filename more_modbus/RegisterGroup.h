@@ -101,7 +101,7 @@ public:
      */
     bool addMapping(const std::shared_ptr<RegisterMapping>& mapping);
 
-    RegisterMapping::RegisterType getRegisterType() const;
+    RegisterType getRegisterType() const;
 
     /**
      * @brief Internal getter for the device that owns this groups
@@ -143,7 +143,7 @@ private:
 
     bool keyExistsInSet(const std::string& key);
 
-    RegisterMapping::RegisterType m_registerType;
+    RegisterType m_registerType;
     int16_t m_slaveAddress;
     bool m_readRestricted;
 

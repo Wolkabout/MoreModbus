@@ -26,8 +26,8 @@ namespace wolkabout
 {
 namespace more_modbus
 {
-Int32Mapping::Int32Mapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                           const std::vector<int32_t>& addresses, RegisterMapping::OperationType operation,
+Int32Mapping::Int32Mapping(const std::string& reference, RegisterType registerType,
+                           const std::vector<int32_t>& addresses, OperationType operation,
                            bool readRestricted, int16_t slaveAddress, double deadbandValue,
                            std::chrono::milliseconds frequencyFilterValue, std::chrono::milliseconds repeatedWrite,
                            const std::int32_t* defaultValue)
@@ -38,11 +38,11 @@ Int32Mapping::Int32Mapping(const std::string& reference, RegisterMapping::Regist
     {
         throw std::logic_error("Int32Mapping: Illegal operation type set.");
     }
-    if (repeatedWrite.count() > 0 && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    if (repeatedWrite.count() > 0 && registerType == RegisterType::INPUT_REGISTER)
     {
         throw std::logic_error("Int32Mapping: Can not set a repeated write value for a read-only register.");
     }
-    if (defaultValue != nullptr && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    if (defaultValue != nullptr && registerType == RegisterType::INPUT_REGISTER)
     {
         throw std::logic_error("Int32Mapping: Can not set a default value for a read-only register.");
     }

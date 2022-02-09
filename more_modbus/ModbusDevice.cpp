@@ -49,7 +49,7 @@ ModbusDevice::ModbusDevice(const ModbusDevice& device)
 
 void ModbusDevice::createGroups(const std::vector<std::shared_ptr<RegisterMapping>>& mappings)
 {
-    std::map<RegisterMapping::RegisterType, std::shared_ptr<RegisterGroup>> readRestrictedGroups;
+    std::map<RegisterType, std::shared_ptr<RegisterGroup>> readRestrictedGroups;
     std::set<std::shared_ptr<RegisterMapping>, CompareFunction> set(mappings.begin(), mappings.end());
 
     std::shared_ptr<RegisterGroup> previousGroup = nullptr;

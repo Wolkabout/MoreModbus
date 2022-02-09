@@ -26,8 +26,8 @@ namespace wolkabout
 {
 namespace more_modbus
 {
-UInt32Mapping::UInt32Mapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                             const std::vector<int32_t>& addresses, RegisterMapping::OperationType operation,
+UInt32Mapping::UInt32Mapping(const std::string& reference, RegisterType registerType,
+                             const std::vector<int32_t>& addresses, OperationType operation,
                              bool readRestricted, int16_t slaveAddress, double deadbandValue,
                              std::chrono::milliseconds frequencyFilterValue, std::chrono::milliseconds repeatedWrite,
                              const std::uint32_t* defaultValue)
@@ -38,11 +38,11 @@ UInt32Mapping::UInt32Mapping(const std::string& reference, RegisterMapping::Regi
     {
         throw std::logic_error("UInt32Mapping: Illegal operation type set.");
     }
-    if (repeatedWrite.count() > 0 && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    if (repeatedWrite.count() > 0 && registerType == RegisterType::INPUT_REGISTER)
     {
         throw std::logic_error("UInt32Mapping: Can not set a repeated write value for a read-only register.");
     }
-    if (defaultValue != nullptr && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    if (defaultValue != nullptr && registerType == RegisterType::INPUT_REGISTER)
     {
         throw std::logic_error("UInt32Mapping: Can not set a default value for a read-only register.");
     }
@@ -51,7 +51,7 @@ UInt32Mapping::UInt32Mapping(const std::string& reference, RegisterMapping::Regi
     {
         m_uint32Value = *defaultValue;
         m_byteValues = DataParsers::uint32ToRegisters(
-          m_uint32Value, (operation == RegisterMapping::OperationType::MERGE_BIG_ENDIAN ? DataParsers::Endian::BIG :
+          m_uint32Value, (operation == OperationType::MERGE_BIG_ENDIAN ? DataParsers::Endian::BIG :
                                                                                           DataParsers::Endian::LITTLE));
         m_defaultValue = std::to_string(m_uint32Value);
     }

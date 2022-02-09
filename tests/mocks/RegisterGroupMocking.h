@@ -40,7 +40,7 @@ class RegisterGroupMock : public wolkabout::more_modbus::RegisterGroup
 public:
     RegisterGroupMock()
     : RegisterGroup{std::make_shared<wolkabout::more_modbus::RegisterMapping>(
-                      "TEST", wolkabout::more_modbus::RegisterMapping::RegisterType::COIL, 0),
+                      "TEST", wolkabout::more_modbus::RegisterType::COIL, 0),
                     nullptr}
     {
     }
@@ -54,7 +54,7 @@ public:
     explicit RegisterGroupMock(const RegisterGroup& instance) : RegisterGroup(instance) {}
 
     MOCK_METHOD1(addMapping, bool(const std::shared_ptr<wolkabout::more_modbus::RegisterMapping>&));
-    MOCK_METHOD0(getRegisterType, wolkabout::more_modbus::RegisterMapping::RegisterType());
+    MOCK_METHOD0(getRegisterType, wolkabout::more_modbus::RegisterType());
     MOCK_METHOD0(getDevice, const std::shared_ptr<wolkabout::more_modbus::ModbusDevice>&());
     MOCK_METHOD1(setDevice, void(const std::shared_ptr<wolkabout::more_modbus::ModbusDevice>&));
     MOCK_METHOD0(getStartingAddress, int32_t());

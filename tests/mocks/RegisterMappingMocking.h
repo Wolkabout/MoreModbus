@@ -27,9 +27,10 @@
 #include <iostream>
 #include <memory>
 
+using namespace wolkabout::more_modbus;
 using namespace ::testing;
 
-class RegisterMappingMock : public wolkabout::more_modbus::RegisterMapping
+class RegisterMappingMock : public RegisterMapping
 {
 public:
     RegisterMappingMock(const std::string& name, RegisterType registerType, int32_t address)

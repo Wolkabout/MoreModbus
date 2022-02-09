@@ -24,7 +24,7 @@ namespace wolkabout
 {
 namespace more_modbus
 {
-BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::RegisterType registerType, int32_t address,
+BoolMapping::BoolMapping(const std::string& reference, RegisterType registerType, int32_t address,
                          bool readRestricted, int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue,
                          std::chrono::milliseconds repeatedWrite, const bool* defaultValue)
 : RegisterMapping(reference, registerType, address, readRestricted, slaveAddress, 0.0, frequencyFilterValue,
@@ -34,11 +34,11 @@ BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::Register
     {
         throw std::logic_error("BoolMapping: Illegal register type set.");
     }
-    if (repeatedWrite.count() > 0 && registerType == RegisterMapping::RegisterType::INPUT_CONTACT)
+    if (repeatedWrite.count() > 0 && registerType == RegisterType::INPUT_CONTACT)
     {
         throw std::logic_error("BoolMapping: Can not set a repeated write value for a read-only register.");
     }
-    if (defaultValue != nullptr && registerType == RegisterMapping::RegisterType::INPUT_CONTACT)
+    if (defaultValue != nullptr && registerType == RegisterType::INPUT_CONTACT)
     {
         throw std::logic_error("BoolMapping: Can not set a default value for a read-only register.");
     }
@@ -54,8 +54,8 @@ BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::Register
     }
 }
 
-BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::RegisterType registerType, int32_t address,
-                         RegisterMapping::OperationType operation, int8_t bitIndex, bool readRestricted,
+BoolMapping::BoolMapping(const std::string& reference, RegisterType registerType, int32_t address,
+                         OperationType operation, int8_t bitIndex, bool readRestricted,
                          int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue,
                          std::chrono::milliseconds repeatedWrite, const bool* defaultValue)
 : RegisterMapping(reference, registerType, address, operation, bitIndex, readRestricted, slaveAddress,
@@ -65,11 +65,11 @@ BoolMapping::BoolMapping(const std::string& reference, RegisterMapping::Register
     {
         throw std::logic_error("BoolMapping: Illegal operation type set.");
     }
-    if (repeatedWrite.count() > 0 && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    if (repeatedWrite.count() > 0 && registerType == RegisterType::INPUT_REGISTER)
     {
         throw std::logic_error("BoolMapping: Can not set a repeated write value for a read-only register.");
     }
-    if (defaultValue != nullptr && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    if (defaultValue != nullptr && registerType == RegisterType::INPUT_REGISTER)
     {
         throw std::logic_error("BoolMapping: Can not set a default value for a read-only register.");
     }
