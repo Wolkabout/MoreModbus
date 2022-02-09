@@ -184,9 +184,11 @@ if (${BUILD_EXAMPLES})
 endif ()
 
 # Add the format target
-add_custom_target(format
-        COMMAND "clang-format" -i -sort-includes -style=file ${HEADER_FILES} ${SOURCE_FILES}
-        ${TEST_HEADER_FILES} ${TEST_SOURCE_FILES} ${EXAMPLE_SOURCE_FILES}
-        WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
-        COMMENT "[Formatting source code]"
-        VERBATIM)
+if (NOT TARGET format)
+    add_custom_target(format
+            COMMAND "clang-format" -i -sort-includes -style=file ${HEADER_FILES} ${SOURCE_FILES}
+            ${TEST_HEADER_FILES} ${TEST_SOURCE_FILES} ${EXAMPLE_SOURCE_FILES}
+            WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
+            COMMENT "[Formatting source code]"
+            VERBATIM)
+endif ()
