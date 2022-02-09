@@ -27,8 +27,8 @@ namespace wolkabout
 namespace more_modbus
 {
 StringMapping::StringMapping(const std::string& reference, RegisterType registerType,
-                             const std::vector<int32_t>& addresses, OperationType operation,
-                             bool readRestricted, int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue,
+                             const std::vector<int32_t>& addresses, OperationType operation, bool readRestricted,
+                             int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue,
                              std::chrono::milliseconds repeatedWrite, const std::string& defaultValue)
 : RegisterMapping(reference, registerType, addresses, OutputType::STRING, operation, readRestricted, slaveAddress, 0.0,
                   frequencyFilterValue, repeatedWrite)

@@ -22,10 +22,10 @@
 #include "more_modbus/RegisterGroup.h"
 #include "more_modbus/utilities/DataParsers.h"
 
+#include <algorithm>
 #include <chrono>
 #include <stdexcept>
 #include <utility>
-#include <algorithm>
 
 namespace wolkabout
 {

@@ -39,30 +39,29 @@ public:
 
     void SetUpMappings()
     {
-        mappings.emplace_back(std::make_shared<RegisterMappingMock>(
-          "U16M", wolkabout::more_modbus::RegisterType::HOLDING_REGISTER, 0));
+        mappings.emplace_back(
+          std::make_shared<RegisterMappingMock>("U16M", wolkabout::more_modbus::RegisterType::HOLDING_REGISTER, 0));
+
+        mappings.emplace_back(
+          std::make_shared<RegisterMappingMock>("BM", wolkabout::more_modbus::RegisterType::INPUT_CONTACT, 0));
 
         mappings.emplace_back(std::make_shared<RegisterMappingMock>(
-          "BM", wolkabout::more_modbus::RegisterType::INPUT_CONTACT, 0));
+          "STR1", wolkabout::more_modbus::RegisterType::HOLDING_REGISTER, std::vector<std::int32_t>{0, 1, 2},
+          wolkabout::more_modbus::OutputType::STRING, wolkabout::more_modbus::OperationType::STRINGIFY_ASCII));
 
-        mappings.emplace_back(std::make_shared<RegisterMappingMock>(
-          "STR1", wolkabout::more_modbus::RegisterType::HOLDING_REGISTER,
-          std::vector<std::int32_t>{0, 1, 2}, wolkabout::more_modbus::OutputType::STRING,
-          wolkabout::more_modbus::OperationType::STRINGIFY_ASCII));
+        mappings.emplace_back(
+          std::make_shared<RegisterMappingMock>("B4-1", wolkabout::more_modbus::RegisterType::HOLDING_REGISTER, 4,
+                                                wolkabout::more_modbus::OperationType::TAKE_BIT, 0));
 
-        mappings.emplace_back(std::make_shared<RegisterMappingMock>(
-          "B4-1", wolkabout::more_modbus::RegisterType::HOLDING_REGISTER, 4,
-          wolkabout::more_modbus::OperationType::TAKE_BIT, 0));
+        mappings.emplace_back(
+          std::make_shared<RegisterMappingMock>("B4-2", wolkabout::more_modbus::RegisterType::HOLDING_REGISTER, 4,
+                                                wolkabout::more_modbus::OperationType::TAKE_BIT, 1));
 
-        mappings.emplace_back(std::make_shared<RegisterMappingMock>(
-          "B4-2", wolkabout::more_modbus::RegisterType::HOLDING_REGISTER, 4,
-          wolkabout::more_modbus::OperationType::TAKE_BIT, 1));
+        mappings.emplace_back(
+          std::make_shared<RegisterMappingMock>("BMRR1", wolkabout::more_modbus::RegisterType::COIL, 0, 0, true));
 
-        mappings.emplace_back(std::make_shared<RegisterMappingMock>(
-          "BMRR1", wolkabout::more_modbus::RegisterType::COIL, 0, 0, true));
-
-        mappings.emplace_back(std::make_shared<RegisterMappingMock>(
-          "BMRR2", wolkabout::more_modbus::RegisterType::COIL, 1, 0, true));
+        mappings.emplace_back(
+          std::make_shared<RegisterMappingMock>("BMRR2", wolkabout::more_modbus::RegisterType::COIL, 1, 0, true));
     }
 
     void SetUp() { SetUpMappings(); }

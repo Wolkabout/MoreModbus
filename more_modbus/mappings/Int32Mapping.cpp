@@ -27,10 +27,9 @@ namespace wolkabout
 namespace more_modbus
 {
 Int32Mapping::Int32Mapping(const std::string& reference, RegisterType registerType,
-                           const std::vector<int32_t>& addresses, OperationType operation,
-                           bool readRestricted, int16_t slaveAddress, double deadbandValue,
-                           std::chrono::milliseconds frequencyFilterValue, std::chrono::milliseconds repeatedWrite,
-                           const std::int32_t* defaultValue)
+                           const std::vector<int32_t>& addresses, OperationType operation, bool readRestricted,
+                           int16_t slaveAddress, double deadbandValue, std::chrono::milliseconds frequencyFilterValue,
+                           std::chrono::milliseconds repeatedWrite, const std::int32_t* defaultValue)
 : RegisterMapping(reference, registerType, addresses, OutputType::INT32, operation, readRestricted, slaveAddress,
                   deadbandValue, frequencyFilterValue, repeatedWrite)
 {

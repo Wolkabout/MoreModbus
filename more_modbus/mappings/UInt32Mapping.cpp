@@ -27,10 +27,9 @@ namespace wolkabout
 namespace more_modbus
 {
 UInt32Mapping::UInt32Mapping(const std::string& reference, RegisterType registerType,
-                             const std::vector<int32_t>& addresses, OperationType operation,
-                             bool readRestricted, int16_t slaveAddress, double deadbandValue,
-                             std::chrono::milliseconds frequencyFilterValue, std::chrono::milliseconds repeatedWrite,
-                             const std::uint32_t* defaultValue)
+                             const std::vector<int32_t>& addresses, OperationType operation, bool readRestricted,
+                             int16_t slaveAddress, double deadbandValue, std::chrono::milliseconds frequencyFilterValue,
+                             std::chrono::milliseconds repeatedWrite, const std::uint32_t* defaultValue)
 : RegisterMapping(reference, registerType, addresses, OutputType::UINT32, operation, readRestricted, slaveAddress,
                   deadbandValue, frequencyFilterValue, repeatedWrite)
 {
@@ -51,8 +50,8 @@ UInt32Mapping::UInt32Mapping(const std::string& reference, RegisterType register
     {
         m_uint32Value = *defaultValue;
         m_byteValues = DataParsers::uint32ToRegisters(
-          m_uint32Value, (operation == OperationType::MERGE_BIG_ENDIAN ? DataParsers::Endian::BIG :
-                                                                                          DataParsers::Endian::LITTLE));
+          m_uint32Value,
+          (operation == OperationType::MERGE_BIG_ENDIAN ? DataParsers::Endian::BIG : DataParsers::Endian::LITTLE));
         m_defaultValue = std::to_string(m_uint32Value);
     }
 }

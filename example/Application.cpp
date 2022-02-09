@@ -35,8 +35,8 @@ int main()
     // Create a regular Register Mapping
     auto defaultValue = std::uint16_t{123};
     const auto normalRegisterMapping = std::make_shared<wolkabout::UInt16Mapping>(
-      "U16M", wolkabout::RegisterType::HOLDING_REGISTER, 0, false, -1, 0.0,
-      std::chrono::milliseconds{0}, std::chrono::milliseconds{10000}, &defaultValue);
+      "U16M", wolkabout::RegisterType::HOLDING_REGISTER, 0, false, -1, 0.0, std::chrono::milliseconds{0},
+      std::chrono::milliseconds{10000}, &defaultValue);
 
     // Create a regular Discrete Mapping
     const auto normalContactMapping =
@@ -49,13 +49,11 @@ int main()
       std::chrono::milliseconds{3000}, "Hello!");
 
     // Create some Bit Mappings
-    const auto getFirstBitMapping =
-      std::make_shared<wolkabout::BoolMapping>("B4-1", wolkabout::RegisterType::HOLDING_REGISTER, 4,
-                                               wolkabout::OperationType::TAKE_BIT, 0);
+    const auto getFirstBitMapping = std::make_shared<wolkabout::BoolMapping>(
+      "B4-1", wolkabout::RegisterType::HOLDING_REGISTER, 4, wolkabout::OperationType::TAKE_BIT, 0);
 
-    const auto getSecondBitMapping =
-      std::make_shared<wolkabout::BoolMapping>("B4-2", wolkabout::RegisterType::HOLDING_REGISTER, 4,
-                                               wolkabout::OperationType::TAKE_BIT, 1);
+    const auto getSecondBitMapping = std::make_shared<wolkabout::BoolMapping>(
+      "B4-2", wolkabout::RegisterType::HOLDING_REGISTER, 4, wolkabout::OperationType::TAKE_BIT, 1);
 
     const auto& device = std::make_shared<wolkabout::ModbusDevice>("Test Device 1", 1);
 

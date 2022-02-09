@@ -24,8 +24,8 @@ namespace wolkabout
 {
 namespace more_modbus
 {
-BoolMapping::BoolMapping(const std::string& reference, RegisterType registerType, int32_t address,
-                         bool readRestricted, int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue,
+BoolMapping::BoolMapping(const std::string& reference, RegisterType registerType, int32_t address, bool readRestricted,
+                         int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue,
                          std::chrono::milliseconds repeatedWrite, const bool* defaultValue)
 : RegisterMapping(reference, registerType, address, readRestricted, slaveAddress, 0.0, frequencyFilterValue,
                   repeatedWrite)
@@ -55,9 +55,9 @@ BoolMapping::BoolMapping(const std::string& reference, RegisterType registerType
 }
 
 BoolMapping::BoolMapping(const std::string& reference, RegisterType registerType, int32_t address,
-                         OperationType operation, int8_t bitIndex, bool readRestricted,
-                         int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue,
-                         std::chrono::milliseconds repeatedWrite, const bool* defaultValue)
+                         OperationType operation, int8_t bitIndex, bool readRestricted, int16_t slaveAddress,
+                         std::chrono::milliseconds frequencyFilterValue, std::chrono::milliseconds repeatedWrite,
+                         const bool* defaultValue)
 : RegisterMapping(reference, registerType, address, operation, bitIndex, readRestricted, slaveAddress,
                   frequencyFilterValue, repeatedWrite)
 {
