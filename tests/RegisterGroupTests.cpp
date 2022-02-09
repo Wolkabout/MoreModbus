@@ -39,35 +39,36 @@ public:
 
     void SetUpMappings()
     {
-        mappings.emplace_back(
-          std::make_shared<RegisterMappingMock>("U16M", wolkabout::more_modbus::RegisterMapping::RegisterType::HOLDING_REGISTER, 0));
-
-        mappings.emplace_back(
-          std::make_shared<RegisterMappingMock>("BM", wolkabout::more_modbus::RegisterMapping::RegisterType::INPUT_CONTACT, 0));
+        mappings.emplace_back(std::make_shared<RegisterMappingMock>(
+          "U16M", wolkabout::more_modbus::RegisterMapping::RegisterType::HOLDING_REGISTER, 0));
 
         mappings.emplace_back(std::make_shared<RegisterMappingMock>(
-          "STR1", wolkabout::more_modbus::RegisterMapping::RegisterType::HOLDING_REGISTER, std::vector<std::int32_t>{0, 1, 2},
-          wolkabout::more_modbus::RegisterMapping::OutputType::STRING, wolkabout::more_modbus::RegisterMapping::OperationType::STRINGIFY_ASCII));
+          "BM", wolkabout::more_modbus::RegisterMapping::RegisterType::INPUT_CONTACT, 0));
 
-        mappings.emplace_back(
-          std::make_shared<RegisterMappingMock>("U16M", wolkabout::more_modbus::RegisterMapping::RegisterType::HOLDING_REGISTER, 3));
+        mappings.emplace_back(std::make_shared<RegisterMappingMock>(
+          "STR1", wolkabout::more_modbus::RegisterMapping::RegisterType::HOLDING_REGISTER,
+          std::vector<std::int32_t>{0, 1, 2}, wolkabout::more_modbus::RegisterMapping::OutputType::STRING,
+          wolkabout::more_modbus::RegisterMapping::OperationType::STRINGIFY_ASCII));
 
-        mappings.emplace_back(
-          std::make_shared<RegisterMappingMock>("B4-1", wolkabout::more_modbus::RegisterMapping::RegisterType::HOLDING_REGISTER, 4,
-                                                wolkabout::more_modbus::RegisterMapping::OperationType::TAKE_BIT, 0));
+        mappings.emplace_back(std::make_shared<RegisterMappingMock>(
+          "U16M", wolkabout::more_modbus::RegisterMapping::RegisterType::HOLDING_REGISTER, 3));
 
-        mappings.emplace_back(
-          std::make_shared<RegisterMappingMock>("B4-2", wolkabout::more_modbus::RegisterMapping::RegisterType::HOLDING_REGISTER, 4,
-                                                wolkabout::more_modbus::RegisterMapping::OperationType::TAKE_BIT, 1));
+        mappings.emplace_back(std::make_shared<RegisterMappingMock>(
+          "B4-1", wolkabout::more_modbus::RegisterMapping::RegisterType::HOLDING_REGISTER, 4,
+          wolkabout::more_modbus::RegisterMapping::OperationType::TAKE_BIT, 0));
+
+        mappings.emplace_back(std::make_shared<RegisterMappingMock>(
+          "B4-2", wolkabout::more_modbus::RegisterMapping::RegisterType::HOLDING_REGISTER, 4,
+          wolkabout::more_modbus::RegisterMapping::OperationType::TAKE_BIT, 1));
 
         mappings.emplace_back(std::make_shared<RegisterMappingMock>(
           "U1610", wolkabout::more_modbus::RegisterMapping::RegisterType::HOLDING_REGISTER, 10));
 
-        readRestrictedMappings.emplace_back(
-          std::make_shared<RegisterMappingMock>("BMRR1", wolkabout::more_modbus::RegisterMapping::RegisterType::COIL, 0, 0, true));
+        readRestrictedMappings.emplace_back(std::make_shared<RegisterMappingMock>(
+          "BMRR1", wolkabout::more_modbus::RegisterMapping::RegisterType::COIL, 0, 0, true));
 
-        readRestrictedMappings.emplace_back(
-          std::make_shared<RegisterMappingMock>("BMRR2", wolkabout::more_modbus::RegisterMapping::RegisterType::COIL, 1, 0, true));
+        readRestrictedMappings.emplace_back(std::make_shared<RegisterMappingMock>(
+          "BMRR2", wolkabout::more_modbus::RegisterMapping::RegisterType::COIL, 1, 0, true));
 
         readRestrictedMappings.emplace_back(std::make_shared<RegisterMappingMock>(
           "BMRR3", wolkabout::more_modbus::RegisterMapping::RegisterType::HOLDING_REGISTER, 1, 0, true));
@@ -104,7 +105,8 @@ TEST_F(RegisterGroupTests, InitialExampleTest)
     EXPECT_EQ(copy.isReadRestricted(), moreGroup->isReadRestricted());
 
     std::shared_ptr<wolkabout::more_modbus::RegisterGroup> readOnlyGroup;
-    EXPECT_NO_THROW(readOnlyGroup = std::make_shared<wolkabout::more_modbus::RegisterGroup>(readRestrictedMappings[0], nullptr));
+    EXPECT_NO_THROW(readOnlyGroup =
+                      std::make_shared<wolkabout::more_modbus::RegisterGroup>(readRestrictedMappings[0], nullptr));
     EXPECT_TRUE(readOnlyGroup->addMapping(readRestrictedMappings[1]));
     EXPECT_THROW(readOnlyGroup->addMapping(mappings[4]), std::logic_error);
 

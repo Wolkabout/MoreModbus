@@ -258,7 +258,8 @@ TEST_F(DataParsersTest, TestUInt32ToBytesBigEndian)
 
     for (const auto& kvp : uint32ValuesBigEndian)
     {
-        const auto bytes = wolkabout::more_modbus::DataParsers::uint32ToRegisters(kvp.first, wolkabout::more_modbus::DataParsers::Endian::BIG);
+        const auto bytes = wolkabout::more_modbus::DataParsers::uint32ToRegisters(
+          kvp.first, wolkabout::more_modbus::DataParsers::Endian::BIG);
 
         LOG(DEBUG) << kvp.first;
         ASSERT_EQ(kvp.second.size(), bytes.size());
@@ -280,7 +281,8 @@ TEST_F(DataParsersTest, TestRegistersToUInt32BigEndian)
 
     for (const auto& kvp : uint32ValuesBigEndian)
     {
-        const auto value = wolkabout::more_modbus::DataParsers::registersToUint32(kvp.second, wolkabout::more_modbus::DataParsers::Endian::BIG);
+        const auto value = wolkabout::more_modbus::DataParsers::registersToUint32(
+          kvp.second, wolkabout::more_modbus::DataParsers::Endian::BIG);
 
         LOG(DEBUG) << kvp.first;
         EXPECT_EQ(kvp.first, value);
@@ -297,7 +299,8 @@ TEST_F(DataParsersTest, TestUInt32ToBytesLittleEndian)
 
     for (const auto& kvp : uint32ValuesLittleEndian)
     {
-        const auto bytes = wolkabout::more_modbus::DataParsers::uint32ToRegisters(kvp.first, wolkabout::more_modbus::DataParsers::Endian::LITTLE);
+        const auto bytes = wolkabout::more_modbus::DataParsers::uint32ToRegisters(
+          kvp.first, wolkabout::more_modbus::DataParsers::Endian::LITTLE);
 
         LOG(DEBUG) << kvp.first;
         ASSERT_EQ(kvp.second.size(), bytes.size());
@@ -319,8 +322,8 @@ TEST_F(DataParsersTest, TestRegistersToUInt32LittleEndian)
 
     for (const auto& kvp : uint32ValuesLittleEndian)
     {
-        const auto value =
-          wolkabout::more_modbus::DataParsers::registersToUint32(kvp.second, wolkabout::more_modbus::DataParsers::Endian::LITTLE);
+        const auto value = wolkabout::more_modbus::DataParsers::registersToUint32(
+          kvp.second, wolkabout::more_modbus::DataParsers::Endian::LITTLE);
 
         LOG(DEBUG) << kvp.first;
         EXPECT_EQ(kvp.first, value);
@@ -338,7 +341,8 @@ TEST_F(DataParsersTest, TestInvalidUint32Values)
     for (const auto& kvp : invalidUInt32)
     {
         LOG(DEBUG) << kvp.first;
-        EXPECT_THROW(wolkabout::more_modbus::DataParsers::registersToUint32(kvp.second, wolkabout::more_modbus::DataParsers::Endian::BIG),
+        EXPECT_THROW(wolkabout::more_modbus::DataParsers::registersToUint32(
+                       kvp.second, wolkabout::more_modbus::DataParsers::Endian::BIG),
                      std::logic_error);
     }
 }
@@ -353,7 +357,8 @@ TEST_F(DataParsersTest, TestInt32ToBytesBigEndian)
 
     for (const auto& kvp : int32ValuesBigEndian)
     {
-        const auto bytes = wolkabout::more_modbus::DataParsers::int32ToRegisters(kvp.first, wolkabout::more_modbus::DataParsers::Endian::BIG);
+        const auto bytes = wolkabout::more_modbus::DataParsers::int32ToRegisters(
+          kvp.first, wolkabout::more_modbus::DataParsers::Endian::BIG);
 
         LOG(DEBUG) << kvp.first;
         ASSERT_EQ(kvp.second.size(), bytes.size());
@@ -375,7 +380,8 @@ TEST_F(DataParsersTest, TestRegistersToInt32BigEndian)
 
     for (const auto& kvp : int32ValuesBigEndian)
     {
-        const auto value = wolkabout::more_modbus::DataParsers::registersToInt32(kvp.second, wolkabout::more_modbus::DataParsers::Endian::BIG);
+        const auto value = wolkabout::more_modbus::DataParsers::registersToInt32(
+          kvp.second, wolkabout::more_modbus::DataParsers::Endian::BIG);
 
         LOG(DEBUG) << kvp.first;
         EXPECT_EQ(kvp.first, value);
@@ -392,7 +398,8 @@ TEST_F(DataParsersTest, TestInt32ToBytesLittleEndian)
 
     for (const auto& kvp : int32ValuesLittleEndian)
     {
-        const auto bytes = wolkabout::more_modbus::DataParsers::int32ToRegisters(kvp.first, wolkabout::more_modbus::DataParsers::Endian::LITTLE);
+        const auto bytes = wolkabout::more_modbus::DataParsers::int32ToRegisters(
+          kvp.first, wolkabout::more_modbus::DataParsers::Endian::LITTLE);
 
         LOG(DEBUG) << kvp.first;
         ASSERT_EQ(kvp.second.size(), bytes.size());
@@ -414,7 +421,8 @@ TEST_F(DataParsersTest, TestRegistersToInt32LittleEndian)
 
     for (const auto& kvp : int32ValuesLittleEndian)
     {
-        const auto value = wolkabout::more_modbus::DataParsers::registersToInt32(kvp.second, wolkabout::more_modbus::DataParsers::Endian::LITTLE);
+        const auto value = wolkabout::more_modbus::DataParsers::registersToInt32(
+          kvp.second, wolkabout::more_modbus::DataParsers::Endian::LITTLE);
 
         LOG(DEBUG) << kvp.first;
         EXPECT_EQ(kvp.first, value);
@@ -432,7 +440,8 @@ TEST_F(DataParsersTest, TestInvalidInt32Values)
     for (const auto& kvp : invalidInt32)
     {
         LOG(DEBUG) << kvp.first;
-        EXPECT_THROW(wolkabout::more_modbus::DataParsers::registersToInt32(kvp.second, wolkabout::more_modbus::DataParsers::Endian::BIG),
+        EXPECT_THROW(wolkabout::more_modbus::DataParsers::registersToInt32(
+                       kvp.second, wolkabout::more_modbus::DataParsers::Endian::BIG),
                      std::logic_error);
     }
 }

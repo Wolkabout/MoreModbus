@@ -109,20 +109,21 @@ public:
 
 TEST_F(RegisterMappingTests, ApsurdMappingsTests)
 {
-    EXPECT_THROW(std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", _registerType::INPUT_CONTACT, 0, true),
-                 std::logic_error);
-
     EXPECT_THROW(
-      std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", _registerType::INPUT_CONTACT, 0, _outputType::BOOL, true),
+      std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", _registerType::INPUT_CONTACT, 0, true),
       std::logic_error);
 
-    EXPECT_THROW(std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", _registerType::INPUT_REGISTER, 0,
-                                                              _operationType::TAKE_BIT, 0, true),
+    EXPECT_THROW(std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", _registerType::INPUT_CONTACT, 0,
+                                                                           _outputType::BOOL, true),
                  std::logic_error);
 
-    EXPECT_THROW(std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", _registerType::INPUT_REGISTER,
-                                                              std::vector<std::int32_t>{0, 1, 2}, _outputType::STRING,
-                                                              _operationType::STRINGIFY_ASCII, true),
+    EXPECT_THROW(std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", _registerType::INPUT_REGISTER, 0,
+                                                                           _operationType::TAKE_BIT, 0, true),
+                 std::logic_error);
+
+    EXPECT_THROW(std::make_shared<wolkabout::more_modbus::RegisterMapping>(
+                   "TEST", _registerType::INPUT_REGISTER, std::vector<std::int32_t>{0, 1, 2}, _outputType::STRING,
+                   _operationType::STRINGIFY_ASCII, true),
                  std::logic_error);
 }
 
@@ -147,12 +148,14 @@ TEST_F(RegisterMappingTests, IllegalCombosCtorOne)
 
             if (winning)
             {
-                EXPECT_NO_THROW(std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", registerType, 0, outputType));
+                EXPECT_NO_THROW(
+                  std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", registerType, 0, outputType));
             }
             else
             {
-                EXPECT_THROW(std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", registerType, 0, outputType),
-                             std::logic_error);
+                EXPECT_THROW(
+                  std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", registerType, 0, outputType),
+                  std::logic_error);
             }
         }
     }
@@ -167,14 +170,14 @@ TEST_F(RegisterMappingTests, IllegalCombosCtorTwo)
 
         if (winning)
         {
-            EXPECT_NO_THROW(
-              std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", registerType, 0, _operationType::TAKE_BIT, 0));
+            EXPECT_NO_THROW(std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", registerType, 0,
+                                                                                      _operationType::TAKE_BIT, 0));
         }
         else
         {
-            EXPECT_THROW(
-              std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", registerType, 0, _operationType::TAKE_BIT, 0),
-              std::logic_error);
+            EXPECT_THROW(std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", registerType, 0,
+                                                                                   _operationType::TAKE_BIT, 0),
+                         std::logic_error);
         }
     }
 }

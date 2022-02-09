@@ -29,7 +29,8 @@
 
 using namespace ::testing;
 
-typedef std::set<std::pair<std::string, std::shared_ptr<wolkabout::more_modbus::RegisterMapping>>, wolkabout::more_modbus::GroupUtility>
+typedef std::set<std::pair<std::string, std::shared_ptr<wolkabout::more_modbus::RegisterMapping>>,
+                 wolkabout::more_modbus::GroupUtility>
   MappingsMap;
 
 class RegisterGroupMock : public wolkabout::more_modbus::RegisterGroup
@@ -38,9 +39,9 @@ class RegisterGroupMock : public wolkabout::more_modbus::RegisterGroup
 
 public:
     RegisterGroupMock()
-    : RegisterGroup{
-        std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", wolkabout::more_modbus::RegisterMapping::RegisterType::COIL, 0),
-        nullptr}
+    : RegisterGroup{std::make_shared<wolkabout::more_modbus::RegisterMapping>(
+                      "TEST", wolkabout::more_modbus::RegisterMapping::RegisterType::COIL, 0),
+                    nullptr}
     {
     }
 

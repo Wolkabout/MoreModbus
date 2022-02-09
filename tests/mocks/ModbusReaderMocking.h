@@ -34,7 +34,10 @@ class ModbusReaderMock : public wolkabout::more_modbus::ModbusReader
     std::string name = "MOCK";
 
 public:
-    ModbusReaderMock(wolkabout::more_modbus::ModbusClient& client) : ModbusReader(client, std::chrono::milliseconds(500)) {}
+    ModbusReaderMock(wolkabout::more_modbus::ModbusClient& client)
+    : ModbusReader(client, std::chrono::milliseconds(500))
+    {
+    }
 
     MOCK_METHOD1(addDevice, void(const std::shared_ptr<wolkabout::more_modbus::ModbusDevice>&));
     MOCK_METHOD1(addDevices, void(const std::vector<std::shared_ptr<wolkabout::more_modbus::ModbusDevice>>&));

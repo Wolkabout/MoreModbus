@@ -62,41 +62,46 @@ public:
 
     void SetUpMappings()
     {
-        uint16Mapping = std::make_shared<wolkabout::more_modbus::UInt16Mapping>("HR1", _registerType::HOLDING_REGISTER, 0);
+        uint16Mapping =
+          std::make_shared<wolkabout::more_modbus::UInt16Mapping>("HR1", _registerType::HOLDING_REGISTER, 0);
         mappings.emplace_back(uint16Mapping);
 
-        mappings.emplace_back(std::make_shared<wolkabout::more_modbus::UInt16Mapping>("HR2", _registerType::HOLDING_REGISTER, 1));
-        mappings.emplace_back(std::make_shared<wolkabout::more_modbus::Int16Mapping>("HR3", _registerType::HOLDING_REGISTER, 2));
-        mappings.emplace_back(std::make_shared<wolkabout::more_modbus::Int16Mapping>("HR4", _registerType::HOLDING_REGISTER, 3));
+        mappings.emplace_back(
+          std::make_shared<wolkabout::more_modbus::UInt16Mapping>("HR2", _registerType::HOLDING_REGISTER, 1));
+        mappings.emplace_back(
+          std::make_shared<wolkabout::more_modbus::Int16Mapping>("HR3", _registerType::HOLDING_REGISTER, 2));
+        mappings.emplace_back(
+          std::make_shared<wolkabout::more_modbus::Int16Mapping>("HR4", _registerType::HOLDING_REGISTER, 3));
 
         mappings.emplace_back(std::make_shared<wolkabout::more_modbus::UInt32Mapping>(
           "IR1", _registerType::INPUT_REGISTER, std::vector<std::int32_t>{0, 1}, _operationType::MERGE_LITTLE_ENDIAN));
         mappings.emplace_back(std::make_shared<wolkabout::more_modbus::Int32Mapping>(
           "IR2", _registerType::INPUT_REGISTER, std::vector<std::int32_t>{2, 3}, _operationType::MERGE_BIG_ENDIAN));
 
-        nonWriteableFloatMapping = std::make_shared<wolkabout::more_modbus::FloatMapping>("IR3", _registerType::INPUT_REGISTER,
-                                                                             std::vector<std::int32_t>{4, 5});
+        nonWriteableFloatMapping = std::make_shared<wolkabout::more_modbus::FloatMapping>(
+          "IR3", _registerType::INPUT_REGISTER, std::vector<std::int32_t>{4, 5});
         mappings.emplace_back(nonWriteableFloatMapping);
 
         bitMapping = std::make_shared<wolkabout::more_modbus::BoolMapping>("HRB1", _registerType::HOLDING_REGISTER, 4,
-                                                              _operationType::TAKE_BIT, 0);
+                                                                           _operationType::TAKE_BIT, 0);
         mappings.emplace_back(bitMapping);
-        mappings.emplace_back(std::make_shared<wolkabout::more_modbus::BoolMapping>("HRB2", _registerType::HOLDING_REGISTER, 4,
-                                                                       _operationType::TAKE_BIT, 2));
-        mappings.emplace_back(std::make_shared<wolkabout::more_modbus::BoolMapping>("HRB3", _registerType::HOLDING_REGISTER, 4,
-                                                                       _operationType::TAKE_BIT, 4));
-        mappings.emplace_back(std::make_shared<wolkabout::more_modbus::BoolMapping>("HRB4", _registerType::HOLDING_REGISTER, 4,
-                                                                       _operationType::TAKE_BIT, 6));
+        mappings.emplace_back(std::make_shared<wolkabout::more_modbus::BoolMapping>(
+          "HRB2", _registerType::HOLDING_REGISTER, 4, _operationType::TAKE_BIT, 2));
+        mappings.emplace_back(std::make_shared<wolkabout::more_modbus::BoolMapping>(
+          "HRB3", _registerType::HOLDING_REGISTER, 4, _operationType::TAKE_BIT, 4));
+        mappings.emplace_back(std::make_shared<wolkabout::more_modbus::BoolMapping>(
+          "HRB4", _registerType::HOLDING_REGISTER, 4, _operationType::TAKE_BIT, 6));
 
-        stringMapping = std::make_shared<wolkabout::more_modbus::StringMapping>("HRSTR", _registerType::HOLDING_REGISTER,
-                                                                   std::vector<std::int32_t>{5, 6, 7, 8, 9},
-                                                                   _operationType::STRINGIFY_ASCII);
+        stringMapping = std::make_shared<wolkabout::more_modbus::StringMapping>(
+          "HRSTR", _registerType::HOLDING_REGISTER, std::vector<std::int32_t>{5, 6, 7, 8, 9},
+          _operationType::STRINGIFY_ASCII);
         mappings.emplace_back(stringMapping);
 
         coilMapping = std::make_shared<wolkabout::more_modbus::BoolMapping>("HRCOIL", _registerType::COIL, 0);
         mappings.emplace_back(coilMapping);
 
-        mappings.emplace_back(std::make_shared<wolkabout::more_modbus::BoolMapping>("HRIC", _registerType::INPUT_CONTACT, 0));
+        mappings.emplace_back(
+          std::make_shared<wolkabout::more_modbus::BoolMapping>("HRIC", _registerType::INPUT_CONTACT, 0));
     }
 
     void SetUpDevices()
@@ -117,7 +122,8 @@ public:
 
 TEST_F(ProperReadingTest, InitializeReader)
 {
-    const auto& reader = std::make_shared<wolkabout::more_modbus::ModbusReader>(*modbusClientMock, std::chrono::milliseconds(500));
+    const auto& reader =
+      std::make_shared<wolkabout::more_modbus::ModbusReader>(*modbusClientMock, std::chrono::milliseconds(500));
     EXPECT_NO_THROW(reader->addDevice(device));
 
     const auto boolData = std::vector<bool>(10, false);
