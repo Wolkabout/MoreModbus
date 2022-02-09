@@ -82,6 +82,17 @@ link_directories(${CMAKE_PREFIX_PATH}/lib)
 link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 include_directories(SYSTEM "${CMAKE_PREFIX_PATH}/include")
 
+# Define the version of the library
+set(MOREMODBUS_VERSION_MAJOR 0)
+set(MOREMODBUS_VERSION_MINOR 4)
+set(MOREMODBUS_VERSION_PATCH 0)
+set(MOREMODBUS_VERSION_SUFFIX prerelease)
+
+set(MOREMODBUS_VERSION_STRING "${MOREMODBUS_VERSION_MAJOR}.${MOREMODBUS_VERSION_MINOR}.${MOREMODBUS_VERSION_PATCH}")
+if (NOT "${MOREMODBUS_VERSION_SUFFIX}" STREQUAL "")
+    set(MOREMODBUS_VERSION_STRING "${MOREMODBUS_VERSION_STRING}-${MOREMODBUS_VERSION_SUFFIX}")
+endif ()
+
 # Set up the library
 set(SOURCE_FILES more_modbus/mappings/BoolMapping.cpp
         more_modbus/mappings/FloatMapping.cpp
@@ -125,6 +136,7 @@ target_link_libraries(${PROJECT_NAME} WolkAboutCoreUtility modbus pthread)
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_LIBRARY_INCLUDE_DIRECTORY})
 set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "$ORIGIN")
+set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${MOREMODBUS_VERSION_STRING} SOVERSION ${MOREMODBUS_VERSION_MAJOR}.${MOREMODBUS_VERSION_MINOR}.${MOREMODBUS_VERSION_PATCH})
 add_dependencies(${PROJECT_NAME} libmodbus)
 if (TARGET WolkSDK-Cpp)
     add_dependencies(${PROJECT_NAME} WolkSDK-Cpp)
