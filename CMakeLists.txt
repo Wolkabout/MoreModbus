@@ -106,7 +106,6 @@ set(SOURCE_FILES more_modbus/mappings/BoolMapping.cpp
         more_modbus/modbus/ModbusClient.cpp
         more_modbus/modbus/ModbusGroupReader.cpp
         more_modbus/utilities/DataParsers.cpp
-        more_modbus/utilities/Deserializers.cpp
         more_modbus/ModbusDevice.cpp
         more_modbus/ModbusReader.cpp
         more_modbus/RegisterGroup.cpp
@@ -123,7 +122,6 @@ set(HEADER_FILES more_modbus/mappings/BoolMapping.h
         more_modbus/modbus/ModbusClient.h
         more_modbus/modbus/ModbusGroupReader.h
         more_modbus/utilities/DataParsers.h
-        more_modbus/utilities/Deserializers.h
         more_modbus/ModbusDevice.h
         more_modbus/ModbusReader.h
         more_modbus/RegisterGroup.h
@@ -146,7 +144,6 @@ endif ()
 if (${BUILD_TESTS})
     set(TEST_SOURCE_FILES tests/ComplexMappingsTests.cpp
             tests/DataParsersTest.cpp
-            tests/DeserializersTest.cpp
             tests/MappingsTests.cpp
             tests/ModbusClientTests.cpp
             tests/ModbusDeviceTests.cpp
