@@ -1,6 +1,7 @@
 include(ExternalProject)
 
 set(LIB_MODBUS_VERSION "3.1.6")
+set(WOLK_SDK_VERSION "3.1.0-prerelease")
 
 string(APPEND LIBMODBUS_ADDITIONAL_ARGS --host=${LIBMODBUS_CROSSCOMPILE_HOST})
 
@@ -20,7 +21,7 @@ ExternalProject_Add(libmodbus
 if (NOT TARGET WolkAboutCoreUtility)
     ExternalProject_Add(WolkSDK-Cpp
             GIT_REPOSITORY "https://github.com/Wolkabout/WolkSDK-Cpp"
-            GIT_TAG "cc3f9611cb02355815a9944c45f05fe8b4c3e4d8"
+            GIT_TAG "v${WOLK_SDK_VERSION}"
             UPDATE_COMMAND ""
             CMAKE_ARGS
             -DBUILD_CONNECTIVITY=OFF
