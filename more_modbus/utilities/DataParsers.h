@@ -26,6 +26,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 /**
  * @brief Collection of Utility methods, necessary for parsing data, between uint16_t, and
  *         wanted user types.
@@ -167,6 +169,7 @@ private:
      */
     static uint16_t SHIFT_UINT16;
 };
+}    // namespace more_modbus
 }    // namespace wolkabout
 
 #endif    // WOLKABOUT_MODBUS_DATAPARSERS_H

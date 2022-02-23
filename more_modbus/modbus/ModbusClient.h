@@ -29,6 +29,8 @@ typedef struct _modbus modbus_t;
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 /**
  * @brief Main interface class for Clients to inherit.
  * @details Describes all methods necessary for the ModbusGroupReader to use while reading
@@ -182,6 +184,7 @@ protected:
     std::recursive_mutex m_modbusMutex;
     modbus_t* m_modbus;
 };
+}    // namespace more_modbus
 }    // namespace wolkabout
 
 #endif

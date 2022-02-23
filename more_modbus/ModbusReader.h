@@ -29,6 +29,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 /**
  * @brief Main functional class, that accepts all devices and reads them periodically.
  * @details Function of the class is to periodically trigger the reading of all devices,
@@ -144,6 +146,7 @@ private:
     std::map<int16_t, std::unique_ptr<std::thread>> m_rewriteThreads;
     std::chrono::milliseconds m_readPeriod;
 };
+}    // namespace more_modbus
 }    // namespace wolkabout
 
 #endif    // WOLKABOUT_MODBUS_MODBUSREADER_H

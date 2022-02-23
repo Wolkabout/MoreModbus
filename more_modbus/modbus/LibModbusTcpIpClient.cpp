@@ -30,6 +30,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 LibModbusTcpIpClient::LibModbusTcpIpClient(std::string ipAddress, int port, std::chrono::milliseconds responseTimeout)
 : ModbusClient(responseTimeout), m_ipAddress(std::move(ipAddress)), m_port(port)
 {
@@ -71,4 +73,5 @@ bool LibModbusTcpIpClient::destroyContext()
     return true;
 }
 
+}    // namespace more_modbus
 }    // namespace wolkabout

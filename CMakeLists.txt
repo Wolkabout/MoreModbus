@@ -19,8 +19,6 @@
 cmake_minimum_required(VERSION 3.5)
 project(MoreModbus C CXX)
 
-set_property(GLOBAL PROPERTY ALLOW_DUPLICATE_CUSTOM_TARGETS 1)
-
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}     -Wall -Wextra -pedantic                                                    \
                                             -pedantic-errors -Wcast-align                                              \
@@ -73,18 +71,7 @@ if (NOT DEFINED CMAKE_PREFIX_PATH)
     set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_BINARY_DIR}/build")
 endif ()
 
-# Import the dependencies
-set(BUILD_CONNECTIVITY OFF CACHE BOOL "Build the library with Paho MQTT and allow MQTT connection to the platform.")
-set(BUILD_POCO OFF CACHE BOOL "Build the library with Poco.")
-set(BUILD_GTEST ${BUILD_TESTS} CACHE BOOL "Build the library with GTest.")
-set(BUILD_AWS_LOG_UPLOADER OFF CACHE BOOL "Build the library with AwsLogUploader.")
-
-# This is how we're importing the WolkAboutCoreUtility
-if (NOT TARGET WolkAboutCoreUtility)
-    add_subdirectory(WolkSDK-Cpp)
-endif ()
-
-# And this is how we're importing the libmodbus
+# And this is how we're importing the submodules
 add_subdirectory(dependencies)
 
 # Add the pthread dependency too
@@ -94,6 +81,17 @@ find_package(Threads REQUIRED)
 link_directories(${CMAKE_PREFIX_PATH}/lib)
 link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 include_directories(SYSTEM "${CMAKE_PREFIX_PATH}/include")
+
+# Define the version of the library
+set(MOREMODBUS_VERSION_MAJOR 0)
+set(MOREMODBUS_VERSION_MINOR 4)
+set(MOREMODBUS_VERSION_PATCH 0)
+set(MOREMODBUS_VERSION_SUFFIX prerelease)
+
+set(MOREMODBUS_VERSION_STRING "${MOREMODBUS_VERSION_MAJOR}.${MOREMODBUS_VERSION_MINOR}.${MOREMODBUS_VERSION_PATCH}")
+if (NOT "${MOREMODBUS_VERSION_SUFFIX}" STREQUAL "")
+    set(MOREMODBUS_VERSION_STRING "${MOREMODBUS_VERSION_STRING}-${MOREMODBUS_VERSION_SUFFIX}")
+endif ()
 
 # Set up the library
 set(SOURCE_FILES more_modbus/mappings/BoolMapping.cpp
@@ -108,7 +106,6 @@ set(SOURCE_FILES more_modbus/mappings/BoolMapping.cpp
         more_modbus/modbus/ModbusClient.cpp
         more_modbus/modbus/ModbusGroupReader.cpp
         more_modbus/utilities/DataParsers.cpp
-        more_modbus/utilities/Deserializers.cpp
         more_modbus/ModbusDevice.cpp
         more_modbus/ModbusReader.cpp
         more_modbus/RegisterGroup.cpp
@@ -125,7 +122,6 @@ set(HEADER_FILES more_modbus/mappings/BoolMapping.h
         more_modbus/modbus/ModbusClient.h
         more_modbus/modbus/ModbusGroupReader.h
         more_modbus/utilities/DataParsers.h
-        more_modbus/utilities/Deserializers.h
         more_modbus/ModbusDevice.h
         more_modbus/ModbusReader.h
         more_modbus/RegisterGroup.h
@@ -138,13 +134,16 @@ target_link_libraries(${PROJECT_NAME} WolkAboutCoreUtility modbus pthread)
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_LIBRARY_INCLUDE_DIRECTORY})
 set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "$ORIGIN")
-add_dependencies(${PROJECT_NAME} libmodbus libgtest)
+set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${MOREMODBUS_VERSION_STRING} SOVERSION ${MOREMODBUS_VERSION_MAJOR}.${MOREMODBUS_VERSION_MINOR}.${MOREMODBUS_VERSION_PATCH})
+add_dependencies(${PROJECT_NAME} libmodbus)
+if (TARGET WolkSDK-Cpp)
+    add_dependencies(${PROJECT_NAME} WolkSDK-Cpp)
+endif ()
 
 # Tests
 if (${BUILD_TESTS})
     set(TEST_SOURCE_FILES tests/ComplexMappingsTests.cpp
             tests/DataParsersTest.cpp
-            tests/DeserializersTest.cpp
             tests/MappingsTests.cpp
             tests/ModbusClientTests.cpp
             tests/ModbusDeviceTests.cpp
@@ -164,9 +163,9 @@ if (${BUILD_TESTS})
     target_include_directories(${PROJECT_NAME}Tests PRIVATE ${PROJECT_SOURCE_DIR})
     target_include_directories(${PROJECT_NAME}Tests PUBLIC ${CMAKE_LIBRARY_INCLUDE_DIRECTORY})
     set_target_properties(${PROJECT_NAME}Tests PROPERTIES INSTALL_RPATH "$ORIGIN/../lib")
-    set_target_properties(${PROJECT_NAME}Tests PROPERTIES EXCLUDE_FROM_ALL TRUE)
 
-    add_custom_target(tests ${PROJECT_NAME}Tests)
+    enable_testing()
+    add_test(NAME "MoreModbus_Tests" COMMAND ${PROJECT_NAME}Tests)
 endif ()
 
 # Example
@@ -182,9 +181,18 @@ if (${BUILD_EXAMPLES})
 endif ()
 
 # Add the format target
-add_custom_target(format
-        COMMAND "clang-format" -i -sort-includes -style=file ${HEADER_FILES} ${SOURCE_FILES}
-        ${TEST_HEADER_FILES} ${TEST_SOURCE_FILES} ${EXAMPLE_SOURCE_FILES}
-        WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
-        COMMENT "[Formatting source code]"
-        VERBATIM)
+if (NOT TARGET format)
+    add_custom_target(format
+            COMMAND "clang-format" -i -sort-includes -style=file ${HEADER_FILES} ${SOURCE_FILES}
+            ${TEST_HEADER_FILES} ${TEST_SOURCE_FILES} ${EXAMPLE_SOURCE_FILES}
+            WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
+            COMMENT "[Formatting source code]"
+            VERBATIM)
+endif ()
+
+# Create the install rule
+include(GNUInstallDirs)
+install(DIRECTORY ${CMAKE_LIBRARY_INCLUDE_DIRECTORY} DESTINATION ${CMAKE_INSTALL_PREFIX} PATTERN *.h)
+install(DIRECTORY ${CMAKE_PREFIX_PATH}/include DESTINATION ${CMAKE_INSTALL_PREFIX} PATTERN *.h)
+install(DIRECTORY ${CMAKE_PREFIX_PATH}/lib/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+install(TARGETS ${PROJECT_NAME} LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)

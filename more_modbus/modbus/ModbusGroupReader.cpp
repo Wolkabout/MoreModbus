@@ -24,20 +24,22 @@
 
 namespace wolkabout
 {
-bool ModbusGroupReader::readGroup(wolkabout::ModbusClient& modbusClient, wolkabout::RegisterGroup& group)
+namespace more_modbus
+{
+bool ModbusGroupReader::readGroup(ModbusClient& modbusClient, RegisterGroup& group)
 {
     if (group.isReadRestricted())
         return true;
 
     switch (group.getRegisterType())
     {
-    case RegisterMapping::RegisterType::COIL:
+    case RegisterType::COIL:
         return readCoilGroup(modbusClient, group);
-    case RegisterMapping::RegisterType::INPUT_CONTACT:
+    case RegisterType::INPUT_CONTACT:
         return readDiscreteInputGroup(modbusClient, group);
-    case RegisterMapping::RegisterType::INPUT_REGISTER:
+    case RegisterType::INPUT_REGISTER:
         return readInputRegisterGroup(modbusClient, group);
-    case RegisterMapping::RegisterType::HOLDING_REGISTER:
+    case RegisterType::HOLDING_REGISTER:
         return readHoldingRegisterGroup(modbusClient, group);
     default:
         return false;
@@ -201,4 +203,5 @@ bool ModbusGroupReader::readInputRegisterGroup(ModbusClient& modbusClient, Regis
     passValuesToGroup(group, registerValues);
     return true;
 }
+}    // namespace more_modbus
 }    // namespace wolkabout

@@ -25,6 +25,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 ModbusDevice::ModbusDevice(const std::string& name, int16_t slaveAddress)
 : m_name(name), m_status(false), m_slaveAddress(slaveAddress), m_groups()
 {
@@ -47,7 +49,7 @@ ModbusDevice::ModbusDevice(const ModbusDevice& device)
 
 void ModbusDevice::createGroups(const std::vector<std::shared_ptr<RegisterMapping>>& mappings)
 {
-    std::map<RegisterMapping::RegisterType, std::shared_ptr<RegisterGroup>> readRestrictedGroups;
+    std::map<RegisterType, std::shared_ptr<RegisterGroup>> readRestrictedGroups;
     std::set<std::shared_ptr<RegisterMapping>, CompareFunction> set(mappings.begin(), mappings.end());
 
     std::shared_ptr<RegisterGroup> previousGroup = nullptr;
@@ -196,4 +198,5 @@ void ModbusDevice::setReader(const std::shared_ptr<ModbusReader>& reader)
 {
     m_reader = reader;
 }
+}    // namespace more_modbus
 }    // namespace wolkabout

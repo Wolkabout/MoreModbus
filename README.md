@@ -82,10 +82,10 @@ and INPUT_CONTACT/COIL are BoolMapping.
 
 ```c++
 const auto& normalRegisterMapping =
-  std::make_shared<wolkabout::UInt16Mapping>("U16M", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 0);
+  std::make_shared<wolkabout::UInt16Mapping>("U16M", wolkabout::RegisterType::HOLDING_REGISTER, 0);
 
 const auto& normalContactMapping =
-  std::make_shared<wolkabout::BoolMapping>("BM", wolkabout::RegisterMapping::RegisterType::INPUT_CONTACT, 0);
+  std::make_shared<wolkabout::BoolMapping>("BM", wolkabout::RegisterType::INPUT_CONTACT, 0);
 ```
 
 #### Multi Register Mapping
@@ -96,8 +96,8 @@ and make it as a Int32Mapping, UInt32Mapping or StringMapping based on the retur
 
 ```c++
 const auto& stringMapping = std::make_shared<wolkabout::StringMapping>(
-  "STR1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, std::vector<int16_t>{0, 1, 2},
-  wolkabout::RegisterMapping::OperationType::STRINGIFY_ASCII);
+  "STR1", wolkabout::RegisterType::HOLDING_REGISTER, std::vector<int16_t>{0, 1, 2},
+  wolkabout::OperationType::STRINGIFY_ASCII);
 ```
 
 #### Bit Mapping
@@ -108,8 +108,8 @@ the TAKE_BIT operation and the bit index.
 
 ```c++ 
 const auto& getFirstBitMapping =
-      std::make_shared<wolkabout::BoolMapping>("B4-1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 4,
-                                               wolkabout::RegisterMapping::OperationType::TAKE_BIT, 0);
+      std::make_shared<wolkabout::BoolMapping>("B4-1", wolkabout::RegisterType::HOLDING_REGISTER, 4,
+                                               wolkabout::OperationType::TAKE_BIT, 0);
 ```
 
 ### Device
@@ -134,7 +134,7 @@ if you want access to the parsed value.
 ```c++
 device->setOnMappingValueChange([](const std::shared_ptr<wolkabout::RegisterMapping>& mapping) {
     // You can do this for all output types.
-    if (mapping->getOutputType() == wolkabout::RegisterMapping::OutputType::BOOL)
+    if (mapping->getOutputType() == wolkabout::OutputType::BOOL)
     {
         const auto& boolMapping = std::dynamic_pointer_cast<wolkabout::BoolMapping>(mapping);
         LOG(DEBUG) << "Application: Mapping is bool, value : " << boolMapping->getBoolValue();
@@ -142,7 +142,7 @@ device->setOnMappingValueChange([](const std::shared_ptr<wolkabout::RegisterMapp
         if (!boolMapping->getBoolValue())
             boolMapping->writeValue(true);
     }
-    else if (mapping->getOutputType() == wolkabout::RegisterMapping::OutputType::STRING)
+    else if (mapping->getOutputType() == wolkabout::OutputType::STRING)
     {
         const auto& stringMapping = std::dynamic_pointer_cast<wolkabout::StringMapping>(mapping);
         LOG(DEBUG) << "Application: Mapping is string, value : " << stringMapping->getStringValue();

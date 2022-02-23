@@ -23,6 +23,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 /**
  * @brief Class describing a RegisterMapping with output type STRING
  * @details This Mapping merges some registers into a single string value by storing two characters in a single uint16.
@@ -69,6 +71,7 @@ public:
 private:
     std::string m_stringValue;
 };
+}    // namespace more_modbus
 }    // namespace wolkabout
 
 #endif    // WOLKABOUT_MODBUS_STRINGMAPPING_H

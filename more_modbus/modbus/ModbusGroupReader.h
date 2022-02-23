@@ -24,6 +24,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 /**
  * @brief Collection of utility methods used by ModbusReader to read a group.
  */
@@ -90,6 +92,7 @@ private:
      */
     static bool readInputRegisterGroup(ModbusClient& modbusClient, RegisterGroup& group);
 };
+}    // namespace more_modbus
 }    // namespace wolkabout
 
 #endif    // WOLKABOUT_MODBUS_MODBUSGROUPREADER_H

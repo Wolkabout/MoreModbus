@@ -24,18 +24,20 @@
 
 namespace wolkabout
 {
-Int16Mapping::Int16Mapping(const std::string& reference, RegisterMapping::RegisterType registerType, int32_t address,
+namespace more_modbus
+{
+Int16Mapping::Int16Mapping(const std::string& reference, RegisterType registerType, int32_t address,
                            bool readRestricted, int16_t slaveAddress, double deadbandValue,
                            std::chrono::milliseconds frequencyFilterValue, std::chrono::milliseconds repeatedWrite,
                            const std::int16_t* defaultValue)
 : RegisterMapping(reference, registerType, address, OutputType::INT16, readRestricted, slaveAddress, deadbandValue,
                   frequencyFilterValue, repeatedWrite)
 {
-    if (repeatedWrite.count() > 0 && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    if (repeatedWrite.count() > 0 && registerType == RegisterType::INPUT_REGISTER)
     {
         throw std::logic_error("Int16Mapping: Can not set a repeated write value for a read-only register.");
     }
-    if (defaultValue != nullptr && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    if (defaultValue != nullptr && registerType == RegisterType::INPUT_REGISTER)
     {
         throw std::logic_error("Int16Mapping: Can not set a default value for a read-only register.");
     }
@@ -82,4 +84,5 @@ int16_t Int16Mapping::getInt16Value() const
 {
     return m_int16Value;
 }
+}    // namespace more_modbus
 }    // namespace wolkabout
