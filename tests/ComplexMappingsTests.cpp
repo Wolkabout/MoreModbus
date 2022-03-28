@@ -100,10 +100,13 @@ public:
                          _registerType::HOLDING_REGISTER};
         outputTypes = {_outputType::BOOL,   _outputType::FLOAT,  _outputType::INT16, _outputType::INT32,
                        _outputType::STRING, _outputType::UINT16, _outputType::UINT32};
-        operationTypes = {
-          _operationType::NONE,        _operationType::MERGE_BIG_ENDIAN, _operationType::MERGE_LITTLE_ENDIAN,
-          _operationType::MERGE_FLOAT, _operationType::STRINGIFY_ASCII_BIG_ENDIAN,  _operationType::STRINGIFY_UNICODE_BIG_ENDIAN,
-          _operationType::TAKE_BIT};
+        operationTypes = {_operationType::NONE,
+                          _operationType::MERGE_BIG_ENDIAN,
+                          _operationType::MERGE_LITTLE_ENDIAN,
+                          _operationType::MERGE_FLOAT,
+                          _operationType::STRINGIFY_ASCII_BIG_ENDIAN,
+                          _operationType::STRINGIFY_UNICODE_BIG_ENDIAN,
+                          _operationType::TAKE_BIT};
 
         endians = {_endian::BIG, _endian::LITTLE};
 
@@ -129,11 +132,11 @@ public:
                               std::vector<_combination>{_makeCombo(HOLDING_REGISTER, FLOAT, MERGE_FLOAT),
                                                         _makeCombo(INPUT_REGISTER, FLOAT, MERGE_FLOAT)});
 
-        winningCombos.emplace(_outputType::STRING,
-                              std::vector<_combination>{_makeCombo(HOLDING_REGISTER, STRING, STRINGIFY_ASCII),
-                                                        _makeCombo(INPUT_REGISTER, STRING, STRINGIFY_ASCII),
-                                                        _makeCombo(HOLDING_REGISTER, STRING, STRINGIFY_UNICODE),
-                                                        _makeCombo(INPUT_REGISTER, STRING, STRINGIFY_UNICODE)});
+        winningCombos.emplace(_outputType::STRING, std::vector<_combination>{
+                                                     _makeCombo(HOLDING_REGISTER, STRING, STRINGIFY_ASCII_BIG_ENDIAN),
+                                                     _makeCombo(INPUT_REGISTER, STRING, STRINGIFY_ASCII_BIG_ENDIAN),
+                                                     _makeCombo(HOLDING_REGISTER, STRING, STRINGIFY_UNICODE_BIG_ENDIAN),
+                                                     _makeCombo(INPUT_REGISTER, STRING, STRINGIFY_UNICODE_BIG_ENDIAN)});
     }
 
     bool IsWinningCombo(_outputType outputType, _combination combo)
@@ -584,7 +587,8 @@ TEST_F(ComplexMappingsTests, StringMappingsCreation)
 
 std::string random_string(size_t length)
 {
-    auto randchar = []() -> char {
+    auto randchar = []() -> char
+    {
         const char charset[] = "0123456789"
                                "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                "abcdefghijklmnopqrstuvwxyz";
