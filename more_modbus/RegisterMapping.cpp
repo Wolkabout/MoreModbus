@@ -76,10 +76,14 @@ OperationType operationTypeFromString(std::string value)
         return OperationType::MERGE_LITTLE_ENDIAN;
     else if (value == "MERGE_FLOAT")
         return OperationType::MERGE_FLOAT;
-    else if (value == "STRINGIFY_ASCII")
-        return OperationType::STRINGIFY_ASCII;
-    else if (value == "STRINGIFY_UNICODE")
-        return OperationType::STRINGIFY_UNICODE;
+    else if (value == "STRINGIFY_ASCII" || value == "STRINGIFY_ASCII_BIG_ENDIAN")
+        return OperationType::STRINGIFY_ASCII_BIG_ENDIAN;
+    else if (value == "STRINGIFY_ASCII_LITTLE_ENDIAN")
+        return OperationType::STRINGIFY_ASCII_LITTLE_ENDIAN;
+    else if (value == "STRINGIFY_UNICODE" || value == "STRINGIFY_UNICODE_BIG_ENDIAN")
+        return OperationType::STRINGIFY_UNICODE_BIG_ENDIAN;
+    else if (value == "STRINGIFY_UNICODE_LITTLE_ENDIAN")
+        return OperationType::STRINGIFY_UNICODE_LITTLE_ENDIAN;
     else if (value == "TAKE_BIT")
         return OperationType::TAKE_BIT;
     throw std::runtime_error("Received value is not a valid 'OperationType' value.");
@@ -243,7 +247,10 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterType registerTyp
             throw std::logic_error("RegisterMapping: Merge for floats can only output FLOAT.");
         }
     }
-    else if (m_operationType == OperationType::STRINGIFY_ASCII || m_operationType == OperationType::STRINGIFY_UNICODE)
+    else if (m_operationType == OperationType::STRINGIFY_ASCII_BIG_ENDIAN ||
+             m_operationType == OperationType::STRINGIFY_ASCII_LITTLE_ENDIAN ||
+             m_operationType == OperationType::STRINGIFY_UNICODE_BIG_ENDIAN ||
+             m_operationType == OperationType::STRINGIFY_UNICODE_LITTLE_ENDIAN)
     {
         if (m_outputType != OutputType::STRING)
         {

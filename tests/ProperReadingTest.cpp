@@ -94,7 +94,7 @@ public:
 
         stringMapping = std::make_shared<wolkabout::more_modbus::StringMapping>(
           "HRSTR", _registerType::HOLDING_REGISTER, std::vector<std::int32_t>{5, 6, 7, 8, 9},
-          _operationType::STRINGIFY_ASCII);
+          _operationType::STRINGIFY_ASCII_BIG_ENDIAN);
         mappings.emplace_back(stringMapping);
 
         coilMapping = std::make_shared<wolkabout::more_modbus::BoolMapping>("HRCOIL", _registerType::COIL, 0);

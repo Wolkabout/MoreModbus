@@ -52,7 +52,7 @@ public:
                        _outputType::STRING, _outputType::UINT16, _outputType::UINT32};
         operationTypes = {
           _operationType::NONE,        _operationType::MERGE_BIG_ENDIAN, _operationType::MERGE_LITTLE_ENDIAN,
-          _operationType::MERGE_FLOAT, _operationType::STRINGIFY_ASCII,  _operationType::STRINGIFY_UNICODE,
+          _operationType::MERGE_FLOAT, _operationType::STRINGIFY_ASCII_BIG_ENDIAN,  _operationType::STRINGIFY_UNICODE_BIG_ENDIAN,
           _operationType::TAKE_BIT};
     }
 

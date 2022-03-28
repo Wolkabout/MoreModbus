@@ -102,7 +102,7 @@ public:
                        _outputType::STRING, _outputType::UINT16, _outputType::UINT32};
         operationTypes = {
           _operationType::NONE,        _operationType::MERGE_BIG_ENDIAN, _operationType::MERGE_LITTLE_ENDIAN,
-          _operationType::MERGE_FLOAT, _operationType::STRINGIFY_ASCII,  _operationType::STRINGIFY_UNICODE,
+          _operationType::MERGE_FLOAT, _operationType::STRINGIFY_ASCII_BIG_ENDIAN,  _operationType::STRINGIFY_UNICODE_BIG_ENDIAN,
           _operationType::TAKE_BIT};
 
         endians = {_endian::BIG, _endian::LITTLE};
@@ -248,7 +248,7 @@ TEST_F(ComplexMappingsTests, UInt32MappingsInitUpdateValid)
         EXPECT_TRUE(mapping->isValid());
 
         // Redundant if checks
-        mapping->m_operationType = _operationType::STRINGIFY_UNICODE;
+        mapping->m_operationType = _operationType::STRINGIFY_UNICODE_BIG_ENDIAN;
 
         EXPECT_THROW(mapping->writeValue(value), std::logic_error);
         EXPECT_THROW(mapping->update(bytes), std::logic_error);
@@ -608,7 +608,7 @@ TEST_F(ComplexMappingsTests, StringMappingsWriteValue)
         auto bytes = std::vector<uint16_t>();
         //        std::cout << "Testing with " << value << std::endl;
 
-        if (operationType == _operationType::STRINGIFY_ASCII)
+        if (operationType == _operationType::STRINGIFY_ASCII_BIG_ENDIAN)
         {
             bytes = {wolkabout::more_modbus::DataParsers::asciiStringToRegisters(value)};
         }

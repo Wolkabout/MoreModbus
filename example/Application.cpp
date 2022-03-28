@@ -46,7 +46,7 @@ int main()
 
     // Create a String Mapping
     const auto stringMapping = std::make_shared<StringMapping>(
-      "STR1", RegisterType::HOLDING_REGISTER, std::vector<std::int32_t>{0, 1, 2}, OperationType::STRINGIFY_ASCII, false,
+      "STR1", RegisterType::HOLDING_REGISTER, std::vector<std::int32_t>{0, 1, 2}, OperationType::STRINGIFY_ASCII_BIG_ENDIAN, false,
       -1, std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}, "Hello!");
 
     // Create some Bit Mappings

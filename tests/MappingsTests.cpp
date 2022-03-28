@@ -97,7 +97,7 @@ public:
                        _outputType::STRING, _outputType::UINT16, _outputType::UINT32};
         operationTypes = {
           _operationType::NONE,        _operationType::MERGE_BIG_ENDIAN, _operationType::MERGE_LITTLE_ENDIAN,
-          _operationType::MERGE_FLOAT, _operationType::STRINGIFY_ASCII,  _operationType::STRINGIFY_UNICODE,
+          _operationType::MERGE_FLOAT, _operationType::STRINGIFY_ASCII_BIG_ENDIAN,  _operationType::STRINGIFY_UNICODE_BIG_ENDIAN,
           _operationType::TAKE_BIT};
     }
 
@@ -462,12 +462,12 @@ TEST_F(MappingsTests, StringMappingRepeatAndDefaultButReadOnly)
     auto testValue = std::string("Test");
     EXPECT_THROW(
       wolkabout::more_modbus::StringMapping("TEST", wolkabout::more_modbus::RegisterType::INPUT_REGISTER, {0, 1},
-                                            wolkabout::more_modbus::OperationType::STRINGIFY_ASCII, false, 0,
+                                            wolkabout::more_modbus::OperationType::STRINGIFY_ASCII_BIG_ENDIAN, false, 0,
                                             std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
       std::logic_error);
     EXPECT_THROW(
       wolkabout::more_modbus::StringMapping("TEST", wolkabout::more_modbus::RegisterType::INPUT_REGISTER, {0, 1},
-                                            wolkabout::more_modbus::OperationType::STRINGIFY_ASCII, false, 0,
+                                            wolkabout::more_modbus::OperationType::STRINGIFY_ASCII_BIG_ENDIAN, false, 0,
                                             std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, testValue),
       std::logic_error);
 }
