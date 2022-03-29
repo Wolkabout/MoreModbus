@@ -50,10 +50,13 @@ public:
                          _registerType::HOLDING_REGISTER};
         outputTypes = {_outputType::BOOL,   _outputType::FLOAT,  _outputType::INT16, _outputType::INT32,
                        _outputType::STRING, _outputType::UINT16, _outputType::UINT32};
-        operationTypes = {
-          _operationType::NONE,        _operationType::MERGE_BIG_ENDIAN, _operationType::MERGE_LITTLE_ENDIAN,
-          _operationType::MERGE_FLOAT, _operationType::STRINGIFY_ASCII,  _operationType::STRINGIFY_UNICODE,
-          _operationType::TAKE_BIT};
+        operationTypes = {_operationType::NONE,
+                          _operationType::MERGE_BIG_ENDIAN,
+                          _operationType::MERGE_LITTLE_ENDIAN,
+                          _operationType::MERGE_FLOAT,
+                          _operationType::STRINGIFY_ASCII_BIG_ENDIAN,
+                          _operationType::STRINGIFY_UNICODE_BIG_ENDIAN,
+                          _operationType::TAKE_BIT};
     }
 
     void SetUpWinningCombinations()
@@ -72,20 +75,21 @@ public:
         winningCombos.emplace(2, std::vector<_combination>{_makeCombo(INPUT_REGISTER, BOOL, TAKE_BIT),
                                                            _makeCombo(HOLDING_REGISTER, BOOL, TAKE_BIT)});
 
-        winningCombos.emplace(3, std::vector<_combination>{_makeCombo(INPUT_REGISTER, UINT32, MERGE_BIG_ENDIAN),
-                                                           _makeCombo(INPUT_REGISTER, INT32, MERGE_BIG_ENDIAN),
-                                                           _makeCombo(INPUT_REGISTER, UINT32, MERGE_LITTLE_ENDIAN),
-                                                           _makeCombo(INPUT_REGISTER, INT32, MERGE_LITTLE_ENDIAN),
-                                                           _makeCombo(HOLDING_REGISTER, UINT32, MERGE_BIG_ENDIAN),
-                                                           _makeCombo(HOLDING_REGISTER, INT32, MERGE_BIG_ENDIAN),
-                                                           _makeCombo(HOLDING_REGISTER, UINT32, MERGE_LITTLE_ENDIAN),
-                                                           _makeCombo(HOLDING_REGISTER, INT32, MERGE_LITTLE_ENDIAN),
-                                                           _makeCombo(INPUT_REGISTER, FLOAT, MERGE_FLOAT),
-                                                           _makeCombo(HOLDING_REGISTER, FLOAT, MERGE_FLOAT),
-                                                           _makeCombo(INPUT_REGISTER, STRING, STRINGIFY_ASCII),
-                                                           _makeCombo(INPUT_REGISTER, STRING, STRINGIFY_UNICODE),
-                                                           _makeCombo(HOLDING_REGISTER, STRING, STRINGIFY_ASCII),
-                                                           _makeCombo(HOLDING_REGISTER, STRING, STRINGIFY_UNICODE)});
+        winningCombos.emplace(
+          3, std::vector<_combination>{_makeCombo(INPUT_REGISTER, UINT32, MERGE_BIG_ENDIAN),
+                                       _makeCombo(INPUT_REGISTER, INT32, MERGE_BIG_ENDIAN),
+                                       _makeCombo(INPUT_REGISTER, UINT32, MERGE_LITTLE_ENDIAN),
+                                       _makeCombo(INPUT_REGISTER, INT32, MERGE_LITTLE_ENDIAN),
+                                       _makeCombo(HOLDING_REGISTER, UINT32, MERGE_BIG_ENDIAN),
+                                       _makeCombo(HOLDING_REGISTER, INT32, MERGE_BIG_ENDIAN),
+                                       _makeCombo(HOLDING_REGISTER, UINT32, MERGE_LITTLE_ENDIAN),
+                                       _makeCombo(HOLDING_REGISTER, INT32, MERGE_LITTLE_ENDIAN),
+                                       _makeCombo(INPUT_REGISTER, FLOAT, MERGE_FLOAT),
+                                       _makeCombo(HOLDING_REGISTER, FLOAT, MERGE_FLOAT),
+                                       _makeCombo(INPUT_REGISTER, STRING, STRINGIFY_ASCII_BIG_ENDIAN),
+                                       _makeCombo(INPUT_REGISTER, STRING, STRINGIFY_UNICODE_BIG_ENDIAN),
+                                       _makeCombo(HOLDING_REGISTER, STRING, STRINGIFY_ASCII_BIG_ENDIAN),
+                                       _makeCombo(HOLDING_REGISTER, STRING, STRINGIFY_UNICODE_BIG_ENDIAN)});
     }
 
     bool IsWinningCombo(uint16_t set, _combination combo)
@@ -123,7 +127,7 @@ TEST_F(RegisterMappingTests, ApsurdMappingsTests)
 
     EXPECT_THROW(std::make_shared<wolkabout::more_modbus::RegisterMapping>(
                    "TEST", _registerType::INPUT_REGISTER, std::vector<std::int32_t>{0, 1, 2}, _outputType::STRING,
-                   _operationType::STRINGIFY_ASCII, true),
+                   _operationType::STRINGIFY_ASCII_BIG_ENDIAN, true),
                  std::logic_error);
 }
 

@@ -33,7 +33,10 @@ StringMapping::StringMapping(const std::string& reference, RegisterType register
 : RegisterMapping(reference, registerType, addresses, OutputType::STRING, operation, readRestricted, slaveAddress, 0.0,
                   frequencyFilterValue, repeatedWrite)
 {
-    if (operation != OperationType::STRINGIFY_ASCII && operation != OperationType::STRINGIFY_UNICODE)
+    if (operation != OperationType::STRINGIFY_ASCII_BIG_ENDIAN &&
+        operation != OperationType::STRINGIFY_ASCII_LITTLE_ENDIAN &&
+        operation != OperationType::STRINGIFY_UNICODE_BIG_ENDIAN &&
+        operation != OperationType::STRINGIFY_UNICODE_LITTLE_ENDIAN)
     {
         throw std::logic_error("StringMapping: Illegal operation type set.");
     }
@@ -49,7 +52,7 @@ StringMapping::StringMapping(const std::string& reference, RegisterType register
     if (!defaultValue.empty() && (defaultValue.size() <= static_cast<uint16_t>(getRegisterCount() * 2)))
     {
         m_stringValue = defaultValue;
-        if (operation == OperationType::STRINGIFY_ASCII)
+        if (operation == OperationType::STRINGIFY_ASCII_BIG_ENDIAN)
             m_byteValues = DataParsers::asciiStringToRegisters(defaultValue);
         else
             m_byteValues = DataParsers::unicodeStringToRegisters(defaultValue);
@@ -61,11 +64,17 @@ bool StringMapping::update(const std::vector<uint16_t>& newValues)
 {
     switch (m_operationType)
     {
-    case OperationType::STRINGIFY_ASCII:
-        m_stringValue = DataParsers::registersToAsciiString(newValues);
+    case OperationType::STRINGIFY_ASCII_BIG_ENDIAN:
+        m_stringValue = DataParsers::registersToAsciiString(newValues, DataParsers::Endian::BIG);
         break;
-    case OperationType ::STRINGIFY_UNICODE:
-        m_stringValue = DataParsers::registersToUnicodeString(newValues);
+    case OperationType::STRINGIFY_ASCII_LITTLE_ENDIAN:
+        m_stringValue = DataParsers::registersToAsciiString(newValues, DataParsers::Endian::LITTLE);
+        break;
+    case OperationType ::STRINGIFY_UNICODE_BIG_ENDIAN:
+        m_stringValue = DataParsers::registersToUnicodeString(newValues, DataParsers::Endian::BIG);
+        break;
+    case OperationType::STRINGIFY_UNICODE_LITTLE_ENDIAN:
+        m_stringValue = DataParsers::registersToUnicodeString(newValues, DataParsers::Endian::LITTLE);
         break;
     default:
         throw std::logic_error("StringMapping: Illegal operation type set.");
@@ -83,15 +92,27 @@ bool StringMapping::writeValue(const std::string& newValue)
     }
 
     std::vector<uint16_t> bytes;
-    if (m_operationType == OperationType::STRINGIFY_ASCII)
+    if (m_operationType == OperationType::STRINGIFY_ASCII_BIG_ENDIAN)
     {
-        bytes = DataParsers::asciiStringToRegisters(newValue);
+        bytes = DataParsers::asciiStringToRegisters(newValue, DataParsers::Endian::BIG);
         while (bytes.size() < this->m_addresses.size())
             bytes.emplace_back(0);
     }
-    else if (m_operationType == OperationType::STRINGIFY_UNICODE)
+    else if (m_operationType == OperationType::STRINGIFY_ASCII_LITTLE_ENDIAN)
     {
-        bytes = DataParsers::unicodeStringToRegisters(newValue);
+        bytes = DataParsers::asciiStringToRegisters(newValue, DataParsers::Endian::LITTLE);
+        while (bytes.size() < this->m_addresses.size())
+            bytes.emplace_back(0);
+    }
+    else if (m_operationType == OperationType::STRINGIFY_UNICODE_BIG_ENDIAN)
+    {
+        bytes = DataParsers::unicodeStringToRegisters(newValue, DataParsers::Endian::BIG);
+        while (bytes.size() < this->m_addresses.size())
+            bytes.emplace_back(0);
+    }
+    else if (m_operationType == OperationType::STRINGIFY_UNICODE_LITTLE_ENDIAN)
+    {
+        bytes = DataParsers::unicodeStringToRegisters(newValue, DataParsers::Endian::LITTLE);
         while (bytes.size() < this->m_addresses.size())
             bytes.emplace_back(0);
     }
