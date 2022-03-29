@@ -47,7 +47,8 @@ public:
 
         mappings.emplace_back(std::make_shared<RegisterMappingMock>(
           "STR1", wolkabout::more_modbus::RegisterType::HOLDING_REGISTER, std::vector<std::int32_t>{0, 1, 2},
-          wolkabout::more_modbus::OutputType::STRING, wolkabout::more_modbus::OperationType::STRINGIFY_ASCII_BIG_ENDIAN));
+          wolkabout::more_modbus::OutputType::STRING,
+          wolkabout::more_modbus::OperationType::STRINGIFY_ASCII_BIG_ENDIAN));
 
         mappings.emplace_back(
           std::make_shared<RegisterMappingMock>("U16M", wolkabout::more_modbus::RegisterType::HOLDING_REGISTER, 3));
