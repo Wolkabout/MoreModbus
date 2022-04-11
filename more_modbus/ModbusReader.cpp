@@ -183,22 +183,29 @@ bool ModbusReader::writeBitMapping(RegisterMapping& mapping, bool value)
     return false;
 }
 
-void ModbusReader::start()
+bool ModbusReader::start()
 {
     if (m_readerShouldRun)
-        return;
+        return true;
 
     LOG(DEBUG) << "ModbusReader: Starting ModbusReader.";
     // Attempt the first establishment of connection, and start the main thread.
     m_readerShouldRun = true;
-
+    auto connected = false;
     if (!m_modbusClient.isConnected())
     {
-        m_modbusClient.connect();
+        connected = m_modbusClient.connect();
+        if (connected)
+        {
+            m_mainReaderThread = std::unique_ptr<std::thread>(new std::thread(&ModbusReader::run, this));
+            LOG(DEBUG) << "ModbusReader: Started ModbusReader.";
+        }
+        else
+        {
+            LOG(ERROR) << "ModbusReader: Failed to start - Modbus connection failed to establish.";
+        }
     }
-
-    m_mainReaderThread = std::unique_ptr<std::thread>(new std::thread(&ModbusReader::run, this));
-    LOG(DEBUG) << "ModbusReader: Started ModbusReader.";
+    return connected;
 }
 
 void ModbusReader::stop()
