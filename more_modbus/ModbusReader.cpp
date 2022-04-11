@@ -233,7 +233,7 @@ void ModbusReader::stop()
             thread.second->join();
     }
 
-    if (m_mainReaderThread->joinable())
+    if (m_mainReaderThread != nullptr && m_mainReaderThread->joinable())
     {
         m_mainReaderThread->join();
     }
