@@ -191,8 +191,8 @@ bool ModbusReader::start()
     LOG(DEBUG) << "ModbusReader: Starting ModbusReader.";
     // Attempt the first establishment of connection, and start the main thread.
     m_readerShouldRun = true;
-    auto connected = false;
-    if (!m_modbusClient.isConnected())
+    auto connected = m_modbusClient.isConnected();
+    if (!connected)
     {
         connected = m_modbusClient.connect();
         if (connected)
