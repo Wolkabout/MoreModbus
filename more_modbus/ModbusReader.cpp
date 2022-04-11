@@ -196,14 +196,14 @@ bool ModbusReader::start()
     {
         connected = m_modbusClient.connect();
         if (connected)
-        {
-            m_mainReaderThread = std::unique_ptr<std::thread>(new std::thread(&ModbusReader::run, this));
-            LOG(DEBUG) << "ModbusReader: Started ModbusReader.";
-        }
+            LOG(DEBUG) << "ModbusReader: Connected ModbusClient.";
         else
-        {
             LOG(ERROR) << "ModbusReader: Failed to start - Modbus connection failed to establish.";
-        }
+    }
+    if (connected && m_mainReaderThread != nullptr)
+    {
+        m_mainReaderThread = std::unique_ptr<std::thread>(new std::thread(&ModbusReader::run, this));
+        LOG(DEBUG) << "ModbusReader: Started ModbusReader.";
     }
     return connected;
 }
