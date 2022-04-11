@@ -101,7 +101,7 @@ public:
      *         or it disconnected in the meanwhile. If the connection is up, it will read
      *         the devices.
      */
-    void start();
+    bool start();
 
     /**
      * @brief Halts the modbus connection and stops all device reading threads.
