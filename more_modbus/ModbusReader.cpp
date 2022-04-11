@@ -200,7 +200,7 @@ bool ModbusReader::start()
         else
             LOG(ERROR) << "ModbusReader: Failed to start - Modbus connection failed to establish.";
     }
-    if (connected && m_mainReaderThread != nullptr)
+    if (connected && m_mainReaderThread == nullptr)
     {
         m_mainReaderThread = std::unique_ptr<std::thread>(new std::thread(&ModbusReader::run, this));
         LOG(DEBUG) << "ModbusReader: Started ModbusReader.";
