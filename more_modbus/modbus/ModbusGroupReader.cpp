@@ -53,9 +53,6 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
     for (const auto& mapping : mappingMap)
     {
         bool newValue = values[i++];
-        LOG(TRACE) << "ModbusGroupReader: Old value = " << mapping.second->getBoolValue()
-                   << ". New value = " << newValue;
-
         if (mapping.second->doesUpdate(newValue))
         {
             mapping.second->update(newValue);

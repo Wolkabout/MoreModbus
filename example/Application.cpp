@@ -33,7 +33,7 @@ using namespace wolkabout::more_modbus;
 int main()
 {
     // Setup logger
-    Logger::init(LogLevel::TRACE, Logger::Type::CONSOLE);
+    Logger::init(LogLevel::DEBUG, Logger::Type::CONSOLE);
 
     // Create a regular Register Mapping
     auto defaultValue = std::uint16_t{123};
@@ -62,35 +62,38 @@ int main()
     device->createGroups(std::vector<std::shared_ptr<RegisterMapping>>{
       normalRegisterMapping, normalContactMapping, stringMapping, getFirstBitMapping, getSecondBitMapping});
 
-    device->setOnMappingValueChange([](const std::shared_ptr<RegisterMapping>& mapping, bool data) {
-        // You can do this for all output types.
-        const auto& boolean = std::dynamic_pointer_cast<BoolMapping>(mapping);
-        LOG(DEBUG) << "Application: Mapping is bool, old value was : " << boolean->getBoolValue()
-                   << ", new value is : " << data;
-    });
+    device->setOnMappingValueChange(
+      [](const std::shared_ptr<RegisterMapping>& mapping, bool data)
+      {
+          // You can do this for all output types.
+          const auto& boolean = std::dynamic_pointer_cast<BoolMapping>(mapping);
+          LOG(DEBUG) << "Application: Received BoolMapping update : " << (data ? "true" : "false") << ".";
+      });
 
     device->setOnMappingValueChange(
-      [](const std::shared_ptr<RegisterMapping>& mapping, const std::vector<uint16_t>& bytes) {
+      [](const std::shared_ptr<RegisterMapping>& mapping, const std::vector<uint16_t>& bytes)
+      {
           // You can do this for all output types.
           if (mapping->getOutputType() == OutputType::STRING)
           {
               const auto& string = std::dynamic_pointer_cast<StringMapping>(mapping);
-              LOG(DEBUG) << "Application: Mapping is string, old value was : '" << string->getStringValue() << "'"
-                         << ", new value is : '" << DataParsers::registersToAsciiString(bytes) << "'.";
+              LOG(DEBUG) << "Application: Received StringMapping update: '"
+                         << DataParsers::registersToAsciiString(bytes) << "'.";
 
               if (string->getStringValue().empty())
                   string->writeValue("Test");
           }
           else
           {
-              LOG(DEBUG) << "Application: Mapping " << mapping->getReference() << " value changed.";
+              LOG(DEBUG) << "Application: Received '" << mapping->getReference() << "' update.";
           }
       });
 
-    device->setOnStatusChange([&](bool status) {
-        LOG(DEBUG) << "Application: Device " << device->getName() << " is now " << (status ? "online" : "offline")
-                   << ".";
-    });
+    device->setOnStatusChange(
+      [&](bool status) {
+          LOG(DEBUG) << "Application: Device " << device->getName() << " is now " << (status ? "online" : "offline")
+                     << ".";
+      });
 
     // Serial RTU client
     //    const auto& modbusClient = std::make_shared<LibModbusSerialRtuClient>(

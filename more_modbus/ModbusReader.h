@@ -48,6 +48,9 @@ public:
      */
     ModbusReader(ModbusClient& modbusClient, const std::chrono::milliseconds& readPeriod);
 
+    /**
+     * Default virtual destructor.
+     */
     virtual ~ModbusReader();
 
     /**
