@@ -62,17 +62,14 @@ int main()
     device->createGroups(std::vector<std::shared_ptr<RegisterMapping>>{
       normalRegisterMapping, normalContactMapping, stringMapping, getFirstBitMapping, getSecondBitMapping});
 
-    device->setOnMappingValueChange(
-      [](const std::shared_ptr<RegisterMapping>& mapping, bool data)
-      {
-          // You can do this for all output types.
-          const auto& boolean = std::dynamic_pointer_cast<BoolMapping>(mapping);
-          LOG(DEBUG) << "Application: Received BoolMapping update : " << (data ? "true" : "false") << ".";
-      });
+    device->setOnMappingValueChange([](const std::shared_ptr<RegisterMapping>& mapping, bool data) {
+        // You can do this for all output types.
+        const auto& boolean = std::dynamic_pointer_cast<BoolMapping>(mapping);
+        LOG(DEBUG) << "Application: Received BoolMapping update : " << (data ? "true" : "false") << ".";
+    });
 
     device->setOnMappingValueChange(
-      [](const std::shared_ptr<RegisterMapping>& mapping, const std::vector<uint16_t>& bytes)
-      {
+      [](const std::shared_ptr<RegisterMapping>& mapping, const std::vector<uint16_t>& bytes) {
           // You can do this for all output types.
           if (mapping->getOutputType() == OutputType::STRING)
           {
@@ -89,11 +86,10 @@ int main()
           }
       });
 
-    device->setOnStatusChange(
-      [&](bool status) {
-          LOG(DEBUG) << "Application: Device " << device->getName() << " is now " << (status ? "online" : "offline")
-                     << ".";
-      });
+    device->setOnStatusChange([&](bool status) {
+        LOG(DEBUG) << "Application: Device " << device->getName() << " is now " << (status ? "online" : "offline")
+                   << ".";
+    });
 
     // Serial RTU client
     //    const auto& modbusClient = std::make_shared<LibModbusSerialRtuClient>(
