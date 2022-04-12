@@ -1,7 +1,7 @@
 include(ExternalProject)
 
 set(LIB_MODBUS_VERSION "3.1.6")
-set(WOLK_SDK_VERSION "3.1.0-prerelease")
+set(WOLK_SDK_VERSION "75db077fb463e14c0d10fe2c074d30bd94d9c57a")
 
 string(APPEND LIBMODBUS_ADDITIONAL_ARGS --host=${LIBMODBUS_CROSSCOMPILE_HOST})
 
