@@ -21,7 +21,7 @@ ExternalProject_Add(libmodbus
 if (NOT TARGET WolkAboutCoreUtility)
     ExternalProject_Add(WolkSDK-Cpp
             GIT_REPOSITORY "https://github.com/Wolkabout/WolkSDK-Cpp"
-            GIT_TAG "v${WOLK_SDK_VERSION}"
+            GIT_TAG "${WOLK_SDK_VERSION}"
             UPDATE_COMMAND ""
             CMAKE_ARGS
             -DBUILD_CONNECTIVITY=OFF
