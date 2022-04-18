@@ -231,6 +231,7 @@ void ModbusReader::run()
             for (auto& device : m_deviceActiveStatus)
             {
                 device.second = false;
+                m_devices[device.first]->triggerOnStatusChange(false);
             }
             m_modbusClient.disconnect();
 
@@ -251,6 +252,7 @@ void ModbusReader::run()
             for (auto& device : m_deviceActiveStatus)
             {
                 device.second = true;
+                m_devices[device.first]->triggerOnStatusChange(true);
             }
         }
         else
