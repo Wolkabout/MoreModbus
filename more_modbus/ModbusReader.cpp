@@ -229,9 +229,11 @@ void ModbusReader::run()
             LOG(INFO) << "ModbusReader: Attempting to reconnect.";
             m_shouldReconnect = false;
             for (auto& device : m_deviceActiveStatus)
-            {
                 device.second = false;
-                m_devices[device.first]->triggerOnStatusChange(false);
+            for (const auto& device : m_devices)
+            {
+                LOG(INFO) << "DeviceStatus: '" << device.second->getName() << "': " << false;
+                device.second->triggerOnStatusChange(false);
             }
             m_modbusClient.disconnect();
 
@@ -250,9 +252,11 @@ void ModbusReader::run()
 
             // Report all devices as active.
             for (auto& device : m_deviceActiveStatus)
-            {
                 device.second = true;
-                m_devices[device.first]->triggerOnStatusChange(true);
+            for (const auto& device : m_devices)
+            {
+                LOG(INFO) << "DeviceStatus: '" << device.second->getName() << "': " << true;
+                device.second->triggerOnStatusChange(true);
             }
         }
         else
@@ -353,6 +357,7 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
                     std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
                     m_deviceActiveStatus[device->getSlaveAddress()] = false;
                 }
+                LOG(INFO) << "DeviceStatus: '" << device->getName() << "': " << false;
                 device->triggerOnStatusChange(false);
                 connected = false;
             }
@@ -362,6 +367,7 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
                     std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
                     m_deviceActiveStatus[device->getSlaveAddress()] = true;
                 }
+                LOG(INFO) << "DeviceStatus: '" << device->getName() << "': " << true;
                 device->triggerOnStatusChange(true);
             }
 
@@ -495,6 +501,7 @@ void ModbusReader::rewriteDevice(const std::shared_ptr<ModbusDevice>& device)
                     std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
                     m_deviceActiveStatus[device->getSlaveAddress()] = false;
                 }
+                LOG(INFO) << "DeviceStatus: '" << device->getName() << "': " << false;
                 device->triggerOnStatusChange(false);
                 connected = false;
             }
@@ -504,6 +511,7 @@ void ModbusReader::rewriteDevice(const std::shared_ptr<ModbusDevice>& device)
                     std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
                     m_deviceActiveStatus[device->getSlaveAddress()] = true;
                 }
+                LOG(INFO) << "DeviceStatus: '" << device->getName() << "': " << true;
                 device->triggerOnStatusChange(true);
             }
         }
