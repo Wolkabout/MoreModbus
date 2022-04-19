@@ -10,7 +10,7 @@ ExternalProject_Add(libmodbus
         GIT_TAG "v${LIB_MODBUS_VERSION}"
         UPDATE_COMMAND ""
         CONFIGURE_COMMAND cd <SOURCE_DIR> && /bin/sh ./autogen.sh
-        COMMAND <SOURCE_DIR>/configure
+        COMMAND /bin/sh <SOURCE_DIR>/configure
         --prefix=${CMAKE_PREFIX_PATH}
         --disable-tests
         ${LIBMODBUS_ADDITIONAL_ARGS}
