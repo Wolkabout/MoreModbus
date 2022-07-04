@@ -350,7 +350,7 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
 
         auto duration =
           std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start);
-          
+
         if (duration.count() >= m_readPeriod.count())
         {
             LOG(WARN) << "ModbusReader: Thread read device " << device->getName()
