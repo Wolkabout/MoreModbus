@@ -379,6 +379,8 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
         {
             std::this_thread::sleep_for(m_readPeriod - duration);
         }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 }
 
@@ -388,45 +390,60 @@ void ModbusReader::rewriteDevice(const std::shared_ptr<ModbusDevice>& device)
 
     while (m_readerShouldRun)
     {
-        if (connected)
+        if (device->getRewritable().empty())
         {
-            if (device->getRewritable().empty())
+            LOG(WARN) << "ModbusReader: Device " << device->getName() << " has no rewritable mappings.";
+            return;
+        }
+
+        // Count the amount of mappings that needed to be rewritten, and the ones that succeeded
+        auto requiredMappings = std::uint64_t{0};
+        auto succeededMappings = std::uint64_t{0};
+
+        // Read through all the rewritable mappings.
+        for (const auto& rewritable : device->getRewritable())
+        {
+            // Check that the value is not
+            const auto repeatedWriteTime = rewritable->getRepeatedWrite();
+            if (repeatedWriteTime.count() == 0)
             {
-                LOG(WARN) << "ModbusReader: Device " << device->getName() << " has no rewritable mappings.";
-                return;
+                continue;
             }
 
-            // Count the amount of mappings that needed to be rewritten, and the ones that succeeded
-            auto requiredMappings = std::uint64_t{0};
-            auto succeededMappings = std::uint64_t{0};
-
-            // Read through all the rewritable mappings.
-            for (const auto& rewritable : device->getRewritable())
+            const auto nextUpdateTime = rewritable->getLastUpdateTime() + repeatedWriteTime;
+            const auto diff = (std::chrono::duration_cast<std::chrono::milliseconds>(
+                                 std::chrono::high_resolution_clock::now() - nextUpdateTime))
+                                .count();
+            if (diff > 0)
             {
-                // Check that the value is not
-                const auto repeatedWriteTime = rewritable->getRepeatedWrite();
-                if (repeatedWriteTime.count() == 0)
-                {
-                    continue;
-                }
+                ++requiredMappings;
 
-                const auto nextUpdateTime = rewritable->getLastUpdateTime() + repeatedWriteTime;
-                const auto diff = (std::chrono::duration_cast<std::chrono::milliseconds>(
-                                     std::chrono::high_resolution_clock::now() - nextUpdateTime))
-                                    .count();
-                if (diff > 0)
+                // Write the current value in
+                if (rewritable->getRegisterType() == RegisterType::COIL)
                 {
-                    ++requiredMappings;
-
-                    // Write the current value in
-                    if (rewritable->getRegisterType() == RegisterType::COIL)
+                    if (m_modbusClient.writeCoil(rewritable->getSlaveAddress(), rewritable->getStartingAddress(),
+                                                 rewritable->getBoolValue()))
                     {
-                        if (m_modbusClient.writeCoil(rewritable->getSlaveAddress(), rewritable->getStartingAddress(),
-                                                     rewritable->getBoolValue()))
+                        LOG(DEBUG) << "Successfully rewrote '" << rewritable->getReference() << "' - " << diff << "ms.";
+                        rewritable->update(rewritable->getBoolValue());
+                        ++succeededMappings;
+                    }
+                    else
+                    {
+                        LOG(DEBUG) << "Failed to rewrite '" << rewritable->getReference() << "'.";
+                    }
+                }
+                else
+                {
+                    if (rewritable->getRegisterCount() == 1)
+                    {
+                        if (m_modbusClient.writeHoldingRegister(rewritable->getSlaveAddress(),
+                                                                rewritable->getStartingAddress(),
+                                                                rewritable->getBytesValues().front()))
                         {
                             LOG(DEBUG) << "Successfully rewrote '" << rewritable->getReference() << "' - " << diff
                                        << "ms.";
-                            rewritable->update(rewritable->getBoolValue());
+                            rewritable->update(rewritable->getBytesValues());
                             ++succeededMappings;
                         }
                         else
@@ -436,72 +453,34 @@ void ModbusReader::rewriteDevice(const std::shared_ptr<ModbusDevice>& device)
                     }
                     else
                     {
-                        if (rewritable->getRegisterCount() == 1)
+                        if (m_modbusClient.writeHoldingRegisters(
+                              rewritable->getSlaveAddress(), rewritable->getStartingAddress(),
+                              const_cast<std::vector<std::uint16_t>&>(rewritable->getBytesValues())))
                         {
-                            if (m_modbusClient.writeHoldingRegister(rewritable->getSlaveAddress(),
-                                                                    rewritable->getStartingAddress(),
-                                                                    rewritable->getBytesValues().front()))
-                            {
-                                LOG(DEBUG)
-                                  << "Successfully rewrote '" << rewritable->getReference() << "' - " << diff << "ms.";
-                                rewritable->update(rewritable->getBytesValues());
-                                ++succeededMappings;
-                            }
-                            else
-                            {
-                                LOG(DEBUG) << "Failed to rewrite '" << rewritable->getReference() << "'.";
-                            }
+                            LOG(DEBUG) << "Successfully rewrote '" << rewritable->getReference() << "' - " << diff
+                                       << "ms.";
+                            rewritable->update(rewritable->getBytesValues());
+                            ++succeededMappings;
                         }
                         else
                         {
-                            if (m_modbusClient.writeHoldingRegisters(
-                                  rewritable->getSlaveAddress(), rewritable->getStartingAddress(),
-                                  const_cast<std::vector<std::uint16_t>&>(rewritable->getBytesValues())))
-                            {
-                                LOG(DEBUG)
-                                  << "Successfully rewrote '" << rewritable->getReference() << "' - " << diff << "ms.";
-                                rewritable->update(rewritable->getBytesValues());
-                                ++succeededMappings;
-                            }
-                            else
-                            {
-                                LOG(DEBUG) << "Failed to rewrite '" << rewritable->getReference() << "'.";
-                            }
+                            LOG(DEBUG) << "Failed to rewrite '" << rewritable->getReference() << "'.";
                         }
                     }
                 }
             }
-
-            // If all the groups had error while reading, report the device as having errors.
-            auto lastStatus = bool();
-            {
-                std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
-                lastStatus = m_deviceActiveStatus[device->getSlaveAddress()];
-            }
-
-            if (requiredMappings > 0 && succeededMappings == 0 && lastStatus)
-            {
-                {
-                    std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
-                    m_deviceActiveStatus[device->getSlaveAddress()] = false;
-                }
-                device->triggerOnStatusChange(false);
-                connected = false;
-            }
-            else if (!lastStatus)
-            {
-                {
-                    std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
-                    m_deviceActiveStatus[device->getSlaveAddress()] = true;
-                }
-                device->triggerOnStatusChange(true);
-            }
         }
-        else
+
+        // If all the groups had error while reading, report the device as having errors.
+        if (requiredMappings > 0)
         {
+            const auto status = succeededMappings > 0;
             std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
-            if (m_deviceActiveStatus[device->getSlaveAddress()])
-                connected = true;
+            if (m_deviceActiveStatus[device->getSlaveAddress()] != status)
+            {
+                m_deviceActiveStatus[device->getSlaveAddress()] = status;
+                device->triggerOnStatusChange(status);
+            }
         }
 
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
