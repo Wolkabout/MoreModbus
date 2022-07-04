@@ -330,85 +330,69 @@ void ModbusReader::run()
 
 void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
 {
-    bool connected = true;
-
     while (m_readerShouldRun)
     {
-        if (connected)
+        auto start = std::chrono::high_resolution_clock::now();
+
+        if (device->getGroups().empty())
         {
-            auto start = std::chrono::high_resolution_clock::now();
+            LOG(WARN) << "ModbusReader: Device " << device->getName() << " has no mappings.";
+            return;
+        }
 
-            if (device->getGroups().empty())
+        LOG(TRACE) << "ModbusReader: Reading device : " << device->getName();
+
+        // Work on this logic, read all groups and do it properly.
+        // Also, parse types and values as necessary.
+        uint16_t unreadGroups = 0;
+
+        // Read through all the groups.
+        for (const auto& group : device->getGroups())
+        {
+            if (!ModbusGroupReader::readGroup(m_modbusClient, *group))
             {
-                LOG(WARN) << "ModbusReader: Device " << device->getName() << " has no mappings.";
-                return;
+                LOG(WARN) << "ModbusReader: Group starting at : " << group->getStartingAddress() << " on slave "
+                          << group->getSlaveAddress() << " had error while reading.";
+                unreadGroups++;
             }
+        }
 
-            LOG(TRACE) << "ModbusReader: Reading device : " << device->getName();
+        // If all the groups had error while reading, report the device as having errors.
+        auto lastStatus = bool();
+        {
+            std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
+            lastStatus = m_deviceActiveStatus[device->getSlaveAddress()];
+        }
 
-            // Work on this logic, read all groups and do it properly.
-            // Also, parse types and values as necessary.
-            uint16_t unreadGroups = 0;
-
-            // Read through all the groups.
-            for (const auto& group : device->getGroups())
-            {
-                if (!ModbusGroupReader::readGroup(m_modbusClient, *group))
-                {
-                    LOG(WARN) << "ModbusReader: Group starting at : " << group->getStartingAddress() << " on slave "
-                              << group->getSlaveAddress() << " had error while reading.";
-                    unreadGroups++;
-                }
-            }
-
-            // If all the groups had error while reading, report the device as having errors.
-            auto lastStatus = bool();
+        if (unreadGroups == device->getGroups().size() && lastStatus)
+        {
             {
                 std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
-                lastStatus = m_deviceActiveStatus[device->getSlaveAddress()];
+                m_deviceActiveStatus[device->getSlaveAddress()] = false;
             }
+            device->triggerOnStatusChange(false);
+        }
+        else if (!lastStatus)
+        {
+            {
+                std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
+                m_deviceActiveStatus[device->getSlaveAddress()] = true;
+            }
+            device->triggerOnStatusChange(true);
+        }
 
-            if (unreadGroups == device->getGroups().size() && lastStatus)
-            {
-                {
-                    std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
-                    m_deviceActiveStatus[device->getSlaveAddress()] = false;
-                }
-                device->triggerOnStatusChange(false);
-                connected = false;
-            }
-            else if (!lastStatus)
-            {
-                {
-                    std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
-                    m_deviceActiveStatus[device->getSlaveAddress()] = true;
-                }
-                device->triggerOnStatusChange(true);
-            }
+        auto duration =
+          std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start);
 
-            auto duration =
-              std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start);
-
-            if (duration.count() >= m_readPeriod.count())
-            {
-                LOG(WARN) << "ModbusReader: Thread read device " << device->getName()
-                          << " for more than read period."
-                             " Skipping sleep. Consider increasing the read period.";
-            }
-            else
-            {
-                std::this_thread::sleep_for(m_readPeriod - duration);
-            }
+        if (duration.count() >= m_readPeriod.count())
+        {
+            LOG(WARN) << "ModbusReader: Thread read device " << device->getName()
+                      << " for more than read period."
+                         " Skipping sleep. Consider increasing the read period.";
         }
         else
         {
-            {
-                std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
-                if (m_deviceActiveStatus[device->getSlaveAddress()])
-                    connected = true;
-            }
-
-            std::this_thread::sleep_for(m_readPeriod);
+            std::this_thread::sleep_for(m_readPeriod - duration);
         }
     }
 }
