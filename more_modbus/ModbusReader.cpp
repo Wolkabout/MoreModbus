@@ -358,27 +358,12 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
         }
 
         // If all the groups had error while reading, report the device as having errors.
-        auto lastStatus = bool();
+        const auto status = unreadGroups != device->getGroups().size();
+        std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
+        if (m_deviceActiveStatus[device->getSlaveAddress()] != status)
         {
-            std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
-            lastStatus = m_deviceActiveStatus[device->getSlaveAddress()];
-        }
-
-        if (unreadGroups == device->getGroups().size() && lastStatus)
-        {
-            {
-                std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
-                m_deviceActiveStatus[device->getSlaveAddress()] = false;
-            }
-            device->triggerOnStatusChange(false);
-        }
-        else if (!lastStatus)
-        {
-            {
-                std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
-                m_deviceActiveStatus[device->getSlaveAddress()] = true;
-            }
-            device->triggerOnStatusChange(true);
+            m_deviceActiveStatus[device->getSlaveAddress()] = status;
+            device->triggerOnStatusChange(status);
         }
 
         auto duration =
