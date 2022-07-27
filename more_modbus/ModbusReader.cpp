@@ -229,8 +229,11 @@ void ModbusReader::run()
             LOG(INFO) << "ModbusReader: Attempting to reconnect.";
             m_shouldReconnect = false;
             for (auto& device : m_deviceActiveStatus)
-            {
                 device.second = false;
+            for (const auto& device : m_devices)
+            {
+                LOG(INFO) << "DeviceStatus: '" << device.second->getName() << "': " << false;
+                device.second->triggerOnStatusChange(false);
             }
             m_modbusClient.disconnect();
 
@@ -249,8 +252,11 @@ void ModbusReader::run()
 
             // Report all devices as active.
             for (auto& device : m_deviceActiveStatus)
-            {
                 device.second = true;
+            for (const auto& device : m_devices)
+            {
+                LOG(INFO) << "DeviceStatus: '" << device.second->getName() << "': " << true;
+                device.second->triggerOnStatusChange(true);
             }
         }
         else

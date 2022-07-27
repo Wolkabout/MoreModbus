@@ -29,6 +29,8 @@
 
 #include <gtest/gtest.h>
 
+using namespace wolkabout;
+
 namespace
 {
 class DataParsersTest : public ::testing::Test
