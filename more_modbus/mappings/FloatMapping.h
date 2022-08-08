@@ -23,6 +23,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 /**
  * @brief Class describing a RegisterMapping with output type FLOAT
  * @details This Mapping merges two registers into a single float value.
@@ -69,6 +71,7 @@ public:
 private:
     float m_floatValue;
 };
+}    // namespace more_modbus
 }    // namespace wolkabout
 
 #endif    // WOLKABOUT_MODBUS_FLOATMAPPING_H

@@ -29,40 +29,41 @@
 
 using namespace ::testing;
 
-typedef std::set<std::pair<std::string, std::shared_ptr<wolkabout::RegisterMapping>>, wolkabout::GroupUtility>
+typedef std::set<std::pair<std::string, std::shared_ptr<wolkabout::more_modbus::RegisterMapping>>,
+                 wolkabout::more_modbus::GroupUtility>
   MappingsMap;
 
-class RegisterGroupMock : public wolkabout::RegisterGroup
+class RegisterGroupMock : public wolkabout::more_modbus::RegisterGroup
 {
     std::string name = "MOCK";
 
 public:
     RegisterGroupMock()
-    : RegisterGroup{
-        std::make_shared<wolkabout::RegisterMapping>("TEST", wolkabout::RegisterMapping::RegisterType::COIL, 0),
-        nullptr}
+    : RegisterGroup{std::make_shared<wolkabout::more_modbus::RegisterMapping>(
+                      "TEST", wolkabout::more_modbus::RegisterType::COIL, 0),
+                    nullptr}
     {
     }
 
-    RegisterGroupMock(const std::shared_ptr<wolkabout::RegisterMapping>& mapping,
-                      const std::shared_ptr<wolkabout::ModbusDevice>& device)
+    RegisterGroupMock(const std::shared_ptr<wolkabout::more_modbus::RegisterMapping>& mapping,
+                      const std::shared_ptr<wolkabout::more_modbus::ModbusDevice>& device)
     : RegisterGroup(mapping, device)
     {
     }
 
     explicit RegisterGroupMock(const RegisterGroup& instance) : RegisterGroup(instance) {}
 
-    MOCK_METHOD1(addMapping, bool(const std::shared_ptr<wolkabout::RegisterMapping>&));
-    MOCK_METHOD0(getRegisterType, wolkabout::RegisterMapping::RegisterType());
-    MOCK_METHOD0(getDevice, const std::shared_ptr<wolkabout::ModbusDevice>&());
-    MOCK_METHOD1(setDevice, void(const std::shared_ptr<wolkabout::ModbusDevice>&));
+    MOCK_METHOD1(addMapping, bool(const std::shared_ptr<wolkabout::more_modbus::RegisterMapping>&));
+    MOCK_METHOD0(getRegisterType, wolkabout::more_modbus::RegisterType());
+    MOCK_METHOD0(getDevice, const std::shared_ptr<wolkabout::more_modbus::ModbusDevice>&());
+    MOCK_METHOD1(setDevice, void(const std::shared_ptr<wolkabout::more_modbus::ModbusDevice>&));
     MOCK_METHOD0(getStartingAddress, int32_t());
     MOCK_METHOD0(getAddressCount, uint16_t());
     MOCK_METHOD0(getSlaveAddress, int16_t());
     MOCK_METHOD1(setSlaveAddress, void(int16_t));
     MOCK_METHOD0(isReadRestricted, bool());
     MOCK_CONST_METHOD0(getMappings, const MappingsMap&());
-    MOCK_METHOD0(getMappingsMap, std::map<std::string, std::shared_ptr<wolkabout::RegisterMapping>>());
+    MOCK_METHOD0(getMappingsMap, std::map<std::string, std::shared_ptr<wolkabout::more_modbus::RegisterMapping>>());
     MOCK_METHOD0(getMappingsClaims, std::vector<std::string>());
 };
 

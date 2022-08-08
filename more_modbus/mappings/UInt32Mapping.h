@@ -23,6 +23,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 /**
  * @brief Class describing a RegisterMapping with output type UINT32
  * @details This Mapping merges two registers into a single int32 value.
@@ -71,6 +73,7 @@ public:
 private:
     uint32_t m_uint32Value{};
 };
+}    // namespace more_modbus
 }    // namespace wolkabout
 
 #endif    // WOLKABOUT_MODBUS_UINT32MAPPING_H

@@ -24,6 +24,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 ModbusClient::ModbusClient(std::chrono::milliseconds responseTimeout)
 : m_responseTimeout(responseTimeout), m_connected(false), m_contextCreated(false), m_modbus(nullptr)
 {
@@ -329,4 +331,5 @@ bool ModbusClient::changeSlaveAddress(int address)
 
     return true;
 }
+}    // namespace more_modbus
 }    // namespace wolkabout

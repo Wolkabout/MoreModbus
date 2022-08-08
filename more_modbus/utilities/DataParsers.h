@@ -26,6 +26,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 /**
  * @brief Collection of Utility methods, necessary for parsing data, between uint16_t, and
  *         wanted user types.
@@ -47,18 +49,20 @@ public:
      *         into an uint16_t vector, where one uint16_t holds two characters, one as first 8 bits,
      *         and next one as other 8 bits.
      * @param value String value to be parsed.
+     * @param endian The endian-ness of the string.
      * @return std::vector containing (number of value characters / 2) uint16_t values.
      */
-    static std::vector<uint16_t> asciiStringToRegisters(const std::string& value);
+    static std::vector<uint16_t> asciiStringToRegisters(const std::string& value, Endian endian = Endian::BIG);
 
     /**
      * @brief Convert passed string value, where each character can be interpreted as an UNICODE (only 0-255)
      *         character into an uint16_t vector, where one uint16_t holds two characters,
      *         one as first 8 bits, and next one as other 8 bits.
      * @param value String value to be parsed.
+     * @param endian The endian-ness of the string.
      * @return std::vector containing (number of value characters / 2) uint16_t values.
      */
-    static std::vector<uint16_t> unicodeStringToRegisters(const std::string& value);
+    static std::vector<uint16_t> unicodeStringToRegisters(const std::string& value, Endian endian = Endian::BIG);
 
     /**
      * @brief Convert passed 32-bit Integer value, where we separate it to two 16-bit uint16_t,
@@ -89,16 +93,18 @@ public:
     /**
      * @brief Parse inputted uint16_t values, as a string, where each half of a uint16_t is a ASCII char.
      * @param value vector of uint16_t values, most often acquired by reading with modbus client.
+     * @param endian The endian-ness of the string.
      * @return string value, comprised of ascii characters.
      */
-    static std::string registersToAsciiString(const std::vector<uint16_t>& value);
+    static std::string registersToAsciiString(const std::vector<uint16_t>& value, Endian endian = Endian::BIG);
 
     /**
      * @brief Parse inputted uint16_t values, as a string, where each half of a uint16_t is a ASCII char.
      * @param value vector of uint16_t values, most often acquired by reading with modbus client.
+     * @param endian The endian-ness of the string.
      * @return string value, comprised of ascii characters.
      */
-    static std::string registersToUnicodeString(const std::vector<uint16_t>& value);
+    static std::string registersToUnicodeString(const std::vector<uint16_t>& value, Endian endian = Endian::BIG);
 
     /**
      * @brief Parse inputted uint16_t values, to a 32 bit Integer,
@@ -167,6 +173,7 @@ private:
      */
     static uint16_t SHIFT_UINT16;
 };
+}    // namespace more_modbus
 }    // namespace wolkabout
 
 #endif    // WOLKABOUT_MODBUS_DATAPARSERS_H

@@ -26,6 +26,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 class ModbusReader;
 
 /**
@@ -140,6 +142,7 @@ private:
       m_onMappingValueChangeBytes;
     std::function<void(bool)> m_onStatusChange;
 };
+}    // namespace more_modbus
 }    // namespace wolkabout
 
 #endif    // WOLKABOUT_MODBUS_MODBUSDEVICE_H

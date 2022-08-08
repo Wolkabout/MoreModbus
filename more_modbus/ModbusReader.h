@@ -29,6 +29,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 /**
  * @brief Main functional class, that accepts all devices and reads them periodically.
  * @details Function of the class is to periodically trigger the reading of all devices,
@@ -46,6 +48,9 @@ public:
      */
     ModbusReader(ModbusClient& modbusClient, const std::chrono::milliseconds& readPeriod);
 
+    /**
+     * Default virtual destructor.
+     */
     virtual ~ModbusReader();
 
     /**
@@ -99,7 +104,7 @@ public:
      *         or it disconnected in the meanwhile. If the connection is up, it will read
      *         the devices.
      */
-    void start();
+    bool start();
 
     /**
      * @brief Halts the modbus connection and stops all device reading threads.
@@ -144,6 +149,7 @@ private:
     std::map<int16_t, std::unique_ptr<std::thread>> m_rewriteThreads;
     std::chrono::milliseconds m_readPeriod;
 };
+}    // namespace more_modbus
 }    // namespace wolkabout
 
 #endif    // WOLKABOUT_MODBUS_MODBUSREADER_H

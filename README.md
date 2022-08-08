@@ -1,4 +1,4 @@
-#MoreModbus [![Build Status](https://travis-ci.com/Wolkabout/MoreModbus.svg?branch=master)](https://travis-ci.com/Wolkabout/MoreModbus)
+# MoreModbus
 
 This is an abstraction layer over the `libmodbus` library. The functionality added allow creation
 of mappings that create more meaningful data from modbus registers, such as 32 bit types created from
@@ -6,12 +6,13 @@ two registers, strings, and single bits from registers.
 
 This library contains `Mappings`, the base building block. `Mapping` implies a single, logical bit of data.
 They are of different types different from the native modbus `uint16_t`, like:
+
 - INT16, UINT16 (where UINT16 is native for registers)
 - INT32, UINT32, FLOAT
 - STRING
 - BOOL (where BOOL is native for discrete types)
 
-These are built using operations 
+These are built using operations
 
 |      TYPE     |               OPERATIONS              |
 |:-------------:|:-------------------------------------:|
@@ -20,8 +21,8 @@ These are built using operations
 |     STRING    |   STRINGIFY_ASCII, STRINGIFY_UNICODE  |
 |      BOOL     |                TAKE_BIT               |
 
-- STRINGIFY_ASCII (0-127) and STRINGIFY_UNICODE (0-255) both store two characters as a 
-single `uint16_t` (understandable to modbus)
+- STRINGIFY_ASCII (0-127) and STRINGIFY_UNICODE (0-255) both store two characters as a
+  single `uint16_t` (understandable to modbus)
 - TAKE_BIT in combination with an index takes an exact bit (0-15) of a 16-bit register
 
 You can create a `Device` that groups `Mappings`. A `Group` contains `Mappings` that can be read with a single
@@ -33,6 +34,7 @@ for reading the groups and parsing the data.
 ## Compiling
 
 This library requires:
+
 - GNU GCC and G++
 - CMake
 - Libmodbus (this is downloaded by CMake automatically)
@@ -40,33 +42,39 @@ This library requires:
 - lcov (necessary for test coverage)
 
 So run
+
 ```shell script
 sudo apt install autoconf automake libtool gcc g++ cmake lcov
 ```
 
 And after that, run the configuration script
+
 ```shell script
 ./configure.sh
 ```
 
 The out directory should be generated, so move in there, and run build
+
 ```shell script
 cd out
 make -j$(nproc)
 ```
 
 After that, you can run the example
+
 ```shell script
 ./MoreModbusExample
 ```
 
 To run tests
+
 ```shell script
 make tests -j$(nproc)
 ./MoreModbusTests # if you want to run them again, make will run them once for you.
 ```
 
 Also, as bonus, after you ran the tests, you can check their coverage by back to the `tools` directory
+
 ```shell script
 ./coverage.sh
 ```
@@ -82,10 +90,10 @@ and INPUT_CONTACT/COIL are BoolMapping.
 
 ```c++
 const auto& normalRegisterMapping =
-  std::make_shared<wolkabout::UInt16Mapping>("U16M", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 0);
+  std::make_shared<wolkabout::UInt16Mapping>("U16M", wolkabout::RegisterType::HOLDING_REGISTER, 0);
 
 const auto& normalContactMapping =
-  std::make_shared<wolkabout::BoolMapping>("BM", wolkabout::RegisterMapping::RegisterType::INPUT_CONTACT, 0);
+  std::make_shared<wolkabout::BoolMapping>("BM", wolkabout::RegisterType::INPUT_CONTACT, 0);
 ```
 
 #### Multi Register Mapping
@@ -96,8 +104,8 @@ and make it as a Int32Mapping, UInt32Mapping or StringMapping based on the retur
 
 ```c++
 const auto& stringMapping = std::make_shared<wolkabout::StringMapping>(
-  "STR1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, std::vector<int16_t>{0, 1, 2},
-  wolkabout::RegisterMapping::OperationType::STRINGIFY_ASCII);
+  "STR1", wolkabout::RegisterType::HOLDING_REGISTER, std::vector<int16_t>{0, 1, 2},
+  wolkabout::OperationType::STRINGIFY_ASCII);
 ```
 
 #### Bit Mapping
@@ -108,8 +116,8 @@ the TAKE_BIT operation and the bit index.
 
 ```c++ 
 const auto& getFirstBitMapping =
-      std::make_shared<wolkabout::BoolMapping>("B4-1", wolkabout::RegisterMapping::RegisterType::HOLDING_REGISTER, 4,
-                                               wolkabout::RegisterMapping::OperationType::TAKE_BIT, 0);
+      std::make_shared<wolkabout::BoolMapping>("B4-1", wolkabout::RegisterType::HOLDING_REGISTER, 4,
+                                               wolkabout::OperationType::TAKE_BIT, 0);
 ```
 
 ### Device
@@ -134,7 +142,7 @@ if you want access to the parsed value.
 ```c++
 device->setOnMappingValueChange([](const std::shared_ptr<wolkabout::RegisterMapping>& mapping) {
     // You can do this for all output types.
-    if (mapping->getOutputType() == wolkabout::RegisterMapping::OutputType::BOOL)
+    if (mapping->getOutputType() == wolkabout::OutputType::BOOL)
     {
         const auto& boolMapping = std::dynamic_pointer_cast<wolkabout::BoolMapping>(mapping);
         LOG(DEBUG) << "Application: Mapping is bool, value : " << boolMapping->getBoolValue();
@@ -142,7 +150,7 @@ device->setOnMappingValueChange([](const std::shared_ptr<wolkabout::RegisterMapp
         if (!boolMapping->getBoolValue())
             boolMapping->writeValue(true);
     }
-    else if (mapping->getOutputType() == wolkabout::RegisterMapping::OutputType::STRING)
+    else if (mapping->getOutputType() == wolkabout::OutputType::STRING)
     {
         const auto& stringMapping = std::dynamic_pointer_cast<wolkabout::StringMapping>(mapping);
         LOG(DEBUG) << "Application: Mapping is string, value : " << stringMapping->getStringValue();
@@ -179,7 +187,7 @@ const auto& reader = std::make_shared<wolkabout::ModbusReader>(
 ``` 
 
 And the control to start/stop, you can invoke methods.
-While the reader is running, make sure your main thread doesn't stop running, because the whole program will stop, 
+While the reader is running, make sure your main thread doesn't stop running, because the whole program will stop,
 and the reader, with the program, will crash. You can do that with a while loop with a sleep method inside.
 
 ```c++

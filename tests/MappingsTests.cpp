@@ -41,9 +41,9 @@
 #include <iostream>
 #include <memory>
 
-#define _registerType wolkabout::RegisterMapping::RegisterType
-#define _outputType wolkabout::RegisterMapping::OutputType
-#define _operationType wolkabout::RegisterMapping::OperationType
+#define _registerType wolkabout::more_modbus::RegisterType
+#define _outputType wolkabout::more_modbus::OutputType
+#define _operationType wolkabout::more_modbus::OperationType
 #define _combination std::tuple<_registerType, _outputType, _operationType>
 #define _makeCombo(x, y, z) _combination(_registerType::x, _outputType::y, _operationType::z)
 #define _makeComboPure(x, y, z) _combination(x, y, z)
@@ -95,10 +95,13 @@ public:
                          _registerType::HOLDING_REGISTER};
         outputTypes = {_outputType::BOOL,   _outputType::FLOAT,  _outputType::INT16, _outputType::INT32,
                        _outputType::STRING, _outputType::UINT16, _outputType::UINT32};
-        operationTypes = {
-          _operationType::NONE,        _operationType::MERGE_BIG_ENDIAN, _operationType::MERGE_LITTLE_ENDIAN,
-          _operationType::MERGE_FLOAT, _operationType::STRINGIFY_ASCII,  _operationType::STRINGIFY_UNICODE,
-          _operationType::TAKE_BIT};
+        operationTypes = {_operationType::NONE,
+                          _operationType::MERGE_BIG_ENDIAN,
+                          _operationType::MERGE_LITTLE_ENDIAN,
+                          _operationType::MERGE_FLOAT,
+                          _operationType::STRINGIFY_ASCII_BIG_ENDIAN,
+                          _operationType::STRINGIFY_UNICODE_BIG_ENDIAN,
+                          _operationType::TAKE_BIT};
     }
 
     void SetUpWinningCombinations()
@@ -151,22 +154,23 @@ TEST_F(MappingsTests, BoolMappingCreation)
             {
                 if (winning)
                 {
-                    EXPECT_NO_THROW(wolkabout::BoolMapping("TEST", registerType, 0));
+                    EXPECT_NO_THROW(wolkabout::more_modbus::BoolMapping("TEST", registerType, 0));
                 }
                 else
                 {
-                    EXPECT_THROW(wolkabout::BoolMapping("TEST", registerType, 0), std::logic_error);
+                    EXPECT_THROW(wolkabout::more_modbus::BoolMapping("TEST", registerType, 0), std::logic_error);
                 }
             }
             else
             {
                 if (winning)
                 {
-                    EXPECT_NO_THROW(wolkabout::BoolMapping("TEST", registerType, 0, operationType, 0));
+                    EXPECT_NO_THROW(wolkabout::more_modbus::BoolMapping("TEST", registerType, 0, operationType, 0));
                 }
                 else
                 {
-                    EXPECT_THROW(wolkabout::BoolMapping("TEST", registerType, 0, operationType, 0), std::logic_error);
+                    EXPECT_THROW(wolkabout::more_modbus::BoolMapping("TEST", registerType, 0, operationType, 0),
+                                 std::logic_error);
                 }
             }
         }
@@ -186,7 +190,7 @@ TEST_F(MappingsTests, BoolMappingsWriteValue)
         const auto operationType = std::get<2>(combo);
         if (operationType == _operationType::NONE)
         {
-            auto mapping = std::make_shared<wolkabout::BoolMapping>("TEST", registerType, 0, false, 0);
+            auto mapping = std::make_shared<wolkabout::more_modbus::BoolMapping>("TEST", registerType, 0, false, 0);
             mapping->m_boolValue = !value;
             MovePointers();
             mapping->m_group = std::move(registerGroupMock);
@@ -211,7 +215,8 @@ TEST_F(MappingsTests, BoolMappingsWriteValue)
         }
         else
         {
-            auto mapping = std::make_shared<wolkabout::BoolMapping>("TEST", registerType, 0, operationType, 0);
+            auto mapping =
+              std::make_shared<wolkabout::more_modbus::BoolMapping>("TEST", registerType, 0, operationType, 0);
             mapping->m_boolValue = !value;
             MovePointers();
             mapping->m_group = std::move(registerGroupMock);
@@ -247,11 +252,11 @@ TEST_F(MappingsTests, UInt16MappingCreation)
 
         if (winning)
         {
-            EXPECT_NO_THROW(wolkabout::UInt16Mapping("TEST", registerType, 0));
+            EXPECT_NO_THROW(wolkabout::more_modbus::UInt16Mapping("TEST", registerType, 0));
         }
         else
         {
-            EXPECT_THROW(wolkabout::UInt16Mapping("TEST", registerType, 0), std::logic_error);
+            EXPECT_THROW(wolkabout::more_modbus::UInt16Mapping("TEST", registerType, 0), std::logic_error);
         }
     }
 }
@@ -266,7 +271,7 @@ TEST_F(MappingsTests, UInt16MappingsWriteValue)
         //        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
-        auto mapping = std::make_shared<wolkabout::UInt16Mapping>("TEST", registerType, 0);
+        auto mapping = std::make_shared<wolkabout::more_modbus::UInt16Mapping>("TEST", registerType, 0);
         MovePointers();
         mapping->m_group = std::move(registerGroupMock);
         ASSERT_FALSE(mapping->m_group.expired());
@@ -301,7 +306,7 @@ TEST_F(MappingsTests, UInt16MappingsInitUpdateValid)
         //        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
-        auto mapping = std::make_shared<wolkabout::UInt16Mapping>("TEST", registerType, 0);
+        auto mapping = std::make_shared<wolkabout::more_modbus::UInt16Mapping>("TEST", registerType, 0);
 
         EXPECT_FALSE(mapping->isInitialized());
         EXPECT_FALSE(mapping->isValid());
@@ -324,11 +329,11 @@ TEST_F(MappingsTests, Int16MappingCreation)
 
         if (winning)
         {
-            EXPECT_NO_THROW(wolkabout::Int16Mapping("TEST", registerType, 0));
+            EXPECT_NO_THROW(wolkabout::more_modbus::Int16Mapping("TEST", registerType, 0));
         }
         else
         {
-            EXPECT_THROW(wolkabout::Int16Mapping("TEST", registerType, 0), std::logic_error);
+            EXPECT_THROW(wolkabout::more_modbus::Int16Mapping("TEST", registerType, 0), std::logic_error);
         }
     }
 }
@@ -343,7 +348,7 @@ TEST_F(MappingsTests, Int16MappingsWriteValue)
         //        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
-        auto mapping = std::make_shared<wolkabout::Int16Mapping>("TEST", registerType, 0);
+        auto mapping = std::make_shared<wolkabout::more_modbus::Int16Mapping>("TEST", registerType, 0);
         MovePointers();
         mapping->m_group = std::move(registerGroupMock);
         ASSERT_FALSE(mapping->m_group.expired());
@@ -379,7 +384,7 @@ TEST_F(MappingsTests, Int16MappingsInitUpdateValid)
         //        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
-        auto mapping = std::make_shared<wolkabout::Int16Mapping>("TEST", registerType, 0);
+        auto mapping = std::make_shared<wolkabout::more_modbus::Int16Mapping>("TEST", registerType, 0);
 
         EXPECT_FALSE(mapping->isInitialized());
         EXPECT_FALSE(mapping->isValid());
@@ -395,91 +400,105 @@ TEST_F(MappingsTests, Int16MappingsInitUpdateValid)
 TEST_F(MappingsTests, BoolMappingRepeatAndDefaultButReadOnly)
 {
     auto testValue = false;
-    EXPECT_THROW(wolkabout::BoolMapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_CONTACT, 0, false, 0,
-                                        std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
+    EXPECT_THROW(
+      wolkabout::more_modbus::BoolMapping("TEST", wolkabout::more_modbus::RegisterType::INPUT_CONTACT, 0, false, 0,
+                                          std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
+      std::logic_error);
+    EXPECT_THROW(
+      wolkabout::more_modbus::BoolMapping("TEST", wolkabout::more_modbus::RegisterType::INPUT_CONTACT, 0, false, 0,
+                                          std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, &testValue),
+      std::logic_error);
+    EXPECT_THROW(wolkabout::more_modbus::BoolMapping("TEST", wolkabout::more_modbus::RegisterType::INPUT_REGISTER, 0,
+                                                     wolkabout::more_modbus::OperationType::TAKE_BIT, 0, false, 0,
+                                                     std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
                  std::logic_error);
-    EXPECT_THROW(wolkabout::BoolMapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_CONTACT, 0, false, 0,
-                                        std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, &testValue),
-                 std::logic_error);
-    EXPECT_THROW(wolkabout::BoolMapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, 0,
-                                        wolkabout::RegisterMapping::OperationType::TAKE_BIT, 0, false, 0,
-                                        std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
-                 std::logic_error);
-    EXPECT_THROW(wolkabout::BoolMapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, 0,
-                                        wolkabout::RegisterMapping::OperationType::TAKE_BIT, 0, false, 0,
-                                        std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, &testValue),
-                 std::logic_error);
+    EXPECT_THROW(
+      wolkabout::more_modbus::BoolMapping("TEST", wolkabout::more_modbus::RegisterType::INPUT_REGISTER, 0,
+                                          wolkabout::more_modbus::OperationType::TAKE_BIT, 0, false, 0,
+                                          std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, &testValue),
+      std::logic_error);
 }
 
 TEST_F(MappingsTests, FloatMappingRepeatAndDefaultButReadOnly)
 {
     auto testValue = 1.0f;
-    EXPECT_THROW(wolkabout::FloatMapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, {0, 1},
-                                         false, 0, 0.0, std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
-                 std::logic_error);
     EXPECT_THROW(
-      wolkabout::FloatMapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, {0, 1}, false, 0, 0.0,
-                              std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, &testValue),
+      wolkabout::more_modbus::FloatMapping("TEST", wolkabout::more_modbus::RegisterType::INPUT_REGISTER, {0, 1}, false,
+                                           0, 0.0, std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
       std::logic_error);
+    EXPECT_THROW(wolkabout::more_modbus::FloatMapping("TEST", wolkabout::more_modbus::RegisterType::INPUT_REGISTER,
+                                                      {0, 1}, false, 0, 0.0, std::chrono::milliseconds{0},
+                                                      std::chrono::milliseconds{0}, &testValue),
+                 std::logic_error);
 }
 
 TEST_F(MappingsTests, Int16MappingRepeatAndDefaultButReadOnly)
 {
     auto testValue = std::int16_t{10};
-    EXPECT_THROW(wolkabout::Int16Mapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, 0, false, 0,
-                                         0.0, std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
-                 std::logic_error);
-    EXPECT_THROW(wolkabout::Int16Mapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, 0, false, 0,
-                                         0.0, std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, &testValue),
-                 std::logic_error);
+    EXPECT_THROW(
+      wolkabout::more_modbus::Int16Mapping("TEST", wolkabout::more_modbus::RegisterType::INPUT_REGISTER, 0, false, 0,
+                                           0.0, std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
+      std::logic_error);
+    EXPECT_THROW(
+      wolkabout::more_modbus::Int16Mapping("TEST", wolkabout::more_modbus::RegisterType::INPUT_REGISTER, 0, false, 0,
+                                           0.0, std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, &testValue),
+      std::logic_error);
 }
 
 TEST_F(MappingsTests, Int32MappingRepeatAndDefaultButReadOnly)
 {
     auto testValue = std::int32_t{10};
-    EXPECT_THROW(wolkabout::Int32Mapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, {0, 1},
-                                         wolkabout::RegisterMapping::OperationType::MERGE_BIG_ENDIAN, false, 0, 0.0,
-                                         std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
-                 std::logic_error);
-    EXPECT_THROW(wolkabout::Int32Mapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, {0, 1},
-                                         wolkabout::RegisterMapping::OperationType::MERGE_BIG_ENDIAN, false, 0, 0.0,
-                                         std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, &testValue),
-                 std::logic_error);
+    EXPECT_THROW(
+      wolkabout::more_modbus::Int32Mapping("TEST", wolkabout::more_modbus::RegisterType::INPUT_REGISTER, {0, 1},
+                                           wolkabout::more_modbus::OperationType::MERGE_BIG_ENDIAN, false, 0, 0.0,
+                                           std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
+      std::logic_error);
+    EXPECT_THROW(
+      wolkabout::more_modbus::Int32Mapping("TEST", wolkabout::more_modbus::RegisterType::INPUT_REGISTER, {0, 1},
+                                           wolkabout::more_modbus::OperationType::MERGE_BIG_ENDIAN, false, 0, 0.0,
+                                           std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, &testValue),
+      std::logic_error);
 }
 
 TEST_F(MappingsTests, StringMappingRepeatAndDefaultButReadOnly)
 {
     auto testValue = std::string("Test");
-    EXPECT_THROW(wolkabout::StringMapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, {0, 1},
-                                          wolkabout::RegisterMapping::OperationType::STRINGIFY_ASCII, false, 0,
-                                          std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
-                 std::logic_error);
-    EXPECT_THROW(wolkabout::StringMapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, {0, 1},
-                                          wolkabout::RegisterMapping::OperationType::STRINGIFY_ASCII, false, 0,
-                                          std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, testValue),
-                 std::logic_error);
+    EXPECT_THROW(
+      wolkabout::more_modbus::StringMapping("TEST", wolkabout::more_modbus::RegisterType::INPUT_REGISTER, {0, 1},
+                                            wolkabout::more_modbus::OperationType::STRINGIFY_ASCII_BIG_ENDIAN, false, 0,
+                                            std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
+      std::logic_error);
+    EXPECT_THROW(
+      wolkabout::more_modbus::StringMapping("TEST", wolkabout::more_modbus::RegisterType::INPUT_REGISTER, {0, 1},
+                                            wolkabout::more_modbus::OperationType::STRINGIFY_ASCII_BIG_ENDIAN, false, 0,
+                                            std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, testValue),
+      std::logic_error);
 }
 
 TEST_F(MappingsTests, UInt16MappingRepeatAndDefaultButReadOnly)
 {
     auto testValue = std::uint16_t{10};
-    EXPECT_THROW(wolkabout::UInt16Mapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, 0, false, 0,
-                                          0.0, std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
-                 std::logic_error);
-    EXPECT_THROW(wolkabout::UInt16Mapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, 0, false, 0,
-                                          0.0, std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, &testValue),
+    EXPECT_THROW(
+      wolkabout::more_modbus::UInt16Mapping("TEST", wolkabout::more_modbus::RegisterType::INPUT_REGISTER, 0, false, 0,
+                                            0.0, std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
+      std::logic_error);
+    EXPECT_THROW(wolkabout::more_modbus::UInt16Mapping("TEST", wolkabout::more_modbus::RegisterType::INPUT_REGISTER, 0,
+                                                       false, 0, 0.0, std::chrono::milliseconds{0},
+                                                       std::chrono::milliseconds{0}, &testValue),
                  std::logic_error);
 }
 
 TEST_F(MappingsTests, UInt32MappingRepeatAndDefaultButReadOnly)
 {
     auto testValue = std::uint32_t{10};
-    EXPECT_THROW(wolkabout::UInt32Mapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, {0, 1},
-                                          wolkabout::RegisterMapping::OperationType::MERGE_BIG_ENDIAN, false, 0, 0.0,
-                                          std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
-                 std::logic_error);
-    EXPECT_THROW(wolkabout::UInt32Mapping("TEST", wolkabout::RegisterMapping::RegisterType::INPUT_REGISTER, {0, 1},
-                                          wolkabout::RegisterMapping::OperationType::MERGE_BIG_ENDIAN, false, 0, 0.0,
-                                          std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, &testValue),
-                 std::logic_error);
+    EXPECT_THROW(
+      wolkabout::more_modbus::UInt32Mapping("TEST", wolkabout::more_modbus::RegisterType::INPUT_REGISTER, {0, 1},
+                                            wolkabout::more_modbus::OperationType::MERGE_BIG_ENDIAN, false, 0, 0.0,
+                                            std::chrono::milliseconds{0}, std::chrono::milliseconds{3000}),
+      std::logic_error);
+    EXPECT_THROW(
+      wolkabout::more_modbus::UInt32Mapping("TEST", wolkabout::more_modbus::RegisterType::INPUT_REGISTER, {0, 1},
+                                            wolkabout::more_modbus::OperationType::MERGE_BIG_ENDIAN, false, 0, 0.0,
+                                            std::chrono::milliseconds{0}, std::chrono::milliseconds{0}, &testValue),
+      std::logic_error);
 }

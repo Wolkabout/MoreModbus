@@ -27,9 +27,10 @@
 #include <iostream>
 #include <memory>
 
+using namespace wolkabout::more_modbus;
 using namespace ::testing;
 
-class RegisterMappingMock : public wolkabout::RegisterMapping
+class RegisterMappingMock : public RegisterMapping
 {
 public:
     RegisterMappingMock(const std::string& name, RegisterType registerType, int32_t address)
@@ -66,8 +67,8 @@ public:
     {
     }
 
-    MOCK_METHOD0(getGroup, const std::shared_ptr<wolkabout::RegisterGroup>&());
-    MOCK_METHOD0(setGroup, const std::shared_ptr<wolkabout::RegisterGroup>&());
+    MOCK_METHOD0(getGroup, const std::shared_ptr<wolkabout::more_modbus::RegisterGroup>&());
+    MOCK_METHOD0(setGroup, const std::shared_ptr<wolkabout::more_modbus::RegisterGroup>&());
     MOCK_METHOD0(getReference, const std::string&());
     //    MOCK_METHOD0(isReadRestricted, bool());
     MOCK_METHOD0(getRegisterType, RegisterType());

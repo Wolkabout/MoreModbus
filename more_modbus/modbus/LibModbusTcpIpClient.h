@@ -27,6 +27,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 /**
  * @brief ModbusClient implementation for Modbus TCP/IP connections.
  * @details Uses modbus_new_tcp method from libmodbus, and takes in the IP address and port necessary
@@ -52,6 +54,7 @@ private:
     std::string m_ipAddress;
     int m_port;
 };
+}    // namespace more_modbus
 }    // namespace wolkabout
 
 #endif

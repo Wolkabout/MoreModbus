@@ -23,6 +23,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 /**
  * @brief Class describing a RegisterMapping which has an OutputType BOOLEAN
  * @details This is useful for creating mappings of RegisterType COIL or INPUT_DISCRETE,
@@ -74,6 +76,7 @@ public:
      */
     bool writeValue(bool value);
 };
+}    // namespace more_modbus
 }    // namespace wolkabout
 
 #endif    // WOLKABOUT_MODBUS_BOOLMAPPING_H

@@ -24,22 +24,27 @@
 
 namespace wolkabout
 {
-StringMapping::StringMapping(const std::string& reference, RegisterMapping::RegisterType registerType,
-                             const std::vector<int32_t>& addresses, RegisterMapping::OperationType operation,
-                             bool readRestricted, int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue,
+namespace more_modbus
+{
+StringMapping::StringMapping(const std::string& reference, RegisterType registerType,
+                             const std::vector<int32_t>& addresses, OperationType operation, bool readRestricted,
+                             int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue,
                              std::chrono::milliseconds repeatedWrite, const std::string& defaultValue)
 : RegisterMapping(reference, registerType, addresses, OutputType::STRING, operation, readRestricted, slaveAddress, 0.0,
                   frequencyFilterValue, repeatedWrite)
 {
-    if (operation != OperationType::STRINGIFY_ASCII && operation != OperationType::STRINGIFY_UNICODE)
+    if (operation != OperationType::STRINGIFY_ASCII_BIG_ENDIAN &&
+        operation != OperationType::STRINGIFY_ASCII_LITTLE_ENDIAN &&
+        operation != OperationType::STRINGIFY_UNICODE_BIG_ENDIAN &&
+        operation != OperationType::STRINGIFY_UNICODE_LITTLE_ENDIAN)
     {
         throw std::logic_error("StringMapping: Illegal operation type set.");
     }
-    if (repeatedWrite.count() > 0 && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    if (repeatedWrite.count() > 0 && registerType == RegisterType::INPUT_REGISTER)
     {
         throw std::logic_error("StringMapping: Can not set a repeated write value for a read-only register.");
     }
-    if (!defaultValue.empty() && registerType == RegisterMapping::RegisterType::INPUT_REGISTER)
+    if (!defaultValue.empty() && registerType == RegisterType::INPUT_REGISTER)
     {
         throw std::logic_error("StringMapping: Can not set a default value for a read-only register.");
     }
@@ -47,7 +52,7 @@ StringMapping::StringMapping(const std::string& reference, RegisterMapping::Regi
     if (!defaultValue.empty() && (defaultValue.size() <= static_cast<uint16_t>(getRegisterCount() * 2)))
     {
         m_stringValue = defaultValue;
-        if (operation == RegisterMapping::OperationType::STRINGIFY_ASCII)
+        if (operation == OperationType::STRINGIFY_ASCII_BIG_ENDIAN)
             m_byteValues = DataParsers::asciiStringToRegisters(defaultValue);
         else
             m_byteValues = DataParsers::unicodeStringToRegisters(defaultValue);
@@ -55,15 +60,21 @@ StringMapping::StringMapping(const std::string& reference, RegisterMapping::Regi
     }
 }
 
-bool wolkabout::StringMapping::update(const std::vector<uint16_t>& newValues)
+bool StringMapping::update(const std::vector<uint16_t>& newValues)
 {
     switch (m_operationType)
     {
-    case OperationType::STRINGIFY_ASCII:
-        m_stringValue = DataParsers::registersToAsciiString(newValues);
+    case OperationType::STRINGIFY_ASCII_BIG_ENDIAN:
+        m_stringValue = DataParsers::registersToAsciiString(newValues, DataParsers::Endian::BIG);
         break;
-    case OperationType ::STRINGIFY_UNICODE:
-        m_stringValue = DataParsers::registersToUnicodeString(newValues);
+    case OperationType::STRINGIFY_ASCII_LITTLE_ENDIAN:
+        m_stringValue = DataParsers::registersToAsciiString(newValues, DataParsers::Endian::LITTLE);
+        break;
+    case OperationType ::STRINGIFY_UNICODE_BIG_ENDIAN:
+        m_stringValue = DataParsers::registersToUnicodeString(newValues, DataParsers::Endian::BIG);
+        break;
+    case OperationType::STRINGIFY_UNICODE_LITTLE_ENDIAN:
+        m_stringValue = DataParsers::registersToUnicodeString(newValues, DataParsers::Endian::LITTLE);
         break;
     default:
         throw std::logic_error("StringMapping: Illegal operation type set.");
@@ -81,15 +92,27 @@ bool StringMapping::writeValue(const std::string& newValue)
     }
 
     std::vector<uint16_t> bytes;
-    if (m_operationType == OperationType::STRINGIFY_ASCII)
+    if (m_operationType == OperationType::STRINGIFY_ASCII_BIG_ENDIAN)
     {
-        bytes = DataParsers::asciiStringToRegisters(newValue);
+        bytes = DataParsers::asciiStringToRegisters(newValue, DataParsers::Endian::BIG);
         while (bytes.size() < this->m_addresses.size())
             bytes.emplace_back(0);
     }
-    else if (m_operationType == OperationType::STRINGIFY_UNICODE)
+    else if (m_operationType == OperationType::STRINGIFY_ASCII_LITTLE_ENDIAN)
     {
-        bytes = DataParsers::unicodeStringToRegisters(newValue);
+        bytes = DataParsers::asciiStringToRegisters(newValue, DataParsers::Endian::LITTLE);
+        while (bytes.size() < this->m_addresses.size())
+            bytes.emplace_back(0);
+    }
+    else if (m_operationType == OperationType::STRINGIFY_UNICODE_BIG_ENDIAN)
+    {
+        bytes = DataParsers::unicodeStringToRegisters(newValue, DataParsers::Endian::BIG);
+        while (bytes.size() < this->m_addresses.size())
+            bytes.emplace_back(0);
+    }
+    else if (m_operationType == OperationType::STRINGIFY_UNICODE_LITTLE_ENDIAN)
+    {
+        bytes = DataParsers::unicodeStringToRegisters(newValue, DataParsers::Endian::LITTLE);
         while (bytes.size() < this->m_addresses.size())
             bytes.emplace_back(0);
     }
@@ -122,4 +145,5 @@ const std::string& StringMapping::getStringValue() const
 {
     return m_stringValue;
 }
+}    // namespace more_modbus
 }    // namespace wolkabout

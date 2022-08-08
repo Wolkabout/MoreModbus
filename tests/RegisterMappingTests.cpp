@@ -22,9 +22,9 @@
 #undef private
 #undef protected
 
-#define _registerType wolkabout::RegisterMapping::RegisterType
-#define _outputType wolkabout::RegisterMapping::OutputType
-#define _operationType wolkabout::RegisterMapping::OperationType
+#define _registerType wolkabout::more_modbus::RegisterType
+#define _outputType wolkabout::more_modbus::OutputType
+#define _operationType wolkabout::more_modbus::OperationType
 #define _combination std::tuple<_registerType, _outputType, _operationType>
 #define _makeCombo(x, y, z) _combination(_registerType::x, _outputType::y, _operationType::z)
 #define _makeComboPure(x, y, z) _combination(x, y, z)
@@ -50,10 +50,13 @@ public:
                          _registerType::HOLDING_REGISTER};
         outputTypes = {_outputType::BOOL,   _outputType::FLOAT,  _outputType::INT16, _outputType::INT32,
                        _outputType::STRING, _outputType::UINT16, _outputType::UINT32};
-        operationTypes = {
-          _operationType::NONE,        _operationType::MERGE_BIG_ENDIAN, _operationType::MERGE_LITTLE_ENDIAN,
-          _operationType::MERGE_FLOAT, _operationType::STRINGIFY_ASCII,  _operationType::STRINGIFY_UNICODE,
-          _operationType::TAKE_BIT};
+        operationTypes = {_operationType::NONE,
+                          _operationType::MERGE_BIG_ENDIAN,
+                          _operationType::MERGE_LITTLE_ENDIAN,
+                          _operationType::MERGE_FLOAT,
+                          _operationType::STRINGIFY_ASCII_BIG_ENDIAN,
+                          _operationType::STRINGIFY_UNICODE_BIG_ENDIAN,
+                          _operationType::TAKE_BIT};
     }
 
     void SetUpWinningCombinations()
@@ -72,20 +75,21 @@ public:
         winningCombos.emplace(2, std::vector<_combination>{_makeCombo(INPUT_REGISTER, BOOL, TAKE_BIT),
                                                            _makeCombo(HOLDING_REGISTER, BOOL, TAKE_BIT)});
 
-        winningCombos.emplace(3, std::vector<_combination>{_makeCombo(INPUT_REGISTER, UINT32, MERGE_BIG_ENDIAN),
-                                                           _makeCombo(INPUT_REGISTER, INT32, MERGE_BIG_ENDIAN),
-                                                           _makeCombo(INPUT_REGISTER, UINT32, MERGE_LITTLE_ENDIAN),
-                                                           _makeCombo(INPUT_REGISTER, INT32, MERGE_LITTLE_ENDIAN),
-                                                           _makeCombo(HOLDING_REGISTER, UINT32, MERGE_BIG_ENDIAN),
-                                                           _makeCombo(HOLDING_REGISTER, INT32, MERGE_BIG_ENDIAN),
-                                                           _makeCombo(HOLDING_REGISTER, UINT32, MERGE_LITTLE_ENDIAN),
-                                                           _makeCombo(HOLDING_REGISTER, INT32, MERGE_LITTLE_ENDIAN),
-                                                           _makeCombo(INPUT_REGISTER, FLOAT, MERGE_FLOAT),
-                                                           _makeCombo(HOLDING_REGISTER, FLOAT, MERGE_FLOAT),
-                                                           _makeCombo(INPUT_REGISTER, STRING, STRINGIFY_ASCII),
-                                                           _makeCombo(INPUT_REGISTER, STRING, STRINGIFY_UNICODE),
-                                                           _makeCombo(HOLDING_REGISTER, STRING, STRINGIFY_ASCII),
-                                                           _makeCombo(HOLDING_REGISTER, STRING, STRINGIFY_UNICODE)});
+        winningCombos.emplace(
+          3, std::vector<_combination>{_makeCombo(INPUT_REGISTER, UINT32, MERGE_BIG_ENDIAN),
+                                       _makeCombo(INPUT_REGISTER, INT32, MERGE_BIG_ENDIAN),
+                                       _makeCombo(INPUT_REGISTER, UINT32, MERGE_LITTLE_ENDIAN),
+                                       _makeCombo(INPUT_REGISTER, INT32, MERGE_LITTLE_ENDIAN),
+                                       _makeCombo(HOLDING_REGISTER, UINT32, MERGE_BIG_ENDIAN),
+                                       _makeCombo(HOLDING_REGISTER, INT32, MERGE_BIG_ENDIAN),
+                                       _makeCombo(HOLDING_REGISTER, UINT32, MERGE_LITTLE_ENDIAN),
+                                       _makeCombo(HOLDING_REGISTER, INT32, MERGE_LITTLE_ENDIAN),
+                                       _makeCombo(INPUT_REGISTER, FLOAT, MERGE_FLOAT),
+                                       _makeCombo(HOLDING_REGISTER, FLOAT, MERGE_FLOAT),
+                                       _makeCombo(INPUT_REGISTER, STRING, STRINGIFY_ASCII_BIG_ENDIAN),
+                                       _makeCombo(INPUT_REGISTER, STRING, STRINGIFY_UNICODE_BIG_ENDIAN),
+                                       _makeCombo(HOLDING_REGISTER, STRING, STRINGIFY_ASCII_BIG_ENDIAN),
+                                       _makeCombo(HOLDING_REGISTER, STRING, STRINGIFY_UNICODE_BIG_ENDIAN)});
     }
 
     bool IsWinningCombo(uint16_t set, _combination combo)
@@ -109,20 +113,21 @@ public:
 
 TEST_F(RegisterMappingTests, ApsurdMappingsTests)
 {
-    EXPECT_THROW(std::make_shared<wolkabout::RegisterMapping>("TEST", _registerType::INPUT_CONTACT, 0, true),
-                 std::logic_error);
-
     EXPECT_THROW(
-      std::make_shared<wolkabout::RegisterMapping>("TEST", _registerType::INPUT_CONTACT, 0, _outputType::BOOL, true),
+      std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", _registerType::INPUT_CONTACT, 0, true),
       std::logic_error);
 
-    EXPECT_THROW(std::make_shared<wolkabout::RegisterMapping>("TEST", _registerType::INPUT_REGISTER, 0,
-                                                              _operationType::TAKE_BIT, 0, true),
+    EXPECT_THROW(std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", _registerType::INPUT_CONTACT, 0,
+                                                                           _outputType::BOOL, true),
                  std::logic_error);
 
-    EXPECT_THROW(std::make_shared<wolkabout::RegisterMapping>("TEST", _registerType::INPUT_REGISTER,
-                                                              std::vector<std::int32_t>{0, 1, 2}, _outputType::STRING,
-                                                              _operationType::STRINGIFY_ASCII, true),
+    EXPECT_THROW(std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", _registerType::INPUT_REGISTER, 0,
+                                                                           _operationType::TAKE_BIT, 0, true),
+                 std::logic_error);
+
+    EXPECT_THROW(std::make_shared<wolkabout::more_modbus::RegisterMapping>(
+                   "TEST", _registerType::INPUT_REGISTER, std::vector<std::int32_t>{0, 1, 2}, _outputType::STRING,
+                   _operationType::STRINGIFY_ASCII_BIG_ENDIAN, true),
                  std::logic_error);
 }
 
@@ -132,7 +137,7 @@ TEST_F(RegisterMappingTests, IllegalCombosCtorZero)
     {
         const auto combo = _makeComboPure(
           registerType, (int32_t)registerType < 2 ? _outputType::BOOL : _outputType::UINT16, _operationType::NONE);
-        EXPECT_NO_THROW(std::make_shared<wolkabout::RegisterMapping>("TEST", registerType, 0));
+        EXPECT_NO_THROW(std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", registerType, 0));
     }
 }
 
@@ -147,12 +152,14 @@ TEST_F(RegisterMappingTests, IllegalCombosCtorOne)
 
             if (winning)
             {
-                EXPECT_NO_THROW(std::make_shared<wolkabout::RegisterMapping>("TEST", registerType, 0, outputType));
+                EXPECT_NO_THROW(
+                  std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", registerType, 0, outputType));
             }
             else
             {
-                EXPECT_THROW(std::make_shared<wolkabout::RegisterMapping>("TEST", registerType, 0, outputType),
-                             std::logic_error);
+                EXPECT_THROW(
+                  std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", registerType, 0, outputType),
+                  std::logic_error);
             }
         }
     }
@@ -167,14 +174,14 @@ TEST_F(RegisterMappingTests, IllegalCombosCtorTwo)
 
         if (winning)
         {
-            EXPECT_NO_THROW(
-              std::make_shared<wolkabout::RegisterMapping>("TEST", registerType, 0, _operationType::TAKE_BIT, 0));
+            EXPECT_NO_THROW(std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", registerType, 0,
+                                                                                      _operationType::TAKE_BIT, 0));
         }
         else
         {
-            EXPECT_THROW(
-              std::make_shared<wolkabout::RegisterMapping>("TEST", registerType, 0, _operationType::TAKE_BIT, 0),
-              std::logic_error);
+            EXPECT_THROW(std::make_shared<wolkabout::more_modbus::RegisterMapping>("TEST", registerType, 0,
+                                                                                   _operationType::TAKE_BIT, 0),
+                         std::logic_error);
         }
     }
 }
@@ -195,12 +202,12 @@ TEST_F(RegisterMappingTests, IllegalCombosCtorThree)
 
                 if (winning)
                 {
-                    EXPECT_NO_THROW(std::make_shared<wolkabout::RegisterMapping>(
+                    EXPECT_NO_THROW(std::make_shared<wolkabout::more_modbus::RegisterMapping>(
                       "TEST", registerType, std::vector<std::int32_t>{0, 1}, outputType, operationType));
                 }
                 else
                 {
-                    EXPECT_THROW(std::make_shared<wolkabout::RegisterMapping>(
+                    EXPECT_THROW(std::make_shared<wolkabout::more_modbus::RegisterMapping>(
                                    "TEST", registerType, std::vector<std::int32_t>{0, 1}, outputType, operationType),
                                  std::logic_error);
                 }

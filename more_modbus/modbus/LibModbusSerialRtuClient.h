@@ -27,6 +27,8 @@
 
 namespace wolkabout
 {
+namespace more_modbus
+{
 /**
  * @brief ModbusClient implementation for Modbus SERIAL/RTU connections.
  * @details Uses modbus_new_rtu method from libmodbus, and takes in a bunch of arguments.
@@ -85,6 +87,7 @@ private:
     char m_stopBits;
     char m_bitParity;
 };
+}    // namespace more_modbus
 }    // namespace wolkabout
 
 #endif
