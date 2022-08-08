@@ -5,6 +5,14 @@
 
 Additional Modbus abstraction layer, parsing data from uint16_t registers into more useful types.
 
+**Version 0.4.0**
+    - [IMPROVEMENT] - Made the project use external dependencies instead of using submodules.
+    - [IMPROVEMENT] - Reworked the entire CMake to be more inline with modern projects.
+    - [IMPROVEMENT] - Added the compatibility for the logging to be delegated to some other logger.
+    - [IMPROVEMENT] - Added big endian/little endian strings.
+    - [BUGFIX] - Fixed the handling of single device connections to not give up on them, and try to use them again.
+    - [BUGFIX] - Various smaller fixes in reading of registers.
+
 **Version 0.3.2** - Added `repeat` and `defaultValue`
     - [IMPROVEMENT] - The mappings now have `repeat` and `defaultValue` parameters. These allow a mapping to be written every `repeat` milliseconds, even if it hasn't been changed externally.
 
