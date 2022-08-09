@@ -12,7 +12,6 @@ ExternalProject_Add(libmodbus
         CONFIGURE_COMMAND cd <SOURCE_DIR> && /bin/sh ./autogen.sh
         COMMAND /bin/sh <SOURCE_DIR>/configure
         --prefix=${CMAKE_PREFIX_PATH}
-        --libdir=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
         --disable-tests
         ${LIBMODBUS_ADDITIONAL_ARGS}
         INSTALL_DIR ${CMAKE_PREFIX_PATH}
