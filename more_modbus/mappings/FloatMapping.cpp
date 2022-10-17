@@ -86,7 +86,7 @@ bool FloatMapping::writeValue(float value)
     return success;
 }
 
-float FloatMapping::getFloatValue() const
+float FloatMapping::getValue() const
 {
     return m_floatValue;
 }

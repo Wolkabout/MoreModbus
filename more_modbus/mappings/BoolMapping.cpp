@@ -106,5 +106,10 @@ bool BoolMapping::writeValue(bool value)
 
     return success;
 }
+
+bool BoolMapping::getValue() const
+{
+    return getBoolValue();
+}
 }    // namespace more_modbus
 }    // namespace wolkabout

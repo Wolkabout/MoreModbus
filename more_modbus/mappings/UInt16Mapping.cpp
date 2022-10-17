@@ -82,7 +82,7 @@ bool UInt16Mapping::writeValue(uint16_t value)
     return success;
 }
 
-uint16_t UInt16Mapping::getUint16Value() const
+uint16_t UInt16Mapping::getValue() const
 {
     return m_uint16Value;
 }
