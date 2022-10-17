@@ -102,7 +102,7 @@ bool Int32Mapping::writeValue(int32_t value)
     return success;
 }
 
-int32_t Int32Mapping::getInt32Value() const
+int32_t Int32Mapping::getValue() const
 {
     return m_int32Value;
 }

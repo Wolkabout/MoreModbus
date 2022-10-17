@@ -66,7 +66,7 @@ public:
     /**
      * @brief Get the last written/read value of registers, already parsed as float.
      */
-    float getFloatValue() const;
+    float getValue() const;
 
 private:
     float m_floatValue;

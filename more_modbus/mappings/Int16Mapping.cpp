@@ -80,7 +80,7 @@ bool Int16Mapping::writeValue(int16_t value)
     return success;
 }
 
-int16_t Int16Mapping::getInt16Value() const
+int16_t Int16Mapping::getValue() const
 {
     return m_int16Value;
 }

@@ -102,7 +102,7 @@ bool UInt32Mapping::writeValue(uint32_t value)
     return success;
 }
 
-uint32_t UInt32Mapping::getUint32Value() const
+uint32_t UInt32Mapping::getValue() const
 {
     return m_uint32Value;
 }

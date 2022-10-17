@@ -66,7 +66,7 @@ public:
     /**
      * @brief Get the last written/read value of registers, already parsed as STRING.
      */
-    const std::string& getStringValue() const;
+    const std::string& getValue() const;
 
 private:
     std::string m_stringValue;

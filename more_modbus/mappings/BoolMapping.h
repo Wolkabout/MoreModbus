@@ -75,6 +75,8 @@ public:
      * @return Result of the operation, whether or not it was successful
      */
     bool writeValue(bool value);
+
+    bool getValue() const;
 };
 }    // namespace more_modbus
 }    // namespace wolkabout

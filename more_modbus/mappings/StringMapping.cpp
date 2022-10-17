@@ -141,7 +141,7 @@ bool StringMapping::writeValue(const std::string& newValue)
     return success;
 }
 
-const std::string& StringMapping::getStringValue() const
+const std::string& StringMapping::getValue() const
 {
     return m_stringValue;
 }

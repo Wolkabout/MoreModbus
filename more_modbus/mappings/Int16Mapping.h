@@ -66,7 +66,7 @@ public:
     /**
      * @brief Get the last written/read value of registers, already parsed as INT16.
      */
-    int16_t getInt16Value() const;
+    int16_t getValue() const;
 
 private:
     int16_t m_int16Value{};

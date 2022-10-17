@@ -68,7 +68,7 @@ public:
     /**
      * @brief Get the last written/read value of registers, already parsed as UINT32.
      */
-    uint32_t getUint32Value() const;
+    uint32_t getValue() const;
 
 private:
     uint32_t m_uint32Value{};
