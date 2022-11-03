@@ -284,7 +284,7 @@ TEST_F(MappingsTests, UInt16MappingsWriteValue)
               .WillOnce(Return(true));
             EXPECT_TRUE(mapping->writeValue(value));
 
-            EXPECT_EQ(value, mapping->getUint16Value());
+            EXPECT_EQ(value, mapping->getValue());
         }
         else
         {
@@ -312,7 +312,7 @@ TEST_F(MappingsTests, UInt16MappingsInitUpdateValid)
         EXPECT_FALSE(mapping->isValid());
 
         EXPECT_NO_THROW(mapping->update({value}));
-        EXPECT_EQ(value, mapping->getUint16Value());
+        EXPECT_EQ(value, mapping->getValue());
 
         EXPECT_TRUE(mapping->isInitialized());
         EXPECT_TRUE(mapping->isValid());
@@ -362,7 +362,7 @@ TEST_F(MappingsTests, Int16MappingsWriteValue)
               .WillOnce(Return(true));
             EXPECT_TRUE(mapping->writeValue(value));
 
-            EXPECT_EQ(value, mapping->getInt16Value());
+            EXPECT_EQ(value, mapping->getValue());
         }
         else
         {
@@ -390,7 +390,7 @@ TEST_F(MappingsTests, Int16MappingsInitUpdateValid)
         EXPECT_FALSE(mapping->isValid());
 
         EXPECT_NO_THROW(mapping->update({static_cast<uint16_t>(value)}));
-        EXPECT_EQ(value, mapping->getInt16Value());
+        EXPECT_EQ(value, mapping->getValue());
 
         EXPECT_TRUE(mapping->isInitialized());
         EXPECT_TRUE(mapping->isValid());

@@ -213,7 +213,7 @@ TEST_F(ComplexMappingsTests, UInt32MappingsWriteValue)
             EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, bytes)).WillOnce(Return(true));
             EXPECT_TRUE(mapping->writeValue(value));
 
-            EXPECT_EQ(value, mapping->getUint32Value());
+            EXPECT_EQ(value, mapping->getValue());
         }
         else
         {
@@ -245,7 +245,7 @@ TEST_F(ComplexMappingsTests, UInt32MappingsInitUpdateValid)
         EXPECT_FALSE(mapping->isValid());
 
         EXPECT_NO_THROW(mapping->update(bytes));
-        EXPECT_EQ(value, mapping->getUint32Value());
+        EXPECT_EQ(value, mapping->getValue());
 
         EXPECT_TRUE(mapping->isInitialized());
         EXPECT_TRUE(mapping->isValid());
@@ -278,7 +278,7 @@ TEST_F(ComplexMappingsTests, UInt32MappingsDeadband)
         EXPECT_FALSE(mapping->isValid());
 
         EXPECT_NO_THROW(mapping->update(bytes));
-        EXPECT_EQ(value, mapping->getUint32Value());
+        EXPECT_EQ(value, mapping->getValue());
 
         EXPECT_TRUE(mapping->isInitialized());
         EXPECT_TRUE(mapping->isValid());
@@ -308,7 +308,7 @@ TEST_F(ComplexMappingsTests, FrequencyFilter)
         EXPECT_FALSE(mapping->isValid());
 
         EXPECT_NO_THROW(mapping->update(bytes));
-        EXPECT_EQ(value, mapping->getUint32Value());
+        EXPECT_EQ(value, mapping->getValue());
 
         EXPECT_TRUE(mapping->isInitialized());
         EXPECT_TRUE(mapping->isValid());
@@ -370,7 +370,7 @@ TEST_F(ComplexMappingsTests, Int32MappingsWriteValue)
             EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, bytes)).WillOnce(Return(true));
             EXPECT_TRUE(mapping->writeValue(value));
 
-            EXPECT_EQ(value, mapping->getInt32Value());
+            EXPECT_EQ(value, mapping->getValue());
         }
         else
         {
@@ -401,7 +401,7 @@ TEST_F(ComplexMappingsTests, Int32MappingsInitUpdateValid)
         EXPECT_FALSE(mapping->isValid());
 
         EXPECT_NO_THROW(mapping->update(bytes));
-        EXPECT_EQ(value, mapping->getInt32Value());
+        EXPECT_EQ(value, mapping->getValue());
 
         EXPECT_TRUE(mapping->isInitialized());
         EXPECT_TRUE(mapping->isValid());
@@ -434,7 +434,7 @@ TEST_F(ComplexMappingsTests, Int32MappingsDeadband)
         EXPECT_FALSE(mapping->isValid());
 
         EXPECT_NO_THROW(mapping->update(bytes));
-        EXPECT_EQ(value, mapping->getInt32Value());
+        EXPECT_EQ(value, mapping->getValue());
 
         EXPECT_TRUE(mapping->isInitialized());
         EXPECT_TRUE(mapping->isValid());
@@ -489,7 +489,7 @@ TEST_F(ComplexMappingsTests, FloatMappingsWriteValue)
             EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, bytes)).WillOnce(Return(true));
             EXPECT_TRUE(mapping->writeValue(value));
 
-            EXPECT_EQ(value, mapping->getFloatValue());
+            EXPECT_EQ(value, mapping->getValue());
         }
         else
         {
@@ -519,7 +519,7 @@ TEST_F(ComplexMappingsTests, FloatMappingsInitUpdateValid)
         EXPECT_FALSE(mapping->isValid());
 
         EXPECT_NO_THROW(mapping->update(bytes));
-        EXPECT_EQ(value, mapping->getFloatValue());
+        EXPECT_EQ(value, mapping->getValue());
 
         EXPECT_TRUE(mapping->isInitialized());
         EXPECT_TRUE(mapping->isValid());
@@ -549,7 +549,7 @@ TEST_F(ComplexMappingsTests, FloatMappingsDeadband)
         EXPECT_FALSE(mapping->isValid());
 
         EXPECT_NO_THROW(mapping->update(bytes));
-        EXPECT_EQ(value, mapping->getFloatValue());
+        EXPECT_EQ(value, mapping->getValue());
 
         EXPECT_TRUE(mapping->isInitialized());
         EXPECT_TRUE(mapping->isValid());
@@ -634,7 +634,7 @@ TEST_F(ComplexMappingsTests, StringMappingsWriteValue)
             EXPECT_CALL((ModbusReaderMock&)*reader, writeMapping(_, bytes)).WillOnce(Return(true));
             EXPECT_TRUE(mapping->writeValue(value));
 
-            EXPECT_EQ(value, mapping->getStringValue());
+            EXPECT_EQ(value, mapping->getValue());
         }
         else
         {
@@ -665,7 +665,7 @@ TEST_F(ComplexMappingsTests, StringMappingsInitUpdateValid)
         EXPECT_FALSE(mapping->isValid());
 
         EXPECT_NO_THROW(mapping->update(bytes));
-        EXPECT_EQ(value, mapping->getStringValue());
+        EXPECT_EQ(value, mapping->getValue());
 
         EXPECT_TRUE(mapping->isInitialized());
         EXPECT_TRUE(mapping->isValid());
@@ -696,7 +696,7 @@ TEST_F(ComplexMappingsTests, StringMappingsFrequencyFilter)
         EXPECT_FALSE(mapping->isValid());
 
         EXPECT_NO_THROW(mapping->update(bytes));
-        EXPECT_EQ(value, mapping->getStringValue());
+        EXPECT_EQ(value, mapping->getValue());
 
         EXPECT_TRUE(mapping->isInitialized());
         EXPECT_TRUE(mapping->isValid());
