@@ -233,7 +233,8 @@ void ModbusReader::run()
             for (const auto& device : m_devices)
             {
                 LOG(INFO) << "DeviceStatus: '" << device.second->getName() << "': " << false;
-                device.second->triggerOnStatusChange(false);
+
+                triggerDeviceStatusUpdate(device.second, false);
             }
             m_modbusClient.disconnect();
 
@@ -256,7 +257,8 @@ void ModbusReader::run()
             for (const auto& device : m_devices)
             {
                 LOG(INFO) << "DeviceStatus: '" << device.second->getName() << "': " << true;
-                device.second->triggerOnStatusChange(true);
+
+                triggerDeviceStatusUpdate(device.second, true);
             }
         }
         else
@@ -348,10 +350,9 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
         // If all the groups had error while reading, report the device as having errors.
         const auto status = unreadGroups != device->getGroups().size();
         std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
-        if (m_deviceActiveStatus[device->getSlaveAddress()] != status)
+        if (m_deviceActiveStatus[device->getSlaveAddress()] != status || !m_deviceStatusReported[device->getSlaveAddress()])
         {
-            m_deviceActiveStatus[device->getSlaveAddress()] = status;
-            device->triggerOnStatusChange(status);
+            triggerDeviceStatusUpdate(device, status);
         }
 
         auto duration =
@@ -464,15 +465,22 @@ void ModbusReader::rewriteDevice(const std::shared_ptr<ModbusDevice>& device)
         {
             const auto status = succeededMappings > 0;
             std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
-            if (m_deviceActiveStatus[device->getSlaveAddress()] != status)
+            if (m_deviceActiveStatus[device->getSlaveAddress()] != status || !m_deviceStatusReported[device->getSlaveAddress()])
             {
-                m_deviceActiveStatus[device->getSlaveAddress()] = status;
-                device->triggerOnStatusChange(status);
+                triggerDeviceStatusUpdate(device, status);
             }
         }
 
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
+}
+
+void ModbusReader::triggerDeviceStatusUpdate(const std::shared_ptr<ModbusDevice>& device, bool status)
+{
+    m_deviceActiveStatus[device->getSlaveAddress()] = status;
+    device->triggerOnStatusChange(status);
+
+    m_deviceStatusReported[device->getSlaveAddress()] = true;
 }
 }    // namespace more_modbus
 }    // namespace wolkabout
