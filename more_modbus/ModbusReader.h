@@ -122,6 +122,8 @@ private:
     // Does the logic of writing the values into mappings if they happen to be not written into for a while
     void rewriteDevice(const std::shared_ptr<ModbusDevice>& device);
 
+    void triggerDeviceStatusUpdate(const std::shared_ptr<ModbusDevice>& device, bool status);
+
     std::function<void(std::map<int16_t, bool>)> m_onIterationStatuses;
 
     // Modbus client and device data
@@ -129,6 +131,7 @@ private:
     std::map<int16_t, std::shared_ptr<ModbusDevice>> m_devices;
     mutable std::mutex m_deviceActiveMutex;
     std::map<int16_t, bool> m_deviceActiveStatus;
+    std::map<int16_t, bool> m_deviceStatusReported;
 
     // Reconnect logic, modbusClient will after a failed read/connection,
     // try to reconnect in increasing periods of time.
