@@ -74,6 +74,15 @@ endif ()
 # And this is how we're importing the submodules
 add_subdirectory(dependencies)
 
+# And add WolkSDK-Cpp if there is no WolkSDK-Cpp
+if (NOT TARGET WolkAboutCoreUtility)
+    set(BUILD_CONNECTIVITY OFF)
+    set(BUILD_POCO OFF)
+    set(BUILD_AWS_LOG_UPLOADER OFF)
+
+    add_subdirectory(WolkSDK-Cpp)
+endif ()
+
 # Add the pthread dependency too
 find_package(Threads REQUIRED)
 
