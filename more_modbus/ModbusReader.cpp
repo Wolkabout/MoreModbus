@@ -350,7 +350,8 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
         // If all the groups had error while reading, report the device as having errors.
         const auto status = unreadGroups != device->getGroups().size();
         std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
-        if (m_deviceActiveStatus[device->getSlaveAddress()] != status || !m_deviceStatusReported[device->getSlaveAddress()])
+        if (m_deviceActiveStatus[device->getSlaveAddress()] != status ||
+            !m_deviceStatusReported[device->getSlaveAddress()])
         {
             triggerDeviceStatusUpdate(device, status);
         }
@@ -465,7 +466,8 @@ void ModbusReader::rewriteDevice(const std::shared_ptr<ModbusDevice>& device)
         {
             const auto status = succeededMappings > 0;
             std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
-            if (m_deviceActiveStatus[device->getSlaveAddress()] != status || !m_deviceStatusReported[device->getSlaveAddress()])
+            if (m_deviceActiveStatus[device->getSlaveAddress()] != status ||
+                !m_deviceStatusReported[device->getSlaveAddress()])
             {
                 triggerDeviceStatusUpdate(device, status);
             }
