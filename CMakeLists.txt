@@ -76,9 +76,9 @@ add_subdirectory(dependencies)
 
 # And add WolkSDK-Cpp if there is no WolkSDK-Cpp
 if (NOT TARGET WolkAboutCoreUtility)
-    set(BUILD_CONNECTIVITY OFF)
-    set(BUILD_POCO OFF)
-    set(BUILD_AWS_LOG_UPLOADER OFF)
+    option(BUILD_CONNECTIVITY "Build the library with Paho MQTT and allow MQTT connection to the platform." OFF)
+    option(BUILD_POCO "Build the library with Poco." OFF)
+    option(BUILD_AWS_LOG_UPLOADER "Build the library with AwsLogUploader." OFF)
 
     add_subdirectory(WolkSDK-Cpp)
 endif ()
