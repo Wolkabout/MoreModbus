@@ -74,6 +74,15 @@ endif ()
 # And this is how we're importing the submodules
 add_subdirectory(dependencies)
 
+# And add WolkSDK-Cpp if there is no WolkSDK-Cpp
+if (NOT TARGET WolkAboutCoreUtility)
+    option(BUILD_CONNECTIVITY "Build the library with Paho MQTT and allow MQTT connection to the platform." OFF)
+    option(BUILD_POCO "Build the library with Poco." OFF)
+    option(BUILD_AWS_LOG_UPLOADER "Build the library with AwsLogUploader." OFF)
+
+    add_subdirectory(WolkSDK-Cpp)
+endif ()
+
 # Add the pthread dependency too
 find_package(Threads REQUIRED)
 
@@ -85,8 +94,8 @@ include_directories(SYSTEM "${CMAKE_PREFIX_PATH}/include")
 # Define the version of the library
 set(MOREMODBUS_VERSION_MAJOR 0)
 set(MOREMODBUS_VERSION_MINOR 4)
-set(MOREMODBUS_VERSION_PATCH 0)
-set(MOREMODBUS_VERSION_SUFFIX prerelease)
+set(MOREMODBUS_VERSION_PATCH 1)
+set(MOREMODBUS_VERSION_SUFFIX)
 
 set(MOREMODBUS_VERSION_STRING "${MOREMODBUS_VERSION_MAJOR}.${MOREMODBUS_VERSION_MINOR}.${MOREMODBUS_VERSION_PATCH}")
 if (NOT "${MOREMODBUS_VERSION_SUFFIX}" STREQUAL "")
