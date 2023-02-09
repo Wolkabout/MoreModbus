@@ -5,6 +5,9 @@
 
 Additional Modbus abstraction layer, parsing data from uint16_t registers into more useful types.
 
+**Version 0.4.2**
+    - [IMPROVEMENT] - Now using `WolkSDK-Cpp v3.2.1`.
+
 **Version 0.4.1**
     - [IMPROVEMENT] - Renamed the `getValue` methods for the mappings.
     - [IMPROVEMENT] - Made `WolkSDK-Cpp` a submodule of the project, instead of an ExternalProject.
