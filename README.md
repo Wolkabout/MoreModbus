@@ -114,7 +114,7 @@ You can create a bit mapping,
 one that will take a single bit from a register.You need to enlist as type HOLDING_REGISTER / INPUT_REGISTER,
 the TAKE_BIT operation and the bit index.
 
-```c++ 
+```c++
 const auto& getFirstBitMapping =
       std::make_shared<wolkabout::BoolMapping>("B4-1", wolkabout::RegisterType::HOLDING_REGISTER, 4,
                                                wolkabout::OperationType::TAKE_BIT, 0);
@@ -126,7 +126,7 @@ Next you need to merge all the mappings into a device. While creating the device
 which will be used to access it over SERIAL/RTU if you use RS485 with multiple devices.
 
 ```c++
-const auto& mappings = std::vector<std::shared_ptr<wolkabout::RegisterMapping>>{normalRegisterMapping, 
+const auto& mappings = std::vector<std::shared_ptr<wolkabout::RegisterMapping>>{normalRegisterMapping,
                                     normalContactMapping, stringMapping, getFirstBitMapping, getSecondBitMapping};
 
 const auto& device = std::make_shared<wolkabout::ModbusDevice>(
@@ -184,7 +184,7 @@ And the final part, is the reader logic, which needs the client, and list of all
 ```c++
 const auto& reader = std::make_shared<wolkabout::ModbusReader>(
       *modbusClient, std::vector<std::shared_ptr<wolkabout::ModbusDevice>>{device}, std::chrono::milliseconds(1000));
-``` 
+```
 
 And the control to start/stop, you can invoke methods.
 While the reader is running, make sure your main thread doesn't stop running, because the whole program will stop,
@@ -200,6 +200,3 @@ while (reader->isRunning())
 
 reader->stop();
 ```
-
-
-
