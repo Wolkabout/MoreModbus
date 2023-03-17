@@ -22,6 +22,8 @@
 #include "more_modbus/ModbusReader.h"
 #include "more_modbus/utilities/DataParsers.h"
 
+using namespace wolkabout::legacy;
+
 namespace wolkabout
 {
 namespace more_modbus
