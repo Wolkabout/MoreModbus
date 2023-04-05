@@ -28,6 +28,8 @@
 #include <thread>
 #include <utility>
 
+using namespace wolkabout::legacy;
+
 namespace wolkabout
 {
 namespace more_modbus

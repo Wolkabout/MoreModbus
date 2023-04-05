@@ -36,7 +36,7 @@ class ModbusReader;
  */
 struct CompareFunction
 {
-    bool operator()(const std::shared_ptr<RegisterMapping>& left, const std::shared_ptr<RegisterMapping>& right)
+    bool operator()(const std::shared_ptr<RegisterMapping>& left, const std::shared_ptr<RegisterMapping>& right) const
     {
         const auto typeDiff = (int)right->getRegisterType() - (int)left->getRegisterType();
         if (typeDiff != 0)

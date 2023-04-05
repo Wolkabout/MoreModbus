@@ -112,7 +112,7 @@ public:
 
     void SetUp()
     {
-        wolkabout::Logger::init(wolkabout::LogLevel::TRACE, wolkabout::Logger::Type::CONSOLE);
+        wolkabout::legacy::Logger::init(wolkabout::legacy::LogLevel::TRACE, wolkabout::legacy::Logger::Type::CONSOLE);
 
         modbusClientMock = std::make_shared<ModbusClientMock>();
         SetUpMappings();

@@ -24,6 +24,8 @@
 
 #include <algorithm>
 
+using namespace wolkabout::legacy;
+
 namespace wolkabout
 {
 namespace more_modbus
