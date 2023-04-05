@@ -30,6 +30,7 @@
 #include <gtest/gtest.h>
 
 using namespace wolkabout;
+using namespace wolkabout::legacy;
 
 namespace
 {
@@ -128,7 +129,7 @@ public:
 
     void SetUp()
     {
-        wolkabout::Logger::init(wolkabout::LogLevel::TRACE, wolkabout::Logger::Type::CONSOLE);
+        wolkabout::legacy::Logger::init(wolkabout::legacy::LogLevel::TRACE, wolkabout::legacy::Logger::Type::CONSOLE);
         LOG(DEBUG) << "Started tests " << ::testing::UnitTest::GetInstance()->current_test_info()->name() << ".";
 
         SetUpBitValues();
