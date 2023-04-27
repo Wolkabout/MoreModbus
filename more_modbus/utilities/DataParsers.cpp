@@ -75,14 +75,23 @@ std::vector<uint16_t> DataParsers::uint32ToRegisters(uint32_t value, DataParsers
         return std::vector<uint16_t>{bigValue, smallValue};
 }
 
-std::vector<uint16_t> DataParsers::floatToRegisters(float value)
+std::vector<uint16_t> DataParsers::floatToRegisters(float value, DataParsers::Endian endian)
 {
     std::bitset<32> bits(*reinterpret_cast<unsigned long*>(&value));
     std::bitset<32> good(65535);
     std::bitset<16> secondBits((bits & good).to_ulong());
     std::bitset<16> firstBits((bits >> 16 & good).to_ulong());
-    return std::vector<uint16_t>{static_cast<uint16_t>(firstBits.to_ulong()),
-                                 static_cast<uint16_t>(secondBits.to_ulong())};
+
+    if (endian == Endian::BIG)
+    {
+        return std::vector<uint16_t>{static_cast<uint16_t>(firstBits.to_ulong()),
+                                     static_cast<uint16_t>(secondBits.to_ulong())};
+    }
+    else
+    {
+        return std::vector<uint16_t>{static_cast<uint16_t>(secondBits.to_ulong()),
+                                     static_cast<uint16_t>(firstBits.to_ulong())};
+    }
 }
 
 std::string DataParsers::registersToAsciiString(const std::vector<uint16_t>& value, Endian endian)
@@ -136,15 +145,24 @@ uint32_t DataParsers::registersToUint32(const std::vector<uint16_t>& value, Data
     return static_cast<uint32_t>((value[bigValue] << SHIFT_UINT16) + value[smallValue]);
 }
 
-float DataParsers::registersToFloat(const std::vector<uint16_t>& value)
+float DataParsers::registersToFloat(const std::vector<uint16_t>& value, DataParsers::Endian endian)
 {
     if (value.size() != 2)
         throw std::logic_error("DataParsers: You must pass exactly 2 values to parse into an Float.");
 
     std::bitset<32> newBits(0);
-    newBits = newBits | std::bitset<32>(value[0]);
-    newBits <<= 16;
-    newBits = newBits | std::bitset<32>(value[1]);
+    if (endian == Endian::BIG)
+    {
+        newBits = newBits | std::bitset<32>(value[0]);
+        newBits <<= 16;
+        newBits = newBits | std::bitset<32>(value[1]);
+    }
+    else
+    {
+        newBits = newBits | std::bitset<32>(value[1]);
+        newBits <<= 16;
+        newBits = newBits | std::bitset<32>(value[0]);
+    }
 
     auto newValue = newBits.to_ullong();
     return *reinterpret_cast<float*>(&newValue);
