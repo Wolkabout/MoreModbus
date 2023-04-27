@@ -75,7 +75,9 @@ OperationType operationTypeFromString(std::string value)
     else if (value == "MERGE_LITTLE_ENDIAN")
         return OperationType::MERGE_LITTLE_ENDIAN;
     else if (value == "MERGE_FLOAT")
-        return OperationType::MERGE_FLOAT;
+        return OperationType::MERGE_FLOAT_BIG_ENDIAN;
+    else if (value == "MERGE_FLOAT_LITTLE_ENDIAN")
+        return OperationType::MERGE_FLOAT_LITTLE_ENDIAN;
     else if (value == "STRINGIFY_ASCII" || value == "STRINGIFY_ASCII_BIG_ENDIAN")
         return OperationType::STRINGIFY_ASCII_BIG_ENDIAN;
     else if (value == "STRINGIFY_ASCII_LITTLE_ENDIAN")
@@ -235,7 +237,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterType registerTyp
               "RegisterMapping: Merge operations (with endians) output 32bit types (INT32, UINT32).");
         }
     }
-    else if (m_operationType == OperationType::MERGE_FLOAT)
+    else if (m_operationType == OperationType::MERGE_FLOAT_BIG_ENDIAN || m_operationType == OperationType::MERGE_FLOAT_LITTLE_ENDIAN)
     {
         if (m_addresses.size() != 2)
         {
@@ -589,8 +591,10 @@ bool RegisterMapping::deadbandFilter(const std::vector<uint16_t>& newValues) con
 
     case OutputType::FLOAT:
     {
-        float currentValueFloat = DataParsers::registersToFloat(m_byteValues);
-        float newValueFloat = DataParsers::registersToFloat(newValues);
+        auto endianness = getOperationType() == OperationType::MERGE_FLOAT_BIG_ENDIAN? DataParsers::Endian::BIG : DataParsers::Endian::LITTLE;
+
+        float currentValueFloat = DataParsers::registersToFloat(m_byteValues, endianness);
+        float newValueFloat = DataParsers::registersToFloat(newValues, endianness);
 
         significantChange =
           newValueFloat >= currentValueFloat + m_deadbandValue || newValueFloat <= currentValueFloat - m_deadbandValue;
