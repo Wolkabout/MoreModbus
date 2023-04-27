@@ -472,7 +472,8 @@ TEST_F(ComplexMappingsTests, FloatMappingsWriteValue)
     for (const auto& combo : floatCombos)
     {
         const auto value = static_cast<float>(rand());
-        const auto bytes = wolkabout::more_modbus::DataParsers::floatToRegisters(value, wolkabout::more_modbus::DataParsers::Endian::BIG);
+        const auto bytes = wolkabout::more_modbus::DataParsers::floatToRegisters(
+          value, wolkabout::more_modbus::DataParsers::Endian::BIG);
         //        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
@@ -540,7 +541,8 @@ TEST_F(ComplexMappingsTests, FloatMappingsDeadband)
     {
         const auto value = static_cast<float>(15.0);
         double deadbandValue = 2.0;
-        const auto bytes = wolkabout::more_modbus::DataParsers::floatToRegisters(value, wolkabout::more_modbus::DataParsers::Endian::BIG);
+        const auto bytes = wolkabout::more_modbus::DataParsers::floatToRegisters(
+          value, wolkabout::more_modbus::DataParsers::Endian::BIG);
 
         const auto registerType = std::get<0>(combo);
         auto mapping = std::make_shared<wolkabout::more_modbus::FloatMapping>(
@@ -555,8 +557,10 @@ TEST_F(ComplexMappingsTests, FloatMappingsDeadband)
         EXPECT_TRUE(mapping->isInitialized());
         EXPECT_TRUE(mapping->isValid());
 
-        EXPECT_FALSE(mapping->doesUpdate(wolkabout::more_modbus::DataParsers::floatToRegisters(value + 1.0, wolkabout::more_modbus::DataParsers::Endian::BIG)));
-        EXPECT_TRUE(mapping->doesUpdate(wolkabout::more_modbus::DataParsers::floatToRegisters(value + 3.0, wolkabout::more_modbus::DataParsers::Endian::BIG)));
+        EXPECT_FALSE(mapping->doesUpdate(wolkabout::more_modbus::DataParsers::floatToRegisters(
+          value + 1.0, wolkabout::more_modbus::DataParsers::Endian::BIG)));
+        EXPECT_TRUE(mapping->doesUpdate(wolkabout::more_modbus::DataParsers::floatToRegisters(
+          value + 3.0, wolkabout::more_modbus::DataParsers::Endian::BIG)));
     }
 }
 
