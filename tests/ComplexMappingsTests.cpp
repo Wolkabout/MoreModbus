@@ -103,7 +103,7 @@ public:
         operationTypes = {_operationType::NONE,
                           _operationType::MERGE_BIG_ENDIAN,
                           _operationType::MERGE_LITTLE_ENDIAN,
-                          _operationType::MERGE_FLOAT,
+                          _operationType::MERGE_FLOAT_BIG_ENDIAN,
                           _operationType::STRINGIFY_ASCII_BIG_ENDIAN,
                           _operationType::STRINGIFY_UNICODE_BIG_ENDIAN,
                           _operationType::TAKE_BIT};
@@ -129,8 +129,8 @@ public:
                                                         _makeCombo(INPUT_REGISTER, INT32, MERGE_LITTLE_ENDIAN)});
 
         winningCombos.emplace(_outputType::FLOAT,
-                              std::vector<_combination>{_makeCombo(HOLDING_REGISTER, FLOAT, MERGE_FLOAT),
-                                                        _makeCombo(INPUT_REGISTER, FLOAT, MERGE_FLOAT)});
+                              std::vector<_combination>{_makeCombo(HOLDING_REGISTER, FLOAT, MERGE_FLOAT_BIG_ENDIAN),
+                                                        _makeCombo(INPUT_REGISTER, FLOAT, MERGE_FLOAT_BIG_ENDIAN)});
 
         winningCombos.emplace(_outputType::STRING, std::vector<_combination>{
                                                      _makeCombo(HOLDING_REGISTER, STRING, STRINGIFY_ASCII_BIG_ENDIAN),
@@ -449,7 +449,7 @@ TEST_F(ComplexMappingsTests, FloatMappingsCreation)
     const auto& outputType = _outputType::FLOAT;
     for (const auto& registerType : registerTypes)
     {
-        const auto& combo = _makeComboPure(registerType, outputType, _operationType::MERGE_FLOAT);
+        const auto& combo = _makeComboPure(registerType, outputType, _operationType::MERGE_FLOAT_BIG_ENDIAN);
         const bool winning = IsWinningCombo(outputType, combo);
 
         if (winning)
@@ -472,7 +472,7 @@ TEST_F(ComplexMappingsTests, FloatMappingsWriteValue)
     for (const auto& combo : floatCombos)
     {
         const auto value = static_cast<float>(rand());
-        const auto bytes = wolkabout::more_modbus::DataParsers::floatToRegisters(value);
+        const auto bytes = wolkabout::more_modbus::DataParsers::floatToRegisters(value, wolkabout::more_modbus::DataParsers::Endian::BIG);
         //        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
@@ -508,7 +508,8 @@ TEST_F(ComplexMappingsTests, FloatMappingsInitUpdateValid)
     for (const auto& combo : floatCombos)
     {
         const auto value = static_cast<float>(rand());
-        const auto bytes = wolkabout::more_modbus::DataParsers::floatToRegisters(value);
+        const auto bytes = wolkabout::more_modbus::DataParsers::floatToRegisters(
+          value, wolkabout::more_modbus::DataParsers::Endian::BIG);
         //        std::cout << "Testing with " << value << std::endl;
 
         const auto registerType = std::get<0>(combo);
@@ -539,7 +540,7 @@ TEST_F(ComplexMappingsTests, FloatMappingsDeadband)
     {
         const auto value = static_cast<float>(15.0);
         double deadbandValue = 2.0;
-        const auto bytes = wolkabout::more_modbus::DataParsers::floatToRegisters(value);
+        const auto bytes = wolkabout::more_modbus::DataParsers::floatToRegisters(value, wolkabout::more_modbus::DataParsers::Endian::BIG);
 
         const auto registerType = std::get<0>(combo);
         auto mapping = std::make_shared<wolkabout::more_modbus::FloatMapping>(
@@ -554,8 +555,8 @@ TEST_F(ComplexMappingsTests, FloatMappingsDeadband)
         EXPECT_TRUE(mapping->isInitialized());
         EXPECT_TRUE(mapping->isValid());
 
-        EXPECT_FALSE(mapping->doesUpdate(wolkabout::more_modbus::DataParsers::floatToRegisters(value + 1.0)));
-        EXPECT_TRUE(mapping->doesUpdate(wolkabout::more_modbus::DataParsers::floatToRegisters(value + 3.0)));
+        EXPECT_FALSE(mapping->doesUpdate(wolkabout::more_modbus::DataParsers::floatToRegisters(value + 1.0, wolkabout::more_modbus::DataParsers::Endian::BIG)));
+        EXPECT_TRUE(mapping->doesUpdate(wolkabout::more_modbus::DataParsers::floatToRegisters(value + 3.0, wolkabout::more_modbus::DataParsers::Endian::BIG)));
     }
 }
 

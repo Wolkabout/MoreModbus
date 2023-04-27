@@ -459,7 +459,7 @@ TEST_F(DataParsersTest, TestFloatToBytes)
 
     for (const auto& kvp : floatValues)
     {
-        const auto bytes = wolkabout::more_modbus::DataParsers::floatToRegisters(kvp.first);
+        const auto bytes = wolkabout::more_modbus::DataParsers::floatToRegisters(kvp.first, wolkabout::more_modbus::DataParsers::Endian::BIG);
 
         LOG(DEBUG) << kvp.first;
         ASSERT_EQ(kvp.second.size(), bytes.size());
@@ -481,7 +481,7 @@ TEST_F(DataParsersTest, TestBytesToFloat)
 
     for (const auto& kvp : floatValues)
     {
-        const auto value = wolkabout::more_modbus::DataParsers::registersToFloat(kvp.second);
+        const auto value = wolkabout::more_modbus::DataParsers::registersToFloat(kvp.second, wolkabout::more_modbus::DataParsers::Endian::BIG);
 
         LOG(DEBUG) << kvp.first;
         EXPECT_EQ(kvp.first, value);
@@ -498,7 +498,7 @@ TEST_F(DataParsersTest, InvalidFloatTest)
 
     for (const auto& kvp : invalidFloatValues)
     {
-        EXPECT_THROW(wolkabout::more_modbus::DataParsers::registersToFloat(kvp.second), std::logic_error);
+        EXPECT_THROW(wolkabout::more_modbus::DataParsers::registersToFloat(kvp.second, wolkabout::more_modbus::DataParsers::Endian::BIG), std::logic_error);
     }
 }
 

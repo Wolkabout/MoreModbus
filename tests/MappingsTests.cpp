@@ -98,7 +98,7 @@ public:
         operationTypes = {_operationType::NONE,
                           _operationType::MERGE_BIG_ENDIAN,
                           _operationType::MERGE_LITTLE_ENDIAN,
-                          _operationType::MERGE_FLOAT,
+                          _operationType::MERGE_FLOAT_BIG_ENDIAN,
                           _operationType::STRINGIFY_ASCII_BIG_ENDIAN,
                           _operationType::STRINGIFY_UNICODE_BIG_ENDIAN,
                           _operationType::TAKE_BIT};

@@ -63,7 +63,8 @@ public:
      * @param defaultValue The default value for the mapping.
      */
     FloatMapping(const std::string& reference, RegisterType registerType, const std::vector<int32_t>& addresses,
-                 OperationType operation, bool readRestricted = false, int16_t slaveAddress = -1, double deadbandValue = 0.0,
+                 OperationType operation, bool readRestricted = false, int16_t slaveAddress = -1,
+                 double deadbandValue = 0.0,
                  std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0),
                  std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0},
                  const float* defaultValue = nullptr);
