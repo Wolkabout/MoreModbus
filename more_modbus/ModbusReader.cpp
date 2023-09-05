@@ -96,7 +96,8 @@ bool ModbusReader::writeMapping(RegisterMapping& mapping, const std::vector<uint
         return false;
     }
     LOG(TRACE) << "ModbusReader: Written value for mapping '" << mapping.getReference() << "'.";
-    mapping.update(values);
+    if (mapping.isAutoUpdateEnabled())
+        mapping.update(values);
     return true;
 }
 

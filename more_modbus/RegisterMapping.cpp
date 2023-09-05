@@ -563,6 +563,11 @@ const std::chrono::high_resolution_clock::time_point& RegisterMapping::getLastUp
     return m_lastUpdateTime;
 }
 
+bool RegisterMapping::isAutoUpdateEnabled() const
+{
+    return m_autoLocalUpdate;
+}
+
 bool RegisterMapping::deadbandFilter(const std::vector<uint16_t>& newValues) const
 {
     bool significantChange = false;
