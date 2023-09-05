@@ -25,9 +25,7 @@
 #include <string>
 #include <vector>
 
-namespace wolkabout
-{
-namespace more_modbus
+namespace wolkabout::more_modbus
 {
 class RegisterGroup;
 
@@ -247,6 +245,20 @@ public:
     bool update(bool newRegisterValue);
 
     /**
+     * @brief Register writing method.
+     * @param bytes The bytes that needs to be written into the register.
+     * @return Whether the bytes were successfully written through the device.
+     */
+    virtual bool writeValue(const std::vector<std::uint16_t>& bytes);
+
+    /**
+     * @brief Register writing method.
+     * @param value The bool value that needs to be written into the register.
+     * @return Whether the bool was successfully written through the device.
+     */
+    virtual bool writeValue(bool value);
+
+    /**
      * @brief Return uint16_t values for mappings that use such values, otherwise return vector of length 0.
      * @return the uint16_t values received by the ModbusGroupReader, before parsing.
      */
@@ -328,7 +340,6 @@ protected:
 private:
     bool deadbandFilter(const std::vector<uint16_t>& newValues) const;
 };
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus
 
 #endif    // WOLKABOUT_MODBUS_REGISTERMAPPING_H

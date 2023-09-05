@@ -22,9 +22,7 @@
 
 #include <stdexcept>
 
-namespace wolkabout
-{
-namespace more_modbus
+namespace wolkabout::more_modbus
 {
 Int16Mapping::Int16Mapping(const std::string& reference, RegisterType registerType, int32_t address,
                            bool readRestricted, int16_t slaveAddress, double deadbandValue,
@@ -58,22 +56,7 @@ bool Int16Mapping::update(const std::vector<uint16_t>& newValues)
 
 bool Int16Mapping::writeValue(int16_t value)
 {
-    if (getGroup().expired())
-        return false;
-    const auto group = getGroup().lock();
-    if (group == nullptr || group->getDevice().expired())
-        return false;
-    const auto device = group->getDevice().lock();
-    if (device == nullptr || device->getReader().expired())
-        return false;
-    const auto reader = device->getReader().lock();
-    if (reader == nullptr)
-        return false;
-
-    std::vector<uint16_t> bytes;
-    bytes.emplace_back(DataParsers::int16ToUint16(value));
-
-    bool success = reader->writeMapping(*this, bytes);
+    const auto success = RegisterMapping::writeValue(std::vector<std::uint16_t>{DataParsers::int16ToUint16(value)});
     if (success)
         m_int16Value = value;
 
@@ -84,5 +67,4 @@ int16_t Int16Mapping::getValue() const
 {
     return m_int16Value;
 }
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus

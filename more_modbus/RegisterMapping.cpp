@@ -18,6 +18,7 @@
 
 #include "more_modbus/RegisterMapping.h"
 
+#include "more_modbus/ModbusReader.h"
 #include "more_modbus/ModbusDevice.h"
 #include "more_modbus/RegisterGroup.h"
 #include "more_modbus/utilities/DataParsers.h"
@@ -27,9 +28,7 @@
 #include <stdexcept>
 #include <utility>
 
-namespace wolkabout
-{
-namespace more_modbus
+namespace wolkabout::more_modbus
 {
 RegisterType registerTypeFromString(std::string value)
 {
@@ -453,6 +452,46 @@ bool RegisterMapping::update(bool newRegisterValue)
     return !isValueInitialized || different || !isValid;
 }
 
+bool RegisterMapping::writeValue(const std::vector<std::uint16_t>& bytes)
+{
+    if (getGroup().expired())
+        return false;
+    const auto group = getGroup().lock();
+    if (group == nullptr || group->getDevice().expired())
+        return false;
+    const auto device = group->getDevice().lock();
+    if (device == nullptr || device->getReader().expired())
+        return false;
+    const auto reader = device->getReader().lock();
+    if (reader == nullptr)
+        return false;
+
+    return reader->writeMapping(*this, bytes);
+}
+
+bool RegisterMapping::writeValue(bool value)
+{
+    if (getGroup().expired())
+        return false;
+    const auto group = getGroup().lock();
+    if (group == nullptr || group->getDevice().expired())
+        return false;
+    const auto device = group->getDevice().lock();
+    if (device == nullptr || device->getReader().expired())
+        return false;
+    const auto reader = device->getReader().lock();
+    if (reader == nullptr)
+        return false;
+
+    bool success;
+
+    if (m_operationType == OperationType::TAKE_BIT)
+        success = reader->writeBitMapping(*this, value);
+    else
+        success = reader->writeMapping(*this, value);
+    return success;
+}
+
 const std::vector<uint16_t>& RegisterMapping::getBytesValues() const
 {
     return m_byteValues;
@@ -606,5 +645,4 @@ bool RegisterMapping::deadbandFilter(const std::vector<uint16_t>& newValues) con
 
     return significantChange;
 }
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus

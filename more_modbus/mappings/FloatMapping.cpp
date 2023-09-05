@@ -115,19 +115,7 @@ bool FloatMapping::writeValue(float value)
         bytes = DataParsers::floatToRegisters(value, DataParsers::Endian::LITTLE);
     }
 
-    if (getGroup().expired())
-        return false;
-    const auto group = getGroup().lock();
-    if (group == nullptr || group->getDevice().expired())
-        return false;
-    const auto device = group->getDevice().lock();
-    if (device == nullptr || device->getReader().expired())
-        return false;
-    const auto reader = device->getReader().lock();
-    if (reader == nullptr)
-        return false;
-
-    bool success = reader->writeMapping(*this, bytes);
+    const auto success = RegisterMapping::writeValue(bytes);
     if (success)
         m_floatValue = value;
 
