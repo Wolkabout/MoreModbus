@@ -22,16 +22,15 @@
 
 #include <stdexcept>
 
-namespace wolkabout
-{
-namespace more_modbus
+namespace wolkabout::more_modbus
 {
 Int32Mapping::Int32Mapping(const std::string& reference, RegisterType registerType,
                            const std::vector<int32_t>& addresses, OperationType operation, bool readRestricted,
                            int16_t slaveAddress, double deadbandValue, std::chrono::milliseconds frequencyFilterValue,
-                           std::chrono::milliseconds repeatedWrite, const std::int32_t* defaultValue)
+                           std::chrono::milliseconds repeatedWrite, const std::int32_t* defaultValue,
+                           bool autoLocalUpdate)
 : RegisterMapping(reference, registerType, addresses, OutputType::INT32, operation, readRestricted, slaveAddress,
-                  deadbandValue, frequencyFilterValue, repeatedWrite)
+                  deadbandValue, frequencyFilterValue, repeatedWrite, autoLocalUpdate)
 {
     if (operation != OperationType::MERGE_BIG_ENDIAN && operation != OperationType::MERGE_LITTLE_ENDIAN)
     {
@@ -94,5 +93,4 @@ int32_t Int32Mapping::getValue() const
 {
     return m_int32Value;
 }
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus

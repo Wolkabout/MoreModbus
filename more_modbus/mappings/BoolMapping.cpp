@@ -20,15 +20,13 @@
 
 #include <stdexcept>
 
-namespace wolkabout
-{
-namespace more_modbus
+namespace wolkabout::more_modbus
 {
 BoolMapping::BoolMapping(const std::string& reference, RegisterType registerType, int32_t address, bool readRestricted,
                          int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue,
-                         std::chrono::milliseconds repeatedWrite, const bool* defaultValue)
+                         std::chrono::milliseconds repeatedWrite, const bool* defaultValue, bool autoLocalUpdate)
 : RegisterMapping(reference, registerType, address, readRestricted, slaveAddress, 0.0, frequencyFilterValue,
-                  repeatedWrite)
+                  repeatedWrite, autoLocalUpdate)
 {
     if (!(registerType == RegisterType::COIL || registerType == RegisterType::INPUT_CONTACT))
     {
@@ -57,9 +55,9 @@ BoolMapping::BoolMapping(const std::string& reference, RegisterType registerType
 BoolMapping::BoolMapping(const std::string& reference, RegisterType registerType, int32_t address,
                          OperationType operation, int8_t bitIndex, bool readRestricted, int16_t slaveAddress,
                          std::chrono::milliseconds frequencyFilterValue, std::chrono::milliseconds repeatedWrite,
-                         const bool* defaultValue)
+                         const bool* defaultValue, bool autoLocalUpdate)
 : RegisterMapping(reference, registerType, address, operation, bitIndex, readRestricted, slaveAddress,
-                  frequencyFilterValue, repeatedWrite)
+                  frequencyFilterValue, repeatedWrite, autoLocalUpdate)
 {
     if (operation != OperationType::TAKE_BIT)
     {
@@ -93,5 +91,4 @@ bool BoolMapping::getValue() const
 {
     return getBoolValue();
 }
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus

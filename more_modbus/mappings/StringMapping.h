@@ -21,9 +21,7 @@
 
 #include "more_modbus/ModbusReader.h"
 
-namespace wolkabout
-{
-namespace more_modbus
+namespace wolkabout::more_modbus
 {
 /**
  * @brief Class describing a RegisterMapping with output type STRING
@@ -43,12 +41,13 @@ public:
      * @param frequencyFilterValue changes that occur within the given time (in milliseconds) that will be ignored
      * @param repeatedWrite The minimal time between two writes for a mapping.
      * @param defaultValue The default value for the mapping.
+     * @param autoLocalUpdate Whether the local value of the mapping will be automatically updated when written in.
      */
     StringMapping(const std::string& reference, RegisterType registerType, const std::vector<int32_t>& addresses,
                   OperationType operation, bool readRestricted = false, int16_t slaveAddress = -1,
                   std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0),
                   std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0},
-                  const std::string& defaultValue = "");
+                  const std::string& defaultValue = "", bool autoLocalUpdate = false);
 
     /**
      * @details Override methods will be executed on devices reading thread, so that this parsing can be done
@@ -71,7 +70,6 @@ public:
 private:
     std::string m_stringValue;
 };
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus
 
 #endif    // WOLKABOUT_MODBUS_STRINGMAPPING_H

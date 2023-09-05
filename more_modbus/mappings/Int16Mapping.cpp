@@ -27,9 +27,9 @@ namespace wolkabout::more_modbus
 Int16Mapping::Int16Mapping(const std::string& reference, RegisterType registerType, int32_t address,
                            bool readRestricted, int16_t slaveAddress, double deadbandValue,
                            std::chrono::milliseconds frequencyFilterValue, std::chrono::milliseconds repeatedWrite,
-                           const std::int16_t* defaultValue)
+                           const std::int16_t* defaultValue, bool autoLocalUpdate)
 : RegisterMapping(reference, registerType, address, OutputType::INT16, readRestricted, slaveAddress, deadbandValue,
-                  frequencyFilterValue, repeatedWrite)
+                  frequencyFilterValue, repeatedWrite, autoLocalUpdate)
 {
     if (repeatedWrite.count() > 0 && registerType == RegisterType::INPUT_REGISTER)
     {

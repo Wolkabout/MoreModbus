@@ -22,16 +22,15 @@
 
 #include <stdexcept>
 
-namespace wolkabout
-{
-namespace more_modbus
+namespace wolkabout::more_modbus
 {
 StringMapping::StringMapping(const std::string& reference, RegisterType registerType,
                              const std::vector<int32_t>& addresses, OperationType operation, bool readRestricted,
                              int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue,
-                             std::chrono::milliseconds repeatedWrite, const std::string& defaultValue)
+                             std::chrono::milliseconds repeatedWrite, const std::string& defaultValue,
+                             bool autoLocalUpdate)
 : RegisterMapping(reference, registerType, addresses, OutputType::STRING, operation, readRestricted, slaveAddress, 0.0,
-                  frequencyFilterValue, repeatedWrite)
+                  frequencyFilterValue, repeatedWrite, autoLocalUpdate)
 {
     if (operation != OperationType::STRINGIFY_ASCII_BIG_ENDIAN &&
         operation != OperationType::STRINGIFY_ASCII_LITTLE_ENDIAN &&
@@ -133,5 +132,4 @@ const std::string& StringMapping::getValue() const
 {
     return m_stringValue;
 }
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus

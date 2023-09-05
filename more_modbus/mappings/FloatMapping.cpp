@@ -22,16 +22,14 @@
 
 #include <stdexcept>
 
-namespace wolkabout
-{
-namespace more_modbus
+namespace wolkabout::more_modbus
 {
 FloatMapping::FloatMapping(const std::string& reference, RegisterType registerType,
                            const std::vector<int32_t>& addresses, bool readRestricted, int16_t slaveAddress,
                            double deadbandValue, std::chrono::milliseconds frequencyFilterValue,
-                           std::chrono::milliseconds repeatedWrite, const float* defaultValue)
+                           std::chrono::milliseconds repeatedWrite, const float* defaultValue, bool autoLocalUpdate)
 : RegisterMapping(reference, registerType, addresses, OutputType::FLOAT, OperationType::MERGE_FLOAT_BIG_ENDIAN,
-                  readRestricted, slaveAddress, deadbandValue, frequencyFilterValue, repeatedWrite)
+                  readRestricted, slaveAddress, deadbandValue, frequencyFilterValue, repeatedWrite, autoLocalUpdate)
 {
     if (repeatedWrite.count() > 0 && registerType == RegisterType::INPUT_REGISTER)
     {
@@ -55,9 +53,9 @@ FloatMapping::FloatMapping(const std::string& reference, RegisterType registerTy
 FloatMapping::FloatMapping(const std::string& reference, RegisterType registerType,
                            const std::vector<int32_t>& addresses, OperationType operation, bool readRestricted,
                            int16_t slaveAddress, double deadbandValue, std::chrono::milliseconds frequencyFilterValue,
-                           std::chrono::milliseconds repeatedWrite, const float* defaultValue)
+                           std::chrono::milliseconds repeatedWrite, const float* defaultValue, bool autoLocalUpdate)
 : RegisterMapping(reference, registerType, addresses, OutputType::FLOAT, operation, readRestricted, slaveAddress,
-                  deadbandValue, frequencyFilterValue, repeatedWrite)
+                  deadbandValue, frequencyFilterValue, repeatedWrite, autoLocalUpdate)
 {
     if (repeatedWrite.count() > 0 && registerType == RegisterType::INPUT_REGISTER)
     {
@@ -126,5 +124,4 @@ float FloatMapping::getValue() const
 {
     return m_floatValue;
 }
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus

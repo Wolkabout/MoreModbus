@@ -93,7 +93,7 @@ OperationType operationTypeFromString(std::string value)
 RegisterMapping::RegisterMapping(std::string reference, RegisterType registerType, int32_t address, bool readRestricted,
                                  int16_t slaveAddress, double deadbandValue,
                                  std::chrono::milliseconds frequencyFilterValue,
-                                 std::chrono::milliseconds repeatedWrite)
+                                 std::chrono::milliseconds repeatedWrite, bool autoLocalUpdate)
 : m_reference(std::move(reference))
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -104,6 +104,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterType registerTyp
 , m_repeatedWrite(repeatedWrite)
 , m_deadbandValue(deadbandValue)
 , m_frequencyFilterValue(frequencyFilterValue)
+, m_autoLocalUpdate{autoLocalUpdate}
 {
     if (readRestricted && (static_cast<uint16_t>(registerType) % 2 == 1))
     {
@@ -127,7 +128,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterType registerTyp
 RegisterMapping::RegisterMapping(std::string reference, RegisterType registerType, int32_t address, OutputType type,
                                  bool readRestricted, int16_t slaveAddress, double deadbandValue,
                                  std::chrono::milliseconds frequencyFilterValue,
-                                 std::chrono::milliseconds repeatedWrite)
+                                 std::chrono::milliseconds repeatedWrite, bool autoLocalUpdate)
 : m_reference(std::move(reference))
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -139,6 +140,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterType registerTyp
 , m_repeatedWrite(repeatedWrite)
 , m_deadbandValue(deadbandValue)
 , m_frequencyFilterValue(frequencyFilterValue)
+, m_autoLocalUpdate{autoLocalUpdate}
 {
     if (readRestricted && (static_cast<uint16_t>(registerType) % 2 == 1))
     {
@@ -169,7 +171,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterType registerTyp
 RegisterMapping::RegisterMapping(std::string reference, RegisterType registerType, int32_t address, OperationType type,
                                  int8_t bitIndex, bool readRestricted, int16_t slaveAddress,
                                  std::chrono::milliseconds frequencyFilterValue,
-                                 std::chrono::milliseconds repeatedWrite)
+                                 std::chrono::milliseconds repeatedWrite, bool autoLocalUpdate)
 : m_reference(std::move(reference))
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -180,6 +182,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterType registerTyp
 , m_bitIndex(bitIndex)
 , m_repeatedWrite(repeatedWrite)
 , m_frequencyFilterValue(frequencyFilterValue)
+, m_autoLocalUpdate{autoLocalUpdate}
 {
     if (readRestricted && (static_cast<uint16_t>(registerType) % 2 == 1))
     {
@@ -195,7 +198,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterType registerTyp
 RegisterMapping::RegisterMapping(std::string reference, RegisterType registerType, std::vector<int32_t> addresses,
                                  OutputType type, OperationType operation, bool readRestricted, int16_t slaveAddress,
                                  double deadbandValue, std::chrono::milliseconds frequencyFilterValue,
-                                 std::chrono::milliseconds repeatedWrite)
+                                 std::chrono::milliseconds repeatedWrite, bool autoLocalUpdate)
 : m_reference(std::move(reference))
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -206,6 +209,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterType registerTyp
 , m_repeatedWrite(repeatedWrite)
 , m_deadbandValue(deadbandValue)
 , m_frequencyFilterValue(frequencyFilterValue)
+, m_autoLocalUpdate{autoLocalUpdate}
 {
     if (readRestricted && (static_cast<uint16_t>(registerType) % 2 == 1))
     {

@@ -20,16 +20,14 @@
 
 #include <stdexcept>
 
-namespace wolkabout
-{
-namespace more_modbus
+namespace wolkabout::more_modbus
 {
 UInt16Mapping::UInt16Mapping(const std::string& reference, RegisterType registerType, int32_t address,
                              bool readRestricted, int16_t slaveAddress, double deadbandValue,
                              std::chrono::milliseconds frequencyFilterValue, std::chrono::milliseconds repeatedWrite,
-                             const std::uint16_t* defaultValue)
+                             const std::uint16_t* defaultValue, bool autoLocalUpdate)
 : RegisterMapping(reference, registerType, address, readRestricted, slaveAddress, deadbandValue, frequencyFilterValue,
-                  repeatedWrite)
+                  repeatedWrite, autoLocalUpdate)
 {
     if (!(registerType == RegisterType::INPUT_REGISTER || registerType == RegisterType::HOLDING_REGISTER))
     {
@@ -71,5 +69,4 @@ uint16_t UInt16Mapping::getValue() const
 {
     return m_uint16Value;
 }
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus
