@@ -26,9 +26,7 @@
 
 using namespace wolkabout::legacy;
 
-namespace wolkabout
-{
-namespace more_modbus
+namespace wolkabout::more_modbus
 {
 ModbusReader::ModbusReader(ModbusClient& modbusClient, const std::chrono::milliseconds& readPeriod)
 : m_modbusClient(modbusClient), m_devices(), m_readerShouldRun(false), m_threads(), m_readPeriod(readPeriod)
@@ -116,7 +114,8 @@ bool ModbusReader::writeMapping(RegisterMapping& mapping, bool value)
         return false;
     }
     LOG(TRACE) << "ModbusReader: Written value for mapping '" << mapping.getReference() << "'.";
-    mapping.update(value);
+    if (mapping.isAutoUpdateEnabled())
+        mapping.update(value);
     return true;
 }
 
@@ -156,7 +155,8 @@ bool ModbusReader::writeBitMapping(RegisterMapping& mapping, bool value)
             mapping.setValid(false);
             return false;
         }
-        mapping.update(value);
+        if (mapping.isAutoUpdateEnabled())
+            mapping.update(value);
     }
     return true;
 }
@@ -487,5 +487,4 @@ void ModbusReader::triggerDeviceStatusUpdate(const std::shared_ptr<ModbusDevice>
 
     m_deviceStatusReported[device->getSlaveAddress()] = true;
 }
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus
