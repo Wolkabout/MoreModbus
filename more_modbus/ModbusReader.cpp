@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 WolkAbout Technology s.r.o.
+ * Copyright 2023 Wolkabout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -96,7 +96,8 @@ bool ModbusReader::writeMapping(RegisterMapping& mapping, const std::vector<uint
         return false;
     }
     LOG(TRACE) << "ModbusReader: Written value for mapping '" << mapping.getReference() << "'.";
-    mapping.update(values);
+    if (mapping.isAutoUpdateEnabled())
+        mapping.update(values);
     return true;
 }
 

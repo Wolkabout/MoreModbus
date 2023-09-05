@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 WolkAbout Technology s.r.o.
+ * Copyright 2021 Wolkabout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,16 +22,14 @@
 
 #include <stdexcept>
 
-namespace wolkabout
-{
-namespace more_modbus
+namespace wolkabout::more_modbus
 {
 FloatMapping::FloatMapping(const std::string& reference, RegisterType registerType,
                            const std::vector<int32_t>& addresses, bool readRestricted, int16_t slaveAddress,
                            double deadbandValue, std::chrono::milliseconds frequencyFilterValue,
-                           std::chrono::milliseconds repeatedWrite, const float* defaultValue)
+                           std::chrono::milliseconds repeatedWrite, const float* defaultValue, bool autoLocalUpdate)
 : RegisterMapping(reference, registerType, addresses, OutputType::FLOAT, OperationType::MERGE_FLOAT_BIG_ENDIAN,
-                  readRestricted, slaveAddress, deadbandValue, frequencyFilterValue, repeatedWrite)
+                  readRestricted, slaveAddress, deadbandValue, frequencyFilterValue, repeatedWrite, autoLocalUpdate)
 {
     if (repeatedWrite.count() > 0 && registerType == RegisterType::INPUT_REGISTER)
     {
@@ -55,9 +53,9 @@ FloatMapping::FloatMapping(const std::string& reference, RegisterType registerTy
 FloatMapping::FloatMapping(const std::string& reference, RegisterType registerType,
                            const std::vector<int32_t>& addresses, OperationType operation, bool readRestricted,
                            int16_t slaveAddress, double deadbandValue, std::chrono::milliseconds frequencyFilterValue,
-                           std::chrono::milliseconds repeatedWrite, const float* defaultValue)
+                           std::chrono::milliseconds repeatedWrite, const float* defaultValue, bool autoLocalUpdate)
 : RegisterMapping(reference, registerType, addresses, OutputType::FLOAT, operation, readRestricted, slaveAddress,
-                  deadbandValue, frequencyFilterValue, repeatedWrite)
+                  deadbandValue, frequencyFilterValue, repeatedWrite, autoLocalUpdate)
 {
     if (repeatedWrite.count() > 0 && registerType == RegisterType::INPUT_REGISTER)
     {
@@ -115,19 +113,7 @@ bool FloatMapping::writeValue(float value)
         bytes = DataParsers::floatToRegisters(value, DataParsers::Endian::LITTLE);
     }
 
-    if (getGroup().expired())
-        return false;
-    const auto group = getGroup().lock();
-    if (group == nullptr || group->getDevice().expired())
-        return false;
-    const auto device = group->getDevice().lock();
-    if (device == nullptr || device->getReader().expired())
-        return false;
-    const auto reader = device->getReader().lock();
-    if (reader == nullptr)
-        return false;
-
-    bool success = reader->writeMapping(*this, bytes);
+    const auto success = RegisterMapping::writeValue(bytes);
     if (success)
         m_floatValue = value;
 
@@ -138,5 +124,4 @@ float FloatMapping::getValue() const
 {
     return m_floatValue;
 }
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus

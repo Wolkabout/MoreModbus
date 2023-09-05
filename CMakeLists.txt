@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2021 WolkAbout Technology s.r.o.
+# Copyright 2023 Wolkabout Technology s.r.o.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -93,8 +93,8 @@ include_directories(SYSTEM "${CMAKE_PREFIX_PATH}/include")
 
 # Define the version of the library
 set(MOREMODBUS_VERSION_MAJOR 0)
-set(MOREMODBUS_VERSION_MINOR 4)
-set(MOREMODBUS_VERSION_PATCH 2)
+set(MOREMODBUS_VERSION_MINOR 5)
+set(MOREMODBUS_VERSION_PATCH 0)
 set(MOREMODBUS_VERSION_SUFFIX)
 
 set(MOREMODBUS_VERSION_STRING "${MOREMODBUS_VERSION_MAJOR}.${MOREMODBUS_VERSION_MINOR}.${MOREMODBUS_VERSION_PATCH}")

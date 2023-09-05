@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 WolkAbout Technology s.r.o.
+ * Copyright 2021 Wolkabout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,16 +20,14 @@
 
 #include <stdexcept>
 
-namespace wolkabout
-{
-namespace more_modbus
+namespace wolkabout::more_modbus
 {
 UInt16Mapping::UInt16Mapping(const std::string& reference, RegisterType registerType, int32_t address,
                              bool readRestricted, int16_t slaveAddress, double deadbandValue,
                              std::chrono::milliseconds frequencyFilterValue, std::chrono::milliseconds repeatedWrite,
-                             const std::uint16_t* defaultValue)
+                             const std::uint16_t* defaultValue, bool autoLocalUpdate)
 : RegisterMapping(reference, registerType, address, readRestricted, slaveAddress, deadbandValue, frequencyFilterValue,
-                  repeatedWrite)
+                  repeatedWrite, autoLocalUpdate)
 {
     if (!(registerType == RegisterType::INPUT_REGISTER || registerType == RegisterType::HOLDING_REGISTER))
     {
@@ -60,22 +58,7 @@ bool UInt16Mapping::update(const std::vector<uint16_t>& newValues)
 
 bool UInt16Mapping::writeValue(uint16_t value)
 {
-    if (getGroup().expired())
-        return false;
-    const auto group = getGroup().lock();
-    if (group == nullptr || group->getDevice().expired())
-        return false;
-    const auto device = group->getDevice().lock();
-    if (device == nullptr || device->getReader().expired())
-        return false;
-    const auto reader = device->getReader().lock();
-    if (reader == nullptr)
-        return false;
-
-    std::vector<uint16_t> bytes;
-    bytes.emplace_back(value);
-
-    bool success = reader->writeMapping(*this, bytes);
+    const auto success = RegisterMapping::writeValue(std::vector<std::uint16_t>{value});
     if (success)
         m_uint16Value = value;
 
@@ -86,5 +69,4 @@ uint16_t UInt16Mapping::getValue() const
 {
     return m_uint16Value;
 }
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus

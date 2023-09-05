@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 WolkAbout Technology s.r.o.
+ * Copyright 2021 Wolkabout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,15 +20,13 @@
 
 #include <stdexcept>
 
-namespace wolkabout
-{
-namespace more_modbus
+namespace wolkabout::more_modbus
 {
 BoolMapping::BoolMapping(const std::string& reference, RegisterType registerType, int32_t address, bool readRestricted,
                          int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue,
-                         std::chrono::milliseconds repeatedWrite, const bool* defaultValue)
+                         std::chrono::milliseconds repeatedWrite, const bool* defaultValue, bool autoLocalUpdate)
 : RegisterMapping(reference, registerType, address, readRestricted, slaveAddress, 0.0, frequencyFilterValue,
-                  repeatedWrite)
+                  repeatedWrite, autoLocalUpdate)
 {
     if (!(registerType == RegisterType::COIL || registerType == RegisterType::INPUT_CONTACT))
     {
@@ -57,9 +55,9 @@ BoolMapping::BoolMapping(const std::string& reference, RegisterType registerType
 BoolMapping::BoolMapping(const std::string& reference, RegisterType registerType, int32_t address,
                          OperationType operation, int8_t bitIndex, bool readRestricted, int16_t slaveAddress,
                          std::chrono::milliseconds frequencyFilterValue, std::chrono::milliseconds repeatedWrite,
-                         const bool* defaultValue)
+                         const bool* defaultValue, bool autoLocalUpdate)
 : RegisterMapping(reference, registerType, address, operation, bitIndex, readRestricted, slaveAddress,
-                  frequencyFilterValue, repeatedWrite)
+                  frequencyFilterValue, repeatedWrite, autoLocalUpdate)
 {
     if (operation != OperationType::TAKE_BIT)
     {
@@ -82,25 +80,7 @@ BoolMapping::BoolMapping(const std::string& reference, RegisterType registerType
 
 bool BoolMapping::writeValue(bool value)
 {
-    if (getGroup().expired())
-        return false;
-    const auto group = getGroup().lock();
-    if (group == nullptr || group->getDevice().expired())
-        return false;
-    const auto device = group->getDevice().lock();
-    if (device == nullptr || device->getReader().expired())
-        return false;
-    const auto reader = device->getReader().lock();
-    if (reader == nullptr)
-        return false;
-
-    bool success;
-
-    if (m_operationType == OperationType::TAKE_BIT)
-        success = reader->writeBitMapping(*this, value);
-    else
-        success = reader->writeMapping(*this, value);
-
+    const auto success = RegisterMapping::writeValue(value);
     if (success)
         m_boolValue = value;
 
@@ -111,5 +91,4 @@ bool BoolMapping::getValue() const
 {
     return getBoolValue();
 }
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus

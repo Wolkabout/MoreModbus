@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 WolkAbout Technology s.r.o.
+ * Copyright 2021 Wolkabout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,16 +22,15 @@
 
 #include <stdexcept>
 
-namespace wolkabout
-{
-namespace more_modbus
+namespace wolkabout::more_modbus
 {
 StringMapping::StringMapping(const std::string& reference, RegisterType registerType,
                              const std::vector<int32_t>& addresses, OperationType operation, bool readRestricted,
                              int16_t slaveAddress, std::chrono::milliseconds frequencyFilterValue,
-                             std::chrono::milliseconds repeatedWrite, const std::string& defaultValue)
+                             std::chrono::milliseconds repeatedWrite, const std::string& defaultValue,
+                             bool autoLocalUpdate)
 : RegisterMapping(reference, registerType, addresses, OutputType::STRING, operation, readRestricted, slaveAddress, 0.0,
-                  frequencyFilterValue, repeatedWrite)
+                  frequencyFilterValue, repeatedWrite, autoLocalUpdate)
 {
     if (operation != OperationType::STRINGIFY_ASCII_BIG_ENDIAN &&
         operation != OperationType::STRINGIFY_ASCII_LITTLE_ENDIAN &&
@@ -122,19 +121,7 @@ bool StringMapping::writeValue(const std::string& newValue)
     while (bytes.size() < this->m_addresses.size())
         bytes.emplace_back(0);
 
-    if (getGroup().expired())
-        return false;
-    const auto group = getGroup().lock();
-    if (group == nullptr || group->getDevice().expired())
-        return false;
-    const auto device = group->getDevice().lock();
-    if (device == nullptr || device->getReader().expired())
-        return false;
-    const auto reader = device->getReader().lock();
-    if (reader == nullptr)
-        return false;
-
-    bool success = reader->writeMapping(*this, bytes);
+    const auto success = RegisterMapping::writeValue(bytes);
     if (success)
         m_stringValue = newValue;
 
@@ -145,5 +132,4 @@ const std::string& StringMapping::getValue() const
 {
     return m_stringValue;
 }
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus
