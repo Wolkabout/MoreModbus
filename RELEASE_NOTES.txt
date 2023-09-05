@@ -5,6 +5,9 @@
 
 Additional Modbus abstraction layer, parsing data from uint16_t registers into more useful types.
 
+**Version 0.5.1**
+    - [FEATURE] - Added the `forceReadOfMapping` method to the `ModbusReader`.
+
 **Version 0.5.0**
     - [FEATURE] - Added the `autoLocalUpdate` parameter to mappings and changed the default behavior of mapping updates.
 
