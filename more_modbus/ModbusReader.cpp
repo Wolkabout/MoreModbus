@@ -20,6 +20,7 @@
 
 #include "core/utilities/Logger.h"
 #include "more_modbus/modbus/ModbusGroupReader.h"
+#include "more_modbus/modbus/ModbusMappingReader.h"
 #include "more_modbus/utilities/DataParsers.h"
 
 #include <algorithm>
@@ -159,6 +160,11 @@ bool ModbusReader::writeBitMapping(RegisterMapping& mapping, bool value)
             mapping.update(value);
     }
     return true;
+}
+
+bool ModbusReader::forceReadOfMapping(RegisterMapping& mapping)
+{
+    return ModbusMappingReader::readRegister(m_modbusClient, mapping);
 }
 
 bool ModbusReader::start()

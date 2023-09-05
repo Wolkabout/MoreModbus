@@ -88,6 +88,13 @@ public:
     virtual bool writeBitMapping(RegisterMapping& mapping, bool value);
 
     /**
+     * @brief Force the reader to read the mapping. The value of the mapping will be announced through the device.
+     * @param mapping The mapping that should be read.
+     * @return Whether the mapping was successfully read.
+     */
+    virtual bool forceReadOfMapping(RegisterMapping& mapping);
+
+    /**
      * @brief Indicates whether or not the threads that read devices are running
      * @return thread running status
      */
