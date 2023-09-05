@@ -94,7 +94,7 @@ include_directories(SYSTEM "${CMAKE_PREFIX_PATH}/include")
 # Define the version of the library
 set(MOREMODBUS_VERSION_MAJOR 0)
 set(MOREMODBUS_VERSION_MINOR 5)
-set(MOREMODBUS_VERSION_PATCH 0)
+set(MOREMODBUS_VERSION_PATCH 1)
 set(MOREMODBUS_VERSION_SUFFIX)
 
 set(MOREMODBUS_VERSION_STRING "${MOREMODBUS_VERSION_MAJOR}.${MOREMODBUS_VERSION_MINOR}.${MOREMODBUS_VERSION_PATCH}")
@@ -114,6 +114,7 @@ set(SOURCE_FILES more_modbus/mappings/BoolMapping.cpp
         more_modbus/modbus/LibModbusTcpIpClient.cpp
         more_modbus/modbus/ModbusClient.cpp
         more_modbus/modbus/ModbusGroupReader.cpp
+        more_modbus/modbus/ModbusMappingReader.cpp
         more_modbus/utilities/DataParsers.cpp
         more_modbus/ModbusDevice.cpp
         more_modbus/ModbusReader.cpp
@@ -130,6 +131,7 @@ set(HEADER_FILES more_modbus/mappings/BoolMapping.h
         more_modbus/modbus/LibModbusTcpIpClient.h
         more_modbus/modbus/ModbusClient.h
         more_modbus/modbus/ModbusGroupReader.h
+        more_modbus/modbus/ModbusMappingReader.h
         more_modbus/utilities/DataParsers.h
         more_modbus/ModbusDevice.h
         more_modbus/ModbusReader.h
