@@ -24,6 +24,7 @@
 #include "more_modbus/utilities/DataParsers.h"
 
 #include <algorithm>
+#include <numeric>
 
 using namespace wolkabout::legacy;
 
@@ -94,7 +95,9 @@ bool ModbusReader::writeMapping(RegisterMapping& mapping, const std::vector<uint
         mapping.setValid(false);
         return false;
     }
-    LOG(TRACE) << "ModbusReader: Written value for mapping '" << mapping.getReference() << "'.";
+    LOG(TRACE) << "ModbusReader: Written values '" <<
+                  (std::accumulate(values.begin(), values.end(), std::string{}, [] (auto s, auto v) { return s + " " + std::to_string(v); })) <<
+                  "' for mapping '" << mapping.getReference() << "'.";
     if (mapping.isAutoUpdateEnabled())
         mapping.update(values);
     return true;
@@ -114,7 +117,9 @@ bool ModbusReader::writeMapping(RegisterMapping& mapping, bool value)
         mapping.setValid(false);
         return false;
     }
-    LOG(TRACE) << "ModbusReader: Written value for mapping '" << mapping.getReference() << "'.";
+
+    LOG(TRACE) << "ModbusReader: Written value '" << value << "' for mapping '" << mapping.getReference() << "'.";
+
     if (mapping.isAutoUpdateEnabled())
         mapping.update(value);
     return true;
@@ -156,6 +161,9 @@ bool ModbusReader::writeBitMapping(RegisterMapping& mapping, bool value)
             mapping.setValid(false);
             return false;
         }
+
+        LOG(TRACE) << "ModbusReader: Written value '" << value << "' for mapping '" << mapping.getReference() << "'.";
+
         if (mapping.isAutoUpdateEnabled())
             mapping.update(value);
     }
