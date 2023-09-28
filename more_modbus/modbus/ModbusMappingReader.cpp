@@ -1,8 +1,8 @@
 #include "more_modbus/modbus/ModbusMappingReader.h"
-#include "more_modbus/RegisterGroup.h"
-#include "more_modbus/ModbusDevice.h"
 
 #include "core/utilities/Logger.h"
+#include "more_modbus/ModbusDevice.h"
+#include "more_modbus/RegisterGroup.h"
 
 using namespace wolkabout;
 using namespace wolkabout::legacy;
