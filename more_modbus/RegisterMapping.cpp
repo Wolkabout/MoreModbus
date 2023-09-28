@@ -18,8 +18,8 @@
 
 #include "more_modbus/RegisterMapping.h"
 
-#include "more_modbus/ModbusReader.h"
 #include "more_modbus/ModbusDevice.h"
+#include "more_modbus/ModbusReader.h"
 #include "more_modbus/RegisterGroup.h"
 #include "more_modbus/utilities/DataParsers.h"
 

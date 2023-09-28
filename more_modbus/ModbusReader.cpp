@@ -95,9 +95,10 @@ bool ModbusReader::writeMapping(RegisterMapping& mapping, const std::vector<uint
         mapping.setValid(false);
         return false;
     }
-    LOG(TRACE) << "ModbusReader: Written values '" <<
-                  (std::accumulate(values.begin(), values.end(), std::string{}, [] (auto s, auto v) { return s + " " + std::to_string(v); })) <<
-                  "' for mapping '" << mapping.getReference() << "'.";
+    LOG(TRACE) << "ModbusReader: Written values '"
+               << (std::accumulate(values.begin(), values.end(), std::string{},
+                                   [](auto s, auto v) { return s + " " + std::to_string(v); }))
+               << "' for mapping '" << mapping.getReference() << "'.";
     if (mapping.isAutoUpdateEnabled())
         mapping.update(values);
     return true;
