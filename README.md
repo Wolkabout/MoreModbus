@@ -14,12 +14,12 @@ They are of different types different from the native modbus `uint16_t`, like:
 
 These are built using operations
 
-|      TYPE     |               OPERATIONS              |
-|:-------------:|:-------------------------------------:|
-| INT32, UINT32 | MERGE_BIG_ENDIAN, MERGE_LITTLE_ENDIAN |
-|     FLOAT     |              MERGE_FLOAT              |
-|     STRING    |   STRINGIFY_ASCII, STRINGIFY_UNICODE  |
-|      BOOL     |                TAKE_BIT               |
+|      TYPE     |                    OPERATIONS                     |
+|:-------------:|:-------------------------------------------------:|
+| INT32, UINT32 |       MERGE_BIG_ENDIAN, MERGE_LITTLE_ENDIAN       |
+|     FLOAT     | MERGE_FLOAT_BIG_ENDIAN, MERGE_FLOAT_LITTLE_ENDIAN |
+|     STRING    |        STRINGIFY_ASCII, STRINGIFY_UNICODE         |
+|      BOOL     |                     TAKE_BIT                      |
 
 - STRINGIFY_ASCII (0-127) and STRINGIFY_UNICODE (0-255) both store two characters as a
   single `uint16_t` (understandable to modbus)
