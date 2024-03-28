@@ -5,6 +5,9 @@
 
 Additional Modbus abstraction layer, parsing data from uint16_t registers into more useful types.
 
+**Version 0.5.2**
+    - [IMPROVEMENT] - Support "MERGE_FLOAT_BIG_ENDIAN" as operation type
+
 **Version 0.5.1**
     - [FEATURE] - Added the `forceReadOfMapping` method to the `ModbusReader`.
 
