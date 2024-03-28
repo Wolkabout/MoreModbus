@@ -73,7 +73,7 @@ OperationType operationTypeFromString(std::string value)
         return OperationType::MERGE_BIG_ENDIAN;
     else if (value == "MERGE_LITTLE_ENDIAN")
         return OperationType::MERGE_LITTLE_ENDIAN;
-    else if (value == "MERGE_FLOAT")
+    else if (value == "MERGE_FLOAT_BIG_ENDIAN" || value == "MERGE_FLOAT")
         return OperationType::MERGE_FLOAT_BIG_ENDIAN;
     else if (value == "MERGE_FLOAT_LITTLE_ENDIAN")
         return OperationType::MERGE_FLOAT_LITTLE_ENDIAN;
