@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 WolkAbout Technology s.r.o.
+ * Copyright 2021 Wolkabout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,16 +22,15 @@
 
 #include <stdexcept>
 
-namespace wolkabout
-{
-namespace more_modbus
+namespace wolkabout::more_modbus
 {
 UInt32Mapping::UInt32Mapping(const std::string& reference, RegisterType registerType,
                              const std::vector<int32_t>& addresses, OperationType operation, bool readRestricted,
                              int16_t slaveAddress, double deadbandValue, std::chrono::milliseconds frequencyFilterValue,
-                             std::chrono::milliseconds repeatedWrite, const std::uint32_t* defaultValue)
+                             std::chrono::milliseconds repeatedWrite, const std::uint32_t* defaultValue,
+                             bool autoLocalUpdate)
 : RegisterMapping(reference, registerType, addresses, OutputType::UINT32, operation, readRestricted, slaveAddress,
-                  deadbandValue, frequencyFilterValue, repeatedWrite)
+                  deadbandValue, frequencyFilterValue, repeatedWrite, autoLocalUpdate)
 {
     if (operation != OperationType::MERGE_BIG_ENDIAN && operation != OperationType::MERGE_LITTLE_ENDIAN)
     {
@@ -83,19 +82,7 @@ bool UInt32Mapping::writeValue(uint32_t value)
     else
         throw std::logic_error("UInt32Mapping: Illegal operation type set.");
 
-    if (getGroup().expired())
-        return false;
-    const auto group = getGroup().lock();
-    if (group == nullptr || group->getDevice().expired())
-        return false;
-    const auto device = group->getDevice().lock();
-    if (device == nullptr || device->getReader().expired())
-        return false;
-    const auto reader = device->getReader().lock();
-    if (reader == nullptr)
-        return false;
-
-    bool success = reader->writeMapping(*this, bytes);
+    const auto success = RegisterMapping::writeValue(bytes);
     if (success)
         m_uint32Value = value;
 
@@ -106,5 +93,4 @@ uint32_t UInt32Mapping::getValue() const
 {
     return m_uint32Value;
 }
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus

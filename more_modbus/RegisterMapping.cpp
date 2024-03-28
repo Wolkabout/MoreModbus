@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 WolkAbout Technology s.r.o.
+ * Copyright 2023 Wolkabout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@
 #include "more_modbus/RegisterMapping.h"
 
 #include "more_modbus/ModbusDevice.h"
+#include "more_modbus/ModbusReader.h"
 #include "more_modbus/RegisterGroup.h"
 #include "more_modbus/utilities/DataParsers.h"
 
@@ -27,9 +28,7 @@
 #include <stdexcept>
 #include <utility>
 
-namespace wolkabout
-{
-namespace more_modbus
+namespace wolkabout::more_modbus
 {
 RegisterType registerTypeFromString(std::string value)
 {
@@ -74,8 +73,10 @@ OperationType operationTypeFromString(std::string value)
         return OperationType::MERGE_BIG_ENDIAN;
     else if (value == "MERGE_LITTLE_ENDIAN")
         return OperationType::MERGE_LITTLE_ENDIAN;
-    else if (value == "MERGE_FLOAT")
-        return OperationType::MERGE_FLOAT;
+    else if (value == "MERGE_FLOAT_BIG_ENDIAN" || value == "MERGE_FLOAT")
+        return OperationType::MERGE_FLOAT_BIG_ENDIAN;
+    else if (value == "MERGE_FLOAT_LITTLE_ENDIAN")
+        return OperationType::MERGE_FLOAT_LITTLE_ENDIAN;
     else if (value == "STRINGIFY_ASCII" || value == "STRINGIFY_ASCII_BIG_ENDIAN")
         return OperationType::STRINGIFY_ASCII_BIG_ENDIAN;
     else if (value == "STRINGIFY_ASCII_LITTLE_ENDIAN")
@@ -92,7 +93,7 @@ OperationType operationTypeFromString(std::string value)
 RegisterMapping::RegisterMapping(std::string reference, RegisterType registerType, int32_t address, bool readRestricted,
                                  int16_t slaveAddress, double deadbandValue,
                                  std::chrono::milliseconds frequencyFilterValue,
-                                 std::chrono::milliseconds repeatedWrite)
+                                 std::chrono::milliseconds repeatedWrite, bool autoLocalUpdate)
 : m_reference(std::move(reference))
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -103,6 +104,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterType registerTyp
 , m_repeatedWrite(repeatedWrite)
 , m_deadbandValue(deadbandValue)
 , m_frequencyFilterValue(frequencyFilterValue)
+, m_autoLocalUpdate{autoLocalUpdate}
 {
     if (readRestricted && (static_cast<uint16_t>(registerType) % 2 == 1))
     {
@@ -126,7 +128,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterType registerTyp
 RegisterMapping::RegisterMapping(std::string reference, RegisterType registerType, int32_t address, OutputType type,
                                  bool readRestricted, int16_t slaveAddress, double deadbandValue,
                                  std::chrono::milliseconds frequencyFilterValue,
-                                 std::chrono::milliseconds repeatedWrite)
+                                 std::chrono::milliseconds repeatedWrite, bool autoLocalUpdate)
 : m_reference(std::move(reference))
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -138,6 +140,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterType registerTyp
 , m_repeatedWrite(repeatedWrite)
 , m_deadbandValue(deadbandValue)
 , m_frequencyFilterValue(frequencyFilterValue)
+, m_autoLocalUpdate{autoLocalUpdate}
 {
     if (readRestricted && (static_cast<uint16_t>(registerType) % 2 == 1))
     {
@@ -168,7 +171,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterType registerTyp
 RegisterMapping::RegisterMapping(std::string reference, RegisterType registerType, int32_t address, OperationType type,
                                  int8_t bitIndex, bool readRestricted, int16_t slaveAddress,
                                  std::chrono::milliseconds frequencyFilterValue,
-                                 std::chrono::milliseconds repeatedWrite)
+                                 std::chrono::milliseconds repeatedWrite, bool autoLocalUpdate)
 : m_reference(std::move(reference))
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -179,6 +182,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterType registerTyp
 , m_bitIndex(bitIndex)
 , m_repeatedWrite(repeatedWrite)
 , m_frequencyFilterValue(frequencyFilterValue)
+, m_autoLocalUpdate{autoLocalUpdate}
 {
     if (readRestricted && (static_cast<uint16_t>(registerType) % 2 == 1))
     {
@@ -194,7 +198,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterType registerTyp
 RegisterMapping::RegisterMapping(std::string reference, RegisterType registerType, std::vector<int32_t> addresses,
                                  OutputType type, OperationType operation, bool readRestricted, int16_t slaveAddress,
                                  double deadbandValue, std::chrono::milliseconds frequencyFilterValue,
-                                 std::chrono::milliseconds repeatedWrite)
+                                 std::chrono::milliseconds repeatedWrite, bool autoLocalUpdate)
 : m_reference(std::move(reference))
 , m_readRestricted(readRestricted)
 , m_registerType(registerType)
@@ -205,6 +209,7 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterType registerTyp
 , m_repeatedWrite(repeatedWrite)
 , m_deadbandValue(deadbandValue)
 , m_frequencyFilterValue(frequencyFilterValue)
+, m_autoLocalUpdate{autoLocalUpdate}
 {
     if (readRestricted && (static_cast<uint16_t>(registerType) % 2 == 1))
     {
@@ -235,7 +240,8 @@ RegisterMapping::RegisterMapping(std::string reference, RegisterType registerTyp
               "RegisterMapping: Merge operations (with endians) output 32bit types (INT32, UINT32).");
         }
     }
-    else if (m_operationType == OperationType::MERGE_FLOAT)
+    else if (m_operationType == OperationType::MERGE_FLOAT_BIG_ENDIAN ||
+             m_operationType == OperationType::MERGE_FLOAT_LITTLE_ENDIAN)
     {
         if (m_addresses.size() != 2)
         {
@@ -450,6 +456,46 @@ bool RegisterMapping::update(bool newRegisterValue)
     return !isValueInitialized || different || !isValid;
 }
 
+bool RegisterMapping::writeValue(const std::vector<std::uint16_t>& bytes)
+{
+    if (getGroup().expired())
+        return false;
+    const auto group = getGroup().lock();
+    if (group == nullptr || group->getDevice().expired())
+        return false;
+    const auto device = group->getDevice().lock();
+    if (device == nullptr || device->getReader().expired())
+        return false;
+    const auto reader = device->getReader().lock();
+    if (reader == nullptr)
+        return false;
+
+    return reader->writeMapping(*this, bytes);
+}
+
+bool RegisterMapping::writeValue(bool value)
+{
+    if (getGroup().expired())
+        return false;
+    const auto group = getGroup().lock();
+    if (group == nullptr || group->getDevice().expired())
+        return false;
+    const auto device = group->getDevice().lock();
+    if (device == nullptr || device->getReader().expired())
+        return false;
+    const auto reader = device->getReader().lock();
+    if (reader == nullptr)
+        return false;
+
+    bool success;
+
+    if (m_operationType == OperationType::TAKE_BIT)
+        success = reader->writeBitMapping(*this, value);
+    else
+        success = reader->writeMapping(*this, value);
+    return success;
+}
+
 const std::vector<uint16_t>& RegisterMapping::getBytesValues() const
 {
     return m_byteValues;
@@ -521,6 +567,11 @@ const std::chrono::high_resolution_clock::time_point& RegisterMapping::getLastUp
     return m_lastUpdateTime;
 }
 
+bool RegisterMapping::isAutoUpdateEnabled() const
+{
+    return m_autoLocalUpdate;
+}
+
 bool RegisterMapping::deadbandFilter(const std::vector<uint16_t>& newValues) const
 {
     bool significantChange = false;
@@ -589,8 +640,11 @@ bool RegisterMapping::deadbandFilter(const std::vector<uint16_t>& newValues) con
 
     case OutputType::FLOAT:
     {
-        float currentValueFloat = DataParsers::registersToFloat(m_byteValues);
-        float newValueFloat = DataParsers::registersToFloat(newValues);
+        auto endianness = getOperationType() == OperationType::MERGE_FLOAT_BIG_ENDIAN ? DataParsers::Endian::BIG :
+                                                                                        DataParsers::Endian::LITTLE;
+
+        float currentValueFloat = DataParsers::registersToFloat(m_byteValues, endianness);
+        float newValueFloat = DataParsers::registersToFloat(newValues, endianness);
 
         significantChange =
           newValueFloat >= currentValueFloat + m_deadbandValue || newValueFloat <= currentValueFloat - m_deadbandValue;
@@ -600,5 +654,4 @@ bool RegisterMapping::deadbandFilter(const std::vector<uint16_t>& newValues) con
 
     return significantChange;
 }
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus

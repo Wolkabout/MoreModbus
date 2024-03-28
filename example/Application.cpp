@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 WolkAbout Technology s.r.o.
+ * Copyright 2023 Wolkabout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,6 +28,7 @@
 #include "more_modbus/utilities/DataParsers.h"
 
 using namespace wolkabout;
+using namespace wolkabout::legacy;
 using namespace wolkabout::more_modbus;
 
 int main()
@@ -77,7 +78,7 @@ int main()
               LOG(DEBUG) << "Application: Received StringMapping update: '"
                          << DataParsers::registersToAsciiString(bytes) << "'.";
 
-              if (string->getStringValue().empty())
+              if (string->getValue().empty())
                   string->writeValue("Test");
           }
           else

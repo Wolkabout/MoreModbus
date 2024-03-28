@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 WolkAbout Technology s.r.o.
+ * Copyright 2021 Wolkabout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,16 +22,14 @@
 
 #include <stdexcept>
 
-namespace wolkabout
-{
-namespace more_modbus
+namespace wolkabout::more_modbus
 {
 FloatMapping::FloatMapping(const std::string& reference, RegisterType registerType,
                            const std::vector<int32_t>& addresses, bool readRestricted, int16_t slaveAddress,
                            double deadbandValue, std::chrono::milliseconds frequencyFilterValue,
-                           std::chrono::milliseconds repeatedWrite, const float* defaultValue)
-: RegisterMapping(reference, registerType, addresses, OutputType::FLOAT, OperationType::MERGE_FLOAT, readRestricted,
-                  slaveAddress, deadbandValue, frequencyFilterValue, repeatedWrite)
+                           std::chrono::milliseconds repeatedWrite, const float* defaultValue, bool autoLocalUpdate)
+: RegisterMapping(reference, registerType, addresses, OutputType::FLOAT, OperationType::MERGE_FLOAT_BIG_ENDIAN,
+                  readRestricted, slaveAddress, deadbandValue, frequencyFilterValue, repeatedWrite, autoLocalUpdate)
 {
     if (repeatedWrite.count() > 0 && registerType == RegisterType::INPUT_REGISTER)
     {
@@ -45,17 +43,56 @@ FloatMapping::FloatMapping(const std::string& reference, RegisterType registerTy
     if (defaultValue != nullptr)
     {
         m_floatValue = *defaultValue;
-        m_byteValues = DataParsers::floatToRegisters(m_floatValue);
+        auto endianness = m_operationType == OperationType::MERGE_FLOAT_BIG_ENDIAN ? DataParsers::Endian::BIG :
+                                                                                     DataParsers::Endian::LITTLE;
+        m_byteValues = DataParsers::floatToRegisters(m_floatValue, endianness);
+        m_defaultValue = std::to_string(m_floatValue);
+    }
+}
+
+FloatMapping::FloatMapping(const std::string& reference, RegisterType registerType,
+                           const std::vector<int32_t>& addresses, OperationType operation, bool readRestricted,
+                           int16_t slaveAddress, double deadbandValue, std::chrono::milliseconds frequencyFilterValue,
+                           std::chrono::milliseconds repeatedWrite, const float* defaultValue, bool autoLocalUpdate)
+: RegisterMapping(reference, registerType, addresses, OutputType::FLOAT, operation, readRestricted, slaveAddress,
+                  deadbandValue, frequencyFilterValue, repeatedWrite, autoLocalUpdate)
+{
+    if (repeatedWrite.count() > 0 && registerType == RegisterType::INPUT_REGISTER)
+    {
+        throw std::logic_error("FloatMapping: Can not set a repeated write value for a read-only register.");
+    }
+    if (defaultValue != nullptr && registerType == RegisterType::INPUT_REGISTER)
+    {
+        throw std::logic_error("FloatMapping: Can not set a default value for a read-only register.");
+    }
+
+    if (defaultValue != nullptr)
+    {
+        m_floatValue = *defaultValue;
+        auto endianness = m_operationType == OperationType::MERGE_FLOAT_BIG_ENDIAN ? DataParsers::Endian::BIG :
+                                                                                     DataParsers::Endian::LITTLE;
+        m_byteValues = DataParsers::floatToRegisters(m_floatValue, endianness);
         m_defaultValue = std::to_string(m_floatValue);
     }
 }
 
 bool FloatMapping::update(const std::vector<uint16_t>& newValues)
 {
-    if (m_operationType != OperationType::MERGE_FLOAT)
+    switch (m_operationType)
+    {
+    case OperationType::MERGE_FLOAT_BIG_ENDIAN:
+    {
+        m_floatValue = DataParsers::registersToFloat(newValues, DataParsers::Endian::BIG);
+        break;
+    }
+    case OperationType::MERGE_FLOAT_LITTLE_ENDIAN:
+    {
+        m_floatValue = DataParsers::registersToFloat(newValues, DataParsers::Endian::LITTLE);
+        break;
+    }
+    default:
         throw std::logic_error("FloatMapping: Illegal operation type set.");
-
-    m_floatValue = DataParsers::registersToFloat(newValues);
+    }
     return RegisterMapping::update(newValues);
 }
 
@@ -63,23 +100,20 @@ bool FloatMapping::writeValue(float value)
 {
     std::vector<uint16_t> bytes;
 
-    if (m_operationType != OperationType::MERGE_FLOAT)
+    if (m_operationType != OperationType::MERGE_FLOAT_BIG_ENDIAN &&
+        m_operationType != OperationType::MERGE_FLOAT_LITTLE_ENDIAN)
         throw std::logic_error("FloatMapping: Illegal operation type set.");
-    bytes = DataParsers::floatToRegisters(value);
 
-    if (getGroup().expired())
-        return false;
-    const auto group = getGroup().lock();
-    if (group == nullptr || group->getDevice().expired())
-        return false;
-    const auto device = group->getDevice().lock();
-    if (device == nullptr || device->getReader().expired())
-        return false;
-    const auto reader = device->getReader().lock();
-    if (reader == nullptr)
-        return false;
+    if (m_operationType == OperationType::MERGE_FLOAT_BIG_ENDIAN)
+    {
+        bytes = DataParsers::floatToRegisters(value, DataParsers::Endian::BIG);
+    }
+    else
+    {
+        bytes = DataParsers::floatToRegisters(value, DataParsers::Endian::LITTLE);
+    }
 
-    bool success = reader->writeMapping(*this, bytes);
+    const auto success = RegisterMapping::writeValue(bytes);
     if (success)
         m_floatValue = value;
 
@@ -90,5 +124,4 @@ float FloatMapping::getValue() const
 {
     return m_floatValue;
 }
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus

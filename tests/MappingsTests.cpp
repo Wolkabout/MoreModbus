@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 WolkAbout Technology s.r.o.
+ * Copyright 2023 Wolkabout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -98,7 +98,7 @@ public:
         operationTypes = {_operationType::NONE,
                           _operationType::MERGE_BIG_ENDIAN,
                           _operationType::MERGE_LITTLE_ENDIAN,
-                          _operationType::MERGE_FLOAT,
+                          _operationType::MERGE_FLOAT_BIG_ENDIAN,
                           _operationType::STRINGIFY_ASCII_BIG_ENDIAN,
                           _operationType::STRINGIFY_UNICODE_BIG_ENDIAN,
                           _operationType::TAKE_BIT};

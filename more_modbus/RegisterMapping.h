@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 WolkAbout Technology s.r.o.
+ * Copyright 2023 Wolkabout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,9 +25,7 @@
 #include <string>
 #include <vector>
 
-namespace wolkabout
-{
-namespace more_modbus
+namespace wolkabout::more_modbus
 {
 class RegisterGroup;
 
@@ -82,7 +80,8 @@ enum class OperationType
     NONE = 0,
     MERGE_BIG_ENDIAN,
     MERGE_LITTLE_ENDIAN,
-    MERGE_FLOAT,
+    MERGE_FLOAT_BIG_ENDIAN,
+    MERGE_FLOAT_LITTLE_ENDIAN,
     STRINGIFY_ASCII_BIG_ENDIAN,
     STRINGIFY_ASCII_LITTLE_ENDIAN,
     STRINGIFY_UNICODE_BIG_ENDIAN,
@@ -119,11 +118,13 @@ public:
      * @param deadbandValue indicates a change in value of the register that is insignificant data
      * @param frequencyFilterValue changes that occur within the given time (in milliseconds) that will be ignored
      * @param repeatedWrite The minimal time between two writes for a mapping.
+     * @param autoLocalUpdate Whether the local value of the mapping will be automatically updated when written in.
      */
     RegisterMapping(std::string reference, RegisterType registerType, int32_t address, bool readRestricted = false,
                     int16_t slaveAddress = -1, double deadbandValue = 0.0,
                     std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0),
-                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0});
+                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0},
+                    bool autoLocalUpdate = false);
 
     /**
      * @brief Default constructor for mapping with custom OutputType.
@@ -138,11 +139,13 @@ public:
      * @param deadbandValue indicates a change in value of the register that is insignificant data
      * @param frequencyFilterValue changes that occur within the given time (in milliseconds) that will be ignored
      * @param repeatedWrite The minimal time between two writes for a mapping.
+     * @param autoLocalUpdate Whether the local value of the mapping will be automatically updated when written in.
      */
     RegisterMapping(std::string reference, RegisterType registerType, int32_t address, OutputType type,
                     bool readRestricted = false, int16_t slaveAddress = -1, double deadbandValue = 0.0,
                     std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0),
-                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0});
+                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0},
+                    bool autoLocalUpdate = false);
 
     /**
      * @brief Constructor for cases where bit is taken from a 16 bit register.
@@ -156,11 +159,13 @@ public:
      * @param slaveAddress of the devices being accessed, leave as default on -1
      * @param frequencyFilterValue changes that occur within the given time (in milliseconds) that will be ignored
      * @param repeatedWrite The minimal time between two writes for a mapping.
+     * @param autoLocalUpdate Whether the local value of the mapping will be automatically updated when written in.
      */
     RegisterMapping(std::string reference, RegisterType registerType, int32_t address, OperationType operation,
                     int8_t bitIndex, bool readRestricted = false, int16_t slaveAddress = -1,
                     std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0),
-                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0});
+                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0},
+                    bool autoLocalUpdate = false);
 
     /**
      * @brief Constructor for cases where there is multiple registers merged into a single output value.
@@ -178,12 +183,14 @@ public:
      * @param deadbandValue indicates a change in value of the register that is insignificant data
      * @param frequencyFilterValue changes that occur within the given time (in milliseconds) that will be ignored
      * @param repeatedWrite The minimal time between two writes for a mapping.
+     * @param autoLocalUpdate Whether the local value of the mapping will be automatically updated when written in.
      */
     RegisterMapping(std::string reference, RegisterType registerType, std::vector<int32_t> addresses, OutputType type,
                     OperationType operation, bool readRestricted = false, int16_t slaveAddress = -1,
                     double deadbandValue = 0.0,
                     std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0),
-                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0});
+                    std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0},
+                    bool autoLocalUpdate = false);
 
     virtual ~RegisterMapping() = default;
 
@@ -246,6 +253,20 @@ public:
     bool update(bool newRegisterValue);
 
     /**
+     * @brief Register writing method.
+     * @param bytes The bytes that needs to be written into the register.
+     * @return Whether the bytes were successfully written through the device.
+     */
+    virtual bool writeValue(const std::vector<std::uint16_t>& bytes);
+
+    /**
+     * @brief Register writing method.
+     * @param value The bool value that needs to be written into the register.
+     * @return Whether the bool was successfully written through the device.
+     */
+    virtual bool writeValue(bool value);
+
+    /**
      * @brief Return uint16_t values for mappings that use such values, otherwise return vector of length 0.
      * @return the uint16_t values received by the ModbusGroupReader, before parsing.
      */
@@ -292,6 +313,13 @@ public:
      */
     const std::chrono::high_resolution_clock::time_point& getLastUpdateTime() const;
 
+    /**
+     * This is the default getter for whether the auto update is enabled or not.
+     *
+     * @return Whether the auto update is enabled.
+     */
+    [[nodiscard]] bool isAutoUpdateEnabled() const;
+
 protected:
     // General mapping data
     std::string m_reference;
@@ -324,10 +352,12 @@ protected:
     std::chrono::high_resolution_clock::time_point m_lastUpdateTime;
     std::chrono::milliseconds m_frequencyFilterValue = std::chrono::milliseconds(0);
 
+    // Auto local copy update
+    bool m_autoLocalUpdate = false;
+
 private:
     bool deadbandFilter(const std::vector<uint16_t>& newValues) const;
 };
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus
 
 #endif    // WOLKABOUT_MODBUS_REGISTERMAPPING_H

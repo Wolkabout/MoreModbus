@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 WolkAbout Technology s.r.o.
+ * Copyright 2021 Wolkabout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,9 +21,7 @@
 
 #include "more_modbus/ModbusReader.h"
 
-namespace wolkabout
-{
-namespace more_modbus
+namespace wolkabout::more_modbus
 {
 /**
  * @brief Class describing a RegisterMapping with output type INT32
@@ -44,13 +42,14 @@ public:
      * @param frequencyFilterValue changes that occur within the given time (in milliseconds) that will be ignored
      * @param repeatedWrite The minimal time between two writes for a mapping.
      * @param defaultValue The default value for the mapping.
+     * @param autoLocalUpdate Whether the local value of the mapping will be automatically updated when written in.
      */
     Int32Mapping(const std::string& reference, RegisterType registerType, const std::vector<int32_t>& addresses,
                  OperationType operation, bool readRestricted = false, int16_t slaveAddress = -1,
                  double deadbandValue = 0.0,
                  std::chrono::milliseconds frequencyFilterValue = std::chrono::milliseconds(0),
                  std::chrono::milliseconds repeatedWrite = std::chrono::milliseconds{0},
-                 const std::int32_t* defaultValue = nullptr);
+                 const std::int32_t* defaultValue = nullptr, bool autoLocalUpdate = false);
 
     /**
      * @details Override methods will be executed on devices reading thread, so that this parsing can be done
@@ -73,7 +72,6 @@ public:
 private:
     int32_t m_int32Value{};
 };
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus
 
 #endif    // WOLKABOUT_MODBUS_INT32MAPPING_H

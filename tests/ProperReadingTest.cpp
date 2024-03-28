@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 WolkAbout Technology s.r.o.
+ * Copyright 2023 Wolkabout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -112,7 +112,7 @@ public:
 
     void SetUp()
     {
-        wolkabout::Logger::init(wolkabout::LogLevel::TRACE, wolkabout::Logger::Type::CONSOLE);
+        wolkabout::legacy::Logger::init(wolkabout::legacy::LogLevel::TRACE, wolkabout::legacy::Logger::Type::CONSOLE);
 
         modbusClientMock = std::make_shared<ModbusClientMock>();
         SetUpMappings();

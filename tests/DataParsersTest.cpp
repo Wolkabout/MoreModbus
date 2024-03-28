@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 WolkAbout Technology s.r.o.
+ * Copyright 2023 Wolkabout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,6 +30,7 @@
 #include <gtest/gtest.h>
 
 using namespace wolkabout;
+using namespace wolkabout::legacy;
 
 namespace
 {
@@ -128,7 +129,7 @@ public:
 
     void SetUp()
     {
-        wolkabout::Logger::init(wolkabout::LogLevel::TRACE, wolkabout::Logger::Type::CONSOLE);
+        wolkabout::legacy::Logger::init(wolkabout::legacy::LogLevel::TRACE, wolkabout::legacy::Logger::Type::CONSOLE);
         LOG(DEBUG) << "Started tests " << ::testing::UnitTest::GetInstance()->current_test_info()->name() << ".";
 
         SetUpBitValues();
@@ -458,7 +459,8 @@ TEST_F(DataParsersTest, TestFloatToBytes)
 
     for (const auto& kvp : floatValues)
     {
-        const auto bytes = wolkabout::more_modbus::DataParsers::floatToRegisters(kvp.first);
+        const auto bytes = wolkabout::more_modbus::DataParsers::floatToRegisters(
+          kvp.first, wolkabout::more_modbus::DataParsers::Endian::BIG);
 
         LOG(DEBUG) << kvp.first;
         ASSERT_EQ(kvp.second.size(), bytes.size());
@@ -480,7 +482,8 @@ TEST_F(DataParsersTest, TestBytesToFloat)
 
     for (const auto& kvp : floatValues)
     {
-        const auto value = wolkabout::more_modbus::DataParsers::registersToFloat(kvp.second);
+        const auto value = wolkabout::more_modbus::DataParsers::registersToFloat(
+          kvp.second, wolkabout::more_modbus::DataParsers::Endian::BIG);
 
         LOG(DEBUG) << kvp.first;
         EXPECT_EQ(kvp.first, value);
@@ -497,7 +500,9 @@ TEST_F(DataParsersTest, InvalidFloatTest)
 
     for (const auto& kvp : invalidFloatValues)
     {
-        EXPECT_THROW(wolkabout::more_modbus::DataParsers::registersToFloat(kvp.second), std::logic_error);
+        EXPECT_THROW(wolkabout::more_modbus::DataParsers::registersToFloat(
+                       kvp.second, wolkabout::more_modbus::DataParsers::Endian::BIG),
+                     std::logic_error);
     }
 }
 

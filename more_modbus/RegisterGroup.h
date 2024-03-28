@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 WolkAbout Technology s.r.o.
+ * Copyright 2023 Wolkabout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -61,7 +61,7 @@ struct GroupUtility
      * @brief Main function that serves a purpose of sorting the elements in the set created by the group.
      */
     bool operator()(const std::pair<std::string, std::shared_ptr<RegisterMapping>>& left,
-                    const std::pair<std::string, std::shared_ptr<RegisterMapping>>& right)
+                    const std::pair<std::string, std::shared_ptr<RegisterMapping>>& right) const
     {
         const auto addressComp = getAddressFromString(right.first) - getAddressFromString(left.first);
         if (addressComp != 0)

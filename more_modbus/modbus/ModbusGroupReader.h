@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 WolkAbout Technology s.r.o.
+ * Copyright 2021 Wolkabout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,9 +22,7 @@
 #include "more_modbus/RegisterGroup.h"
 #include "more_modbus/modbus/ModbusClient.h"
 
-namespace wolkabout
-{
-namespace more_modbus
+namespace wolkabout::more_modbus
 {
 /**
  * @brief Collection of utility methods used by ModbusReader to read a group.
@@ -41,14 +39,6 @@ public:
     static bool readGroup(ModbusClient& modbusClient, RegisterGroup& group);
 
 private:
-    // Discrete values operations
-    /**
-     * @brief Helping method that aggregates read bool values to each mapping inside a group.
-     * @param group
-     * @param values
-     */
-    static void passValuesToGroup(RegisterGroup& group, const std::vector<bool>& values);
-
     /**
      * @brief Read a group of COIL mappings, and aggregate read values to each mapping, using passValuesToGroup().
      * @param modbusClient
@@ -65,14 +55,6 @@ private:
      * @return Whether or not the group reading has been successful.
      */
     static bool readDiscreteInputGroup(ModbusClient& modbusClient, RegisterGroup& group);
-
-    // Register operations
-    /**
-     * @brief Helping method that aggregates read uint16_t values to each mapping inside a group.
-     * @param group
-     * @param values
-     */
-    static void passValuesToGroup(RegisterGroup& group, const std::vector<uint16_t>& values);
 
     /**
      * @brief Read a group of HOLDING_REGISTER mappings,
@@ -91,8 +73,21 @@ private:
      * @return Whether or not the group reading has been successful.
      */
     static bool readInputRegisterGroup(ModbusClient& modbusClient, RegisterGroup& group);
+
+    /**
+     * @brief Helping method that aggregates read bool values to each mapping inside a group.
+     * @param group
+     * @param values
+     */
+    static void passValuesToGroup(RegisterGroup& group, const std::vector<bool>& values);
+
+    /**
+     * @brief Helping method that aggregates read uint16_t values to each mapping inside a group.
+     * @param group
+     * @param values
+     */
+    static void passValuesToGroup(RegisterGroup& group, const std::vector<uint16_t>& values);
 };
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus
 
 #endif    // WOLKABOUT_MODBUS_MODBUSGROUPREADER_H

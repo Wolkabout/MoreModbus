@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 WolkAbout Technology s.r.o.
+ * Copyright 2021 Wolkabout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,9 +22,9 @@
 #include "more_modbus/ModbusReader.h"
 #include "more_modbus/utilities/DataParsers.h"
 
-namespace wolkabout
-{
-namespace more_modbus
+using namespace wolkabout::legacy;
+
+namespace wolkabout::more_modbus
 {
 bool ModbusGroupReader::readGroup(ModbusClient& modbusClient, RegisterGroup& group)
 {
@@ -43,24 +43,6 @@ bool ModbusGroupReader::readGroup(ModbusClient& modbusClient, RegisterGroup& gro
         return readHoldingRegisterGroup(modbusClient, group);
     default:
         return false;
-    }
-}
-
-void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vector<bool>& values)
-{
-    uint32_t i = 0;
-    const auto mappingMap = group.getMappingsMap();
-    for (const auto& mapping : mappingMap)
-    {
-        bool newValue = values[i++];
-        if (mapping.second->doesUpdate(newValue))
-        {
-            mapping.second->update(newValue);
-            if (auto device = group.getDevice().lock())
-                device->triggerOnMappingValueChange(mapping.second, newValue);
-            LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '" << mapping.second->getReference()
-                      << "' Value: '" << mapping.second->getBoolValue() << "'";
-        }
     }
 }
 
@@ -94,6 +76,56 @@ bool ModbusGroupReader::readDiscreteInputGroup(ModbusClient& modbusClient, Regis
 
     passValuesToGroup(group, boolValues);
     return true;
+}
+
+bool ModbusGroupReader::readHoldingRegisterGroup(ModbusClient& modbusClient, RegisterGroup& group)
+{
+    std::vector<uint16_t> registerValues;
+    if (!modbusClient.readHoldingRegisters(group.getSlaveAddress(), group.getStartingAddress(), group.getAddressCount(),
+                                           registerValues))
+    {
+        LOG(WARN) << "ModbusGroupReader: Unable to read holding register group on device " << group.getSlaveAddress()
+                  << ", starting on " << group.getStartingAddress() << " counting " << group.getAddressCount()
+                  << " addresses.";
+        return false;
+    }
+
+    passValuesToGroup(group, registerValues);
+    return true;
+}
+
+bool ModbusGroupReader::readInputRegisterGroup(ModbusClient& modbusClient, RegisterGroup& group)
+{
+    std::vector<uint16_t> registerValues;
+    if (!modbusClient.readInputRegisters(group.getSlaveAddress(), group.getStartingAddress(), group.getAddressCount(),
+                                         registerValues))
+    {
+        LOG(WARN) << "ModbusGroupReader: Unable to read input register group on device " << group.getSlaveAddress()
+                  << ", starting on " << group.getStartingAddress() << " counting " << group.getAddressCount()
+                  << " addresses.";
+        return false;
+    }
+
+    passValuesToGroup(group, registerValues);
+    return true;
+}
+
+void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vector<bool>& values)
+{
+    uint32_t i = 0;
+    const auto mappingMap = group.getMappingsMap();
+    for (const auto& mapping : mappingMap)
+    {
+        bool newValue = values[i++];
+        if (mapping.second->doesUpdate(newValue))
+        {
+            mapping.second->update(newValue);
+            if (auto device = group.getDevice().lock())
+                device->triggerOnMappingValueChange(mapping.second, newValue);
+            LOG(INFO) << "ModbusGroupReader: Mapping value changed - Reference: '" << mapping.second->getReference()
+                      << "' Value: '" << mapping.second->getBoolValue() << "'";
+        }
+    }
 }
 
 void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vector<uint16_t>& values)
@@ -168,37 +200,4 @@ void ModbusGroupReader::passValuesToGroup(RegisterGroup& group, const std::vecto
         ++mappingCounter;
     }
 }
-
-bool ModbusGroupReader::readHoldingRegisterGroup(ModbusClient& modbusClient, RegisterGroup& group)
-{
-    std::vector<uint16_t> registerValues;
-    if (!modbusClient.readHoldingRegisters(group.getSlaveAddress(), group.getStartingAddress(), group.getAddressCount(),
-                                           registerValues))
-    {
-        LOG(WARN) << "ModbusGroupReader: Unable to read holding register group on device " << group.getSlaveAddress()
-                  << ", starting on " << group.getStartingAddress() << " counting " << group.getAddressCount()
-                  << " addresses.";
-        return false;
-    }
-
-    passValuesToGroup(group, registerValues);
-    return true;
-}
-
-bool ModbusGroupReader::readInputRegisterGroup(ModbusClient& modbusClient, RegisterGroup& group)
-{
-    std::vector<uint16_t> registerValues;
-    if (!modbusClient.readInputRegisters(group.getSlaveAddress(), group.getStartingAddress(), group.getAddressCount(),
-                                         registerValues))
-    {
-        LOG(WARN) << "ModbusGroupReader: Unable to read input register group on device " << group.getSlaveAddress()
-                  << ", starting on " << group.getStartingAddress() << " counting " << group.getAddressCount()
-                  << " addresses.";
-        return false;
-    }
-
-    passValuesToGroup(group, registerValues);
-    return true;
-}
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus

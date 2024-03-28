@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 WolkAbout Technology s.r.o.
+ * Copyright 2021 Wolkabout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -88,7 +88,7 @@ public:
      * @param value Float value to be parsed
      * @return vector containing two uint16_t values, separated bits
      */
-    static std::vector<uint16_t> floatToRegisters(float value);
+    static std::vector<uint16_t> floatToRegisters(float value, DataParsers::Endian endian);
 
     /**
      * @brief Parse inputted uint16_t values, as a string, where each half of a uint16_t is a ASCII char.
@@ -127,9 +127,10 @@ public:
     /**
      * @brief Parse inputted uint16_t values, to a 32 bit Float.
      * @param value vector of uint16_t values, most often acquired by reading with modbus client.
+     * @param endian indicates way to interpret uint16_t values.
      * @return parsed 32 bit Float
      */
-    static float registersToFloat(const std::vector<uint16_t>& value);
+    static float registersToFloat(const std::vector<uint16_t>& value, DataParsers::Endian endian);
 
     /**
      * @brief Static cast of uint16_t value to int16_t.

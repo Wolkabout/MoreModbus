@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 WolkAbout Technology s.r.o.
+ * Copyright 2023 Wolkabout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,7 +36,7 @@ class ModbusReader;
  */
 struct CompareFunction
 {
-    bool operator()(const std::shared_ptr<RegisterMapping>& left, const std::shared_ptr<RegisterMapping>& right)
+    bool operator()(const std::shared_ptr<RegisterMapping>& left, const std::shared_ptr<RegisterMapping>& right) const
     {
         const auto typeDiff = (int)right->getRegisterType() - (int)left->getRegisterType();
         if (typeDiff != 0)

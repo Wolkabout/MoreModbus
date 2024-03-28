@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 WolkAbout Technology s.r.o.
+ * Copyright 2023 Wolkabout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,9 +27,7 @@
 #include <functional>
 #include <thread>
 
-namespace wolkabout
-{
-namespace more_modbus
+namespace wolkabout::more_modbus
 {
 /**
  * @brief Main functional class, that accepts all devices and reads them periodically.
@@ -88,6 +86,13 @@ public:
      * @return whether or not the operation was successful
      */
     virtual bool writeBitMapping(RegisterMapping& mapping, bool value);
+
+    /**
+     * @brief Force the reader to read the mapping. The value of the mapping will be announced through the device.
+     * @param mapping The mapping that should be read.
+     * @return Whether the mapping was successfully read.
+     */
+    virtual bool forceReadOfMapping(RegisterMapping& mapping);
 
     /**
      * @brief Indicates whether or not the threads that read devices are running
@@ -152,7 +157,6 @@ private:
     std::map<int16_t, std::unique_ptr<std::thread>> m_rewriteThreads;
     std::chrono::milliseconds m_readPeriod;
 };
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus
 
 #endif    // WOLKABOUT_MODBUS_MODBUSREADER_H

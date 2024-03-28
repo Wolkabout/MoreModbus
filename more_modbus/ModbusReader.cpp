@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 WolkAbout Technology s.r.o.
+ * Copyright 2023 Wolkabout Technology s.r.o.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,13 +20,15 @@
 
 #include "core/utilities/Logger.h"
 #include "more_modbus/modbus/ModbusGroupReader.h"
+#include "more_modbus/modbus/ModbusMappingReader.h"
 #include "more_modbus/utilities/DataParsers.h"
 
 #include <algorithm>
+#include <numeric>
 
-namespace wolkabout
-{
-namespace more_modbus
+using namespace wolkabout::legacy;
+
+namespace wolkabout::more_modbus
 {
 ModbusReader::ModbusReader(ModbusClient& modbusClient, const std::chrono::milliseconds& readPeriod)
 : m_modbusClient(modbusClient), m_devices(), m_readerShouldRun(false), m_threads(), m_readPeriod(readPeriod)
@@ -93,8 +95,12 @@ bool ModbusReader::writeMapping(RegisterMapping& mapping, const std::vector<uint
         mapping.setValid(false);
         return false;
     }
-    LOG(TRACE) << "ModbusReader: Written value for mapping '" << mapping.getReference() << "'.";
-    mapping.update(values);
+    LOG(TRACE) << "ModbusReader: Written values '"
+               << (std::accumulate(values.begin(), values.end(), std::string{},
+                                   [](auto s, auto v) { return s + " " + std::to_string(v); }))
+               << "' for mapping '" << mapping.getReference() << "'.";
+    if (mapping.isAutoUpdateEnabled())
+        mapping.update(values);
     return true;
 }
 
@@ -112,8 +118,11 @@ bool ModbusReader::writeMapping(RegisterMapping& mapping, bool value)
         mapping.setValid(false);
         return false;
     }
-    LOG(TRACE) << "ModbusReader: Written value for mapping '" << mapping.getReference() << "'.";
-    mapping.update(value);
+
+    LOG(TRACE) << "ModbusReader: Written value '" << value << "' for mapping '" << mapping.getReference() << "'.";
+
+    if (mapping.isAutoUpdateEnabled())
+        mapping.update(value);
     return true;
 }
 
@@ -153,9 +162,18 @@ bool ModbusReader::writeBitMapping(RegisterMapping& mapping, bool value)
             mapping.setValid(false);
             return false;
         }
-        mapping.update(value);
+
+        LOG(TRACE) << "ModbusReader: Written value '" << value << "' for mapping '" << mapping.getReference() << "'.";
+
+        if (mapping.isAutoUpdateEnabled())
+            mapping.update(value);
     }
     return true;
+}
+
+bool ModbusReader::forceReadOfMapping(RegisterMapping& mapping)
+{
+    return ModbusMappingReader::readRegister(m_modbusClient, mapping);
 }
 
 bool ModbusReader::start()
@@ -484,5 +502,4 @@ void ModbusReader::triggerDeviceStatusUpdate(const std::shared_ptr<ModbusDevice>
 
     m_deviceStatusReported[device->getSlaveAddress()] = true;
 }
-}    // namespace more_modbus
-}    // namespace wolkabout
+}    // namespace wolkabout::more_modbus
