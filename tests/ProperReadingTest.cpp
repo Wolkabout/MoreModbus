@@ -29,7 +29,7 @@
 #define _makeCombo(x, y, z) _combination(_registerType::x, _outputType::y, _operationType::z)
 #define _makeComboPure(x, y, z) _combination(x, y, z)
 
-#include "core/utilities/Logger.h"
+#include "core/utility/Logger.h"
 #include "mocks/ModbusClientMocking.h"
 #include "mocks/RegisterMappingMocking.h"
 #include "more_modbus/mappings/BoolMapping.h"
