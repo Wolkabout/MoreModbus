@@ -25,7 +25,7 @@
 #define _bits std::vector<bool>
 #define _registers std::vector<uint16_t>
 
-#include "core/utilities/Logger.h"
+#include "core/utility/Logger.h"
 
 #include <gtest/gtest.h>
 

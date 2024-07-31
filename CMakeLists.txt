@@ -72,16 +72,13 @@ if (NOT DEFINED CMAKE_PREFIX_PATH)
 endif ()
 
 # And this is how we're importing the submodules
-add_subdirectory(dependencies)
+include(cmake/dependencies.cmake)
 
-# And add WolkSDK-Cpp if there is no WolkSDK-Cpp
-if (NOT TARGET WolkAboutCoreUtility)
-    option(BUILD_CONNECTIVITY "Build the library with Paho MQTT and allow MQTT connection to the platform." OFF)
-    option(BUILD_POCO "Build the library with Poco." OFF)
-    option(BUILD_AWS_LOG_UPLOADER "Build the library with AwsLogUploader." OFF)
+option(BUILD_CONNECTIVITY "Build the library with Paho MQTT and allow MQTT connection to the platform." OFF)
+option(BUILD_POCO "Build the library with Poco." OFF)
+option(BUILD_AWS_LOG_UPLOADER "Build the library with AwsLogUploader." OFF)
 
-    add_subdirectory(WolkSDK-Cpp)
-endif ()
+add_subdirectory(WolkSDK-Cpp)
 
 # Add the pthread dependency too
 find_package(Threads REQUIRED)
@@ -141,15 +138,12 @@ set(HEADER_FILES more_modbus/mappings/BoolMapping.h
 file(COPY more_modbus/ DESTINATION ${CMAKE_LIBRARY_INCLUDE_DIRECTORY}/more_modbus PATTERN *.cpp EXCLUDE)
 
 add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES} ${HEADER_FILES})
-target_link_libraries(${PROJECT_NAME} WolkAboutCoreUtility modbus pthread)
+target_link_libraries(${PROJECT_NAME} Wolkabout::SDKCoreUtil modbus pthread)
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_LIBRARY_INCLUDE_DIRECTORY})
 set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "$ORIGIN")
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${MOREMODBUS_VERSION_STRING} SOVERSION ${MOREMODBUS_VERSION_MAJOR}.${MOREMODBUS_VERSION_MINOR}.${MOREMODBUS_VERSION_PATCH})
 add_dependencies(${PROJECT_NAME} libmodbus)
-if (TARGET WolkSDK-Cpp)
-    add_dependencies(${PROJECT_NAME} WolkSDK-Cpp)
-endif ()
 
 # Tests
 if (${BUILD_TESTS})

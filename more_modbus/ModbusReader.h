@@ -19,7 +19,7 @@
 #ifndef WOLKABOUT_MODBUS_MODBUSREADER_H
 #define WOLKABOUT_MODBUS_MODBUSREADER_H
 
-#include "core/utilities/Timer.h"
+#include "core/utility/Timer.h"
 #include "more_modbus/ModbusDevice.h"
 #include "more_modbus/modbus/ModbusClient.h"
 

@@ -18,7 +18,7 @@
 
 #include "more_modbus/ModbusReader.h"
 
-#include "core/utilities/Logger.h"
+#include "core/utility/Logger.h"
 #include "more_modbus/modbus/ModbusGroupReader.h"
 #include "more_modbus/modbus/ModbusMappingReader.h"
 #include "more_modbus/utilities/DataParsers.h"

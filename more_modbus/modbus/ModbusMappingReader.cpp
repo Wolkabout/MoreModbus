@@ -1,6 +1,6 @@
 #include "more_modbus/modbus/ModbusMappingReader.h"
 
-#include "core/utilities/Logger.h"
+#include "core/utility/Logger.h"
 #include "more_modbus/ModbusDevice.h"
 #include "more_modbus/RegisterGroup.h"
 
