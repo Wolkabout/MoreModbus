@@ -85,6 +85,8 @@ public:
      */
     void createGroups(const std::vector<std::shared_ptr<RegisterMapping>>& mappings);
 
+	void createSingleReadGroups(const std::vector<std::shared_ptr<RegisterMapping>>& mappings);
+
     const std::string& getName() const;
 
     bool getStatus() const;
@@ -96,6 +98,8 @@ public:
     int16_t getSlaveAddress() const;
 
     const std::vector<std::shared_ptr<RegisterGroup>>& getGroups() const;
+
+	const std::vector<std::shared_ptr<RegisterGroup>>& getSingleReadGroups() const;
 
     std::vector<std::shared_ptr<RegisterMapping>> getRewritable() const;
 
@@ -127,10 +131,14 @@ public:
     void triggerOnStatusChange(bool status);
 
 private:
+	void createGroups(const std::vector<std::shared_ptr<RegisterMapping>>& mappings, std::vector<std::shared_ptr<RegisterGroup>>& groups,
+					  std::vector<std::shared_ptr<RegisterMapping>>& rewrite);
+
     std::string m_name;
     bool m_status;
     int16_t m_slaveAddress;
     std::vector<std::shared_ptr<RegisterGroup>> m_groups;
+	std::vector<std::shared_ptr<RegisterGroup>> m_singleReadGroups;
 
     mutable std::mutex m_rewriteMutex;
     std::vector<std::shared_ptr<RegisterMapping>> m_rewrite;

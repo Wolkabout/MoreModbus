@@ -326,7 +326,7 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
     {
         auto start = std::chrono::high_resolution_clock::now();
 
-        if (device->getGroups().empty())
+		if (device->getGroups().empty() && device->getSingleReadGroups().empty())
         {
             LOG(WARN) << "ModbusReader: Device " << device->getName() << " has no mappings.";
             return;
@@ -337,6 +337,23 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
         // Work on this logic, read all groups and do it properly.
         // Also, parse types and values as necessary.
         uint16_t unreadGroups = 0;
+
+		const auto singleRead = !m_singleReadCompleted;
+
+		if (!m_singleReadCompleted)
+		{
+			for (const auto& group : device->getSingleReadGroups())
+			{
+				if (!ModbusGroupReader::readGroup(m_modbusClient, *group))
+				{
+					LOG(WARN) << "ModbusReader: Group starting at : " << group->getStartingAddress() << " on slave "
+							  << group->getSlaveAddress() << " had error while reading.";
+					unreadGroups++;
+				}
+			}
+
+			m_singleReadCompleted = true;
+		}
 
         // Read through all the groups.
         for (const auto& group : device->getGroups())
@@ -350,7 +367,7 @@ void ModbusReader::readDevice(const std::shared_ptr<ModbusDevice>& device)
         }
 
         // If all the groups had error while reading, report the device as having errors.
-        const auto status = unreadGroups != device->getGroups().size();
+		const auto status = unreadGroups != (device->getGroups().size() + (singleRead ? device->getSingleReadGroups().size() : 0));
         std::lock_guard<std::mutex> lockGuard{m_deviceActiveMutex};
         if (m_deviceActiveStatus[device->getSlaveAddress()] != status ||
             !m_deviceStatusReported[device->getSlaveAddress()])

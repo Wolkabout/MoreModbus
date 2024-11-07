@@ -51,6 +51,24 @@ ModbusDevice::ModbusDevice(const ModbusDevice& device)
 
 void ModbusDevice::createGroups(const std::vector<std::shared_ptr<RegisterMapping>>& mappings)
 {
+	createGroups(mappings, m_groups, m_rewrite);
+
+	LOG(DEBUG) << "ModbusDevice: Created " << m_groups.size() << " groups for device " << m_name << ".";
+}
+
+void ModbusDevice::createSingleReadGroups(const std::vector<std::shared_ptr<RegisterMapping>>& mappings)
+{
+	std::vector<std::shared_ptr<RegisterMapping>> unused;
+
+	createGroups(mappings, m_singleReadGroups, unused);
+
+	LOG(DEBUG) << "ModbusDevice: Created " << m_singleReadGroups.size() << " single read groups for device " << m_name << ".";
+}
+
+void ModbusDevice::createGroups(const std::vector<std::shared_ptr<RegisterMapping>>& mappings,
+								std::vector<std::shared_ptr<RegisterGroup>>& groups,
+								std::vector<std::shared_ptr<RegisterMapping>>& rewrite)
+{
     std::map<RegisterType, std::shared_ptr<RegisterGroup>> readRestrictedGroups;
     std::set<std::shared_ptr<RegisterMapping>, CompareFunction> set(mappings.begin(), mappings.end());
 
@@ -59,7 +77,7 @@ void ModbusDevice::createGroups(const std::vector<std::shared_ptr<RegisterMappin
     {
         // Add the mapping to rewrite vector if it needs to be rewritten
         if (mapping->getRepeatedWrite().count() > 0)
-            m_rewrite.emplace_back(mapping);
+			rewrite.emplace_back(mapping);
 
         if (mapping->isReadRestricted())
         {
@@ -68,7 +86,7 @@ void ModbusDevice::createGroups(const std::vector<std::shared_ptr<RegisterMappin
             {
                 const auto newGroup = std::make_shared<RegisterGroup>(mapping, shared_from_this());
                 readRestrictedGroups[mapping->getRegisterType()] = newGroup;
-                m_groups.insert(m_groups.end(), newGroup);
+				groups.insert(groups.end(), newGroup);
                 mapping->setGroup(newGroup);
             }
             else
@@ -84,7 +102,7 @@ void ModbusDevice::createGroups(const std::vector<std::shared_ptr<RegisterMappin
             {
                 previousGroup = std::make_shared<RegisterGroup>(mapping, shared_from_this());
                 previousGroup->setSlaveAddress(m_slaveAddress);
-                m_groups.insert(m_groups.end(), previousGroup);
+				groups.insert(groups.end(), previousGroup);
                 mapping->setGroup(previousGroup);
                 continue;
             }
@@ -100,12 +118,10 @@ void ModbusDevice::createGroups(const std::vector<std::shared_ptr<RegisterMappin
 
             previousGroup = std::make_shared<RegisterGroup>(mapping, shared_from_this());
             previousGroup->setSlaveAddress(m_slaveAddress);
-            m_groups.insert(m_groups.end(), previousGroup);
+			groups.insert(groups.end(), previousGroup);
             mapping->setGroup(previousGroup);
         }
     }
-
-    LOG(DEBUG) << "ModbusDevice: Created " << m_groups.size() << " groups for device " << m_name << ".";
 }
 
 const std::string& ModbusDevice::getName() const
@@ -125,7 +141,12 @@ int16_t ModbusDevice::getSlaveAddress() const
 
 const std::vector<std::shared_ptr<RegisterGroup>>& ModbusDevice::getGroups() const
 {
-    return m_groups;
+	return m_groups;
+}
+
+const std::vector<std::shared_ptr<RegisterGroup> >& ModbusDevice::getSingleReadGroups() const
+{
+	return m_singleReadGroups;
 }
 
 std::vector<std::shared_ptr<RegisterMapping>> ModbusDevice::getRewritable() const

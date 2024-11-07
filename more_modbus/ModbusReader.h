@@ -151,6 +151,8 @@ private:
     std::map<int16_t, std::unique_ptr<std::thread>> m_threads;
     std::map<int16_t, std::unique_ptr<std::thread>> m_rewriteThreads;
     std::chrono::milliseconds m_readPeriod;
+
+	bool m_singleReadCompleted = false;
 };
 }    // namespace more_modbus
 }    // namespace wolkabout
