@@ -143,6 +143,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_LIBRARY_INCLUDE_DIRECTORY})
 set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "$ORIGIN")
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${MOREMODBUS_VERSION_STRING} SOVERSION ${MOREMODBUS_VERSION_MAJOR}.${MOREMODBUS_VERSION_MINOR}.${MOREMODBUS_VERSION_PATCH})
+target_compile_options(${PROJECT_NAME} PUBLIC -Wno-error=overloaded-virtual)
 add_dependencies(${PROJECT_NAME} libmodbus)
 
 # Tests
@@ -168,6 +169,7 @@ if (${BUILD_TESTS})
     target_include_directories(${PROJECT_NAME}Tests PRIVATE ${PROJECT_SOURCE_DIR})
     target_include_directories(${PROJECT_NAME}Tests PUBLIC ${CMAKE_LIBRARY_INCLUDE_DIRECTORY})
     set_target_properties(${PROJECT_NAME}Tests PROPERTIES INSTALL_RPATH "$ORIGIN/../lib")
+    target_compile_options(${PROJECT_NAME}Tests PRIVATE -Wno-error=suggest-override)
 
     enable_testing()
     add_test(NAME "MoreModbus_Tests" COMMAND ${PROJECT_NAME}Tests)
