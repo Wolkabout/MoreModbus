@@ -36,24 +36,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}     -Wall -Wextra -pedantic             
                                             -Wvariadic-macros                                                          \
                                             -Wwrite-strings -Werror=non-virtual-dtor")
 
-# Setup the options for tests
-OPTION(BUILD_GTEST "Build the library with gtest" ON)
-OPTION(BUILD_TESTS "Build the unit tests for the library" ON)
-if (${BUILD_TESTS})
-    if (NOT ${BUILD_GTEST})
-        message(FATAL "Cannot Build Tests with BUILD_GTEST set to false.")
-    endif ()
-
-    # Setup test coverage if it is necessary
-    OPTION(TEST_COVERAGE "Build the library for test coverage" ON)
-    if (${TEST_COVERAGE})
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage -g")
-    endif ()
-endif ()
-
-# Setup the options for the examples
-OPTION(BUILD_EXAMPLES "Build the examples/runtimes for testing" ON)
-
 # Check if the paths for output are set, if not, we can set them ourselves
 if (NOT DEFINED CMAKE_LIBRARY_OUTPUT_DIRECTORY)
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
@@ -147,7 +129,18 @@ target_compile_options(${PROJECT_NAME} PUBLIC -Wno-error=overloaded-virtual)
 add_dependencies(${PROJECT_NAME} libmodbus)
 
 # Tests
-if (${BUILD_TESTS})
+check_build_tests(MOREMODBUS_BUILD_TESTS)
+
+if (MOREMODBUS_BUILD_TESTS)
+
+    # Setup test coverage if it is necessary
+    OPTION(TEST_COVERAGE "Build the library for test coverage" ON)
+    if (${TEST_COVERAGE})
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage -g")
+    endif ()
+endif ()
+
+if (MOREMODBUS_BUILD_TESTS)
     set(TEST_SOURCE_FILES tests/ComplexMappingsTests.cpp
             tests/DataParsersTest.cpp
             tests/MappingsTests.cpp
@@ -175,8 +168,10 @@ if (${BUILD_TESTS})
     add_test(NAME "MoreModbus_Tests" COMMAND ${PROJECT_NAME}Tests)
 endif ()
 
+check_build_examples(MOREMODBUS_BUILD_EXAMPLES)
+
 # Example
-if (${BUILD_EXAMPLES})
+if (MOREMODBUS_BUILD_EXAMPLES)
     set(EXAMPLE_SOURCE_FILES example/Application.cpp)
 
     add_executable(${PROJECT_NAME}Example ${EXAMPLE_SOURCE_FILES})

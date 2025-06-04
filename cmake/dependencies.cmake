@@ -1,5 +1,5 @@
-include(cpp-tools/cmake/dependencies/libmodbus.cmake)
+include(WolkSDK-Cpp/cpp-tools/cmake/dependencies/libmodbus.cmake)
 
-if (${BUILD_GTEST})
-    include(cpp-tools/cmake/dependencies/gtest.cmake)
+if (MOREMODBUS_BUILD_TESTS)
+    include(WolkSDK-Cpp/cpp-tools/cmake/dependencies/gtest.cmake)
 endif ()

@@ -1,6 +1,3 @@
 [submodule "WolkSDK-Cpp"]
 	path = WolkSDK-Cpp
 	url = git@github.com:Wolkabout/WolkSDK-Cpp.git
-[submodule "cpp-tools"]
-	path = cpp-tools
-	url = git@github.com:Wolkabout/cpp-tools.git
