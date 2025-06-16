@@ -28,10 +28,17 @@
 
 using namespace wolkabout::legacy;
 
+namespace
+{
+auto DEFAULT_RECONNECT_TIMEOUT = std::chrono::seconds{2};
+}
+
 namespace wolkabout::more_modbus
 {
-ModbusReader::ModbusReader(ModbusClient& modbusClient, const std::chrono::milliseconds& readPeriod)
-: m_modbusClient(modbusClient), m_devices(), m_readerShouldRun(false), m_threads(), m_readPeriod(readPeriod)
+ModbusReader::ModbusReader(ModbusClient& modbusClient, const std::chrono::milliseconds& readPeriod,
+                           bool increasingReconnectPeriod)
+: m_modbusClient{modbusClient}, m_readerShouldRun{false}, m_readPeriod{readPeriod},
+m_increasingReconnectPeriod{increasingReconnectPeriod}
 {
 }
 
@@ -259,12 +266,7 @@ void ModbusReader::run()
             LOG(INFO) << "ModbusReader: Attempting to connect";
             while (!m_modbusClient.connect())
             {
-                // Timing logic, increase the time after which we attempt to reconnect.
-                std::this_thread::sleep_for(std::chrono::seconds(m_timeoutDurations[m_timeoutIterator]));
-                if ((uint32_t)m_timeoutIterator < m_timeoutDurations.size() - 1)
-                {
-                    m_timeoutIterator++;
-                }
+                std::this_thread::sleep_for(getReconnectWaitTime());
             }
             m_shouldReconnect = false;
             m_timeoutIterator = 0;
@@ -501,5 +503,28 @@ void ModbusReader::triggerDeviceStatusUpdate(const std::shared_ptr<ModbusDevice>
     device->triggerOnStatusChange(status);
 
     m_deviceStatusReported[device->getSlaveAddress()] = true;
+}
+
+std::chrono::milliseconds ModbusReader::getReconnectWaitTime()
+{
+    if (!m_increasingReconnectPeriod)
+    {
+        return DEFAULT_RECONNECT_TIMEOUT;
+    }
+
+    // Timing logic, increase the time after which we attempt to reconnect.
+    if (m_timeoutIterator >= m_timeoutDurations.size())
+    {
+        m_timeoutIterator = m_timeoutDurations.size() - 1;
+    }
+
+    const auto duration = m_timeoutDurations[m_timeoutIterator];
+
+    if (m_timeoutIterator < m_timeoutDurations.size() - 1)
+    {
+        ++m_timeoutIterator;
+    }
+
+    return std::chrono::seconds{duration};
 }
 }    // namespace wolkabout::more_modbus
