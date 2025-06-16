@@ -46,7 +46,8 @@ public:
      * @param modbusClient one of implementations of the abstract class
      * @param readPeriod time period for cycling reads
      */
-    ModbusReader(ModbusClient& modbusClient, const std::chrono::milliseconds& readPeriod);
+    ModbusReader(ModbusClient& modbusClient, const std::chrono::milliseconds& readPeriod,
+                 bool increasingReconnectPeriod = true);
 
     /**
      * Default virtual destructor.
@@ -124,6 +125,8 @@ private:
 
     void triggerDeviceStatusUpdate(const std::shared_ptr<ModbusDevice>& device, bool status);
 
+    std::chrono::milliseconds getReconnectWaitTime();
+
     std::function<void(std::map<int16_t, bool>)> m_onIterationStatuses;
 
     // Modbus client and device data
@@ -151,6 +154,7 @@ private:
     std::map<int16_t, std::unique_ptr<std::thread>> m_threads;
     std::map<int16_t, std::unique_ptr<std::thread>> m_rewriteThreads;
     std::chrono::milliseconds m_readPeriod;
+    bool m_increasingReconnectPeriod;
 };
 }    // namespace more_modbus
 }    // namespace wolkabout
